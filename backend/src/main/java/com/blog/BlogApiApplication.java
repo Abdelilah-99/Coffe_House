@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 public class BlogApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BlogApiApplication.class, args);
+		var t = SpringApplication.run(BlogApiApplication.class, args);
+		for (String s : t.getBeanDefinitionNames()) {
+			System.out.printf("test: %s\n", s);
+		}
 	}
 }

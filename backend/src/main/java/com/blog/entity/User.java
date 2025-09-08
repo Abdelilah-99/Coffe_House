@@ -15,13 +15,14 @@ public class User {
     private String role;
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Post> posts;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Follow> following;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Follow> followers;
+    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
+    private List<Follow> following = new ArrayList<>();
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    private List<Follow> followers = new ArrayList<>();
 
-    public User() {}
+    public User() {
+    }
 
     public User(String email, String firstName, String lastName, String userName, String role, String password) {
         this.email = email;
