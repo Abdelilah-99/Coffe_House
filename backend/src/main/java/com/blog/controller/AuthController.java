@@ -7,17 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import com.blog.dto.AuthRequest;
 import com.blog.dto.AuthResponse;
 import com.blog.dto.RegisterRequest;
+import com.blog.dto.RegisterResponse;
 import com.blog.exceptions.InvalidPasswordException;
 import com.blog.exceptions.UserNotFoundException;
 import com.blog.service.AuthService;
+import com.blog.service.RegistrationService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
+    private final RegistrationService registerService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, RegistrationService registerService) {
         this.authService = authService;
+        this.registerService = registerService;
     }
 
     @PostMapping("/login")
@@ -41,10 +46,19 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest req) {
         // return "register end point";
-        System.out.println(req.getUsername());
-        System.out.println(req.getPassword());
-        System.out.println(req.getEmail());
+        System.out.printf("======================" + req.getUsername() + "=================\n");
+        RegisterResponse res = registerService.register(req);
+        if (res.getMessage().contains("successfully")) {
+            return ResponseEntity.ok(res);
+        } else if (res.getMessage().contains("already exist")) {
+            return ResponseEntity.badRequest().body(res);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        // System.out.println(req.getUsername());
+        // System.out.println(req.getPassword());
+        // System.out.println(req.getEmail());
     }
 }
