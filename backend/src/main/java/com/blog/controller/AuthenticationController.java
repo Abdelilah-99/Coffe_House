@@ -6,13 +6,19 @@ import com.blog.dto.LoginDto;
 import com.blog.dto.RegisterDto;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
     @PostMapping("/login")
     public void login(@RequestBody LoginDto req) {
-        // return "login end point";
-        System.out.println(req.getUsername());
-        System.out.println(req.getPassword());
+        // boolean success = 
+        try {
+
+            // return "login end point";
+            // System.out.println(req.getUsername());
+            // System.out.println(req.getPassword());
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     @PostMapping("/register")
