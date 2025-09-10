@@ -6,6 +6,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -14,6 +17,7 @@ public class SecurityConfig {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .csrf(csrf -> csrf.disable())
 
                                 .authorizeHttpRequests(auth -> auth
@@ -22,8 +26,10 @@ public class SecurityConfig {
                                                 .permitAll()
                                                 .anyRequest().authenticated())
 
-                                .formLogin(form -> form.disable())
-
+                                // .formLogin(form -> form
+                                // .loginProcessingUrl("/api/auth/login")
+                                // .usernameParameter("username") // this will accept username or email
+                                // .passwordParameter("password"))
                                 .logout(logout -> logout.permitAll())
 
                                 .sessionManagement(session -> session
@@ -32,4 +38,15 @@ public class SecurityConfig {
                 return http.build();
         }
 
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.addAllowedOriginPattern("http://localhost:4200"); // Use pattern instead of origin
+                configuration.addAllowedMethod("*"); // Allow all HTTP methods
+                configuration.addAllowedHeader("*"); // Allow all headers
+                configuration.setAllowCredentials(true);
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", configuration); // Apply to all paths
+                return source;
+        }
 }

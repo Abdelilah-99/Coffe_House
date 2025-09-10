@@ -19,6 +19,7 @@ public class AuthService {
     }
 
     public AuthResponse login(AuthRequest req) {
+        System.out.println(req.getEmail());
         User user = userRepository.findByUserName(req.getUsername())
                 .or(() -> userRepository.findByEmail(req.getEmail()))
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
