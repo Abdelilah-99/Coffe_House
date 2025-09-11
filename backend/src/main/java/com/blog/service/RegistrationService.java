@@ -1,5 +1,6 @@
 package com.blog.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blog.dto.RegisterRequest;
@@ -10,9 +11,11 @@ import com.blog.repository.UserRepository;
 @Service
 public class RegistrationService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    RegistrationService(UserRepository userRepository) {
+    public RegistrationService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public RegisterResponse register(RegisterRequest req) {
@@ -22,15 +25,14 @@ public class RegistrationService {
         if (userRepository.findByUserName(req.getUsername()).isPresent()) {
             return new RegisterResponse("Registration failed: username already exist", null, null);
         }
-
+        String hashedPassword = passwordEncoder.encode(req.getPassword());
         User newUser = new User(
                 req.getEmail(),
                 req.getFirstName(),
                 req.getLastName(),
                 req.getUsername(),
                 req.getRole(),
-                req.getPassword());
-
+                hashedPassword);
         try {
             userRepository.save(newUser);
             return new RegisterResponse("User registered successfully", req.getRole(), req.getUsername());
