@@ -25,8 +25,7 @@ public class RegisterRequest {
     @Email(message = "Please provide a valid email address")
     private String email;
 
-    @NotNull(message = "Role is required")
-    private String role;
+    private String role = "USER";
 
     public String getUsername() {
         return username;
@@ -72,7 +71,7 @@ public class RegisterRequest {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+    // public void setRole(String role) {
+    //     this.role = role;
+    // }
 }

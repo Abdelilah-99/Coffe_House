@@ -1,1 +1,9 @@
-<p>register works!</p>
+<form (ngSubmit)="onRegister()">
+    <input type="text" [(ngModel)]="firstname" name="firstname" placeholder="firstname" required>
+    <input type="text" [(ngModel)]="lastname" name="lastname" placeholder="lastname" required>
+    <input type="text" [(ngModel)]="username" name="username" placeholder="username" required>
+    <input type="email" [(ngModel)]="email" name="email" placeholder="email" required>
+    <input type="password" [(ngModel)]="password" name="password" placeholder="password" required>
+    <button type="submit" [disabled]="!isFormRegisterValid()">Register</button>
+</form>
+<p>{{ message }}</p>

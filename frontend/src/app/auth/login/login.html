@@ -1,6 +1,6 @@
 <form (ngSubmit)="onSubmit()">
     <input type="text" [(ngModel)]="username" name="username" placeholder="email or username" required>
     <input type="password" [(ngModel)]="password" name="password" placeholder="password" required>
-    <button type="submit" [disabled]="!isFormValid()">Login</button>
+    <button type="submit" [disabled]="!isFormLoginValid()">Login</button>
 </form>
 <p>{{ message }}</p>

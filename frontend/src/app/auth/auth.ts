@@ -15,4 +15,12 @@ export class AuthService {
       withCredentials: true
     });
   }
+
+  register(cre: { firstName: string; lastName: string; username: string; email: string; password: string }): Observable<any> {
+    console.log(cre);
+
+    return this.protocolHttp.post(`${this.URL}/register`, cre, {
+      withCredentials: true
+    });
+  }
 }

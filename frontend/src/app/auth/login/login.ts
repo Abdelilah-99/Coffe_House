@@ -33,7 +33,7 @@ export class Login {
     });
   }
 
-  isFormValid(): boolean {
+  isFormLoginValid(): boolean {
     return this.username.trim() !== '' && this.password.trim() !== '';
   }
 }
