@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
-export class Register {
+export class Register implements OnInit {
   firstname: string = '';
   lastname: string = '';
   username: string = '';
@@ -17,6 +17,15 @@ export class Register {
   password: string = '';
   message: string = '';
   constructor(private authService: AuthService, private router: Router) { }
+  ngOnInit() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        console.log("token: ", token);
+        this.router.navigate(['/profile']);
+      }
+    }
+  }
   onRegister() {
     const registerData = {
       firstName: this.firstname,

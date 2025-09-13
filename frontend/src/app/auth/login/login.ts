@@ -19,7 +19,7 @@ export class Login implements OnInit {
       const token = localStorage.getItem('access_token');
       if (token) {
         console.log("token: ", token);
-        this.router.navigate(['/']);
+        this.router.navigate(['/profile']);
       }
     }
   }
@@ -38,6 +38,7 @@ export class Login implements OnInit {
 
         localStorage.setItem('access_token', res.token);
         console.log('res: ', res);
+        this.router.navigate(['/profile']);
       },
       error: (err) => {
         this.message = "Invalid credential";

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService, UserProfile } from './profile.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -12,12 +13,19 @@ export class Profile implements OnInit {
   userProfile: UserProfile | null = null;
   isLoading = false;
 
-  constructor(private profileService: ProfileService) { }
+  constructor(private profileService: ProfileService, private router: Router) { }
 
   ngOnInit() {
     this.loadProfile();
   }
   loadProfile() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        this.router.navigate(['/login']);
+        return;
+      }
+    }
     this.isLoading = !this.isLoading;
     this.profileService.getProfile().subscribe({
       next: (profile) => {

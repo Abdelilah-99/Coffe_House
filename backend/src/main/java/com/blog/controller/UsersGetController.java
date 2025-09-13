@@ -34,7 +34,7 @@ public class UsersGetController {
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             System.err.println("User not found12");
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(401).body(null);
         }
     }
 }
