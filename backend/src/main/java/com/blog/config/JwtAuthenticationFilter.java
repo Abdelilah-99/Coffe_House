@@ -1,7 +1,6 @@
 package com.blog.config;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
