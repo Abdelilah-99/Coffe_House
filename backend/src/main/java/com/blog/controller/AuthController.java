@@ -48,7 +48,6 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest req) {
         RegisterResponse res = registerService.register(req);
-
         if (res.getMessage().contains("successfully")) {
             return ResponseEntity.ok(res);
         } else if (res.getMessage().contains("already exist")) {
@@ -68,6 +67,4 @@ public class AuthController {
             return ResponseEntity.status(401).body(null);
         }
     }
-
-    // @PostMapping("/logout")
 }
