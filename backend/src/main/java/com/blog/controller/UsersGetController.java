@@ -33,7 +33,7 @@ public class UsersGetController {
             UsersRespons user = userService.getCurrentUser();
             return ResponseEntity.ok(user);
         } catch (Exception e) {
-            System.err.println("User not found");
+            System.err.println("User not found12");
             return ResponseEntity.badRequest().body(null);
         }
     }

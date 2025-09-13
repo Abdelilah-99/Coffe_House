@@ -68,10 +68,13 @@ public class JwtUtils {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        System.out.printf("username from validate: %s\n", username);
+        System.out.printf("username details from validate: %s\n", userDetails.getUsername());
+        return username.equals(userDetails.getUsername()) && isTokenExpired(token) == false;
     }
 
     private boolean isTokenExpired(String token) {
+        System.out.println(extractClaims(token).getExpiration().before(new Date()));
         return extractClaims(token).getExpiration().before(new Date());
     }
 }
