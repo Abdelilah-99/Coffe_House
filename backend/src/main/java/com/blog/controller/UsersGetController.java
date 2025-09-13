@@ -26,15 +26,4 @@ public class UsersGetController {
         List<UsersRespons> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
-
-    @GetMapping("/profile")
-    public ResponseEntity<UsersRespons> getUserByUsername() {
-        try {
-            UsersRespons user = userService.getCurrentUser();
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            System.err.println("User not found12");
-            return ResponseEntity.status(401).body(null);
-        }
-    }
 }

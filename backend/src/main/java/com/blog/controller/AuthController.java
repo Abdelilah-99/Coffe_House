@@ -8,10 +8,13 @@ import com.blog.dto.AuthRequest;
 import com.blog.dto.AuthResponse;
 import com.blog.dto.RegisterRequest;
 import com.blog.dto.RegisterResponse;
+import com.blog.dto.UsersRespons;
 import com.blog.exceptions.InvalidPasswordException;
 import com.blog.exceptions.UserNotFoundException;
 import com.blog.service.AuthService;
 import com.blog.service.RegistrationService;
+import com.blog.service.UsersServices;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -19,10 +22,13 @@ import jakarta.validation.Valid;
 public class AuthController {
     private final RegistrationService registerService;
     private final AuthService authService;
+    private final UsersServices userService;
 
     public AuthController(
+            UsersServices userService,
             AuthService authService,
             RegistrationService registerService) {
+        this.userService = userService;
         this.registerService = registerService;
         this.authService = authService;
     }
@@ -52,7 +58,16 @@ public class AuthController {
         }
     }
 
-    // @GetMapping("/me")
+    @GetMapping("/me")
+    public ResponseEntity<UsersRespons> getUserByUsername() {
+        try {
+            UsersRespons user = userService.getCurrentUser();
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            System.err.println("User not found12");
+            return ResponseEntity.status(401).body(null);
+        }
+    }
 
     // @PostMapping("/logout")
 }

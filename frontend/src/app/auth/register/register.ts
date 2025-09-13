@@ -22,7 +22,7 @@ export class Register implements OnInit {
       const token = localStorage.getItem('access_token');
       if (token) {
         console.log("token: ", token);
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/me']);
       }
     }
   }

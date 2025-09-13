@@ -14,7 +14,7 @@ export interface UserProfile {
   providedIn: 'root'
 })
 export class ProfileService {
-  private URL = 'http://localhost:8080/api/users/profile';
+  private URL = 'http://localhost:8080/api/auth/me';
   constructor(private http: HttpClient) { }
 
   getProfile(): Observable<UserProfile> {
