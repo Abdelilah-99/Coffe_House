@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ export class Register {
   email: string = '';
   password: string = '';
   message: string = '';
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
   onRegister() {
     const registerData = {
       firstName: this.firstname,
@@ -28,6 +29,7 @@ export class Register {
     this.authService.register(registerData).subscribe({
       next: (res) => {
         this.message = "register successful!!";
+        this.router.navigate(['/login']);
         console.log('res: ', res);
       },
       error: (err) => {

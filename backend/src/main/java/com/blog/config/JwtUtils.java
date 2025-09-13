@@ -21,24 +21,41 @@ public class JwtUtils {
             @Value("${security.jwt.expiration-time}") long expTime) {
         this.secretKey = secretKey;
         this.expTime = expTime;
+        System.out.println("=== JWT DEBUG INFO ===");
+        System.out.println("Secret Key: " + secretKey);
+        System.out.println("Secret Key Length: " + secretKey.length());
+        System.out.println("Expiration Time: " + expTime);
+        System.out.println("=====================");
     }
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = secretKey.getBytes();
-        return Keys.hmacShaKeyFor(keyBytes);
+        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
+        System.out.println("Generated signing key: " + key.getAlgorithm());
+        return key;
     }
 
     public String generateToken(UserDetails userDetail) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(userDetail.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expTime))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
+        System.out.println("Generated token: " + token);
+        return token;
     }
 
     public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
+        System.out.println("Attempting to extract username from token: " + token.substring(0, 50) + "...");
+        try {
+            String username = extractClaims(token).getSubject();
+            System.out.println("Successfully extracted username: " + username);
+            return username;
+        } catch (Exception e) {
+            System.err.println("Error extracting username: " + e.getMessage());
+            throw e;
+        }
     }
 
     private Claims extractClaims(String token) {
