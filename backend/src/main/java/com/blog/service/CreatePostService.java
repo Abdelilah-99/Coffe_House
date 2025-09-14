@@ -12,8 +12,7 @@ import com.blog.dto.CreatePostRes;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.Post;
 import com.blog.entity.User;
-import com.blog.exceptions.ErrSavingException;
-import com.blog.exceptions.UserNotFoundException;
+import com.blog.exceptions.*;
 import com.blog.repository.*;
 
 import io.jsonwebtoken.io.IOException;
@@ -31,6 +30,12 @@ public class CreatePostService {
     }
 
     public CreatePostRes createPost(CreatePostReq req) {
+        if (req.getTitle().isEmpty()) {
+            throw new TitleEmptyException("Title not found");
+        }
+        if (req.getContent().isEmpty()) {
+            throw new ContentEmptyException("Content not found");
+        }
         try {
             // System.out.printf("req.getTitle(): \n", req.getTitle());
             UsersRespons userRes = usersServices.getCurrentUser();

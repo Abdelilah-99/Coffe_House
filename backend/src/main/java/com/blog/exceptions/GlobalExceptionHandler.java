@@ -55,4 +55,26 @@ public class GlobalExceptionHandler {
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ContentEmptyException.class)
+    public ResponseEntity<Map<String, Object>> HandleContentEmptyException(ContentEmptyException ex, WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("err", "Content must not be empty");
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(TitleEmptyException.class)
+    public ResponseEntity<Map<String, Object>> HandleTitleEmptyException(TitleEmptyException ex, WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("err", "Title must not be empty");
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
 }
