@@ -7,15 +7,25 @@ public class CreatePostRes {
     private String content;
     private String title;
     private String message;
+    private String timestamp;
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public CreatePostRes() {
     }
 
-    public CreatePostRes(User user, String content, String title, String message) {
+    public CreatePostRes(User user, String content, String title, String message, String timestamp) {
         this.user = user;
         this.content = content;
         this.title = title;
         this.message = message;
+        this.timestamp = timestamp;
     }
 
     public User getUser() {

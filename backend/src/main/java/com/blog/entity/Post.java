@@ -11,6 +11,7 @@ public class Post {
     private String title;
     private String content;
     private String media;
+    private String timestamp;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -20,13 +21,15 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Post() {}
+    public Post() {
+    }
 
-    public Post(String title, String content, String media, User user) {
+    public Post(String title, String content, String media, User user, String timestamp) {
         this.title = title;
         this.content = content;
         this.media = media;
         this.user = user;
+        this.timestamp = timestamp;
     }
 
     public Long getId() {
@@ -84,4 +87,13 @@ public class Post {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
 }

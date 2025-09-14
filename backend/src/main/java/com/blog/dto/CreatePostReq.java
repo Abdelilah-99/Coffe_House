@@ -4,15 +4,14 @@ public class CreatePostReq {
     private String content;
     private String media;
     private String title;
-    private long userId;
 
-    public CreatePostReq() {}
+    public CreatePostReq() {
+    }
 
-    public CreatePostReq(String content, String media, String title, long userId) {
+    public CreatePostReq(String content, String media, String title) {
         this.content = content;
         this.media = media;
         this.title = title;
-        this.userId = userId;
     }
 
     public String getContent() {
@@ -39,11 +38,4 @@ public class CreatePostReq {
         this.title = title;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
 }
