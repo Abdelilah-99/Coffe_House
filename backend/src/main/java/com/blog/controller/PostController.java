@@ -2,9 +2,10 @@ package com.blog.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.dto.CreatePostReq;
 import com.blog.dto.CreatePostRes;
@@ -28,7 +29,12 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreatePostRes> createPost(@RequestBody CreatePostReq req) {
+    public ResponseEntity<CreatePostRes> createPost(@RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam(value = "mediaFiles", required = false) MultipartFile[] mediaFiles) {
+        CreatePostReq req = new CreatePostReq(content, title, mediaFiles);
+        System.out.printf("req.getTitle(): \n", req.getTitle());
+
         CreatePostRes res = createPostService.createPost(req);
         return ResponseEntity.ok(res);
     }

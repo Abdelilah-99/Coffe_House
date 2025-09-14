@@ -1,17 +1,19 @@
 package com.blog.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class CreatePostReq {
     private String content;
-    private String media;
     private String title;
+    private MultipartFile[] mediaFiles;
 
     public CreatePostReq() {
     }
 
-    public CreatePostReq(String content, String media, String title) {
+    public CreatePostReq(String content, String title, MultipartFile[] mediaFiles) {
         this.content = content;
-        this.media = media;
         this.title = title;
+        this.mediaFiles = mediaFiles;
     }
 
     public String getContent() {
@@ -22,20 +24,20 @@ public class CreatePostReq {
         this.content = content;
     }
 
-    public String getMedia() {
-        return media;
-    }
-
-    public void setMedia(String media) {
-        this.media = media;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public MultipartFile[] getMediaFiles() {
+        return mediaFiles;
+    }
+
+    public void setMediaFiles(MultipartFile[] mediaFiles) {
+        this.mediaFiles = mediaFiles;
     }
 
 }

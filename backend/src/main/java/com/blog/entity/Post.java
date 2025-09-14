@@ -1,5 +1,7 @@
 package com.blog.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import jakarta.persistence.*;
 
@@ -10,7 +12,7 @@ public class Post {
     private Long id;
     private String title;
     private String content;
-    private String media;
+    private String mediaPaths;
     private String timestamp;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
@@ -24,10 +26,10 @@ public class Post {
     public Post() {
     }
 
-    public Post(String title, String content, String media, User user, String timestamp) {
+    public Post(String title, String content, String mediaPaths, User user, String timestamp) {
         this.title = title;
         this.content = content;
-        this.media = media;
+        this.mediaPaths = mediaPaths;
         this.user = user;
         this.timestamp = timestamp;
     }
@@ -56,12 +58,19 @@ public class Post {
         this.content = content;
     }
 
-    public String getMedia() {
-        return media;
+    public List<String> getMediaPaths() {
+        if (this.mediaPaths == null || this.mediaPaths.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.asList(mediaPaths.split(","));
     }
 
-    public void setMedia(String media) {
-        this.media = media;
+    public void setMediaPaths(List<String> mediaPaths) {
+        if (mediaPaths.isEmpty()) {
+            this.mediaPaths = null;
+            return;
+        }
+        this.mediaPaths = String.join(",", mediaPaths);
     }
 
     public List<Comment> getComments() {

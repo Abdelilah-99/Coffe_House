@@ -8,7 +8,7 @@ public class CreatePostRes {
     private String title;
     private String message;
     private String timestamp;
-
+    
     public String getTimestamp() {
         return timestamp;
     }
