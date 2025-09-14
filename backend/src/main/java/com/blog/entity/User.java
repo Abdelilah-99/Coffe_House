@@ -1,6 +1,9 @@
 package com.blog.entity;
 
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +19,7 @@ public class User {
     private String role;
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     private List<Follow> following = new ArrayList<>();

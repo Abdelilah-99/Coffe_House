@@ -30,7 +30,7 @@ public class AuthService {
     public AuthResponse login(AuthRequest req) {
         User user = userRepository.findByUserName(req.getUsername())
                 .or(() -> userRepository.findByEmail(req.getEmail()))
-                .orElseThrow(() -> new UserNotFoundException("User not found15"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
             throw new InvalidPasswordException("Invalid password");
         }

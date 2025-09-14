@@ -34,9 +34,13 @@ public class UsersServices {
 
     public UsersRespons getCurrentUser() throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authentication = " + authentication);
+        System.out.println("Principal = " + authentication.getPrincipal());
+        System.out.println("Authorities = " + authentication.getAuthorities());
+
         if (authentication != null && authentication.getPrincipal() instanceof String) {
             String username = (String) authentication.getPrincipal();
-            System.out.printf("username in getcrr: \n", username);
+            // System.out.printf("username in getcrr: \n", username);
             User user = userRepository.findByUserName(username).orElseThrow();
             return new UsersRespons(user.getId(),
                     user.getFirstName(),

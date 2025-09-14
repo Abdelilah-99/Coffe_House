@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.blog.dto.RegisterRequest;
 import com.blog.dto.RegisterResponse;
 import com.blog.entity.User;
+import com.blog.exceptions.*;
 import com.blog.repository.UserRepository;
 
 @Service
@@ -20,10 +21,10 @@ public class RegistrationService {
 
     public RegisterResponse register(RegisterRequest req) {
         if (userRepository.findByEmail(req.getEmail()).isPresent()) {
-            return new RegisterResponse("Registration failed: email already exist", null, null);
+            throw new UserAlreadyExistException(String.format("Email already Exists %s", req.getEmail()));
         }
         if (userRepository.findByUserName(req.getUsername()).isPresent()) {
-            return new RegisterResponse("Registration failed: username already exist", null, null);
+            throw new UserAlreadyExistException(String.format("Username already Exists %s", req.getUsername()));
         }
         String hashedPassword = passwordEncoder.encode(req.getPassword());
         User newUser = new User(
@@ -37,7 +38,7 @@ public class RegistrationService {
             userRepository.save(newUser);
             return new RegisterResponse("User registered successfully", req.getRole(), req.getUsername());
         } catch (Exception e) {
-            return new RegisterResponse("Registration failed: " + e.getMessage(), null, null);
+            throw new ErrSavingException(String.format("failed to save data %s", e));
         }
     }
 }

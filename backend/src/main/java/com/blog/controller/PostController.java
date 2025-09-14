@@ -29,13 +29,8 @@ public class PostController {
 
     @PostMapping("/create")
     public ResponseEntity<CreatePostRes> createPost(@RequestBody CreatePostReq req) {
-        try {
-            CreatePostRes res = createPostService.createPost(req);
-            
-        } catch (Exception e) {
-            // TODO: handle exception
-
-        }
+        CreatePostRes res = createPostService.createPost(req);
+        return ResponseEntity.ok(res);
     }
 
     // @PostMapping("/edit")

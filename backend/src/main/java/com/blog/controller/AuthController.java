@@ -10,7 +10,7 @@ import com.blog.dto.RegisterRequest;
 import com.blog.dto.RegisterResponse;
 import com.blog.dto.UsersRespons;
 import com.blog.exceptions.InvalidPasswordException;
-import com.blog.exceptions.UserNotFoundException;
+import com.blog.exceptions.*;
 import com.blog.service.AuthService;
 import com.blog.service.RegistrationService;
 import com.blog.service.UsersServices;
@@ -35,26 +35,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
-        try {
-            AuthResponse res = authService.login(req);
-            return ResponseEntity.ok(res);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        } catch (InvalidPasswordException e) {
-            return ResponseEntity.status(401).build();
-        }
+        AuthResponse res = authService.login(req);
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest req) {
         RegisterResponse res = registerService.register(req);
-        if (res.getMessage().contains("successfully")) {
-            return ResponseEntity.ok(res);
-        } else if (res.getMessage().contains("already exist")) {
-            return ResponseEntity.badRequest().body(res);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/me")
