@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,5 +77,27 @@ public class GlobalExceptionHandler {
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> HandlePostNotFoundException(PostNotFoundException ex, WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.NOT_FOUND);
+        errRes.put("err", "Post not found");
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, Object>> HandleIllegalStateException(IllegalStateException ex, WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+        errRes.put("err", "file has already been moved in the filesystem");
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
