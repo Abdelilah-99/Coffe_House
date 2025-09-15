@@ -15,7 +15,7 @@ import com.blog.entity.User;
 import com.blog.exceptions.*;
 import com.blog.repository.*;
 
-import io.jsonwebtoken.io.IOException;
+import java.io.IOException;
 
 @Service
 public class CreatePostService {
@@ -70,7 +70,7 @@ public class CreatePostService {
                     "Post created successefully",
                     time);
         } catch (Exception e) {
-            throw new ErrSavingException(String.format("Err saving post in db ", e));
+            throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
         }
     }
 
@@ -88,9 +88,12 @@ public class CreatePostService {
             String ext = orgName.substring(orgName.lastIndexOf('.'));
             String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + ext;
             String filePath = uploadDir + fileName;
+            mediaFile.transferTo(new File(dir.getAbsolutePath() + "/" + fileName));
             return filePath;
         } catch (IOException e) {
-            throw new RuntimeException("Failed to save media file: " + mediaFile.getOriginalFilename(), e);
+            throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
+        } catch (IllegalStateException e) {
+            throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
         }
     }
 }

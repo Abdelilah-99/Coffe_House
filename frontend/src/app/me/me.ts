@@ -2,17 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService, UserProfile } from './me.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './me.html',
   styleUrl: './me.css'
 })
 export class Profile implements OnInit {
   userProfile: UserProfile | null = null;
   isLoading = false;
-
+  post = { title: '', content: '' };
   constructor(private profileService: ProfileService, private router: Router) { }
 
   ngOnInit() {
@@ -36,6 +37,30 @@ export class Profile implements OnInit {
         console.error("Err loading profile: ", err);
         this.isLoading = !this.isLoading;
       }
+    })
+  }
+  selectedFiles: File[] = [];
+
+  onFileSelected(e: any) {
+    const files: FileList = e.target.files;
+    if (!files || files.length === 0) return;
+    this.selectedFiles = [];
+    for (let i = 0; i < files.length; i++) {
+      this.selectedFiles.push(files[i]);
+    }
+    console.log('Selected files:', this.selectedFiles.map(f => f.name));
+  }
+
+  onCreatePost() {
+    const formData = new FormData();
+    formData.append("title", this.post.title);
+    formData.append("content", this.post.content);
+    console.log(formData.get("title"));
+
+    this.selectedFiles.forEach(element => {
+      formData.append("mediaFiles", element);
+    });
+    this.profileService.createPost(formData).subscribe({
     })
   }
 }
