@@ -36,6 +36,11 @@ export class Profile implements OnInit {
       error: (err) => {
         console.error("Err loading profile: ", err);
         this.isLoading = !this.isLoading;
+        if (err.status == 403) {
+          const token = localStorage.removeItem('access_token');
+          this.router.navigate(['/login']);
+          return;
+        }
       }
     })
   }
