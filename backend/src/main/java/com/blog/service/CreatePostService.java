@@ -64,7 +64,7 @@ public class CreatePostService {
             newPost.setTimestamp(time);
             newPost.setMediaPaths(mediaPaths);
             postRepository.save(newPost);
-            return new CreatePostRes(user,
+            return new CreatePostRes(user.getUserName(),
                     req.getContent(),
                     req.getTitle(),
                     "Post created successefully",

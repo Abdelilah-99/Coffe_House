@@ -3,12 +3,12 @@ package com.blog.dto;
 import com.blog.entity.User;
 
 public class CreatePostRes {
-    private User user;
+    private String userName;
     private String content;
     private String title;
     private String message;
     private String timestamp;
-    
+
     public String getTimestamp() {
         return timestamp;
     }
@@ -20,20 +20,20 @@ public class CreatePostRes {
     public CreatePostRes() {
     }
 
-    public CreatePostRes(User user, String content, String title, String message, String timestamp) {
-        this.user = user;
+    public CreatePostRes(String userName, String content, String title, String message, String timestamp) {
+        this.userName = userName;
         this.content = content;
         this.title = title;
         this.message = message;
         this.timestamp = timestamp;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(User user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getContent() {
