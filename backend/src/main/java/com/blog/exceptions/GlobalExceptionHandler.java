@@ -94,7 +94,18 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        errRes.put("err", "file has already been moved in the filesystem");
+        errRes.put("err", ex.getMessage());
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, Object>> HandleRuntimeException(RuntimeException ex, WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+        errRes.put("err", ex.getMessage());
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);

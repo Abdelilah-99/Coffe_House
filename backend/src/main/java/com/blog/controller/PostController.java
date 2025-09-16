@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,24 +12,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.dto.CreatePostReq;
+import com.blog.dto.EditPostReq;
 import com.blog.dto.PostRes;
-// import com.blog.dto.EditPostReq;
-// import com.blog.dto.EditPostRes;
 import com.blog.service.PostService;
-// import com.blog.service.EditPostService;
+import com.blog.service.EditPostService;
 
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
     private final PostService postService;
-    // private final EditPostService editPostService;
+    private final EditPostService editPostService;
     // private final DeletePostService deletePostService;
 
-    PostController(PostService postService
-    /* EditPostService editPostService */
+    PostController(PostService postService,
+            EditPostService editPostService
     /* DeletePostService deletePostService */) {
         this.postService = postService;
-        // this.editPostService = editPostService;
+        this.editPostService = editPostService;
         // this.deletePostService = deletePostService;
     }
 
@@ -50,15 +49,15 @@ public class PostController {
         return ResponseEntity.ok(res);
     }
 
-    // @PostMapping("/edit/{id}")
-    // public ResponseEntity<EditPostRes> editPost(@PathVariable Long id,
-    // @RequestParam("title") String title,
-    // @RequestParam("content") String content,
-    // @RequestParam(value = "mediaFiles", required = false) MultipartFile[]
-    // mediaFiles) {
-    // EditPostReq req = new EditPostReq(content, title, mediaFiles);
-    // EditPostRes res = editPostService.editPost(id, req);
-    // return ResponseEntity.ok(res);
-    // }
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<PostRes> editPost(@PathVariable Long id,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam(value = "mediaFiles", required = false) MultipartFile[] mediaFiles) {
+        System.err.printf("post_id: %s\n", id);
+        EditPostReq req = new EditPostReq(content, title, mediaFiles);
+        PostRes res = editPostService.editPost(id, req);
+        return ResponseEntity.ok(res);
+    }
     // @PostMapping("/delete")
 }
