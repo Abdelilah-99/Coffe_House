@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.dto.CreatePostReq;
-import com.blog.dto.CreatePostRes;
+import com.blog.dto.PostRes;
 import com.blog.dto.EditPostReq;
 import com.blog.dto.EditPostRes;
 import com.blog.service.CreatePostService;
@@ -33,17 +33,17 @@ public class PostController {
 
     // @GetMapping
     // public ResponseEntity<DisplayPostRes> displayPost() {
-    //     DisplayPostRes res = 
+    // DisplayPostRes res =
     // }
 
     @PostMapping("/create")
-    public ResponseEntity<CreatePostRes> createPost(@RequestParam("title") String title,
+    public ResponseEntity<PostRes> createPost(@RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam(value = "mediaFiles", required = false) MultipartFile[] mediaFiles) {
         CreatePostReq req = new CreatePostReq(content, title, mediaFiles);
         System.out.printf("req.getTitle(): \n", req.getTitle());
 
-        CreatePostRes res = createPostService.createPost(req);
+        PostRes res = createPostService.createPost(req);
         return ResponseEntity.ok(res);
     }
 

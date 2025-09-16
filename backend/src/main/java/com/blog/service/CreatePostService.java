@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.dto.CreatePostReq;
-import com.blog.dto.CreatePostRes;
+import com.blog.dto.PostRes;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.Post;
 import com.blog.entity.User;
@@ -29,7 +29,7 @@ public class CreatePostService {
         this.postRepository = postRepository;
     }
 
-    public CreatePostRes createPost(CreatePostReq req) {
+    public PostRes createPost(CreatePostReq req) {
         if (req.getTitle().isEmpty()) {
             throw new TitleEmptyException("Title not found");
         }
@@ -64,11 +64,12 @@ public class CreatePostService {
             newPost.setTimestamp(time);
             newPost.setMediaPaths(mediaPaths);
             postRepository.save(newPost);
-            return new CreatePostRes(user.getUserName(),
+            return new PostRes(user.getUserName(),
                     req.getContent(),
                     req.getTitle(),
                     "Post created successefully",
-                    time);
+                    time,
+                    mediaPaths);
         } catch (Exception e) {
             throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
         }

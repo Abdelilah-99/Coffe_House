@@ -1,30 +1,45 @@
 package com.blog.dto;
 
-import com.blog.entity.User;
+import java.util.List;
 
-public class CreatePostRes {
+public class PostRes {
     private String userName;
     private String content;
     private String title;
     private String message;
     private String timestamp;
+    private List<String> mediaPaths;
+
+    public PostRes() {
+    }
+
+    public PostRes(String userName,
+            String content,
+            String title,
+            String message,
+            String timestamp,
+            List<String> mediaPaths) {
+        this.userName = userName;
+        this.content = content;
+        this.title = title;
+        this.message = message;
+        this.timestamp = timestamp;
+        this.mediaPaths = mediaPaths;
+    }
+
+    public List<String> getMediaPaths() {
+        return mediaPaths;
+    }
+
+    public void setMediaPaths(List<String> mediaPaths) {
+        this.mediaPaths = mediaPaths;
+    }
 
     public String getTimestamp() {
         return timestamp;
     }
 
     public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public CreatePostRes() {
-    }
-
-    public CreatePostRes(String userName, String content, String title, String message, String timestamp) {
-        this.userName = userName;
-        this.content = content;
-        this.title = title;
-        this.message = message;
         this.timestamp = timestamp;
     }
 
