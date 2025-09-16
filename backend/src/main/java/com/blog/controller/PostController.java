@@ -1,8 +1,10 @@
 package com.blog.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+// import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,30 +13,31 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.dto.CreatePostReq;
 import com.blog.dto.PostRes;
-import com.blog.dto.EditPostReq;
-import com.blog.dto.EditPostRes;
-import com.blog.service.CreatePostService;
+// import com.blog.dto.EditPostReq;
+// import com.blog.dto.EditPostRes;
+import com.blog.service.PostService;
 // import com.blog.service.EditPostService;
 
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
-    private final CreatePostService createPostService;
+    private final PostService postService;
     // private final EditPostService editPostService;
     // private final DeletePostService deletePostService;
 
-    PostController(CreatePostService createPostService
+    PostController(PostService postService
     /* EditPostService editPostService */
     /* DeletePostService deletePostService */) {
-        this.createPostService = createPostService;
+        this.postService = postService;
         // this.editPostService = editPostService;
         // this.deletePostService = deletePostService;
     }
 
-    // @GetMapping
-    // public ResponseEntity<DisplayPostRes> displayPost() {
-    // DisplayPostRes res =
-    // }
+    @GetMapping("/all")
+    public ResponseEntity<List<PostRes>> displayPost() {
+        List<PostRes> res = postService.displayAllPosts();
+        return ResponseEntity.ok(res);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<PostRes> createPost(@RequestParam("title") String title,
@@ -43,7 +46,7 @@ public class PostController {
         CreatePostReq req = new CreatePostReq(content, title, mediaFiles);
         System.out.printf("req.getTitle(): \n", req.getTitle());
 
-        PostRes res = createPostService.createPost(req);
+        PostRes res = postService.createPost(req);
         return ResponseEntity.ok(res);
     }
 

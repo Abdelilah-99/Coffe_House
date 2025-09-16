@@ -23,13 +23,14 @@ public class SecurityConfig {
         public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
                 this.jwtFilter = jwtFilter;
         }
+
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/api/**").permitAll()
+                                                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

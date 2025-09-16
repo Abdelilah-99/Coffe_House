@@ -14,16 +14,15 @@ import com.blog.entity.Post;
 import com.blog.entity.User;
 import com.blog.exceptions.*;
 import com.blog.repository.*;
-
 import java.io.IOException;
 
 @Service
-public class CreatePostService {
+public class PostService {
     private UsersServices usersServices;
     private UserRepository userRepository;
     private PostRepository postRepository;
 
-    CreatePostService(UsersServices usersServices, UserRepository userRepository, PostRepository postRepository) {
+    PostService(UsersServices usersServices, UserRepository userRepository, PostRepository postRepository) {
         this.usersServices = usersServices;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
@@ -96,5 +95,19 @@ public class CreatePostService {
         } catch (IllegalStateException e) {
             throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
         }
+    }
+
+    public List<PostRes> displayAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        List<PostRes> listPostRes = new ArrayList<>();
+        for (Post post : posts) {
+            listPostRes.add(new PostRes(post.getUser().getUserName(),
+                    post.getContent(),
+                    post.getTitle(),
+                    "list of post",
+                    post.getTimestamp(),
+                    post.getMediaPaths()));
+        }
+        return listPostRes;
     }
 }
