@@ -57,13 +57,10 @@ public class EditPostService {
                     mediaFile.transferTo(new File(dir.getAbsolutePath() + "/" + fileName));
                 } catch (IOException e) {
                     throw new ErrSavingException(String.format("Error saving post in DB1: " + e.getMessage(), e));
-                } catch (IllegalStateException e) {
-                    throw new ErrSavingException(String.format("Error saving post in DB2: " + e.getMessage(), e));
                 }
                 updatedPaths.add(filePath);
             }
         }
-
         List<String> pathToRemove = new ArrayList<>(oldPaths);
         pathToRemove.removeAll(updatedPaths);
         // for (String oldPath : oldPaths) {

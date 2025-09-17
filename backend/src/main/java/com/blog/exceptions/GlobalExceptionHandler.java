@@ -110,4 +110,17 @@ public class GlobalExceptionHandler {
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> HandleIllegalArgumentException(IllegalArgumentException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.NOT_FOUND);
+        errRes.put("err", ex.getMessage());
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
+    }
+
 }

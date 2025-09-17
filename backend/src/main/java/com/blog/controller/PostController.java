@@ -15,6 +15,7 @@ import com.blog.dto.CreatePostReq;
 import com.blog.dto.EditPostReq;
 import com.blog.dto.PostRes;
 import com.blog.service.PostService;
+import com.blog.service.DeletePostService;
 import com.blog.service.EditPostService;
 
 @RestController
@@ -22,14 +23,14 @@ import com.blog.service.EditPostService;
 public class PostController {
     private final PostService postService;
     private final EditPostService editPostService;
-    // private final DeletePostService deletePostService;
+    private final DeletePostService deletePostService;
 
     PostController(PostService postService,
-            EditPostService editPostService
-    /* DeletePostService deletePostService */) {
+            EditPostService editPostService,
+            DeletePostService deletePostService) {
         this.postService = postService;
         this.editPostService = editPostService;
-        // this.deletePostService = deletePostService;
+        this.deletePostService = deletePostService;
     }
 
     @GetMapping("/all")
@@ -59,5 +60,10 @@ public class PostController {
         PostRes res = editPostService.editPost(id, req);
         return ResponseEntity.ok(res);
     }
-    // @PostMapping("/delete")
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<PostRes> deletePost(@PathVariable Long id) {
+        PostRes res = deletePostService.deletePost(id);
+        return ResponseEntity.ok(res);
+    }
 }
