@@ -13,6 +13,14 @@
 <div class="main-content">
     <div class="posts-container">
         <div class="post-card" *ngFor="let post of posts">
+            <div *ngIf="myPost(post); else reportBlock" class="post-handler">
+                <button>Edit</button>
+                <button>Delete</button>
+            </div>
+
+            <ng-template #reportBlock>
+                <button>Report</button>
+            </ng-template>
             <div class="post-header">
                 <h3 class="post-title">{{ post.title }}</h3>
                 <span class="post-date">{{ post.timestamp }}</span>

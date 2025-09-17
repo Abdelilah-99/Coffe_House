@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface UserProfile {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   username: string;
@@ -18,10 +18,10 @@ export class ProfileService {
   constructor(private http: HttpClient) { }
 
   getProfile(): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.URL}`)
+    return this.http.get<UserProfile>(`${this.URL}`);
   }
   private URLPOST = 'http://localhost:8080/api/posts/create';
   createPost(formData: FormData): Observable<any> {
-    return this.http.post(`${this.URLPOST}`, formData, { withCredentials: true });
+    return this.http.post(`${this.URLPOST}`, formData);
   }
 }

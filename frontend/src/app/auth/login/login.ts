@@ -34,8 +34,7 @@ export class Login implements OnInit {
     this.authService.login(loginData).subscribe({
       next: (res) => {
         this.message = "login successful!!";
-        console.error(res.token);
-
+        console.info(res.token);
         localStorage.setItem('access_token', res.token);
         console.log('res: ', res);
         this.router.navigate(['/me']);
