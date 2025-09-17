@@ -3,6 +3,8 @@ package com.blog.dto;
 import java.util.List;
 
 public class PostRes {
+    private long id;
+    private long userId;
     private String userName;
     private String content;
     private String title;
@@ -13,12 +15,17 @@ public class PostRes {
     public PostRes() {
     }
 
-    public PostRes(String userName,
+    public PostRes(
+            long id,
+            long userId,
+            String userName,
             String content,
             String title,
             String message,
             String timestamp,
             List<String> mediaPaths) {
+        this.id = id;
+        this.userId = userId;
         this.userName = userName;
         this.content = content;
         this.title = title;
@@ -33,6 +40,22 @@ public class PostRes {
 
     public void setMediaPaths(List<String> mediaPaths) {
         this.mediaPaths = mediaPaths;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getUserId() {
+        return this.userId;
     }
 
     public String getTimestamp() {

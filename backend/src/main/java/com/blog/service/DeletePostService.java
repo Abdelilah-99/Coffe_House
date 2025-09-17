@@ -29,7 +29,10 @@ public class DeletePostService {
             new File(pathRemove).delete();
         }
         postRepository.deleteById(id);
-        return new PostRes(null,
+        return new PostRes(
+                post.getId(),
+                post.getUser().getId(),
+                null,
                 null,
                 null,
                 "post deleted succesfully",

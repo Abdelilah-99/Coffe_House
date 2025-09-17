@@ -73,10 +73,12 @@ public class EditPostService {
         }
         post.setMediaPaths(updatedPaths);
         postRepository.save(post);
-        return new PostRes(post.getUser().getUserName(),
+        return new PostRes(post.getId(),
+                post.getUser().getId(),
+                post.getUser().getUserName(),
                 post.getContent(),
                 post.getTitle(),
-                "post update succesfully",
+                "post updated!!",
                 post.getTimestamp(),
                 post.getMediaPaths());
     }

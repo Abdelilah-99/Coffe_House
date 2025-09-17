@@ -63,7 +63,10 @@ public class PostService {
             newPost.setTimestamp(time);
             newPost.setMediaPaths(mediaPaths);
             postRepository.save(newPost);
-            return new PostRes(user.getUserName(),
+            return new PostRes(
+                    newPost.getId(),
+                    user.getId(),
+                    user.getUserName(),
                     req.getContent(),
                     req.getTitle(),
                     "Post created successefully",
@@ -101,12 +104,17 @@ public class PostService {
         List<Post> posts = postRepository.findAll();
         List<PostRes> listPostRes = new ArrayList<>();
         for (Post post : posts) {
-            listPostRes.add(new PostRes(post.getUser().getUserName(),
+            System.err.printf("post id: %s\n", post.getId());
+            System.err.printf("user id: %s\n", post.getUser().getId());
+            listPostRes.add(new PostRes(post.getId(),
+                    post.getUser().getId(),
+                    post.getUser().getUserName(),
                     post.getContent(),
                     post.getTitle(),
                     "list of post",
                     post.getTimestamp(),
                     post.getMediaPaths()));
+            System.err.println(listPostRes.get(0).getUserId());
         }
         return listPostRes;
     }
