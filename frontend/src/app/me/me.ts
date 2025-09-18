@@ -52,7 +52,7 @@ export class Profile implements OnInit {
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
     if (!files || files.length === 0) return;
-    this.selectedFiles = [];
+    // this.selectedFiles = [];
     for (let i = 0; i < files.length; i++) {
       this.selectedFiles.push(files[i]);
     }

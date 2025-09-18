@@ -13,14 +13,15 @@
 <div class="main-content">
     <div class="posts-container">
         <div class="post-card" *ngFor="let post of posts">
+            <ng-template #reportBlock>
+                <button (click)="onReport(post.id)">Report</button>
+            </ng-template>
+
             <div *ngIf="myPost(post); else reportBlock" class="post-handler">
                 <button (click)="onEdit(post)">Edit</button>
                 <button (click)="onDelete(post.id)">Delete</button>
             </div>
 
-            <ng-template #reportBlock>
-                <button (click)="onReport(post.id)">Report</button>
-            </ng-template>
             <div class="post-header">
                 <h3 class="post-title">{{ post.title }}</h3>
                 <span class="post-date">{{ post.timestamp }}</span>
@@ -30,15 +31,38 @@
             </div>
             <div class="post-images" *ngFor="let mediaPath of post.mediaPaths">
                 <ng-container [ngSwitch]="getMediaType(mediaPath)">
-                    <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + mediaPath" alt="API Image"
-                        width="300" />
-                    <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + mediaPath" alt="API Image" controls
+                    <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + mediaPath" width="300" />
+                    <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + mediaPath" controls
                         width="300"></video>
                 </ng-container>
             </div>
             <div class="post-footer">
                 <span class="post-author">By {{ post.userName }}</span>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="edit-modal" *ngIf="selectedPost">
+    <div class="edit-modal-content">
+        <h2>Edit Post</h2>
+        <input [(ngModel)]="selectedPost.title" placeholder="Edit title" required />
+        <textarea [(ngModel)]="selectedPost.content" placeholder="Edit content" required></textarea>
+
+        <div *ngFor="let path of selectedPost.mediaPaths">
+            <ng-container [ngSwitch]="getMediaType(path)">
+                <button (click)="printPaths(selectedPost.mediaPaths)">O</button>
+                <button (click)="deleteMedia(path, selectedPost)">x</button>
+                <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" width="100" />
+                <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls width="100"></video>
+            </ng-container>
+        </div>
+
+        <input type="file" (change)="onFileSelected($event)" multiple>
+
+        <div class="edit-modal-actions">
+            <button (click)="onSave(selectedPost); onCloseEdit()">Save</button>
+            <button (click)="onCloseEdit()">Cancel</button>
         </div>
     </div>
 </div>

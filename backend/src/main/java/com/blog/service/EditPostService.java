@@ -38,9 +38,10 @@ public class EditPostService {
         if (req.getTitle() != null)
             post.setTitle(req.getTitle());
         List<String> oldPaths = post.getMediaPaths();
-        List<String> updatedPaths = new ArrayList<>();
+        List<String> updatedPaths = new ArrayList<>(req.getPathFiles());
 
         if (req.getMediaFiles() != null) {
+
             File dir = new File("uploads/posts/");
             for (MultipartFile mediaFile : req.getMediaFiles()) {
                 String uploadDir = "uploads/posts/";
@@ -61,8 +62,20 @@ public class EditPostService {
                 updatedPaths.add(filePath);
             }
         }
-        List<String> pathToRemove = new ArrayList<>(oldPaths);
-        pathToRemove.removeAll(updatedPaths);
+
+        List<String> pathToRemove = new ArrayList<>();
+        List<String> pathFromReq = req.getPathFiles();
+        int max = Math.max(oldPaths.size(), pathFromReq.size());
+        for (int i = 0; i < max; i++) {
+            if (!pathFromReq.contains(oldPaths.get(i))) {
+                pathToRemove.add(oldPaths.get(i));
+            }
+        }
+        System.err.printf("old paths: %s\npath to remove: %s\nupdated Path: %s\npath From Req: %s\n",
+                oldPaths,
+                pathToRemove,
+                updatedPaths,
+                pathFromReq);
         // for (String oldPath : oldPaths) {
         // if (!updatedPaths.contains(oldPath)) {
         // pathToRemove.add(oldPath);

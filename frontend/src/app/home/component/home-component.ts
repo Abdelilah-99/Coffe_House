@@ -3,19 +3,23 @@ import { Post, PostService } from '../../post/services/post-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProfileService, UserProfile } from '../../me/me.service';
-import { AuthService } from '../../auth/auth';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { title } from 'process';
+import { log } from 'console';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class HomeComponent implements OnInit {
   posts: Post[] = [];
+  selectedPost?: Post;
   profileData: UserProfile | null = null;
   isLoding = true;
+  post = { title: '', content: '' }
   constructor(private postService: PostService,
     private router: Router,
     private profileService: ProfileService,
@@ -61,8 +65,47 @@ export class HomeComponent implements OnInit {
   }
 
   onEdit(post: Post) {
-    console.log("hii: ", post);
+    this.selectedPost = post;
   }
+
+  onCloseEdit() {
+    this.selectedPost = undefined;
+  }
+
+  selectedFiles: File[] = [];
+
+  onFileSelected(e: any) {
+    const files: FileList = e.target.files;
+    if (!files || files.length === 0) return;
+    // this.selectedFiles = [];
+    for (let i = 0; i < files.length; i++) {
+      this.selectedFiles.push(files[i]);
+    }
+    console.log("file len: ", files.length);
+
+    console.log('Selected files:', this.selectedFiles.map(f => f.name));
+  }
+
+  onSave(updatedPost: any) {
+    for (let index = 0; index < this.posts.length; index++) {
+      const element = this.posts[index];
+      if (element.id === updatedPost.id) {
+        this.posts[index] = updatedPost;
+      }
+    }
+    console.log(updatedPost);
+    const formData = new FormData();
+    formData.append("title", updatedPost.title);
+    formData.append("content", updatedPost.content);
+    formData.append("pathFiles", updatedPost.mediaPaths);
+    console.log(formData.get("title"));
+    this.selectedFiles.forEach(element => {
+      formData.append("mediaFiles", element);
+    });
+    this.postService.editPost(updatedPost.id, formData).subscribe({});
+    updatedPost = undefined;
+  }
+
   onDelete(id: number) {
     console.log("hii: ", id);
     this.postService.deletePost(id).subscribe({});
@@ -73,7 +116,15 @@ export class HomeComponent implements OnInit {
     console.log("hii: ", id);
   }
 
+  printPaths(paths: String[]) {
+    paths.forEach(element => {
+      console.log("paths:: ", element);
+
+    });
+  }
+
   getMediaType(media: String): String {
+    console.log("media", media);
     const ext = media.split('.').pop()?.toLowerCase();
     if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext!)) {
       return "img";
@@ -81,6 +132,17 @@ export class HomeComponent implements OnInit {
       return "vd";
     }
     return "null";
+  }
+
+  deleteMedia(media: String, selectedMedia: any) {
+    let mediaPaths = this.selectedPost?.mediaPaths;
+    if (mediaPaths === undefined) return;
+    for (let index = 0; index < mediaPaths.length; index++) {
+      const element = mediaPaths[index];
+      if (media === element) {
+        this.selectedPost?.mediaPaths.splice(index, 1);
+      }
+    }
   }
 
   myPost(post: Post): boolean {

@@ -54,9 +54,10 @@ public class PostController {
     public ResponseEntity<PostRes> editPost(@PathVariable Long id,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
-            @RequestParam(value = "mediaFiles", required = false) MultipartFile[] mediaFiles) {
+            @RequestParam(value = "mediaFiles", required = false) MultipartFile[] mediaFiles,
+            @RequestParam(value = "pathFiles", required = false) List<String> pathFiles) {
         System.err.printf("post_id: %s\n", id);
-        EditPostReq req = new EditPostReq(content, title, mediaFiles);
+        EditPostReq req = new EditPostReq(content, title, mediaFiles, pathFiles);
         PostRes res = editPostService.editPost(id, req);
         return ResponseEntity.ok(res);
     }
