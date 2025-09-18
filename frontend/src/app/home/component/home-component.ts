@@ -65,6 +65,8 @@ export class HomeComponent implements OnInit {
   }
   onDelete(id: number) {
     console.log("hii: ", id);
+    this.postService.deletePost(id).subscribe({});
+    this.loadPosts();
   }
 
   onReport(id: number) {

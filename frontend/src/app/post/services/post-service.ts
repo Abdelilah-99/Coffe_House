@@ -26,9 +26,16 @@ export interface UserProfile {
 export class PostService {
 
   private URL = `http://localhost:8080/api/posts/all`;
+  private URLDELETE = `http://localhost:8080/api/posts/delete/`;
+
   constructor(private http: HttpClient) { }
 
   getAllPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.URL);
+  }
+
+  deletePost(id: number): Observable<any> {
+    console.log(this.URLDELETE + id);
+    return this.http.post(this.URLDELETE + id, null);
   }
 }
