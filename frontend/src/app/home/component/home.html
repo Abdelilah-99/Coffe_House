@@ -14,12 +14,12 @@
     <div class="posts-container">
         <div class="post-card" *ngFor="let post of posts">
             <div *ngIf="myPost(post); else reportBlock" class="post-handler">
-                <button>Edit</button>
-                <button>Delete</button>
+                <button (click)="onEdit(post)">Edit</button>
+                <button (click)="onDelete(post.id)">Delete</button>
             </div>
 
             <ng-template #reportBlock>
-                <button>Report</button>
+                <button (click)="onReport(post.id)">Report</button>
             </ng-template>
             <div class="post-header">
                 <h3 class="post-title">{{ post.title }}</h3>
