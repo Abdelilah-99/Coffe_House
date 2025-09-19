@@ -21,11 +21,19 @@ public class PostService {
     private UsersServices usersServices;
     private UserRepository userRepository;
     private PostRepository postRepository;
+    private CommentRepository commentRepository;
+    private LikesRepository likesRepository;
 
-    PostService(UsersServices usersServices, UserRepository userRepository, PostRepository postRepository) {
+    PostService(UsersServices usersServices,
+            UserRepository userRepository,
+            PostRepository postRepository,
+            CommentRepository commentRepository,
+            LikesRepository likesRepository) {
         this.usersServices = usersServices;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
+        this.likesRepository = likesRepository;
     }
 
     public PostRes createPost(CreatePostReq req) {
@@ -71,7 +79,9 @@ public class PostService {
                     req.getTitle(),
                     "Post created successefully",
                     time,
-                    mediaPaths);
+                    mediaPaths,
+                    0,
+                    0);
         } catch (Exception e) {
             throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
         }
@@ -94,9 +104,7 @@ public class PostService {
             mediaFile.transferTo(new File(dir.getAbsolutePath() + "/" + fileName));
             return filePath;
         } catch (IOException e) {
-            throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
-        } catch (IllegalStateException e) {
-            throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
+            throw new ErrSavingException(String.format("Error file i/o: " + e.getMessage(), e));
         }
     }
 
@@ -106,6 +114,7 @@ public class PostService {
         for (Post post : posts) {
             System.err.printf("post id: %s\n", post.getId());
             System.err.printf("user id: %s\n", post.getUser().getId());
+
             listPostRes.add(new PostRes(post.getId(),
                     post.getUser().getId(),
                     post.getUser().getUserName(),
@@ -113,7 +122,9 @@ public class PostService {
                     post.getTitle(),
                     "list of post",
                     post.getTimestamp(),
-                    post.getMediaPaths()));
+                    post.getMediaPaths(),
+                    commentRepository.countByPostId(post.getId()),
+                    likesRepository.countByPostId(post.getId())));
             System.err.println(listPostRes.get(0).getUserId());
         }
         return listPostRes;

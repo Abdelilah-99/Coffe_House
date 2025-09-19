@@ -37,6 +37,8 @@ public class DeletePostService {
                 null,
                 "post deleted succesfully",
                 null,
-                null);
+                null,
+                0,
+                0);
     }
 }

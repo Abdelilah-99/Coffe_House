@@ -22,13 +22,19 @@ import com.blog.exceptions.PostNotFoundException;
 @Service
 public class EditPostService {
     private PostRepository postRepository;
+    private CommentRepository commentRepository;
+    private LikesRepository likesRepository;
 
     EditPostService() {
     }
 
     @Autowired
-    EditPostService(PostRepository postRepository) {
+    EditPostService(PostRepository postRepository,
+            CommentRepository commentRepository,
+            LikesRepository likesRepository) {
         this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
+        this.likesRepository = likesRepository;
     }
 
     public PostRes editPost(long postId, EditPostReq req) {
@@ -93,6 +99,8 @@ public class EditPostService {
                 post.getTitle(),
                 "post updated!!",
                 post.getTimestamp(),
-                post.getMediaPaths());
+                post.getMediaPaths(),
+                commentRepository.countByPostId(post.getId()),
+                likesRepository.countByPostId(post.getId()));
     }
 }

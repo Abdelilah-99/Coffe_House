@@ -15,13 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CommentService {
-    // @Autowired
     private CommentRepository commentRepository;
-    // @Autowired
     private PostRepository postRepository;
-    // @Autowired
     private UsersServices usersServices;
-    // @Autowired
     private UserRepository userRepository;
 
     public CommentService() {

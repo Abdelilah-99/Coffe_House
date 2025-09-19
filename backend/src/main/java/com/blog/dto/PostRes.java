@@ -11,6 +11,8 @@ public class PostRes {
     private String message;
     private String timestamp;
     private List<String> mediaPaths;
+    private long commentCount;
+    private long likeCount;
 
     public PostRes() {
     }
@@ -23,7 +25,9 @@ public class PostRes {
             String title,
             String message,
             String timestamp,
-            List<String> mediaPaths) {
+            List<String> mediaPaths,
+            long commentCount,
+            long likeCount) {
         this.id = id;
         this.userId = userId;
         this.userName = userName;
@@ -32,6 +36,24 @@ public class PostRes {
         this.message = message;
         this.timestamp = timestamp;
         this.mediaPaths = mediaPaths;
+        this.commentCount = commentCount;
+        this.likeCount = likeCount;
+    }
+
+    public long getCommentCount() {
+        return this.commentCount;
+    }
+
+    public void setCommentCount(long commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public long getLikeCount() {
+        return this.likeCount;
+    }
+
+    public void setLikeCount(long likeCount) {
+        this.likeCount = likeCount;
     }
 
     public List<String> getMediaPaths() {
