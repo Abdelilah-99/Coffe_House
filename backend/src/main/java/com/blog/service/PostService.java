@@ -29,10 +29,10 @@ public class PostService {
     }
 
     public PostRes createPost(CreatePostReq req) {
-        if (req.getTitle().isEmpty()) {
+        if (req.getTitle().trim().isEmpty()) {
             throw new TitleEmptyException("Title not found");
         }
-        if (req.getContent().isEmpty()) {
+        if (req.getContent().trim().isEmpty()) {
             throw new ContentEmptyException("Content not found");
         }
         try {

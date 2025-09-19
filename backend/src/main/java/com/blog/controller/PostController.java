@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.blog.dto.CreatePostReq;
 import com.blog.dto.EditPostReq;
 import com.blog.dto.PostRes;
+import com.blog.dto.CommentPostReq;
+import com.blog.dto.CommentPostRes;
 import com.blog.service.PostService;
+import com.blog.service.CommentService;
 import com.blog.service.DeletePostService;
 import com.blog.service.EditPostService;
 
@@ -24,13 +29,17 @@ public class PostController {
     private final PostService postService;
     private final EditPostService editPostService;
     private final DeletePostService deletePostService;
+    private final CommentService commentService;
 
     PostController(PostService postService,
             EditPostService editPostService,
-            DeletePostService deletePostService) {
+            DeletePostService deletePostService,
+            CommentService commentService) {
         this.postService = postService;
         this.editPostService = editPostService;
         this.deletePostService = deletePostService;
+        this.commentService = commentService;
+
     }
 
     @GetMapping("/all")
@@ -65,6 +74,12 @@ public class PostController {
     @PostMapping("/delete/{id}")
     public ResponseEntity<PostRes> deletePost(@PathVariable Long id) {
         PostRes res = deletePostService.deletePost(id);
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/comment/create/{id}")
+    public ResponseEntity<CommentPostRes> commentPost(@PathVariable long id, @RequestBody CommentPostReq req) {
+        CommentPostRes res = commentService.createComment(id, req);
         return ResponseEntity.ok(res);
     }
 }

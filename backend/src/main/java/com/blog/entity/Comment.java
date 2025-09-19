@@ -6,12 +6,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(columnDefinition = "TEXT")
     private String comment;
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -20,7 +22,8 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Comment() {}
+    public Comment() {
+    }
 
     public Comment(String comment, User user, Post post) {
         this.comment = comment;

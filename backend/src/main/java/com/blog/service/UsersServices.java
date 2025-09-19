@@ -33,6 +33,7 @@ public class UsersServices {
     }
 
     public UsersRespons getCurrentUser() throws Exception {
+        System.err.println("here");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("Authentication = " + authentication);
         System.out.println("Principal = " + authentication.getPrincipal());

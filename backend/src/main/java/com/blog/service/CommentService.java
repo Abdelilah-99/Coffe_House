@@ -1,0 +1,63 @@
+package com.blog.service;
+
+import com.blog.dto.CommentPostReq;
+import com.blog.dto.UsersRespons;
+import com.blog.repository.*;
+import com.blog.entity.Post;
+import com.blog.entity.Comment;
+import com.blog.entity.User;
+import com.blog.exceptions.UserNotFoundException;
+import com.blog.exceptions.CreateCommentException;
+import com.blog.exceptions.PostNotFoundException;
+import com.blog.dto.CommentPostRes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CommentService {
+    // @Autowired
+    private CommentRepository commentRepository;
+    // @Autowired
+    private PostRepository postRepository;
+    // @Autowired
+    private UsersServices usersServices;
+    // @Autowired
+    private UserRepository userRepository;
+
+    public CommentService() {
+    }
+    @Autowired
+    public CommentService(CommentRepository commentRepository,
+            PostRepository postRepository,
+            UsersServices usersServices,
+            UserRepository userRepository) {
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
+        this.usersServices = usersServices;
+        this.userRepository = userRepository;
+    }
+
+    public CommentPostRes createComment(long postId, CommentPostReq req) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post not found"));
+        try {
+            UsersRespons userDetail = usersServices.getCurrentUser();
+            User user = userRepository.findByUserName(userDetail.getUsername())
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+            if (req.getComment().trim().isEmpty()) {
+                return new CommentPostRes(post.getId(), user.getId(), req.getComment(), "comment is empty");
+            }
+
+            Comment newComment = new Comment();
+            newComment.setComment(req.getComment());
+            newComment.setUser(user);
+            newComment.setPost(post);
+            commentRepository.save(newComment);
+
+            return new CommentPostRes(post.getId(), user.getId(), newComment.getComment(),
+                    "comment has been created successfully");
+        } catch (Exception e) {
+            throw new CreateCommentException("Error in creating comment: " + e.getMessage());
+        }
+    }
+}

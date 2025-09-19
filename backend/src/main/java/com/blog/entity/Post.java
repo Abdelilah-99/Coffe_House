@@ -35,7 +35,7 @@ public class Post {
         this.timestamp = timestamp;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
