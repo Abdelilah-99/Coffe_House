@@ -7,7 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { title } from 'process';
-import { log } from 'console';
+import { error, log } from 'console';
 @Component({
   selector: 'app-home',
   imports: [CommonModule, FormsModule],
@@ -16,6 +16,7 @@ import { log } from 'console';
 })
 export class HomeComponent implements OnInit {
   posts: Post[] = [];
+  updatedPost: Post | null = null;
   selectedPost?: Post;
   profileData: UserProfile | null = null;
   isLoding = true;
@@ -87,12 +88,6 @@ export class HomeComponent implements OnInit {
   }
 
   onSave(updatedPost: any) {
-    for (let index = 0; index < this.posts.length; index++) {
-      const element = this.posts[index];
-      if (element.id === updatedPost.id) {
-        this.posts[index] = updatedPost;
-      }
-    }
     console.log(updatedPost);
     const formData = new FormData();
     formData.append("title", updatedPost.title);
@@ -102,13 +97,34 @@ export class HomeComponent implements OnInit {
     this.selectedFiles.forEach(element => {
       formData.append("mediaFiles", element);
     });
-    this.postService.editPost(updatedPost.id, formData).subscribe({});
+    this.postService.editPost(updatedPost.id, formData).subscribe({
+      next: (data) => {
+        this.updatedPost = data;
+        if (this.updatedPost) {
+          for (let index = 0; index < this.posts.length; index++) {
+            const element = this.posts[index];
+            if (element.id === this.updatedPost.id) {
+              this.posts[index] = this.updatedPost;
+            }
+          }
+        }
+      },
+      error: (err) => {
+        console.error("error updating post: ", err);
+      }
+    });
     updatedPost = undefined;
   }
 
   onDelete(id: number) {
     console.log("hii: ", id);
     this.postService.deletePost(id).subscribe({});
+    for (let index = 0; index < this.posts.length; index++) {
+      const element = this.posts[index];
+      if (element.id === id) {
+        this.posts.splice(index, 1);
+      }
+    }
     this.loadPosts();
   }
 
@@ -119,7 +135,6 @@ export class HomeComponent implements OnInit {
   printPaths(paths: String[]) {
     paths.forEach(element => {
       console.log("paths:: ", element);
-
     });
   }
 

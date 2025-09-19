@@ -51,7 +51,6 @@
 
         <div *ngFor="let path of selectedPost.mediaPaths">
             <ng-container [ngSwitch]="getMediaType(path)">
-                <button (click)="printPaths(selectedPost.mediaPaths)">O</button>
                 <button (click)="deleteMedia(path, selectedPost)">x</button>
                 <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" width="100" />
                 <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls width="100"></video>

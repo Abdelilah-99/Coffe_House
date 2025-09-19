@@ -44,6 +44,6 @@ export class PostService {
 
   editPost(id: number, formData: FormData): Observable<any> {
     console.log(this.URLUPDATE + id);
-    return this.http.post(this.URLUPDATE + id, formData);
+    return this.http.post<Post>(this.URLUPDATE + id, formData);
   }
 }
