@@ -13,15 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.blog.dto.CreatePostReq;
-import com.blog.dto.EditPostReq;
-import com.blog.dto.PostRes;
-import com.blog.dto.CommentPostReq;
-import com.blog.dto.CommentPostRes;
+import com.blog.dto.*;
 import com.blog.service.PostService;
 import com.blog.service.CommentService;
 import com.blog.service.DeletePostService;
 import com.blog.service.EditPostService;
+import com.blog.service.LikePostService;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -30,15 +27,18 @@ public class PostController {
     private final EditPostService editPostService;
     private final DeletePostService deletePostService;
     private final CommentService commentService;
+    private final LikePostService likePostService;
 
     PostController(PostService postService,
             EditPostService editPostService,
             DeletePostService deletePostService,
-            CommentService commentService) {
+            CommentService commentService,
+            LikePostService likePostService) {
         this.postService = postService;
         this.editPostService = editPostService;
         this.deletePostService = deletePostService;
         this.commentService = commentService;
+        this.likePostService = likePostService;
 
     }
 
@@ -80,6 +80,12 @@ public class PostController {
     @PostMapping("/comment/create/{id}")
     public ResponseEntity<CommentPostRes> commentPost(@PathVariable long id, @RequestBody CommentPostReq req) {
         CommentPostRes res = commentService.createComment(id, req);
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/like/{id}")
+    public ResponseEntity<LikePostRes> likePost(@PathVariable long id) {
+        LikePostRes res = likePostService.likeLogic(id);
         return ResponseEntity.ok(res);
     }
 }

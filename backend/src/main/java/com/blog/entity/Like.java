@@ -14,7 +14,6 @@ public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long likeCount;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -22,10 +21,10 @@ public class Like {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Like() {}
+    public Like() {
+    }
 
-    public Like(long likeCount, User user, Post post) {
-        this.likeCount = likeCount;
+    public Like(User user, Post post) {
         this.user = user;
         this.post = post;
     }
@@ -36,14 +35,6 @@ public class Like {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(long likeCount) {
-        this.likeCount = likeCount;
     }
 
     public User getUser() {

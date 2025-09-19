@@ -26,6 +26,7 @@ public class CommentService {
 
     public CommentService() {
     }
+
     @Autowired
     public CommentService(CommentRepository commentRepository,
             PostRepository postRepository,
@@ -38,12 +39,12 @@ public class CommentService {
     }
 
     public CommentPostRes createComment(long postId, CommentPostReq req) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post not found"));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("Post not found for comment"));
         try {
             UsersRespons userDetail = usersServices.getCurrentUser();
-            User user = userRepository.findByUserName(userDetail.getUsername())
+            User user = userRepository.findById(userDetail.getId())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
-
             if (req.getComment().trim().isEmpty()) {
                 return new CommentPostRes(post.getId(), user.getId(), req.getComment(), "comment is empty");
             }

@@ -123,4 +123,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CreateCommentException.class)
+    public ResponseEntity<Map<String, Object>> HandleCreateCommentException(CreateCommentException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.NOT_FOUND);
+        errRes.put("err", ex.getMessage());
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(LikeException.class)
+    public ResponseEntity<Map<String, Object>> HandleLikeException(LikeException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.NOT_FOUND);
+        errRes.put("err", ex.getMessage());
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
+    }
 }

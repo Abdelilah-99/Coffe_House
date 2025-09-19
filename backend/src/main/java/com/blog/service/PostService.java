@@ -38,7 +38,7 @@ public class PostService {
         try {
             // System.out.printf("req.getTitle(): \n", req.getTitle());
             UsersRespons userRes = usersServices.getCurrentUser();
-            User user = userRepository.findByUserName(userRes.getUsername())
+            User user = userRepository.findById(userRes.getId())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
             List<String> mediaPaths = new ArrayList<>();
             if (req.getMediaFiles() != null && req.getMediaFiles().length > 0) {
