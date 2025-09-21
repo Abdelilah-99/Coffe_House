@@ -129,4 +129,18 @@ public class PostService {
         }
         return listPostRes;
     }
+
+    public PostRes getPost(String uuid) {
+        Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("post not found"));
+        return new PostRes(post.getUuid(),
+                post.getUser().getUuid(),
+                post.getUser().getUserName(),
+                post.getContent(),
+                post.getTitle(),
+                "data extracted success",
+                post.getTimestamp(),
+                post.getMediaPaths(),
+                commentRepository.countByPost_uuid(post.getUuid()),
+                likesRepository.countByPost_uuid(post.getUuid()));
+    }
 }

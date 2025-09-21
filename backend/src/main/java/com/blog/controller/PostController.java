@@ -59,6 +59,12 @@ public class PostController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/postCard/{uuid}")
+    public ResponseEntity<PostRes> showPost(@PathVariable String uuid) {
+        PostRes res = postService.getPost(uuid);
+        return ResponseEntity.ok(res);
+    }
+
     @PostMapping("/edit/{uuid}")
     public ResponseEntity<PostRes> editPost(@PathVariable String uuid,
             @RequestParam("title") String title,

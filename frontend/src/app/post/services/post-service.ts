@@ -3,8 +3,8 @@ import { Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 export interface Post {
-  postUuid: number;
-  userUuid: number;
+  postUuid: String;
+  userUuid: String;
   title: string;
   content: string;
   timestamp: String;
@@ -44,21 +44,25 @@ export class PostService {
     return this.http.get<Post[]>(this.URL + '/all').pipe(tap(posts => this.postsCach = posts));
   }
 
-  deletePost(uuid: number): Observable<any> {
+  deletePost(uuid: String): Observable<any> {
     console.log(this.URL + '/delete/' + uuid);
     return this.http.post(this.URL + uuid, null);
   }
 
-  editPost(uuid: number, formData: FormData): Observable<any> {
+  editPost(uuid: String, formData: FormData): Observable<any> {
     console.log(this.URL + uuid);
     return this.http.post<Post>(this.URL + '/edit/' + uuid, formData);
   }
 
-  doReaction(uuid: number) {
+  doReaction(uuid: String) {
     return this.http.post<Like>(`${this.URL}/like/${uuid}`, null);
   }
 
-  doComment(uuid: number, formData: FormData) {
+  doComment(uuid: String, formData: FormData) {
     return this.http.post<Comment>(this.URL + '/comment/' + uuid, formData);
+  }
+
+  getPost(uuid: String) {
+    return this.http.get<Post>(this.URL + '/postCard/' + uuid);
   }
 }

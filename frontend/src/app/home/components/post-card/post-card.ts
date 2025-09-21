@@ -18,10 +18,10 @@ export class PostCardComponent {
   @Input() profileData!: UserProfile | null;
 
   @Output() edit = new EventEmitter<Post>();
-  @Output() delete = new EventEmitter<number>();
-  @Output() report = new EventEmitter<number>();
-  @Output() reaction = new EventEmitter<number>();
-  @Output() postCard = new EventEmitter<number>();
+  @Output() delete = new EventEmitter<String>();
+  @Output() report = new EventEmitter<String>();
+  @Output() reaction = new EventEmitter<String>();
+  @Output() postCard = new EventEmitter<String>();
   myPost(): boolean {
     return this.post.userUuid === this.profileData?.userUuid;
   }

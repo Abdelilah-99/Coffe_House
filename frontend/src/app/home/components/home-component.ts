@@ -75,8 +75,9 @@ export class HomeComponent implements OnInit {
     this.selectedPost = undefined;
   }
 
-  onPostCardSection(postId: number) {
-    console.log("this section will navigate throw the post section ", postId);
+  onPostCardSection(postUuid: String) {
+    console.log("this section will navigate throw the post section ", postUuid);
+    this.router.navigate(['/postCard', postUuid]);
   }
 
   deleteMedia(media: String, selectedMedia: any) {
@@ -103,7 +104,7 @@ export class HomeComponent implements OnInit {
     console.log('Selected files:', this.selectedFiles.map(f => f.name));
   }
 
-  onReact(uuid: number) {
+  onReact(uuid: String) {
     this.postService.doReaction(uuid).subscribe({
       next: (like) => {
         console.log(like);
@@ -157,7 +158,7 @@ export class HomeComponent implements OnInit {
     updatedPost = undefined;
   }
 
-  onDelete(postUuid: number) {
+  onDelete(postUuid: String) {
     console.log("hii: ", postUuid);
     this.postService.deletePost(postUuid).subscribe({});
     for (let index = 0; index < this.posts.length; index++) {
@@ -169,7 +170,7 @@ export class HomeComponent implements OnInit {
     this.loadPosts();
   }
 
-  onReport(id: number) {
+  onReport(id: String) {
     console.log("hii: ", id);
   }
 
