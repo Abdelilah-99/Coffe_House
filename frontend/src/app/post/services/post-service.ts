@@ -3,8 +3,8 @@ import { Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 export interface Post {
-  id: number;
-  userId: number;
+  postUuid: number;
+  userUuid: number;
   title: string;
   content: string;
   timestamp: String;
@@ -15,7 +15,7 @@ export interface Post {
 }
 
 export interface UserProfile {
-  id: number;
+  postUuid: number;
   firstName: string;
   lastName: string;
   username: string;
@@ -23,8 +23,8 @@ export interface UserProfile {
 }
 
 export interface Like {
-  userId: any;
-  postId: any;
+  userUuid: any;
+  postUuid: any;
   likeCount: number;
 }
 
@@ -44,21 +44,21 @@ export class PostService {
     return this.http.get<Post[]>(this.URL + '/all').pipe(tap(posts => this.postsCach = posts));
   }
 
-  deletePost(id: number): Observable<any> {
-    console.log(this.URL + '/delete/' + id);
-    return this.http.post(this.URL + id, null);
+  deletePost(uuid: number): Observable<any> {
+    console.log(this.URL + '/delete/' + uuid);
+    return this.http.post(this.URL + uuid, null);
   }
 
-  editPost(id: number, formData: FormData): Observable<any> {
-    console.log(this.URL + id);
-    return this.http.post<Post>(this.URL + '/edit/' + id, formData);
+  editPost(uuid: number, formData: FormData): Observable<any> {
+    console.log(this.URL + uuid);
+    return this.http.post<Post>(this.URL + '/edit/' + uuid, formData);
   }
 
-  doReaction(postId: number) {
-    return this.http.post<Like>(`${this.URL}/like/${postId}`, null);
+  doReaction(uuid: number) {
+    return this.http.post<Like>(`${this.URL}/like/${uuid}`, null);
   }
 
-  doComment(postId: number, formData: FormData) {
-    return this.http.post<Comment>(this.URL + '/comment/' + postId, formData);
+  doComment(uuid: number, formData: FormData) {
+    return this.http.post<Comment>(this.URL + '/comment/' + uuid, formData);
   }
 }

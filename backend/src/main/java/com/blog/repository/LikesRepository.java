@@ -12,5 +12,11 @@ public interface LikesRepository extends JpaRepository<Like, Long> {
 
     void deleteByUserIdAndPostId(Long userId, Long postId);
 
+    void deleteByUser_uuidAndPost_uuid(String userUuid, String postUuid);
+
+    boolean existsByUser_uuidAndPost_uuid(String userUuid, String postUuid);
+
     long countByPostId(Long postId);
+
+    long countByPost_uuid(String uuid);
 }

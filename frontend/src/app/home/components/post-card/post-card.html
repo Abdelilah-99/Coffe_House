@@ -1,11 +1,11 @@
-<div class="post-card" (click)="postCard.emit(post.id)">
+<div class="post-card" (click)="postCard.emit(post.postUuid)">
     <ng-template #reportBlock>
-        <button (click)="report.emit(post.id)">Report</button>
+        <button (click)="report.emit(post.postUuid)">Report</button>
     </ng-template>
 
     <div *ngIf="myPost(); else reportBlock" class="post-handler">
         <button (click)="edit.emit(post)">Edit</button>
-        <button (click)="delete.emit(post.id)">Delete</button>
+        <button (click)="delete.emit(post.postUuid)">Delete</button>
     </div>
 
     <div class="post-header">

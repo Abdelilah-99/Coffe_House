@@ -28,7 +28,7 @@ public class UsersServices {
     }
 
     private UsersRespons convertToDto(User user) {
-        return new UsersRespons(user.getId(), user.getFirstName(), user.getLastName(), user.getUserName(),
+        return new UsersRespons(user.getUuid(), user.getFirstName(), user.getLastName(), user.getUserName(),
                 user.getEmail(), user.getRole());
     }
 
@@ -43,7 +43,7 @@ public class UsersServices {
             String username = (String) authentication.getPrincipal();
             // System.out.printf("username in getcrr: \n", username);
             User user = userRepository.findByUserName(username).orElseThrow();
-            return new UsersRespons(user.getId(),
+            return new UsersRespons(user.getUuid(),
                     user.getFirstName(),
                     user.getLastName(),
                     user.getUserName(),

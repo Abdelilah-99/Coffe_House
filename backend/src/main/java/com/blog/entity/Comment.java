@@ -1,11 +1,7 @@
 package com.blog.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Entity;
+import java.util.UUID;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -21,14 +17,25 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+    @Column(nullable = false, unique = true, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     public Comment() {
     }
 
-    public Comment(String comment, User user, Post post) {
+    public Comment(String comment, User user, Post post, String uuid) {
         this.comment = comment;
         this.user = user;
         this.post = post;
+        this.uuid = uuid;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public long getId() {

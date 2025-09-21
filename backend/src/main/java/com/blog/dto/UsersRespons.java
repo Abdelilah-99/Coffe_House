@@ -1,15 +1,15 @@
 package com.blog.dto;
 
 public class UsersRespons {
-    private long id;
+    private String uuid;
     private String firstName;
     private String lastName;
     private String username;
     private String email;
     private String role;
 
-    public UsersRespons(long id, String firstName, String lastName, String username, String email, String role) {
-        this.id = id;
+    public UsersRespons(String uuid, String firstName, String lastName, String username, String email, String role) {
+        this.uuid = uuid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -17,12 +17,12 @@ public class UsersRespons {
         this.role = role;
     }
 
-    public long getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getFirstName() {

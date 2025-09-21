@@ -46,7 +46,7 @@ public class PostService {
         try {
             // System.out.printf("req.getTitle(): \n", req.getTitle());
             UsersRespons userRes = usersServices.getCurrentUser();
-            User user = userRepository.findById(userRes.getId())
+            User user = userRepository.findByUuid(userRes.getUuid())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
             List<String> mediaPaths = new ArrayList<>();
             if (req.getMediaFiles() != null && req.getMediaFiles().length > 0) {
@@ -72,8 +72,8 @@ public class PostService {
             newPost.setMediaPaths(mediaPaths);
             postRepository.save(newPost);
             return new PostRes(
-                    newPost.getId(),
-                    user.getId(),
+                    newPost.getUuid(),
+                    user.getUuid(),
                     user.getUserName(),
                     req.getContent(),
                     req.getTitle(),
@@ -115,17 +115,17 @@ public class PostService {
             System.err.printf("post id: %s\n", post.getId());
             System.err.printf("user id: %s\n", post.getUser().getId());
 
-            listPostRes.add(new PostRes(post.getId(),
-                    post.getUser().getId(),
+            listPostRes.add(new PostRes(post.getUuid(),
+                    post.getUser().getUuid(),
                     post.getUser().getUserName(),
                     post.getContent(),
                     post.getTitle(),
                     "list of post",
                     post.getTimestamp(),
                     post.getMediaPaths(),
-                    commentRepository.countByPostId(post.getId()),
-                    likesRepository.countByPostId(post.getId())));
-            System.err.println(listPostRes.get(0).getUserId());
+                    commentRepository.countByPost_uuid(post.getUuid()),
+                    likesRepository.countByPost_uuid(post.getUuid())));
+            // System.err.println(listPostRes.get(0).getUserId());
         }
         return listPostRes;
     }

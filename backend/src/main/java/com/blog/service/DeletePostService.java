@@ -22,16 +22,16 @@ public class DeletePostService {
         this.postRepository = postRepository;
     }
 
-    public PostRes deletePost(long id) {
-        Post post = postRepository.findById(id)
+    public PostRes deletePost(String uuid) {
+        Post post = postRepository.findByUuid(uuid)
                 .orElseThrow(() -> new PostNotFoundException("post not found for deleting"));
         for (String pathRemove : post.getMediaPaths()) {
             new File(pathRemove).delete();
         }
-        postRepository.deleteById(id);
+        postRepository.deleteByUuid(uuid);
         return new PostRes(
-                post.getId(),
-                post.getUser().getId(),
+                post.getUuid(),
+                post.getUser().getUuid(),
                 null,
                 null,
                 null,

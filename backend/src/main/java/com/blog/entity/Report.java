@@ -1,11 +1,8 @@
 package com.blog.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import java.util.UUID;
+
+import jakarta.persistence.*;
 
 @Entity
 public class Report {
@@ -24,14 +21,18 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "reported_post_id", nullable = true)
     private Post reportedPostId;
+    @Column(nullable = false, unique = true, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
-    public Report() {}
+    public Report() {
+    }
 
-    public Report(String reason, String time, String typeReport, User reporterId) {
+    public Report(String reason, String time, String typeReport, User reporterId, String uuid) {
         this.reason = reason;
         this.time = time;
         this.typeReport = typeReport;
         this.reporterId = reporterId;
+        this.uuid = uuid;
     }
 
     public long getId() {
@@ -88,5 +89,13 @@ public class Report {
 
     public void setReportedPostId(Post reportedPostId) {
         this.reportedPostId = reportedPostId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

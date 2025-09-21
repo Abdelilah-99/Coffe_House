@@ -37,8 +37,8 @@ public class EditPostService {
         this.likesRepository = likesRepository;
     }
 
-    public PostRes editPost(long postId, EditPostReq req) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post not found"));
+    public PostRes editPost(String uuid, EditPostReq req) {
+        Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("Post not found"));
         if (req.getContent() != null)
             post.setContent(req.getContent());
         if (req.getTitle() != null)
@@ -92,15 +92,15 @@ public class EditPostService {
         }
         post.setMediaPaths(updatedPaths);
         postRepository.save(post);
-        return new PostRes(post.getId(),
-                post.getUser().getId(),
+        return new PostRes(post.getUuid(),
+                post.getUser().getUuid(),
                 post.getUser().getUserName(),
                 post.getContent(),
                 post.getTitle(),
                 "post updated!!",
                 post.getTimestamp(),
                 post.getMediaPaths(),
-                commentRepository.countByPostId(post.getId()),
-                likesRepository.countByPostId(post.getId()));
+                commentRepository.countByPost_uuid(post.getUuid()),
+                likesRepository.countByPost_uuid(post.getUuid()));
     }
 }

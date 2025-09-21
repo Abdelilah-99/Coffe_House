@@ -1,17 +1,17 @@
 package com.blog.dto;
 
 public class CommentPostRes {
-    private long postId;
-    private long userId;
+    private String postUuid;
+    private String userUuid;
     private String comment;
     private String message;
 
     public CommentPostRes() {
     }
 
-    public CommentPostRes(long postId, long userId, String comment, String message) {
-        this.postId = postId;
-        this.userId = userId;
+    public CommentPostRes(String postUuid, String userUuid, String comment, String message) {
+        this.postUuid = postUuid;
+        this.userUuid = userUuid;
         this.comment = comment;
         this.message = message;
     }
@@ -24,20 +24,20 @@ public class CommentPostRes {
         this.message = message;
     }
 
-    public long getPostId() {
-        return this.postId;
+    public String getPostUuid() {
+        return this.postUuid;
     }
 
-    public void setPostId(long postId) {
-        this.postId = postId;
+    public void setPostUuid(String postUuid) {
+        this.postUuid = postUuid;
     }
 
-    public long getUserId() {
-        return this.userId;
+    public String getUserUuid() {
+        return this.userUuid;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserUuid(String userUuid) {
+        this.userUuid = userUuid;
     }
 
     public void setComment(String comment) {

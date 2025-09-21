@@ -17,7 +17,7 @@ import { EditModel } from './edit-modal/edit-model';
 })
 export class HomeComponent implements OnInit {
   posts: Post[] = [];
-  like: Like = { userId: null, postId: null, likeCount: 0 };
+  like: Like = { userUuid: null, postUuid: null, likeCount: 0 };
   updatedPost: Post | null = null;
   selectedPost?: Post;
   profileData: UserProfile | null = null;
@@ -103,13 +103,13 @@ export class HomeComponent implements OnInit {
     console.log('Selected files:', this.selectedFiles.map(f => f.name));
   }
 
-  onReact(id: number) {
-    this.postService.doReaction(id).subscribe({
+  onReact(uuid: number) {
+    this.postService.doReaction(uuid).subscribe({
       next: (like) => {
         console.log(like);
         for (let i = 0; i < this.posts.length; i++) {
           const element = this.posts[i];
-          if (element.id == id) {
+          if (element.postUuid == uuid) {
             console.log(this.posts[i].likeCount, like.likeCount);
             element.likeCount = like.likeCount;
             this.posts[i] = element;
@@ -138,13 +138,13 @@ export class HomeComponent implements OnInit {
     this.selectedFiles.forEach(element => {
       formData.append("mediaFiles", element);
     });
-    this.postService.editPost(updatedPost.id, formData).subscribe({
+    this.postService.editPost(updatedPost.postUuid, formData).subscribe({
       next: (data) => {
         this.updatedPost = data;
         if (this.updatedPost) {
           for (let index = 0; index < this.posts.length; index++) {
             const element = this.posts[index];
-            if (element.id === this.updatedPost.id) {
+            if (element.postUuid === this.updatedPost.postUuid) {
               this.posts[index] = this.updatedPost;
             }
           }
@@ -157,12 +157,12 @@ export class HomeComponent implements OnInit {
     updatedPost = undefined;
   }
 
-  onDelete(id: number) {
-    console.log("hii: ", id);
-    this.postService.deletePost(id).subscribe({});
+  onDelete(postUuid: number) {
+    console.log("hii: ", postUuid);
+    this.postService.deletePost(postUuid).subscribe({});
     for (let index = 0; index < this.posts.length; index++) {
       const element = this.posts[index];
-      if (element.id === id) {
+      if (element.postUuid === postUuid) {
         this.posts.splice(index, 1);
       }
     }
@@ -186,7 +186,7 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     }
-    if (post.userId === this.profileData?.id) {
+    if (post.userUuid === this.profileData?.userUuid) {
       return true;
     }
     return false;

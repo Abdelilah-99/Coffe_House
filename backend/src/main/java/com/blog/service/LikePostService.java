@@ -30,23 +30,26 @@ public class LikePostService {
     }
 
     @Transactional
-    public LikePostRes likeLogic(long postId) {
-        Post post = postRepository.findById(postId)
+    public LikePostRes likeLogic(String uuid) {
+        System.out.printf("uuid: %s\n", uuid);
+        Post post = postRepository.findByUuid(uuid)
                 .orElseThrow(() -> new PostNotFoundException("post not found for like"));
         try {
             UsersRespons userRes = usersServices.getCurrentUser();
-            User user = userRepository.findById(userRes.getId())
+            User user = userRepository.findByUuid(userRes.getUuid())
                     .orElseThrow(() -> new UserNotFoundException("User not found for like"));
-            boolean isThereLike = likesRepository.existsByUserIdAndPostId(user.getId(), post.getId());
+            // boolean existsByUser_uuidAndPost_uuid(UUID userUuid, UUID postUuid);
+
+            boolean isThereLike = likesRepository.existsByUser_uuidAndPost_uuid(user.getUuid(), post.getUuid());
             if (isThereLike == true) {
-                likesRepository.deleteByUserIdAndPostId(user.getId(), post.getId());
+                likesRepository.deleteByUser_uuidAndPost_uuid(user.getUuid(), post.getUuid());
             } else {
                 Like likes = new Like();
                 likes.setUser(user);
                 likes.setPost(post);
                 likesRepository.save(likes);
             }
-            return new LikePostRes(user.getId(), post.getId(), likesRepository.countByPostId(post.getId()));
+            return new LikePostRes(user.getUuid(), post.getUuid(), likesRepository.countByPost_uuid(post.getUuid()));
         } catch (Exception e) {
             throw new LikeException("err like: " + e.getMessage());
         }

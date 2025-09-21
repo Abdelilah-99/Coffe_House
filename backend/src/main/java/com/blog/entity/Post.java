@@ -3,6 +3,8 @@ package com.blog.entity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -23,16 +25,27 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @Column(nullable = false, unique = true, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     public Post() {
     }
 
-    public Post(String title, String content, String mediaPaths, User user, String timestamp) {
+    public Post(String title, String content, String mediaPaths, User user, String timestamp, String uuid) {
         this.title = title;
         this.content = content;
         this.mediaPaths = mediaPaths;
         this.user = user;
         this.timestamp = timestamp;
+        this.uuid = uuid;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public long getId() {

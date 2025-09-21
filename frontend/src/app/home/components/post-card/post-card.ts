@@ -23,6 +23,6 @@ export class PostCardComponent {
   @Output() reaction = new EventEmitter<number>();
   @Output() postCard = new EventEmitter<number>();
   myPost(): boolean {
-    return this.post.userId === this.profileData?.id;
+    return this.post.userUuid === this.profileData?.userUuid;
   }
 }

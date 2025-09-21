@@ -1,31 +1,32 @@
 package com.blog.dto;
 
 public class LikePostRes {
-    private long userId, postId, likeCount;
+    private String userUuid, postUuid;
+    private long likeCount;
 
     public LikePostRes() {
     }
 
-    public LikePostRes(long userId, long postId, long likeCount) {
-        this.userId = userId;
-        this.postId = postId;
+    public LikePostRes(String userUuid, String postUuid, long likeCount) {
+        this.userUuid = userUuid;
+        this.postUuid = postUuid;
         this.likeCount = likeCount;
     }
 
-    public long getUserId() {
-        return userId;
+    public String getUserUuid() {
+        return userUuid;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserUuid(String userUuid) {
+        this.userUuid = userUuid;
     }
 
-    public long getPostId() {
-        return postId;
+    public String getPostUuid() {
+        return postUuid;
     }
 
-    public void setPostId(long postId) {
-        this.postId = postId;
+    public void setPostUuid(String postUuid) {
+        this.postUuid = postUuid;
     }
 
     public long getLikeCount() {

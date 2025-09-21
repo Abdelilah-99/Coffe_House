@@ -34,15 +34,15 @@ public class CommentService {
         this.userRepository = userRepository;
     }
 
-    public CommentPostRes createComment(long postId, CommentPostReq req) {
-        Post post = postRepository.findById(postId)
+    public CommentPostRes createComment(String uuid, CommentPostReq req) {
+        Post post = postRepository.findByUuid(uuid)
                 .orElseThrow(() -> new PostNotFoundException("Post not found for comment"));
         try {
             UsersRespons userDetail = usersServices.getCurrentUser();
-            User user = userRepository.findById(userDetail.getId())
+            User user = userRepository.findByUuid(userDetail.getUuid())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
             if (req.getComment().trim().isEmpty()) {
-                return new CommentPostRes(post.getId(), user.getId(), req.getComment(), "comment is empty");
+                return new CommentPostRes(post.getUuid(), user.getUuid(), req.getComment(), "comment is empty");
             }
 
             Comment newComment = new Comment();
@@ -51,7 +51,7 @@ public class CommentService {
             newComment.setPost(post);
             commentRepository.save(newComment);
 
-            return new CommentPostRes(post.getId(), user.getId(), newComment.getComment(),
+            return new CommentPostRes(post.getUuid(), user.getUuid(), newComment.getComment(),
                     "comment has been created successfully");
         } catch (Exception e) {
             throw new CreateCommentException("Error in creating comment: " + e.getMessage());

@@ -3,8 +3,8 @@ package com.blog.dto;
 import java.util.List;
 
 public class PostRes {
-    private long id;
-    private long userId;
+    private String postUuid;
+    private String userUuid;
     private String userName;
     private String content;
     private String title;
@@ -18,8 +18,8 @@ public class PostRes {
     }
 
     public PostRes(
-            long id,
-            long userId,
+            String postUuid,
+            String userUuid,
             String userName,
             String content,
             String title,
@@ -28,8 +28,8 @@ public class PostRes {
             List<String> mediaPaths,
             long commentCount,
             long likeCount) {
-        this.id = id;
-        this.userId = userId;
+        this.postUuid = postUuid;
+        this.userUuid = userUuid;
         this.userName = userName;
         this.content = content;
         this.title = title;
@@ -64,20 +64,20 @@ public class PostRes {
         this.mediaPaths = mediaPaths;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPostUuid(String postUuid) {
+        this.postUuid = postUuid;
     }
 
-    public long getId() {
-        return this.id;
+    public String getPostUuid() {
+        return this.postUuid;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserUuid(String userUuid) {
+        this.userUuid = userUuid;
     }
 
-    public long getUserId() {
-        return this.userId;
+    public String getUserUuid() {
+        return this.userUuid;
     }
 
     public String getTimestamp() {

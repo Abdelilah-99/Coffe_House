@@ -25,11 +25,18 @@ public class User {
     private List<Follow> following = new ArrayList<>();
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
     private List<Follow> followers = new ArrayList<>();
+    @Column(nullable = false, unique = true, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     public User() {
     }
 
-    public User(String email, String firstName, String lastName, String userName, String role, String password) {
+    public User(String email,
+            String firstName,
+            String lastName,
+            String userName,
+            String role,
+            String password) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -116,5 +123,13 @@ public class User {
 
     public void setFollowers(List<Follow> followers) {
         this.followers = followers;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

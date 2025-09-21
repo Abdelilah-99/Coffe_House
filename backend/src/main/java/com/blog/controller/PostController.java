@@ -59,33 +59,33 @@ public class PostController {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/edit/{id}")
-    public ResponseEntity<PostRes> editPost(@PathVariable Long id,
+    @PostMapping("/edit/{uuid}")
+    public ResponseEntity<PostRes> editPost(@PathVariable String uuid,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam(value = "mediaFiles", required = false) MultipartFile[] mediaFiles,
             @RequestParam(value = "pathFiles", required = false) List<String> pathFiles) {
-        System.err.printf("post_id: %s\n", id);
+        System.err.printf("post_id: %s\n", uuid);
         EditPostReq req = new EditPostReq(content, title, mediaFiles, pathFiles);
-        PostRes res = editPostService.editPost(id, req);
+        PostRes res = editPostService.editPost(uuid, req);
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<PostRes> deletePost(@PathVariable Long id) {
-        PostRes res = deletePostService.deletePost(id);
+    @PostMapping("/delete/{uuid}")
+    public ResponseEntity<PostRes> deletePost(@PathVariable String uuid) {
+        PostRes res = deletePostService.deletePost(uuid);
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/comment/create/{id}")
-    public ResponseEntity<CommentPostRes> commentPost(@PathVariable long id, @RequestBody CommentPostReq req) {
-        CommentPostRes res = commentService.createComment(id, req);
+    @PostMapping("/comment/create/{uuid}")
+    public ResponseEntity<CommentPostRes> commentPost(@PathVariable String uuid, @RequestBody CommentPostReq req) {
+        CommentPostRes res = commentService.createComment(uuid, req);
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/like/{id}")
-    public ResponseEntity<LikePostRes> likePost(@PathVariable long id) {
-        LikePostRes res = likePostService.likeLogic(id);
+    @PostMapping("/like/{uuid}")
+    public ResponseEntity<LikePostRes> likePost(@PathVariable String uuid) {
+        LikePostRes res = likePostService.likeLogic(uuid);
         return ResponseEntity.ok(res);
     }
 }
