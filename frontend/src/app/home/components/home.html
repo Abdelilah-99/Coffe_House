@@ -4,35 +4,23 @@
   <app-post-card
     *ngFor="let post of posts"
     [post]="post"
-    [like]="like"
     [profileData]="profileData"
     (edit)="onEdit($event)"
     (delete)="onDelete($event)"
     (report)="onReport($event)"
-    (reaction)="onReact($event)">    
+    (reaction)="onReact($event)"
+    (postCard)="onPostCardSection($event)"
+    >
   </app-post-card>
 </div>  
 </div>
 
 <div class="edit-modal" *ngIf="selectedPost">
-    <div class="edit-modal-content">
-        <h2>Edit Post</h2>
-        <input [(ngModel)]="selectedPost.title" placeholder="Edit title" required />
-        <textarea [(ngModel)]="selectedPost.content" placeholder="Edit content" required></textarea>
-
-        <div *ngFor="let path of selectedPost.mediaPaths">
-            <ng-container [ngSwitch]="getMediaType(path)">
-                <button (click)="deleteMedia(path, selectedPost)">x</button>
-                <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" width="100" />
-                <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls width="100"></video>
-            </ng-container>
-        </div>
-
-        <input type="file" (change)="onFileSelected($event)" multiple>
-
-        <div class="edit-modal-actions">
-            <button (click)="onSave(selectedPost); onCloseEdit()">Save</button>
-            <button (click)="onCloseEdit()">Cancel</button>
-        </div>
-    </div>
+    <app-edit-model
+    [selectedPost] = "selectedPost"
+    (save)="onSave($event)"
+    (close)="onCloseEdit()"
+    (file)="onFileSelected($event)"
+    (mediaDel)="deleteMedia($event[0], $event[1])"
+    ></app-edit-model>
 </div>

@@ -1,4 +1,4 @@
-<div class="post-card">
+<div class="post-card" (click)="postCard.emit(post.id)">
     <ng-template #reportBlock>
         <button (click)="report.emit(post.id)">Report</button>
     </ng-template>
@@ -18,8 +18,9 @@
     </div>
 
     <app-post-gallery [post]="post" [mediaPaths]="post.mediaPaths"></app-post-gallery>
-    <app-post-likes [post]="post" [like]="like" (reaction)="reaction.emit($event)">
+    <app-post-likes [post]="post" (reaction)="reaction.emit($event)">
     </app-post-likes>
+    <app-post-comments [post]="post"></app-post-comments>
     <div class="post-footer">
         <span class="post-author">By {{ post.userName }}</span>
     </div>

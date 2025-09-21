@@ -9,6 +9,5 @@ import { Like, Post } from '../../../../../post/services/post-service';
 })
 export class PostLikes {
   @Input() post!: Post;
-  @Input() like!: Like;
   @Output() reaction = new EventEmitter<number>();
 }

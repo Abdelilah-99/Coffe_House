@@ -1,0 +1,20 @@
+<div class="edit-modal-content">
+    <h2>Edit Post</h2>
+    <input [(ngModel)]="selectedPost.title" placeholder="Edit title" required />
+    <textarea [(ngModel)]="selectedPost.content" placeholder="Edit content" required></textarea>
+
+    <div *ngFor="let path of selectedPost.mediaPaths">
+        <ng-container [ngSwitch]="getMediaType(path)">
+            <button (click)="mediaDel.emit([path, selectedPost])">x</button>
+            <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" width="100" />
+            <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls width="100"></video>
+        </ng-container>
+    </div>
+
+    <input type="file" (change)="file.emit($event)" multiple>
+
+    <div class="edit-modal-actions">
+        <button (click)="save.emit(selectedPost); close.emit()">Save</button>
+        <button (click)="close.emit()">Cancel</button>
+    </div>
+</div>

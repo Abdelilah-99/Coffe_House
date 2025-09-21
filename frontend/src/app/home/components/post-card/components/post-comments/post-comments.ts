@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Post } from '../../../../../post/services/post-service';
 
 @Component({
   selector: 'app-post-comments',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './post-comments.css'
 })
 export class PostComments {
-
+  @Input() post!: Post;
 }

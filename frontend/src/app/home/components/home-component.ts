@@ -8,9 +8,10 @@ import { PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Sidebar } from './sidebar/sidebar';
 import { PostCardComponent } from './post-card/post-card';
+import { EditModel } from './edit-modal/edit-model';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, Sidebar, PostCardComponent],
+  imports: [CommonModule, FormsModule, Sidebar, PostCardComponent, EditModel],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -74,6 +75,21 @@ export class HomeComponent implements OnInit {
     this.selectedPost = undefined;
   }
 
+  onPostCardSection(postId: number) {
+    console.log("this section will navigate throw the post section ", postId);
+  }
+
+  deleteMedia(media: String, selectedMedia: any) {
+    let mediaPaths = this.selectedPost?.mediaPaths;
+    if (mediaPaths === undefined) return;
+    for (let index = 0; index < mediaPaths.length; index++) {
+      const element = mediaPaths[index];
+      if (media === element) {
+        this.selectedPost?.mediaPaths.splice(index, 1);
+      }
+    }
+  }
+
   selectedFiles: File[] = [];
 
   onFileSelected(e: any) {
@@ -106,6 +122,11 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  // onComment(id: number) {
+  //   let commentData = new FormData();
+  //   this.postService.doComment(id, commentData).subscribe({
+  //   })
+  // }
 
   onSave(updatedPost: any) {
     console.log(updatedPost);
@@ -156,28 +177,6 @@ export class HomeComponent implements OnInit {
     paths.forEach(element => {
       console.log("paths:: ", element);
     });
-  }
-
-  getMediaType(media: String): String {
-    console.log("media", media);
-    const ext = media.split('.').pop()?.toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext!)) {
-      return "img";
-    } else if (['mp4', 'webm', 'ogg'].includes(ext!)) {
-      return "vd";
-    }
-    return "null";
-  }
-
-  deleteMedia(media: String, selectedMedia: any) {
-    let mediaPaths = this.selectedPost?.mediaPaths;
-    if (mediaPaths === undefined) return;
-    for (let index = 0; index < mediaPaths.length; index++) {
-      const element = mediaPaths[index];
-      if (media === element) {
-        this.selectedPost?.mediaPaths.splice(index, 1);
-      }
-    }
   }
 
   myPost(post: Post): boolean {
