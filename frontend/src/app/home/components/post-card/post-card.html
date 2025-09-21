@@ -1,0 +1,26 @@
+<div class="post-card">
+    <ng-template #reportBlock>
+        <button (click)="report.emit(post.id)">Report</button>
+    </ng-template>
+
+    <div *ngIf="myPost(); else reportBlock" class="post-handler">
+        <button (click)="edit.emit(post)">Edit</button>
+        <button (click)="delete.emit(post.id)">Delete</button>
+    </div>
+
+    <div class="post-header">
+        <h3 class="post-title">{{ post.title }}</h3>
+        <span class="post-date">{{ post.timestamp }}</span>
+    </div>
+
+    <div class="post-content">
+        <p>{{ post.content }}</p>
+    </div>
+
+    <app-post-gallery [post]="post" [mediaPaths]="post.mediaPaths"></app-post-gallery>
+    <app-post-likes [post]="post" [like]="like" (reaction)="reaction.emit($event)">
+    </app-post-likes>
+    <div class="post-footer">
+        <span class="post-author">By {{ post.userName }}</span>
+    </div>
+</div>

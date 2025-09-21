@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Post, PostService } from '../../post/services/post-service';
+import { Like, Post, PostService } from '../../post/services/post-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProfileService, UserProfile } from '../../me/me.service';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { title } from 'process';
-import { error, log } from 'console';
+import { Sidebar } from './sidebar/sidebar';
+import { PostCardComponent } from './post-card/post-card';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Sidebar, PostCardComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class HomeComponent implements OnInit {
   posts: Post[] = [];
+  like: Like = { userId: null, postId: null, likeCount: 0 };
   updatedPost: Post | null = null;
   selectedPost?: Post;
   profileData: UserProfile | null = null;
@@ -83,9 +84,28 @@ export class HomeComponent implements OnInit {
       this.selectedFiles.push(files[i]);
     }
     console.log("file len: ", files.length);
-
     console.log('Selected files:', this.selectedFiles.map(f => f.name));
   }
+
+  onReact(id: number) {
+    this.postService.doReaction(id).subscribe({
+      next: (like) => {
+        console.log(like);
+        for (let i = 0; i < this.posts.length; i++) {
+          const element = this.posts[i];
+          if (element.id == id) {
+            console.log(this.posts[i].likeCount, like.likeCount);
+            element.likeCount = like.likeCount;
+            this.posts[i] = element;
+          }
+        }
+      },
+      error: (err) => {
+        console.error("error like ", err);
+      }
+    })
+  }
+
 
   onSave(updatedPost: any) {
     console.log(updatedPost);

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { Register } from './auth/register/register';
 import { Profile } from './me/me';
-import { HomeComponent } from './home/component/home-component';
+import { HomeComponent } from './home/components/home-component';
 export const routes: Routes = [
     // { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: '', component: HomeComponent },

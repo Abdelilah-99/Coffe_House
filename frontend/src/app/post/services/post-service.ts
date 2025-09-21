@@ -9,7 +9,9 @@ export interface Post {
   content: string;
   timestamp: String;
   userName: String;
-  mediaPaths: String[];
+  mediaPaths: string[];
+  commentCount: number;
+  likeCount: number;
 }
 
 export interface UserProfile {
@@ -20,6 +22,12 @@ export interface UserProfile {
   email: string;
 }
 
+export interface Like {
+  userId: any;
+  postId: any;
+  likeCount: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +36,8 @@ export class PostService {
   private URL = `http://localhost:8080/api/posts/all`;
   private URLDELETE = `http://localhost:8080/api/posts/delete/`;
   private URLUPDATE = `http://localhost:8080/api/posts/edit/`;
+  private URLPOSTLIKE = 'http://localhost:8080/api/posts/like';
+
   constructor(private http: HttpClient) { }
 
   getAllPosts(): Observable<Post[]> {
@@ -45,5 +55,9 @@ export class PostService {
   editPost(id: number, formData: FormData): Observable<any> {
     console.log(this.URLUPDATE + id);
     return this.http.post<Post>(this.URLUPDATE + id, formData);
+  }
+
+  doReaction(postId: number) {
+    return this.http.post<Like>(`${this.URLPOSTLIKE}/${postId}`, null);
   }
 }
