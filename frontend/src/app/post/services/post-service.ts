@@ -28,11 +28,18 @@ export interface Like {
   likeCount: number;
 }
 
+export interface Comment {
+  comments: { comment: String, uuid: String }[];
+  postUuid: String;
+  UserUuid: String;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
   private postsCach: Post[] = [];
+  private commentCach: Comment[] = [];
   private URL = `http://localhost:8080/api/posts`;
   // private URLPOSTCOMMENT = 
   constructor(private http: HttpClient) { }
@@ -64,5 +71,9 @@ export class PostService {
 
   getPost(uuid: String) {
     return this.http.get<Post>(this.URL + '/postCard/' + uuid);
+  }
+
+  getComments(uuid: String) {
+    return this.http.get<Comment>(this.URL + '/comment/' + uuid);
   }
 }

@@ -1,1 +1,31 @@
-<p>post-card works!</p>
+<div *ngIf="post" class="post-card">
+    <div class="post-header">
+        <span class="post-username">@{{ post.userName }}</span>
+        <br>
+        <span class="post-timestamp">{{ post.timestamp }}</span>
+    </div>
+
+    <h2 class="post-title">{{ post.title }}</h2>
+
+    <p class="post-content">{{ post.content }}</p>
+
+    <div class="post-images" *ngIf="post.mediaPaths && post.mediaPaths.length > 0">
+        <div *ngFor="let mediaPath of post.mediaPaths">
+            <ng-container [ngSwitch]="getMediaType(mediaPath)">
+                <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + mediaPath" width="300" />
+                <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + mediaPath" controls width="300"></video>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="post-footer">
+        <button class="likes" (click)="onReact(post.postUuid)">❤️ {{ post.likeCount }}</button>
+        <button class="comments" (click)="onComment(post.postUuid)">💬 {{ post.commentCount }}</button>
+        <div *ngIf="isCommenting">
+            <textarea name="comment" placeholder="comment..."></textarea>
+            <div class="post-comments" *ngFor="let comment of comment?.comments">
+                {{ comment?.comment }}
+            </div>
+        </div>
+    </div>
+</div>
