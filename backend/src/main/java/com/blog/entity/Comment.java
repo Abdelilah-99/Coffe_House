@@ -22,15 +22,25 @@ public class Comment {
     private Post post;
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
+    private String timestamp;
 
     public Comment() {
     }
 
-    public Comment(String comment, User user, Post post, String uuid) {
+    public Comment(String comment, User user, Post post, String uuid, String timesTamp) {
         this.comment = comment;
         this.user = user;
         this.post = post;
         this.uuid = uuid;
+        this.timestamp = timesTamp;
+    }
+
+    public String getTimesTamp() {
+        return timestamp;
+    }
+
+    public void setTimesTamp(String timesTamp) {
+        this.timesTamp = timesTamp;
     }
 
     public String getUuid() {

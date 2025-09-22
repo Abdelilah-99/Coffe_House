@@ -6,6 +6,7 @@ import java.util.*;
 public class CommentRes {
     private String postUuid;
     private String userUuid;
+    private String timesTamp;
     private List<Comment> comments;
 
     public CommentRes() {
@@ -14,10 +15,20 @@ public class CommentRes {
     public CommentRes(
             String postUuid,
             String userUuid,
+            String timesTamp,
             List<Comment> comments) {
         this.postUuid = postUuid;
         this.userUuid = userUuid;
+        this.timesTamp = timesTamp;
         this.comments = comments;
+    }
+
+    public void setTimesTamp(String timesTamp) {
+        this.timesTamp = timesTamp;
+    }
+
+    public String getTimesTamp() {
+        return this.timesTamp;
     }
 
     public void setPostUuid(String postUuid) {
