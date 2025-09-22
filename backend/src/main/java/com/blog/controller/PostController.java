@@ -83,6 +83,13 @@ public class PostController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/comment/{uuid}")
+    public ResponseEntity<CommentRes> getComment(@PathVariable String uuid) {
+        System.out.println("=============hi==============");
+        CommentRes res = commentService.getComment(uuid);
+        return ResponseEntity.ok(res);
+    }
+
     @PostMapping("/comment/create/{uuid}")
     public ResponseEntity<CommentPostRes> commentPost(@PathVariable String uuid, @RequestBody CommentPostReq req) {
         CommentPostRes res = commentService.createComment(uuid, req);

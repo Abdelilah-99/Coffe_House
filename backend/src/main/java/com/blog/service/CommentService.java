@@ -9,7 +9,7 @@ import com.blog.entity.User;
 import com.blog.exceptions.UserNotFoundException;
 import com.blog.exceptions.CreateCommentException;
 import com.blog.exceptions.PostNotFoundException;
-import com.blog.dto.CommentPostRes;
+import com.blog.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +56,11 @@ public class CommentService {
         } catch (Exception e) {
             throw new CreateCommentException("Error in creating comment: " + e.getMessage());
         }
+    }
+
+    public CommentRes getComment(String uuid) {
+        Post post = postRepository.findByUuid(uuid)
+                .orElseThrow(() -> new PostNotFoundException("Post not found for comment"));
+        return new CommentRes(post.getUuid(), post.getUser().getUuid(), post.getComments());
     }
 }

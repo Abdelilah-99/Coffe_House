@@ -1,20 +1,23 @@
 package com.blog.entity;
 
 import java.util.UUID;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
     @Column(columnDefinition = "TEXT")
     private String comment;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "post_id")
     private Post post;
     @Column(nullable = false, unique = true, updatable = false)
