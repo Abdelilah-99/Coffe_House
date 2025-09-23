@@ -70,5 +70,7 @@ export class Profile implements OnInit {
     });
     this.profileService.createPost(formData).subscribe({
     })
+    this.post.title = '';
+    this.post.content = '';
   }
 }

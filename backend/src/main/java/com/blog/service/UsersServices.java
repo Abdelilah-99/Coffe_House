@@ -8,14 +8,24 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.blog.dto.UserFollowRes;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.*;
+import com.blog.repository.FollowRepository;
 import com.blog.repository.UserRepository;
+import com.blog.exceptions.*;
 
 @Service
 public class UsersServices {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private FollowRepository followRepository;
+
+    public UsersServices(UserRepository userRepository, FollowRepository followRepository) {
+        this.userRepository = userRepository;
+        this.followRepository = followRepository;
+    }
 
     public List<UsersRespons> findAll() {
         List<User> users = userRepository.findAll();
@@ -51,5 +61,27 @@ public class UsersServices {
                     user.getRole());
         }
         throw new Exception("User not authenticated");
+    }
+
+    public UserFollowRes follow(String uuid) {
+        UsersRespons user;
+        try {
+            user = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
+        User crrUser = userRepository.findByUserName(user.getUsername()).orElseThrow(() -> {
+            throw new UserNotFoundException("invalid uuid");
+        });
+        User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
+            throw new UserNotFoundException("invalid uuid");
+        });
+        Follow follow = new Follow();
+        follow.setFollower(crrUser);
+        follow.setFollowing(otherUser);
+        followRepository.save(follow);
+        return new UserFollowRes(crrUser.getUuid(),
+                otherUser.getUuid(),
+                "user has succseffully followed");
     }
 }
