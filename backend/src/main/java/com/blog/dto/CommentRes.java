@@ -4,31 +4,31 @@ import com.blog.entity.*;
 import java.util.*;
 
 public class CommentRes {
+    private String userName;
     private String postUuid;
     private String userUuid;
-    private String timesTamp;
     private List<Comment> comments;
 
     public CommentRes() {
     }
 
     public CommentRes(
+            String userName,
             String postUuid,
             String userUuid,
-            String timesTamp,
             List<Comment> comments) {
+        this.userName = userName;
         this.postUuid = postUuid;
         this.userUuid = userUuid;
-        this.timesTamp = timesTamp;
         this.comments = comments;
     }
 
-    public void setTimesTamp(String timesTamp) {
-        this.timesTamp = timesTamp;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getTimesTamp() {
-        return this.timesTamp;
+    public String getUserName(String userName) {
+        return this.userName;
     }
 
     public void setPostUuid(String postUuid) {

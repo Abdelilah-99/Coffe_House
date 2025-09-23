@@ -29,7 +29,7 @@ export interface Like {
 }
 
 export interface Comment {
-  comments: { comment: String, uuid: String }[];
+  comments: { userName: String, timesTamp: String, comment: String, uuid: String }[];
   postUuid: String;
   UserUuid: String;
 }

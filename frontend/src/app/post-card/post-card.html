@@ -24,6 +24,8 @@
         <div *ngIf="isCommenting">
             <textarea name="comment" placeholder="comment..."></textarea>
             <div class="post-comments" *ngFor="let comment of comment?.comments">
+                {{ comment?.userName }}
+                {{ comment?.timesTamp }}
                 {{ comment?.comment }}
             </div>
         </div>

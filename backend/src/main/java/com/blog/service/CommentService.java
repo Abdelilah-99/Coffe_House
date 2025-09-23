@@ -3,15 +3,14 @@ package com.blog.service;
 import com.blog.dto.CommentPostReq;
 import com.blog.dto.UsersRespons;
 import com.blog.repository.*;
-import com.blog.entity.Post;
-import com.blog.entity.Comment;
-import com.blog.entity.User;
+import com.blog.entity.*;
 import com.blog.exceptions.UserNotFoundException;
 import com.blog.exceptions.CreateCommentException;
 import com.blog.exceptions.PostNotFoundException;
 import com.blog.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 
 @Service
 public class CommentService {
@@ -49,6 +48,8 @@ public class CommentService {
             newComment.setComment(req.getComment());
             newComment.setUser(user);
             newComment.setPost(post);
+            newComment.setUserName(user.getUserName());
+            newComment.setTimesTamp(LocalDateTime.now().toString());
             commentRepository.save(newComment);
 
             return new CommentPostRes(post.getUuid(), user.getUuid(), newComment.getComment(),
@@ -61,6 +62,12 @@ public class CommentService {
     public CommentRes getComment(String uuid) {
         Post post = postRepository.findByUuid(uuid)
                 .orElseThrow(() -> new PostNotFoundException("Post not found for comment"));
-        return new CommentRes(post.getUuid(), post.getUser().getUuid(), post.getComments());
+        UsersRespons userDetail;
+        try {
+            userDetail = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotFoundException("user not found");
+        }
+        return new CommentRes(userDetail.getUsername(), post.getUuid(), post.getUser().getUuid(), post.getComments());
     }
 }
