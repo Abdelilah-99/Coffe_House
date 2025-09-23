@@ -12,7 +12,7 @@ import com.blog.service.UsersServices;
 
 @RestController
 @RequestMapping("/api/users")
-public class UsersGetController {
+public class UserController {
     @Autowired
     private UsersServices userService;
 

@@ -28,10 +28,14 @@ export interface Like {
   likeCount: number;
 }
 
-export interface Comment {
+export interface Comments {
   comments: { userName: String, timesTamp: String, comment: String, uuid: String }[];
   postUuid: String;
   UserUuid: String;
+}
+
+export interface Comment {
+  comment: String;
 }
 
 @Injectable({
@@ -74,6 +78,10 @@ export class PostService {
   }
 
   getComments(uuid: String) {
-    return this.http.get<Comment>(this.URL + '/comment/' + uuid);
+    return this.http.get<Comments>(this.URL + '/comment/' + uuid);
+  }
+
+  submitComment(comment: String, uuid: String) {
+    return this.http.post<Comment>(this.URL + '/comment/create/' + uuid, { comment: comment })
   }
 }

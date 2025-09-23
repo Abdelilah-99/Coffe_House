@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Like, Post, PostService, Comment } from '../post/services/post-service';
+import { Like, Post, PostService, Comments } from '../post/services/post-service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
@@ -14,7 +14,8 @@ export class PostCard implements OnInit {
   postUuid: String | null = null;
   post?: Post;
   like?: Like;
-  comment?: Comment;
+  comment?: Comments;
+  instantComment?: String;
   isCommenting = false;
   ngOnInit(): void {
     this.postUuid = this.route.snapshot.paramMap.get('id');
@@ -30,6 +31,20 @@ export class PostCard implements OnInit {
         },
         error: (err) => {
           console.error("errorl loading post ", err);
+        }
+      })
+    }
+  }
+
+  onSubmitComment(comment: String, uuid: String | null = null) {
+    if (uuid) {
+      this.postService.submitComment(comment, uuid).subscribe({
+        next: (res) => {
+          this.instantComment = res.comment;
+          console.log(this.instantComment);
+        },
+        error: (err) => {
+          console.error(err);
         }
       })
     }
@@ -61,12 +76,12 @@ export class PostCard implements OnInit {
   onComment(uuid: String) {
     this.isCommenting = !this.isCommenting;
     console.log(this.isCommenting);
-    
+
     if (this.isCommenting) {
       this.postService.getComments(uuid).subscribe({
         next: (comment) => {
-            this.comment = comment;
-            console.log(comment);
+          this.comment = comment;
+          console.log(comment);
         },
         error: (err) => {
           console.error("error loading comments ", err);
