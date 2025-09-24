@@ -71,16 +71,27 @@ public class UsersServices {
             throw new UserNotFoundException(e.getMessage());
         }
         User crrUser = userRepository.findByUserName(user.getUsername()).orElseThrow(() -> {
-            throw new UserNotFoundException("invalid uuid");
+            throw new UserNotFoundException("need to login");
         });
         User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new UserNotFoundException("invalid uuid");
+            throw new UserNotFoundException("invalid user");
         });
+        long follower = followRepository.countByFollowerId(crrUser.getId());
+        long following = followRepository.countByFollowingId(crrUser.getId());
+
+        boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
+        if (existe) {
+            return new UserFollowRes(follower, following, crrUser.getUuid(),
+                    otherUser.getUuid(),
+                    "already following");
+        }
         Follow follow = new Follow();
         follow.setFollower(crrUser);
         follow.setFollowing(otherUser);
         followRepository.save(follow);
-        return new UserFollowRes(crrUser.getUuid(),
+        follower = followRepository.countByFollowerId(crrUser.getId());
+        following = followRepository.countByFollowingId(crrUser.getId());
+        return new UserFollowRes(follower, following, crrUser.getUuid(),
                 otherUser.getUuid(),
                 "user has succseffully followed");
     }
@@ -93,14 +104,50 @@ public class UsersServices {
             throw new UserNotFoundException(e.getMessage());
         }
         User crrUser = userRepository.findByUserName(user.getUsername()).orElseThrow(() -> {
-            throw new UserNotFoundException("invalid uuid");
+            throw new UserNotFoundException("need to login");
         });
         User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new UserNotFoundException("invalid uuid");
+            throw new UserNotFoundException("invalid user");
         });
+        boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
+        long follower = followRepository.countByFollowerId(crrUser.getId());
+        long following = followRepository.countByFollowingId(crrUser.getId());
+
+        if (!existe) {
+            return new UserFollowRes(follower, following, crrUser.getUuid(),
+                    otherUser.getUuid(),
+                    "already unfollowed");
+        }
+        System.out.println("hii follow");
         followRepository.deleteByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
-        return new UserFollowRes(crrUser.getUuid(),
+        follower = followRepository.countByFollowerId(crrUser.getId());
+        following = followRepository.countByFollowingId(crrUser.getId());
+        return new UserFollowRes(follower, following, crrUser.getUuid(),
                 otherUser.getUuid(),
                 "user has succseffully unfollowed");
+    }
+
+    public UserFollowRes isFollowing(String uuid) {
+        UsersRespons user;
+        try {
+            user = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
+        User crrUser = userRepository.findByUserName(user.getUsername()).orElseThrow(() -> {
+            throw new UserNotFoundException("need to login");
+        });
+        User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
+            throw new UserNotFoundException("invalid user");
+        });
+        long follower = followRepository.countByFollowerId(crrUser.getId());
+        long following = followRepository.countByFollowingId(crrUser.getId());
+        boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
+        if (!existe) {
+            return new UserFollowRes(follower, following, crrUser.getUuid(),
+                    otherUser.getUuid(), "no follow");
+        }
+        return new UserFollowRes(follower, following, crrUser.getUuid(),
+                otherUser.getUuid(), "follow");
     }
 }

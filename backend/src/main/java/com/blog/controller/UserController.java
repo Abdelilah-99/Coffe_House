@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import java.net.ResponseCache;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class UserController {
     @PostMapping("/unfollow/{uuid}")
     public ResponseEntity<UserFollowRes> unfollowUser(@PathVariable String uuid) {
         UserFollowRes result = userService.unfollow(uuid);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/isfollowing/{uuid}")
+    public ResponseEntity<UserFollowRes> isFollowing(@PathVariable String uuid) {
+        UserFollowRes result = userService.isFollowing(uuid);
         return ResponseEntity.ok(result);
     }
 }
