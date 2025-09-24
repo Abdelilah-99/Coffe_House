@@ -8,4 +8,5 @@ import com.blog.entity.*;
 
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
+    void deleteByFollowerIdAndFollowingId(Long followerId, Long followingId);
 }

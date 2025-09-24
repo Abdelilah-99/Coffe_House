@@ -33,4 +33,10 @@ public class UserController {
         UserFollowRes result = userService.follow(uuid);
         return ResponseEntity.ok(result);
     }
+
+    @PostMapping("/unfollow/{uuid}")
+    public ResponseEntity<UserFollowRes> unfollowUser(@PathVariable String uuid) {
+        UserFollowRes result = userService.unfollow(uuid);
+        return ResponseEntity.ok(result);
+    }
 }

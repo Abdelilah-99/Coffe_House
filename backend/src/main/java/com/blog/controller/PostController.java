@@ -101,4 +101,5 @@ public class PostController {
         LikePostRes res = likePostService.likeLogic(uuid);
         return ResponseEntity.ok(res);
     }
+
 }

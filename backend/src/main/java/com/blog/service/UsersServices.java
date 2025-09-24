@@ -84,4 +84,23 @@ public class UsersServices {
                 otherUser.getUuid(),
                 "user has succseffully followed");
     }
+
+    public UserFollowRes unfollow(String uuid) {
+        UsersRespons user;
+        try {
+            user = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotFoundException(e.getMessage());
+        }
+        User crrUser = userRepository.findByUserName(user.getUsername()).orElseThrow(() -> {
+            throw new UserNotFoundException("invalid uuid");
+        });
+        User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
+            throw new UserNotFoundException("invalid uuid");
+        });
+        followRepository.deleteByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
+        return new UserFollowRes(crrUser.getUuid(),
+                otherUser.getUuid(),
+                "user has succseffully unfollowed");
+    }
 }
