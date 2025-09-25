@@ -1,0 +1,26 @@
+<div class="edit-modal-content" *ngIf="post">
+    <h2>Edit Post</h2>
+    <input [(ngModel)]="post.title" placeholder="Edit title" required />
+    <textarea [(ngModel)]="post.content" placeholder="Edit content" required></textarea>
+
+    <div *ngFor="let path of post?.mediaPaths">
+        <ng-container [ngSwitch]="getMediaType(path)">
+            <button (click)="deleteMedia(path, post)">x</button>
+            <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" width="100" />
+            <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls width="100"></video>
+        </ng-container>
+    </div>
+
+    <input type="file" (change)="onFileSelected($event)" multiple>
+
+    <div class="preview-container" *ngIf="previewUrls.length > 0">
+        <div *ngFor="let url of previewUrls">
+            <img *ngIf="url.startsWith('data:image')" [src]="url" width="100" />
+            <video *ngIf="url.startsWith('data:video')" [src]="url" controls width="100"></video>
+        </div>
+    </div>
+
+    <div class="edit-modal-actions">
+        <button (click)="onSave(post)">Save</button>
+    </div>
+</div>

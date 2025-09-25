@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface UserProfile {
-  userUuid: String;
   firstName: string;
   lastName: string;
   username: string;
   email: string;
+  uuid: String;
 }
 
 @Injectable({

@@ -4,10 +4,12 @@ import { Register } from './auth/register/register';
 import { Profile } from './me/me';
 import { HomeComponent } from './home/components/home-component';
 import { PostCard } from './post-card/post-card';
+import { Edit } from './edit/edit';
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: Login },
     { path: 'register', component: Register },
     { path: 'me', component: Profile },
-    { path: 'postCard/:id', component: PostCard }
+    { path: 'postCard/:id', component: PostCard },
+    { path: 'edit/:id', component: Edit }
 ];

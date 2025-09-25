@@ -17,12 +17,14 @@ export class PostCardComponent {
   @Input() post!: Post;
   @Input() profileData!: UserProfile | null;
 
-  @Output() edit = new EventEmitter<Post>();
+  @Output() edit = new EventEmitter<String>();
   @Output() delete = new EventEmitter<String>();
   @Output() report = new EventEmitter<String>();
   @Output() reaction = new EventEmitter<String>();
   @Output() postCard = new EventEmitter<String>();
   myPost(): boolean {
-    return this.post.userUuid === this.profileData?.userUuid;
+    console.log(this.post.userUuid, this.profileData?.uuid);
+
+    return this.post.userUuid === this.profileData?.uuid;
   }
 }

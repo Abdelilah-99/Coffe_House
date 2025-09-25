@@ -6,7 +6,6 @@
     [post]="post"
     [profileData]="profileData"
     (edit)="onEdit($event)"
-    (delete)="onDelete($event)"
     (report)="onReport($event)"
     (reaction)="onReact($event)"
     (postCard)="onPostCardSection($event)"
@@ -15,7 +14,7 @@
 </div>  
 </div>
 
-<div class="edit-modal" *ngIf="selectedPost">
+<!-- <div class="edit-modal" *ngIf="selectedPost">
     <app-edit-model
     [selectedPost] = "selectedPost"
     (save)="onSave($event)"
@@ -23,4 +22,4 @@
     (file)="onFileSelected($event)"
     (mediaDel)="deleteMedia($event[0], $event[1])"
     ></app-edit-model>
-</div>
+</div> -->

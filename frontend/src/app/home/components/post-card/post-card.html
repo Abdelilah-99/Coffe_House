@@ -1,12 +1,14 @@
 <div class="post-card" (click)="postCard.emit(post.postUuid)">
+
+    <div *ngIf="myPost(); else reportBlock" class="post-handler">
+        <button (click)="edit.emit(post.postUuid)">Edit</button>
+        <button (click)="delete.emit(post.postUuid)">Delete</button>
+    </div>
+
     <ng-template #reportBlock>
         <button (click)="report.emit(post.postUuid)">Report</button>
     </ng-template>
 
-    <div *ngIf="myPost(); else reportBlock" class="post-handler">
-        <button (click)="edit.emit(post)">Edit</button>
-        <button (click)="delete.emit(post.postUuid)">Delete</button>
-    </div>
 
     <div class="post-header">
         <h3 class="post-title">{{ post.title }}</h3>

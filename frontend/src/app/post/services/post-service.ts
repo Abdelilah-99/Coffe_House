@@ -15,11 +15,11 @@ export interface Post {
 }
 
 export interface UserProfile {
-  postUuid: number;
   firstName: string;
   lastName: string;
   username: string;
   email: string;
+  uuid: String;
 }
 
 export interface Like {
