@@ -53,16 +53,18 @@ export class Edit implements OnInit {
     const files: FileList = e.target.files;
     if (!files || files.length === 0) return;
 
-    this.selectedFiles = Array.from(files);
-    this.previewUrls = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      this.selectedFiles.push(file);
 
-    this.selectedFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.previewUrls.push(event.target.result);
-      };
-      reader.readAsDataURL(file);
-    });
+      const url = URL.createObjectURL(file);
+      this.previewUrls.push(url);
+    }
+  }
+
+  deleteFileSelected(index: number) {
+    this.selectedFiles.splice(index, 1);
+    this.previewUrls.splice(index, 1);
   }
 
   onSave(updatedPost: any) {
@@ -73,6 +75,8 @@ export class Edit implements OnInit {
     formData.append("pathFiles", updatedPost.mediaPaths);
     console.log(formData.get("title"));
     this.selectedFiles.forEach(element => {
+      console.log("ele ", element);
+
       formData.append("mediaFiles", element);
     });
     this.postService.editPost(updatedPost.postUuid, formData).subscribe({
@@ -83,8 +87,8 @@ export class Edit implements OnInit {
         console.error("error updating post: ", err);
       }
     });
-    this.navigate.navigate(['']);
     updatedPost = undefined;
+    this.navigate.navigate(['']);
   }
 
   getMediaType(media: String): String {

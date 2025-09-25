@@ -13,12 +13,12 @@
 
     <input type="file" (change)="onFileSelected($event)" multiple>
 
-    <div class="preview-container" *ngIf="previewUrls.length > 0">
-        <div *ngFor="let url of previewUrls">
-            <img *ngIf="url.startsWith('data:image')" [src]="url" width="100" />
-            <video *ngIf="url.startsWith('data:video')" [src]="url" controls width="100"></video>
-        </div>
+    <div *ngFor="let url of previewUrls; index as i">
+        <button (click)="deleteFileSelected(i)">X</button>
+        <img *ngIf="url.startsWith('blob:')" [src]="url" width="100" />
+        <video *ngIf="url.startsWith('blob:')" [src]="url" controls width="100"></video>
     </div>
+
 
     <div class="edit-modal-actions">
         <button (click)="onSave(post)">Save</button>

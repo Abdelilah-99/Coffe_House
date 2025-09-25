@@ -23,7 +23,8 @@
         <button class="comments" (click)="onComment(post.postUuid)">💬 {{ post.commentCount }}</button>
         <div *ngIf="isCommenting">
             <textarea name="comment" id="cleanForm" placeholder="comment..." #commentData></textarea>
-            <button type="submit" (click)="onSubmitComment(commentData.value, comment?.postUuid); commentData.value = ''">comment</button>
+            <button type="submit"
+                (click)="onSubmitComment(commentData.value, comment?.postUuid); commentData.value = ''">comment</button>
             <div class="myComment" *ngIf="instantComment">{{ instantComment }}</div>
             <div class="post-comments" *ngFor="let comment of comment?.comments">
                 {{ comment?.userName }}
@@ -34,4 +35,12 @@
             </div>
         </div>
     </div>
+    <div *ngIf="myPost(post.userUuid); else reportBlock" class="post-handler">
+        <button (click)="onEdit(post.postUuid)">Edit</button>
+        <button (click)="onDelete(post.postUuid)">Delete</button>
+    </div>
+
+    <ng-template #reportBlock>
+        <button (click)="onReport(post.postUuid)">Report</button>
+    </ng-template>
 </div>

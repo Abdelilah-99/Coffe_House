@@ -49,15 +49,12 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   getAllPosts(): Observable<Post[]> {
-    if (this.postsCach.length > 0) {
-      return of(this.postsCach);
-    }
-    return this.http.get<Post[]>(this.URL + '/all').pipe(tap(posts => this.postsCach = posts));
+    return this.http.get<Post[]>(this.URL + '/all');
   }
 
   deletePost(uuid: String): Observable<any> {
-    console.log(this.URL + '/delete/' + uuid);
-    return this.http.post(this.URL + uuid, null);
+    // console.log(this.URL + uuid);
+    return this.http.post(this.URL + '/delete/' + uuid, null);
   }
 
   editPost(uuid: String, formData: FormData): Observable<any> {

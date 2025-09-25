@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
   posts: Post[] = [];
   like: Like = { userUuid: null, postUuid: null, likeCount: 0 };
   selectedPost?: Post;
-  profileData: UserProfile | null = null;
   isLoding = true;
   post = { title: '', content: '' }
   constructor(private postService: PostService,
@@ -27,22 +26,7 @@ export class HomeComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
-    this.loadProfile();
     this.loadPosts();
-  }
-
-  loadProfile() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.profileService.getProfile().subscribe({
-        next: (data) => {
-          this.profileData = data;
-          console.log("test: ", this.profileData);
-        },
-        error: (err) => {
-          console.error("err loading profile for post check: ", err);
-        }
-      });
-    }
   }
 
   loadPosts() {
@@ -63,11 +47,6 @@ export class HomeComponent implements OnInit {
         }
       });
     }
-  }
-
-  onEdit(postUuid: String) {
-    console.log("this section will navigate throw the post section ", postUuid);
-    this.router.navigate(['/edit', postUuid]);
   }
 
   onPostCardSection(postUuid: String) {
@@ -94,26 +73,9 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  onReport(id: String) {
-    console.log("hii: ", id);
-  }
-
   printPaths(paths: String[]) {
     paths.forEach(element => {
       console.log("paths:: ", element);
     });
-  }
-
-  myPost(post: Post): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        this.router.navigate(['/login']);
-      }
-    }
-    if (post.userUuid === this.profileData?.uuid) {
-      return true;
-    }
-    return false;
   }
 }

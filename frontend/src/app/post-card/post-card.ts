@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Like, Post, PostService, Comments } from '../post/services/post-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ProfileService, UserProfile } from '../me/me.service';
 
 @Component({
   selector: 'app-post-card',
@@ -10,16 +11,32 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
   styleUrl: './post-card.css'
 })
 export class PostCard implements OnInit {
-  constructor(private postService: PostService, private route: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(private postService: PostService, private route: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: Object, private navigate: Router, private profileService: ProfileService) { }
   postUuid: String | null = null;
   post?: Post;
   like?: Like;
   comment?: Comments;
   instantComment?: String;
   isCommenting = false;
+  profileData: UserProfile | null = null;
   ngOnInit(): void {
+    this.loadProfile();
     this.postUuid = this.route.snapshot.paramMap.get('id');
     this.loadCardData();
+  }
+
+  loadProfile() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.profileService.getProfile().subscribe({
+        next: (data) => {
+          this.profileData = data;
+          console.log("test: ", this.profileData);
+        },
+        error: (err) => {
+          console.error("err loading profile for post check: ", err);
+        }
+      });
+    }
   }
 
   loadCardData() {
@@ -88,5 +105,40 @@ export class PostCard implements OnInit {
         }
       })
     }
+  }
+
+  onEdit(postUuid: String) {
+    console.log("this section will navigate throw the post section ", postUuid);
+    this.navigate.navigate(['/edit', postUuid]);
+  }
+  onReport(id: String) {
+    console.log("hii: ", id);
+  }
+
+  onDelete(uuid: String) {
+    this.postService.deletePost(uuid).subscribe({
+      next: (res) => {
+        console.log("post has been deleted ", res);
+        this.navigate.navigate(['']);
+      },
+      error: (err) => {
+        console.error("error deleting post ", err);
+      }
+    })
+  }
+
+  myPost(userUuid: String): boolean {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        this.navigate.navigate(['/login']);
+      }
+    }
+    console.log(userUuid + "t" + this.profileData?.uuid);
+
+    if (userUuid === this.profileData?.uuid) {
+      return true;
+    }
+    return false;
   }
 }
