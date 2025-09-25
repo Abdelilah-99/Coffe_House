@@ -26,12 +26,18 @@
             <button type="submit"
                 (click)="onSubmitComment(commentData.value, comment?.postUuid); commentData.value = ''">comment</button>
             <div *ngFor="let instantComment of instantComments">
-                <div class="myComment">{{ instantComment }}</div>
+                <div class="myComment" *ngIf="profileData">
+                    {{ instantComment.username }}
+                    <br>
+                    {{ instantComment.time | date:'yyyy-MM-dd HH:mm:ss' }}
+                    <br>
+                    {{ instantComment.comment }}
+                </div>
             </div>
             <div class="post-comments" *ngFor="let comment of comment?.comments">
                 {{ comment?.userName }}
                 <br>
-                {{ comment?.timesTamp }}
+                {{ comment?.timesTamp | date:'yyyy-MM-dd HH:mm:ss' }}
                 <br>
                 {{ comment?.comment }}
             </div>

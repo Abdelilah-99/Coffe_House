@@ -3,6 +3,7 @@ import { Like, Post, PostService, Comments } from '../post/services/post-service
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ProfileService, UserProfile } from '../me/me.service';
+import { time } from 'console';
 
 @Component({
   selector: 'app-post-card',
@@ -16,7 +17,6 @@ export class PostCard implements OnInit {
   post?: Post;
   like?: Like;
   comment?: Comments;
-  instantComments?: String[];
   isCommenting = false;
   profileData: UserProfile | null = null;
   ngOnInit(): void {
@@ -53,12 +53,21 @@ export class PostCard implements OnInit {
     }
   }
 
+  instantComments?: { comment: String, username: String, time: number }[] = [];
+
   onSubmitComment(comment: String, uuid: String | null = null) {
     if (uuid) {
       this.postService.submitComment(comment, uuid).subscribe({
         next: (res) => {
-          this.instantComments?.push(res.comment);
-          console.log("why? ",this.instantComments);
+          this.instantComments?.push({
+            comment: res.comment,
+            username: this.profileData?.username || '',
+            time: Date.now()
+          });
+          this.instantComments?.reverse();
+          if (this.post) {
+            this.post.commentCount += 1;
+          }
         },
         error: (err) => {
           console.error(err);

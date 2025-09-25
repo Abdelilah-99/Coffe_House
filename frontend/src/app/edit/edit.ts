@@ -58,6 +58,7 @@ export class Edit implements OnInit {
       this.selectedFiles.push(file);
 
       const url = URL.createObjectURL(file);
+      console.log(url);
       this.previewUrls.push(url);
     }
   }
@@ -80,6 +81,8 @@ export class Edit implements OnInit {
       next: (data) => {
         this.updatedPost = data;
         this.navigate.navigate(['']);
+        this.selectedFiles = [];
+        this.previewUrls = [];
       },
       error: (err) => {
         console.error("error updating post: ", err);

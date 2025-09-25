@@ -22,7 +22,7 @@ public class Comment {
     private Post post;
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
-    private String timesTamp;
+    private long timesTamp;
     private String userName;
 
     public Comment() {
@@ -32,7 +32,7 @@ public class Comment {
             User user,
             Post post,
             String uuid,
-            String timesTamp,
+            long timesTamp,
             String userName) {
         this.comment = comment;
         this.user = user;
@@ -50,11 +50,11 @@ public class Comment {
         this.userName = userName;
     }
 
-    public String getTimesTamp() {
+    public long getTimesTamp() {
         return timesTamp;
     }
 
-    public void setTimesTamp(String timesTamp) {
+    public void setTimesTamp(long timesTamp) {
         this.timesTamp = timesTamp;
     }
 

@@ -49,7 +49,7 @@ public class CommentService {
             newComment.setUser(user);
             newComment.setPost(post);
             newComment.setUserName(user.getUserName());
-            newComment.setTimesTamp(LocalDateTime.now().toString());
+            newComment.setTimesTamp(System.currentTimeMillis());
             commentRepository.save(newComment);
 
             return new CommentPostRes(post.getUuid(), user.getUuid(), newComment.getComment(),
@@ -66,7 +66,7 @@ public class CommentService {
         try {
             userDetail = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("user not found");
+            throw new UserNotFoundException("user not found for comment retriving");
         }
         return new CommentRes(userDetail.getUsername(), post.getUuid(), post.getUser().getUuid(), post.getComments());
     }
