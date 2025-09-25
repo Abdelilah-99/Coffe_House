@@ -16,7 +16,7 @@ export class PostCard implements OnInit {
   post?: Post;
   like?: Like;
   comment?: Comments;
-  instantComment?: String;
+  instantComments?: String[];
   isCommenting = false;
   profileData: UserProfile | null = null;
   ngOnInit(): void {
@@ -57,8 +57,8 @@ export class PostCard implements OnInit {
     if (uuid) {
       this.postService.submitComment(comment, uuid).subscribe({
         next: (res) => {
-          this.instantComment = res.comment;
-          console.log(this.instantComment);
+          this.instantComments?.push(res.comment);
+          console.log("why? ",this.instantComments);
         },
         error: (err) => {
           console.error(err);

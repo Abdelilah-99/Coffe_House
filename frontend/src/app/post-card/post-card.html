@@ -25,7 +25,9 @@
             <textarea name="comment" id="cleanForm" placeholder="comment..." #commentData></textarea>
             <button type="submit"
                 (click)="onSubmitComment(commentData.value, comment?.postUuid); commentData.value = ''">comment</button>
-            <div class="myComment" *ngIf="instantComment">{{ instantComment }}</div>
+            <div *ngFor="let instantComment of instantComments">
+                <div class="myComment">{{ instantComment }}</div>
+            </div>
             <div class="post-comments" *ngFor="let comment of comment?.comments">
                 {{ comment?.userName }}
                 <br>

@@ -73,22 +73,18 @@ export class Edit implements OnInit {
     formData.append("title", updatedPost.title);
     formData.append("content", updatedPost.content);
     formData.append("pathFiles", updatedPost.mediaPaths);
-    console.log(formData.get("title"));
     this.selectedFiles.forEach(element => {
-      console.log("ele ", element);
-
       formData.append("mediaFiles", element);
     });
     this.postService.editPost(updatedPost.postUuid, formData).subscribe({
       next: (data) => {
         this.updatedPost = data;
+        this.navigate.navigate(['']);
       },
       error: (err) => {
         console.error("error updating post: ", err);
       }
     });
-    updatedPost = undefined;
-    this.navigate.navigate(['']);
   }
 
   getMediaType(media: String): String {
