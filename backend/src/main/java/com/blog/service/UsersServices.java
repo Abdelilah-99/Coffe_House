@@ -150,4 +150,21 @@ public class UsersServices {
         return new UserFollowRes(follower, following, crrUser.getUuid(),
                 otherUser.getUuid(), "follow");
     }
+
+    public List<UsersRespons> getUser(String username) {
+        List<User> users = userRepository.findByUserNameStartingWithIgnoreCase(username);
+        List<UsersRespons> rs = convertToRes(users);
+        return rs;
+    }
+
+    private List<UsersRespons> convertToRes(List<User> users) {
+        List<UsersRespons> userList = new ArrayList<>();
+        for (User user : users) {
+            UsersRespons userRes = new UsersRespons();
+            userRes.setUsername(user.getUserName());
+            userRes.setUuid(user.getUuid());
+            userList.add(userRes);
+        }
+        return userList;
+    }
 }

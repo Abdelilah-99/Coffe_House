@@ -8,6 +8,9 @@ public class UsersRespons {
     private String email;
     private String role;
 
+    public UsersRespons() {
+    }
+
     public UsersRespons(String uuid, String firstName, String lastName, String username, String email, String role) {
         this.uuid = uuid;
         this.firstName = firstName;

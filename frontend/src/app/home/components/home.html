@@ -1,4 +1,6 @@
 <app-sidebar></app-sidebar>
+<app-searchbar>
+</app-searchbar>
 <div class="main-content">
 <div class="posts-container">
   <app-post-card
@@ -10,13 +12,3 @@
   </app-post-card>
 </div>  
 </div>
-
-<!-- <div class="edit-modal" *ngIf="selectedPost">
-    <app-edit-model
-    [selectedPost] = "selectedPost"
-    (save)="onSave($event)"
-    (close)="onCloseEdit()"
-    (file)="onFileSelected($event)"
-    (mediaDel)="deleteMedia($event[0], $event[1])"
-    ></app-edit-model>
-</div> -->

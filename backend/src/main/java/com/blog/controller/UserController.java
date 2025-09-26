@@ -46,4 +46,11 @@ public class UserController {
         UserFollowRes result = userService.isFollowing(uuid);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UsersRespons>> searchForUser(@RequestParam String username) {
+        System.out.println("username query: " + username);
+        List<UsersRespons> result = userService.getUser(username);
+        return ResponseEntity.ok(result);
+    }
 }
