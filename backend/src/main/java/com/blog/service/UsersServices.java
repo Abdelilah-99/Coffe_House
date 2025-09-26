@@ -30,16 +30,27 @@ public class UsersServices {
     public List<UsersRespons> findAll() {
         List<User> users = userRepository.findAll();
         List<UsersRespons> userDTOs = new ArrayList<>();
+        long follower = 0;
+        long following = 0;
         for (User user : users) {
-            UsersRespons dto = convertToDto(user);
+            follower = followRepository.countByFollowerId(user.getId());
+            following = followRepository.countByFollowingId(user.getId());
+            UsersRespons dto = convertToDto(user, follower, following);
             userDTOs.add(dto);
         }
         return userDTOs;
     }
 
-    private UsersRespons convertToDto(User user) {
-        return new UsersRespons(user.getUuid(), user.getFirstName(), user.getLastName(), user.getUserName(),
-                user.getEmail(), user.getRole());
+    private UsersRespons convertToDto(User user, long follower, long following) {
+        return new UsersRespons(
+                user.getUuid(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getUserName(),
+                user.getEmail(),
+                user.getRole(),
+                follower,
+                following);
     }
 
     public UsersRespons getCurrentUser() throws Exception {
@@ -53,12 +64,16 @@ public class UsersServices {
             String username = (String) authentication.getPrincipal();
             // System.out.printf("username in getcrr: \n", username);
             User user = userRepository.findByUserName(username).orElseThrow();
+            long follower = followRepository.countByFollowerId(user.getId());
+            long following = followRepository.countByFollowingId(user.getId());
             return new UsersRespons(user.getUuid(),
                     user.getFirstName(),
                     user.getLastName(),
                     user.getUserName(),
                     user.getEmail(),
-                    user.getRole());
+                    user.getRole(),
+                    follower,
+                    following);
         }
         throw new Exception("User not authenticated");
     }
@@ -152,6 +167,9 @@ public class UsersServices {
     }
 
     public List<UsersRespons> getUser(String username) {
+        if (username.isEmpty()) {
+            return new ArrayList<UsersRespons>();
+        }
         List<User> users = userRepository.findByUserNameStartingWithIgnoreCase(username);
         List<UsersRespons> rs = convertToRes(users);
         return rs;
@@ -166,5 +184,22 @@ public class UsersServices {
             userList.add(userRes);
         }
         return userList;
+    }
+
+    public UsersRespons getProfile(String uuid) {
+        User user = userRepository.findByUuid(uuid).orElseThrow(() -> {
+            throw new UserNotFoundException("user no exists");
+        });
+        long follower = followRepository.countByFollowerId(user.getId());
+        long following = followRepository.countByFollowingId(user.getId());
+        UsersRespons profile = new UsersRespons();
+        profile.setEmail(user.getEmail());
+        profile.setFirstName(user.getFirstName());
+        profile.setLastName(user.getLastName());
+        profile.setUsername(user.getUserName());
+        profile.setUuid(user.getUuid());
+        profile.setFollower(follower);
+        profile.setFollowing(following);
+        return profile;
     }
 }

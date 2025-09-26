@@ -11,7 +11,7 @@ import { PLATFORM_ID } from '@angular/core';
   templateUrl: './me.html',
   styleUrl: './me.css'
 })
-export class Profile implements OnInit {
+export class Me implements OnInit {
   userProfile: UserProfile | null = null;
   isLoading = false;
   post = { title: '', content: '' };

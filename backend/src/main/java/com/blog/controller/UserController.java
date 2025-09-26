@@ -53,4 +53,10 @@ public class UserController {
         List<UsersRespons> result = userService.getUser(username);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/profile/{uuid}")
+    public ResponseEntity<UsersRespons> profile(@PathVariable String uuid) {
+        UsersRespons result = userService.getProfile(uuid);
+        return ResponseEntity.ok(result);
+    }
 }

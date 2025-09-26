@@ -42,10 +42,7 @@ export interface Comment {
   providedIn: 'root'
 })
 export class PostService {
-  private postsCach: Post[] = [];
-  private commentCach: Comment[] = [];
   private URL = `http://localhost:8080/api/posts`;
-  // private URLPOSTCOMMENT = 
   constructor(private http: HttpClient) { }
 
   getAllPosts(): Observable<Post[]> {
@@ -53,7 +50,6 @@ export class PostService {
   }
 
   deletePost(uuid: String): Observable<any> {
-    // console.log(this.URL + uuid);
     return this.http.post(this.URL + '/delete/' + uuid, null);
   }
 

@@ -1,15 +1,17 @@
 import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { Register } from './auth/register/register';
-import { Profile } from './me/me';
+import { Me } from './me/me';
 import { HomeComponent } from './home/components/home-component';
-import { PostCard } from './post-card/post-card';
+import { PostCard } from './post/components/post-card/post-card';
 import { Edit } from './edit/edit';
+import { Profile } from './profile/component/profile';
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: Login },
     { path: 'register', component: Register },
-    { path: 'me', component: Profile },
+    { path: 'me', component: Me },
     { path: 'postCard/:id', component: PostCard },
-    { path: 'edit/:id', component: Edit }
+    { path: 'edit/:id', component: Edit },
+    { path: 'profile/:id', component: Profile }
 ];

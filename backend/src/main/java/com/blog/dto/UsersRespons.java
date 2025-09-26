@@ -7,17 +7,42 @@ public class UsersRespons {
     private String username;
     private String email;
     private String role;
+    private long follower;
+    private long following;
 
     public UsersRespons() {
     }
 
-    public UsersRespons(String uuid, String firstName, String lastName, String username, String email, String role) {
+    public UsersRespons(String uuid,
+            String firstName, String lastName,
+            String username, String email,
+            String role,
+            long follower,
+            long following) {
         this.uuid = uuid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.role = role;
+        this.follower = follower;
+        this.following = following;
+    }
+
+    public long getFollower() {
+        return follower;
+    }
+
+    public void setFollower(long follower) {
+        this.follower = follower;
+    }
+
+    public long getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(long following) {
+        this.following = following;
     }
 
     public String getUuid() {
