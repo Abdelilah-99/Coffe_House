@@ -23,6 +23,8 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         }
       });
       return next(authReq);
+    } else {
+      router.navigate(['/login']);
     }
   }
   return next(req);

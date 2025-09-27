@@ -10,6 +10,15 @@ export interface ProfileRes {
   userName: string;
   follower: number;
   following: number;
+  connect: boolean;
+}
+
+export interface FollowRes {
+  follower: number;
+  following: number;
+  followerUuid: String;
+  followingUuid: String;
+  message: String;
 }
 
 @Injectable({
@@ -18,7 +27,16 @@ export interface ProfileRes {
 export class ProfileService {
   private URL = 'http://localhost:8080/api/users';
   constructor(private http: HttpClient) { }
+
   getProfile(uuid: String): Observable<ProfileRes> {
     return this.http.get<ProfileRes>(`${this.URL}/profile/${uuid}`);
+  }
+
+  follow(uuid: String): Observable<any> {
+    return this.http.post<FollowRes>(`${this.URL}/follow/${uuid}`, null);
+  }
+
+  unFollow(uuid: String): Observable<any> {
+    return this.http.post<FollowRes>(`${this.URL}/unfollow/${uuid}`, null);
   }
 }

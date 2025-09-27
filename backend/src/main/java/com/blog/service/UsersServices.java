@@ -42,15 +42,17 @@ public class UsersServices {
     }
 
     private UsersRespons convertToDto(User user, long follower, long following) {
-        return new UsersRespons(
-                user.getUuid(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getUserName(),
-                user.getEmail(),
-                user.getRole(),
-                follower,
-                following);
+        UsersRespons cnvDto = new UsersRespons();
+        cnvDto.setUuid(user.getUuid());
+        cnvDto.setFirstName(user.getFirstName());
+        cnvDto.setLastName(user.getLastName());
+        cnvDto.setUsername(user.getUserName());
+        cnvDto.setEmail(user.getEmail());
+        cnvDto.setRole(user.getRole());
+        cnvDto.setFollower(follower);
+        cnvDto.setFollowing(following);
+        return cnvDto;
+        // );
     }
 
     public UsersRespons getCurrentUser() throws Exception {
@@ -66,14 +68,16 @@ public class UsersServices {
             User user = userRepository.findByUserName(username).orElseThrow();
             long follower = followRepository.countByFollowerId(user.getId());
             long following = followRepository.countByFollowingId(user.getId());
-            return new UsersRespons(user.getUuid(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getUserName(),
-                    user.getEmail(),
-                    user.getRole(),
-                    follower,
-                    following);
+            UsersRespons crrUser = new UsersRespons();
+            crrUser.setUuid(user.getUuid());
+            crrUser.setFirstName(user.getFirstName());
+            crrUser.setLastName(user.getLastName());
+            crrUser.setUsername(user.getUserName());
+            crrUser.setEmail(user.getEmail());
+            crrUser.setRole(user.getRole());
+            crrUser.setFollower(follower);
+            crrUser.setFollowing(following);
+            return crrUser;
         }
         throw new Exception("User not authenticated");
     }
@@ -91,6 +95,9 @@ public class UsersServices {
         User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new UserNotFoundException("invalid user");
         });
+        if (crrUser.getId() == otherUser.getId()) {
+            throw new FollowException("you can't follow yourself");
+        }
         long follower = followRepository.countByFollowerId(crrUser.getId());
         long following = followRepository.countByFollowingId(crrUser.getId());
 
@@ -124,6 +131,9 @@ public class UsersServices {
         User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new UserNotFoundException("invalid user");
         });
+        if (crrUser.getId() == otherUser.getId()) {
+            throw new FollowException("you can't follow yourself");
+        }
         boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         long follower = followRepository.countByFollowerId(crrUser.getId());
         long following = followRepository.countByFollowingId(crrUser.getId());
@@ -190,16 +200,28 @@ public class UsersServices {
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new UserNotFoundException("user no exists");
         });
+        UsersRespons crrUser;
+        try {
+            crrUser = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("u are not logged in");
+        }
+        User crrUserData = userRepository.findByUuid(crrUser.getUuid()).orElseThrow(() -> {
+            throw new UserNotFoundException("user not found");
+        });
         long follower = followRepository.countByFollowerId(user.getId());
         long following = followRepository.countByFollowingId(user.getId());
+        boolean connecting = followRepository.existsByFollowerIdAndFollowingId(crrUserData.getId(), user.getId());
+        System.out.println("user " + user.getId() + " crrUser " + crrUserData.getId());
         UsersRespons profile = new UsersRespons();
         profile.setEmail(user.getEmail());
         profile.setFirstName(user.getFirstName());
         profile.setLastName(user.getLastName());
         profile.setUsername(user.getUserName());
         profile.setUuid(user.getUuid());
-        profile.setFollower(follower);
-        profile.setFollowing(following);
+        profile.setFollower(following);
+        profile.setFollowing(follower);
+        profile.setConnect(connecting);
         return profile;
     }
 }

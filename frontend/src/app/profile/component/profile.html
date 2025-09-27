@@ -2,4 +2,6 @@
     <h1>{{ profileRes.firstName }}</h1>
     <br>
     <h2>{{ profileRes.lastName }}</h2>
+    <button *ngIf="profileRes.connect" (click)="followLogic(profileRes.userName, profileRes.connect)">UnFollow</button>
+    <button *ngIf="!profileRes.connect" (click)="followLogic(profileRes.userName, profileRes.connect)">Follow</button>
 </div>

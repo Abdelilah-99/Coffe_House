@@ -17,7 +17,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.NOT_FOUND);
-        errRes.put("err", "User Not Found");
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
@@ -28,7 +27,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.UNAUTHORIZED);
-        errRes.put("err", "Invalid Password");
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.UNAUTHORIZED);
@@ -39,7 +37,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.FORBIDDEN);
-        errRes.put("err", "User Already Exist");
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
@@ -50,7 +47,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        errRes.put("err", "Error");
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,7 +57,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.FORBIDDEN);
-        errRes.put("err", "Content must not be empty");
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
@@ -72,7 +67,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.FORBIDDEN);
-        errRes.put("err", "Title must not be empty");
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
@@ -83,7 +77,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.NOT_FOUND);
-        errRes.put("err", "Post not found");
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
@@ -94,7 +87,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        errRes.put("err", ex.getMessage());
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -105,7 +97,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        errRes.put("err", ex.getMessage());
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -117,7 +108,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.NOT_FOUND);
-        errRes.put("err", ex.getMessage());
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
@@ -129,7 +119,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.NOT_FOUND);
-        errRes.put("err", ex.getMessage());
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
@@ -141,9 +130,30 @@ public class GlobalExceptionHandler {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
         errRes.put("status", HttpStatus.NOT_FOUND);
-        errRes.put("err", ex.getMessage());
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotLoginException.class)
+    public ResponseEntity<Map<String, Object>> HandleUserNotLoginException(UserNotLoginException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(FollowException.class)
+    public ResponseEntity<Map<String, Object>> HandleFollowException(FollowException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
     }
 }

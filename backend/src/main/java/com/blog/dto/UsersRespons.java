@@ -9,6 +9,7 @@ public class UsersRespons {
     private String role;
     private long follower;
     private long following;
+    private boolean connect;
 
     public UsersRespons() {
     }
@@ -18,7 +19,8 @@ public class UsersRespons {
             String username, String email,
             String role,
             long follower,
-            long following) {
+            long following,
+            boolean connect) {
         this.uuid = uuid;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,6 +29,15 @@ public class UsersRespons {
         this.role = role;
         this.follower = follower;
         this.following = following;
+        this.connect = connect;
+    }
+
+    public boolean getConnect() {
+        return connect;
+    }
+
+    public void setConnect(boolean connect) {
+        this.connect = connect;
     }
 
     public long getFollower() {

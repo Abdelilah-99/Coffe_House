@@ -1,6 +1,9 @@
 package com.blog.config;
 
 import java.io.IOException;
+import java.net.Authenticator;
+
+import com.blog.exceptions.AuthenticationJwtException;
 
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 userName = jwtUtils.extractUsername(token);
             } catch (Exception e) {
                 System.err.println(token);
-                System.err.printf("err: " + e + "\n");
+                System.err.printf("err:11 " + e + "\n");
+                throw new AuthenticationJwtException("jwt error");
             }
         }
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {

@@ -10,7 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import com.blog.config.JwtAuthEntryPoint;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -19,9 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig {
 
         private final JwtAuthenticationFilter jwtFilter;
+        private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
-        public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
+        public SecurityConfig(JwtAuthenticationFilter jwtFilter, JwtAuthEntryPoint jwtAuthEntryPoint) {
                 this.jwtFilter = jwtFilter;
+                this.jwtAuthEntryPoint = jwtAuthEntryPoint;
         }
 
         @Bean
@@ -35,8 +37,9 @@ public class SecurityConfig {
 
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .exceptionHandling()
+                                .authenticationEntryPoint(jwtAuthEntryPoint);
                 http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
                 return http.build();
         }
