@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, inject } from '@angular/core';
+import { catchError, tap, throwError } from 'rxjs';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
@@ -22,8 +23,21 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           Authorization: `Bearer ${token}`
         }
       });
-      return next(authReq);
+      return next(authReq)
+      .pipe(
+        tap(value => console.log("hi ", value)),
+        catchError(err => {
+          console.log(err.message);
+          if (err.status === 401 /* && err.message.includes("Invalid or missing JWT") */) {
+            console.error("401 Unauthorized - Token invalid or expired");
+            localStorage.removeItem('access_token');
+            router.navigate(['/login']);
+          }
+          return throwError(() => err);
+        })
+      );
     } else {
+      localStorage.removeItem('access_token');
       router.navigate(['/login']);
     }
   }

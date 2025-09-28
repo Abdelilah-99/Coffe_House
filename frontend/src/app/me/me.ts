@@ -38,11 +38,7 @@ export class Me implements OnInit {
         error: (err) => {
           console.error("Err loading profile: ", err);
           this.isLoading = !this.isLoading;
-          if (err.status == 403) {
-            localStorage.removeItem('access_token');
-            this.router.navigate(['/login']);
-            return;
-          }
+          throw new Error('Failed to load profile: ' + err.message);
         }
       })
     }

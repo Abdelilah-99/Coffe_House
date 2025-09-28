@@ -1,10 +1,6 @@
 package com.blog.config;
 
 import java.io.IOException;
-import java.net.Authenticator;
-
-import com.blog.exceptions.AuthenticationJwtException;
-
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,13 +9,13 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.blog.service.CustomUserDetailsService;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final JwtUtils jwtUtils;
     private final CustomUserDetailsService userDetailsService;
 
@@ -33,27 +29,47 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+
+        System.out.println("=== JWT FILTER CALLED ===");
+        System.out.println("Request URI: " + req.getRequestURI());
+        System.out.println("Request Method: " + req.getMethod());
+
         String userName = null;
         String token = null;
         final String authHeader = req.getHeader("Authorization");
+
+        System.out.println("Processing request: " + req.getRequestURI());
+        System.out.println("Auth header: " + authHeader);
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             try {
                 userName = jwtUtils.extractUsername(token);
+                System.out.println("Extracted username: " + userName);
             } catch (Exception e) {
-                System.err.println(token);
-                System.err.printf("err:11 " + e + "\n");
-                throw new AuthenticationJwtException("jwt error");
+                System.out.println("Failed to extract username: " + e.getMessage());
             }
         }
+
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-            if (jwtUtils.validateToken(token, userDetails)) {
-                System.err.printf("userDetials: %s %s\n", userDetails.getUsername(), userDetails.getAuthorities());
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-                        null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            try {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+
+                if (jwtUtils.validateToken(token, userDetails)) {
+                    System.out.println("Token is valid for user: " + userDetails.getUsername());
+
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails.getUsername(),
+                            null,
+                            userDetails.getAuthorities());
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else {
+                    System.out.println("Token validation failed for user: " + userName);
+                }
+            } catch (Exception e) {
+                System.out.println("Error during authentication: " + e.getMessage());
             }
         }
         filterChain.doFilter(req, res);
