@@ -67,8 +67,6 @@ public class UsersServices {
             String username = userDetails.getUsername();
             // System.out.printf("username in getcrr: \n", username);
             User user = userRepository.findByUserName(username).orElseThrow();
-            long follower = followRepository.countByFollowerId(user.getId());
-            long following = followRepository.countByFollowingId(user.getId());
             UsersRespons crrUser = new UsersRespons();
             crrUser.setUuid(user.getUuid());
             crrUser.setFirstName(user.getFirstName());
@@ -76,8 +74,9 @@ public class UsersServices {
             crrUser.setUsername(user.getUserName());
             crrUser.setEmail(user.getEmail());
             crrUser.setRole(user.getRole());
-            crrUser.setFollower(follower);
-            crrUser.setFollowing(following);
+            crrUser.setFollower(followRepository.countByFollowerId(user.getId()));
+            crrUser.setFollowing(followRepository.countByFollowingId(user.getId()));
+
             return crrUser;
         }
         throw new Exception("User not authenticated");

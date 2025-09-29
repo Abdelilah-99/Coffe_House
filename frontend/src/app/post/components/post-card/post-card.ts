@@ -102,7 +102,7 @@ export class PostCard implements OnInit {
   onComment(uuid: String) {
     this.isCommenting = !this.isCommenting;
     console.log(this.isCommenting);
-
+    this.instantComments = [];
     if (this.isCommenting) {
       this.postService.getComments(uuid).subscribe({
         next: (comment) => {
