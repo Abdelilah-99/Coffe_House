@@ -67,6 +67,17 @@ public class JwtUtils {
                 .getBody();
     }
 
+    public String extractRole(String token) {
+        try {
+            String role = extractClaims(token).get("role", String.class);
+            System.out.println("Successfully extracted role: " + role);
+            return role;
+        } catch (Exception e) {
+            System.err.println("Error extracting username: " + e.getMessage());
+            throw e;
+        }
+    }
+
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         System.out.printf("username from validate: %s\n", username);

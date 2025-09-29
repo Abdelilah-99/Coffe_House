@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.core.userdetails.UserDetails;
 import com.blog.dto.UserFollowRes;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.*;
@@ -62,8 +62,9 @@ public class UsersServices {
         System.out.println("Principal = " + authentication.getPrincipal());
         System.out.println("Authorities = " + authentication.getAuthorities());
 
-        if (authentication != null && authentication.getPrincipal() instanceof String) {
-            String username = (String) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String username = userDetails.getUsername();
             // System.out.printf("username in getcrr: \n", username);
             User user = userRepository.findByUserName(username).orElseThrow();
             long follower = followRepository.countByFollowerId(user.getId());
