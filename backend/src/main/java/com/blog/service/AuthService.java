@@ -34,8 +34,8 @@ public class AuthService {
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
             throw new InvalidPasswordException("Invalid password");
         }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUserName());
-        String token = jwtUtils.generateToken(userDetails);
+
+        String token = jwtUtils.generateToken(user.getUserName(), user.getRole());
         return new AuthResponse("Login successful", user.getRole(), user.getUserName(), token);
     }
 }

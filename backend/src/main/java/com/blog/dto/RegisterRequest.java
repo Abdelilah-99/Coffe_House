@@ -25,7 +25,7 @@ public class RegisterRequest {
     @Email(message = "Please provide a valid email address")
     private String email;
 
-    private String role = "USER";
+    private String role = "ROLE_USER";
 
     public String getUsername() {
         return username;
