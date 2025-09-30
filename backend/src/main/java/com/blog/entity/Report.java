@@ -10,7 +10,7 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String reason;
-    private String time;
+    private long time;
     private String typeReport;
     @ManyToOne
     @JoinColumn(name = "reporter_id")
@@ -27,7 +27,7 @@ public class Report {
     public Report() {
     }
 
-    public Report(String reason, String time, String typeReport, User reporterId, String uuid) {
+    public Report(String reason, long time, String typeReport, User reporterId, String uuid) {
         this.reason = reason;
         this.time = time;
         this.typeReport = typeReport;
@@ -51,11 +51,11 @@ public class Report {
         this.reason = reason;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

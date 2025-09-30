@@ -156,4 +156,15 @@ public class GlobalExceptionHandler {
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(ReportException.class)
+    public ResponseEntity<Map<String, Object>> HandleReportException(ReportException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
 }
