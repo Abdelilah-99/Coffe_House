@@ -32,8 +32,8 @@ public class NotifService {
         for (Notification notification : notifications) {
             NotificationResponse notificationResponse = new NotificationResponse();
             notificationResponse.setContent(notification.getNotification());
-            notificationResponse.setUuid(notification.getPostOrProfileUuid());
-            notificationResponse.setPostOrProfileUuid(notification.getUuid());
+            notificationResponse.setUuid(notification.getUuid());
+            notificationResponse.setPostOrProfileUuid(notification.getPostOrProfileUuid());
             notificationResponse.setTime(notification.getCreatedAt());
             notificationResponseList.add(notificationResponse);
         }

@@ -1,0 +1,19 @@
+<div class="notification-container">
+    <h2>Notifications</h2>
+    <div class="notifications-list">
+        <div *ngIf="notification && notification.length > 0; else noNotifications">
+            <div class="notification-item" *ngFor="let notif of notification; let i = index">
+                <div class="notification-content" (click)="goTo(i)">
+                    <p>{{ notif.content }}</p>
+                    <small>{{ notif.time | date:'short' }}</small>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #noNotifications>
+            <div class="no-notifications">
+                <p>No notifications available</p>
+            </div>
+        </ng-template>
+    </div>
+</div>

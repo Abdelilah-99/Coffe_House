@@ -2,9 +2,9 @@ package com.blog.dto;
 
 public class NotificationResponse {
     private String uuid;
-    private String postOrProfileUuid;
     private String content;
     private long time;
+    private String postOrProfileUuid;
 
     public NotificationResponse() {
     }

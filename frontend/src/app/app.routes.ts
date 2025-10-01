@@ -6,6 +6,7 @@ import { HomeComponent } from './home/components/home-component';
 import { PostCard } from './post/components/post-card/post-card';
 import { Edit } from './edit/edit';
 import { Profile } from './profile/component/profile';
+import { Notification } from './notification/components/notification';
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: Login },
@@ -13,5 +14,7 @@ export const routes: Routes = [
     { path: 'me', component: Me },
     { path: 'postCard/:id', component: PostCard },
     { path: 'edit/:id', component: Edit },
-    { path: 'profile/:id', component: Profile }
+    { path: 'profile/:id', component: Profile },
+    { path: 'notification', component: Notification }
+
 ];

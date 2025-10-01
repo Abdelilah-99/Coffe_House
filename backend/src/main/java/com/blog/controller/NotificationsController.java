@@ -16,9 +16,12 @@ public class NotificationsController {
         this.notifService = notifService;
     }
 
-    @GetMapping("/all")
+    @PostMapping("/all")
     public ResponseEntity<List<NotificationResponse>> getAllNotif(@RequestBody NotificationRequest req) {
         List<NotificationResponse> res = notifService.getNotifications(req);
         return ResponseEntity.ok(res);
     }
+
+    // @PostMapping("/read")
+    // pubic ResponseEntity<NotificationResponse> markRead(@RequestBody )
 }
