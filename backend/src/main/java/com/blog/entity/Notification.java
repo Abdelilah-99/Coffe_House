@@ -9,12 +9,11 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String userUuid;
+    private long postId;
     private String notification;
     @Column(name = "created_at")
-    private String createdAt;
+    private long createdAt = System.currentTimeMillis();
     @Column(name = "is_read")
     private boolean isRead = false;
     private String uuid = UUID.randomUUID().toString();
@@ -22,11 +21,12 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(User user, String notification, String createdAt) {
-        this.user = user;
+    public Notification(String userUuid, String notification, long createdAt, long postId) {
+        this.userUuid = userUuid;
         this.notification = notification;
         this.createdAt = createdAt;
         this.uuid = UUID.randomUUID().toString();
+        this.postId = postId;
     }
 
     public long getId() {
@@ -37,12 +37,28 @@ public class Notification {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public long getPostId() {
+        return postId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPostId(long postId) {
+        this.postId = postId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getUserUuid() {
+        return userUuid;
+    }
+
+    public void setUserUuid(String userUuid) {
+        this.userUuid = userUuid;
     }
 
     public String getNotification() {
@@ -53,11 +69,11 @@ public class Notification {
         this.notification = notification;
     }
 
-    public String getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
