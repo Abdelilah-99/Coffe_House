@@ -180,7 +180,15 @@ public class UsersServices {
         if (username.isEmpty()) {
             return new ArrayList<UsersRespons>();
         }
-        List<User> users = userRepository.findByUserNameStartingWithIgnoreCase(username);
+        UsersRespons usersRespons;
+        try {
+            usersRespons = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("u are not login or registered to search");
+        }
+        System.out.println("username search: " + username);
+        System.out.println("crr username search: " + usersRespons.getUsername());
+            List<User> users = userRepository.findByUuidNotAndUserNameStartingWith(usersRespons.getUuid(), username);
         List<UsersRespons> rs = convertToRes(users);
         return rs;
     }

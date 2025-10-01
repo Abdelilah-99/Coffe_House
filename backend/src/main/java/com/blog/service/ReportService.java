@@ -51,6 +51,9 @@ public class ReportService {
         if (reason.getReason() == null || reason.getReason().trim().isEmpty()) {
             throw new ReportException("reason must no be empty or null");
         }
+        if (user.getId() == crrUser.getId()) {
+            throw new ReportException("you cant report yourself");
+        }
         Report newReport = new Report();
         newReport.setReason(reason.getReason());
         newReport.setReportedUserId(user);
@@ -76,6 +79,9 @@ public class ReportService {
         });
         if (reason.getReason() == null || reason.getReason().trim().isEmpty()) {
             throw new ReportException("reason must not be empty or null");
+        }
+        if (post.getUser().getId() == crrUser.getId()) {
+            throw new ReportException("you can't report youre own post");
         }
         Report newReport = new Report();
         newReport.setReason(reason.getReason());

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Like, Post, PostService } from '../../post/services/post-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProfileService, UserProfile } from '../../me/me.service';
+import { MeService, UserProfile } from '../../me/me.service';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   post = { title: '', content: '' }
   constructor(private postService: PostService,
     private router: Router,
-    private profileService: ProfileService,
+    private profileService: MeService,
     @Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {

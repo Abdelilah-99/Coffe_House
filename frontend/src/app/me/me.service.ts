@@ -13,7 +13,7 @@ export interface UserProfile {
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileService {
+export class MeService {
   private URL = 'http://localhost:8080/api/auth/me';
   constructor(private http: HttpClient) { }
 

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService, ProfileRes, FollowRes, Message } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { MeService, UserProfile } from '../../me/me.service';
 @Component({
   selector: 'app-profile',
   imports: [CommonModule],
@@ -13,15 +14,34 @@ export class Profile implements OnInit {
   followRes?: FollowRes;
   reportAction = false;
   message?: Message;
+  ifCrrProfile = true;
+  userProfile?: UserProfile;
   constructor(private route: ActivatedRoute, private navigate: Router,
     private profileService: ProfileService,
-    @Inject(PLATFORM_ID) private platformId: Object) { }
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private meProfile: MeService) { }
   uuid: String | null = null;
   ngOnInit(): void {
     this.uuid = this.route.snapshot.paramMap.get('id');
     if (this.uuid && isPlatformBrowser(this.platformId)) {
       this.loadProfile(this.uuid);
     }
+  }
+
+  myProfile(uuid: String): void {
+    this.meProfile.getProfile().subscribe({
+      next: (res) => {
+        this.userProfile = res;
+        if (this.userProfile.uuid == uuid) {
+          this.ifCrrProfile = true;
+        } else {
+          this.ifCrrProfile = false;
+        }
+      },
+      error: (err) => {
+        console.error("error fetching user profile ", err);
+      }
+    })
   }
 
   onReport() {
@@ -43,6 +63,7 @@ export class Profile implements OnInit {
     this.profileService.getProfile(uuid).subscribe({
       next: (res) => {
         this.profileRes = res;
+        this.myProfile(this.profileRes.uuid);
         console.log("profile has come succesfully ", res);
       },
       error: (err) => {

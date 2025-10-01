@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ProfileService, UserProfile } from './me.service';
+import { MeService, UserProfile } from './me.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ export class Me implements OnInit {
   userProfile: UserProfile | null = null;
   isLoading = false;
   post = { title: '', content: '' };
-  constructor(private profileService: ProfileService,
+  constructor(private profileService: MeService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object) { }
 

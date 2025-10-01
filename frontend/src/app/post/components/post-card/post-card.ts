@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Like, Post, PostService, Comments, Message } from '../../services/post-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ProfileService, UserProfile } from '../../../me/me.service';
+import { MeService, UserProfile } from '../../../me/me.service';
 import { error, time } from 'console';
 
 @Component({
@@ -16,7 +16,7 @@ export class PostCard implements OnInit {
     private route: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object,
     private navigate: Router,
-    private profileService: ProfileService) { }
+    private profileService: MeService) { }
   postUuid: String | null = null;
   post?: Post;
   like?: Like;
@@ -25,6 +25,7 @@ export class PostCard implements OnInit {
   profileData: UserProfile | null = null;
   reportAction = false;
   message?: Message;
+
   ngOnInit(): void {
     this.loadProfile();
     this.postUuid = this.route.snapshot.paramMap.get('id');
