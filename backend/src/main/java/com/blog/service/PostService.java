@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.blog.dto.CreatePostReq;
 import com.blog.dto.PostRes;
 import com.blog.dto.UsersRespons;
+import com.blog.entity.Notification;
 import com.blog.entity.Post;
 import com.blog.entity.User;
 import com.blog.exceptions.*;
@@ -23,17 +24,20 @@ public class PostService {
     private PostRepository postRepository;
     private CommentRepository commentRepository;
     private LikesRepository likesRepository;
+    private NotifRepository notifRepository;
 
     PostService(UsersServices usersServices,
             UserRepository userRepository,
             PostRepository postRepository,
             CommentRepository commentRepository,
-            LikesRepository likesRepository) {
+            LikesRepository likesRepository,
+            NotifRepository notifRepository) {
         this.usersServices = usersServices;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.likesRepository = likesRepository;
+        this.notifRepository = notifRepository;
     }
 
     public PostRes createPost(CreatePostReq req) {
@@ -71,6 +75,12 @@ public class PostService {
             newPost.setTimestamp(time);
             newPost.setMediaPaths(mediaPaths);
             postRepository.save(newPost);
+            Notification newNotif = new Notification();
+            newNotif.setUser(user);
+            newNotif.setRead(false);
+            newNotif.setNotification(String.format("%s has create a post", user.getUserName()));
+            newNotif.setCreatedAt(time);
+            notifRepository.save(newNotif);
             return new PostRes(
                     newPost.getUuid(),
                     user.getUuid(),
