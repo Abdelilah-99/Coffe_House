@@ -1,12 +1,12 @@
 package com.blog.dto;
 
-public class ReportProfileResponse {
+public class ReportResponse {
     private String message;
 
-    public ReportProfileResponse() {
+    public ReportResponse() {
     }
 
-    public ReportProfileResponse(String message) {
+    public ReportResponse(String message) {
         this.message = message;
     }
 

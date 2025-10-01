@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.ResponseEntity;
-import com.blog.dto.ReportProfileResponse;
+import com.blog.dto.ReportResponse;
 
 @RestController
 @RequestMapping("/api/report")
@@ -20,10 +20,18 @@ public class ReportController {
     }
 
     @PostMapping("/profile/{uuid}")
-    public ResponseEntity<ReportProfileResponse> reportProfile(
+    public ResponseEntity<ReportResponse> reportProfile(
             @PathVariable String uuid,
             @RequestBody ReportRequest reason) {
-        ReportProfileResponse res = reportService.reportProfile(uuid, reason);
+        ReportResponse res = reportService.reportProfile(uuid, reason);
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("post/{uuid}")
+    public ResponseEntity<ReportResponse> reportPost(
+            @PathVariable String uuid,
+            @RequestBody ReportRequest reason) {
+        ReportResponse res = reportService.reportPost(uuid, reason);
         return ResponseEntity.ok(res);
     }
 }
