@@ -10,7 +10,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String userUuid;
-    private long postId;
+    private String postOrProfileUuid;
     private String notification;
     @Column(name = "created_at")
     private long createdAt = System.currentTimeMillis();
@@ -21,12 +21,12 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String userUuid, String notification, long createdAt, long postId) {
+    public Notification(String userUuid, String notification, long createdAt, String postOrProfileUuid) {
         this.userUuid = userUuid;
         this.notification = notification;
         this.createdAt = createdAt;
         this.uuid = UUID.randomUUID().toString();
-        this.postId = postId;
+        this.postOrProfileUuid = postOrProfileUuid;
     }
 
     public long getId() {
@@ -37,12 +37,12 @@ public class Notification {
         this.id = id;
     }
 
-    public long getPostId() {
-        return postId;
+    public String getPostOrProfileUuid() {
+        return postOrProfileUuid;
     }
 
-    public void setPostId(long postId) {
-        this.postId = postId;
+    public void setPostOrProfileUuid(String postOrProfileUuid) {
+        this.postOrProfileUuid = postOrProfileUuid;
     }
 
     public String getUuid() {
