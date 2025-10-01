@@ -49,6 +49,11 @@
     </div>
 
     <ng-template #reportBlock>
-        <button (click)="onReport(post.postUuid)">Report</button>
+        <button (click)="onReport()">Report</button>
     </ng-template>
+    <div *ngIf="reportAction" class="report-window">
+        <textarea name="report" placeholder="report..." #reportData></textarea>
+        <button (click)="submitReport(post.postUuid, reportData.value); reportData.value=''">submit</button>
+        <p *ngIf="message">{{message.message}}</p>
+    </div>
 </div>

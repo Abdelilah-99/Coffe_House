@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Like, Post, PostService, Comments } from '../../services/post-service';
+import { Like, Post, PostService, Comments, Message } from '../../services/post-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ProfileService, UserProfile } from '../../../me/me.service';
-import { time } from 'console';
+import { error, time } from 'console';
 
 @Component({
   selector: 'app-post-card',
@@ -12,13 +12,19 @@ import { time } from 'console';
   styleUrl: './post-card.css'
 })
 export class PostCard implements OnInit {
-  constructor(private postService: PostService, private route: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: Object, private navigate: Router, private profileService: ProfileService) { }
+  constructor(private postService: PostService,
+    private route: ActivatedRoute,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private navigate: Router,
+    private profileService: ProfileService) { }
   postUuid: String | null = null;
   post?: Post;
   like?: Like;
   comment?: Comments;
   isCommenting = false;
   profileData: UserProfile | null = null;
+  reportAction = false;
+  message?: Message;
   ngOnInit(): void {
     this.loadProfile();
     this.postUuid = this.route.snapshot.paramMap.get('id');
@@ -120,8 +126,22 @@ export class PostCard implements OnInit {
     console.log("this section will navigate throw the post section ", postUuid);
     this.navigate.navigate(['/edit', postUuid]);
   }
-  onReport(id: String) {
-    console.log("hii: ", id);
+  onReport() {
+    this.reportAction = !this.reportAction;
+    console.log("hii from outside");
+    // this.postService.doReport(id,)
+  }
+
+  submitReport(uuid: String, reason: String) {
+    console.log("hii from inside ", uuid, reason);
+    this.postService.doReport(uuid, reason).subscribe({
+      next: (res) => {
+        this.message = res;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
   onDelete(uuid: String) {

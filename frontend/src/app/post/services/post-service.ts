@@ -38,6 +38,10 @@ export interface Comment {
   comment: String;
 }
 
+export interface Message {
+  message: String;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -76,5 +80,9 @@ export class PostService {
 
   submitComment(comment: String, uuid: String) {
     return this.http.post<Comment>(this.URL + '/comment/create/' + uuid, { comment: comment })
+  }
+
+  doReport(uuid: String, reason: String) {
+    return this.http.post<Message>(`http://localhost:8080/api/report/post/${uuid}`, { reason: reason });
   }
 }
