@@ -2,6 +2,11 @@
     <h1>{{ profileRes.firstName }}</h1>
     <br>
     <h2>{{ profileRes.lastName }}</h2>
+    <button (click)="onReport()">report</button>
+    <div *ngIf="reportAction">
+        <textarea name="reportProfile" placeholder="report..." #reportData></textarea>
+        <button type="submit" (click)="onSubmitReport(profileRes.uuid, reportData.value); reportData.value=''">submit</button>
+    </div>
     <button *ngIf="profileRes.connect" (click)="followLogic(profileRes.userName, profileRes.connect)">UnFollow</button>
     <button *ngIf="!profileRes.connect" (click)="followLogic(profileRes.userName, profileRes.connect)">Follow</button>
 </div>

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProfileService, ProfileRes, FollowRes } from '../services/services';
+import { ProfileService, ProfileRes, FollowRes, Message } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-profile',
@@ -11,6 +11,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 export class Profile implements OnInit {
   profileRes?: ProfileRes;
   followRes?: FollowRes;
+  reportAction = false;
+  message?: Message;
   constructor(private route: ActivatedRoute, private navigate: Router,
     private profileService: ProfileService,
     @Inject(PLATFORM_ID) private platformId: Object) { }
@@ -20,6 +22,21 @@ export class Profile implements OnInit {
     if (this.uuid && isPlatformBrowser(this.platformId)) {
       this.loadProfile(this.uuid);
     }
+  }
+
+  onReport() {
+    this.reportAction = !this.reportAction;
+  }
+
+  onSubmitReport(uuid: String, reason: String) {
+    this.profileService.doReport(uuid, reason).subscribe({
+      next: (res) => {
+        this.message = res;
+      },
+      error: (err) => {
+        console.error("error reporting ", err);
+      }
+    })
   }
 
   loadProfile(uuid: String) {

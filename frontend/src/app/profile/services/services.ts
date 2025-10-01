@@ -21,6 +21,10 @@ export interface FollowRes {
   message: String;
 }
 
+export interface Message {
+  message: String;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -38,5 +42,9 @@ export class ProfileService {
 
   unFollow(uuid: String): Observable<any> {
     return this.http.post<FollowRes>(`${this.URL}/unfollow/${uuid}`, null);
+  }
+
+  doReport(uuid: String, reason: String) {
+    return this.http.post<Message>(`http://localhost:8080/api/report/profile/${uuid}`, { reason: reason });
   }
 }
