@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUuid(String uuid);
 
     List<User> findByUuidNotAndUserNameStartingWith(String crrUser, String prefix);
+    
 }

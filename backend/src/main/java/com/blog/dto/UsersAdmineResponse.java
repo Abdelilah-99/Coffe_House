@@ -6,8 +6,6 @@ public class UsersAdmineResponse {
     private String lastName;
     private String username;
     private String email;
-    private long follower;
-    private long following;
 
     public UsersAdmineResponse() {
     }
@@ -17,32 +15,12 @@ public class UsersAdmineResponse {
             String firstName,
             String lastName,
             String username,
-            String email,
-            long follower,
-            long following) {
+            String email) {
         this.uuid = uuid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.follower = follower;
-        this.following = following;
-    }
-
-    public long getFollower() {
-        return follower;
-    }
-
-    public void setFollower(long follower) {
-        this.follower = follower;
-    }
-
-    public long getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(long following) {
-        this.following = following;
     }
 
     public String getUuid() {
