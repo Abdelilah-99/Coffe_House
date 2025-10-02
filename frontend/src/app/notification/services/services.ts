@@ -9,6 +9,10 @@ export interface NotificationRes {
   uuid: string;
 }
 
+export interface Count {
+  count: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,5 +22,13 @@ export class NotifServices {
   private URL = 'http://localhost:8080/api/notif';
   getAllNotif(uuid: string) {
     return this.http.post<NotificationRes[]>(`${this.URL}/all`, { uuid: uuid });
+  }
+
+  getCountNotif() {
+    return this.http.get<Count>(`${this.URL}/count`);
+  }
+
+  markRead(uuid: string | undefined) {
+    return this.http.post<void>(`${this.URL}/read`, { uuid: uuid });
   }
 }

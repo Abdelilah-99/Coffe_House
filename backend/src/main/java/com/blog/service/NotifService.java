@@ -8,6 +8,7 @@ import com.blog.dto.NotificationResponse;
 import com.blog.dto.NotificationRequest;
 import com.blog.dto.UsersRespons;
 import com.blog.repository.NotifRepository;
+import com.blog.exceptions.UserNotLoginException;
 
 @Service
 public class NotifService {
@@ -21,8 +22,14 @@ public class NotifService {
         this.usersServices = usersServices;
     }
 
-    public List<NotificationResponse> getNotifications(NotificationRequest req) {
-        List<Notification> notifications = notifRepository.findByUserUuid(req.getUuid());
+    public List<NotificationResponse> getNotifications() {
+        UsersRespons usersRespons;
+        try {
+            usersRespons = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("loggin or register if not so u can get notif");
+        }
+        List<Notification> notifications = notifRepository.findByUserUuidOrderByIdDesc(usersRespons.getUuid());
         List<NotificationResponse> notifDtos = toNotifDto(notifications);
         return notifDtos;
     }
@@ -38,5 +45,21 @@ public class NotifService {
             notificationResponseList.add(notificationResponse);
         }
         return notificationResponseList;
+    }
+
+    public Void readingNotif(NotificationRequest req) {
+        notifRepository.markAsRead(req.getUuid());
+        return null;
+    }
+
+    public long countUnreadNotif() {
+        UsersRespons usersRespons;
+        try {
+            usersRespons = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("login for getting notification count");
+        }
+        System.out.println("login user for notif: " + usersRespons.getUsername());
+        return notifRepository.countByUserUuidAndIsReadFalse(usersRespons.getUuid());
     }
 }

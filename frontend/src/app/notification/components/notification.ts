@@ -50,6 +50,14 @@ export class Notification implements OnInit {
 
   goTo(i: number) {
     if (this.notification?.at(i)?.content.includes("post")) {
+      this.notifService.markRead(this.notification?.at(i)?.uuid).subscribe({
+        next: () => {
+          console.info("user has read the notification");
+        },
+        error: (err) => {
+          console.error("notificatiuoin error: ", err);
+        }
+      });
       this.navigate.navigate(['/postCard', this.notification?.at(i)?.postOrProfileUuid]);
     }
     // console.log("hola", );

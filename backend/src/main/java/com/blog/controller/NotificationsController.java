@@ -17,11 +17,18 @@ public class NotificationsController {
     }
 
     @PostMapping("/all")
-    public ResponseEntity<List<NotificationResponse>> getAllNotif(@RequestBody NotificationRequest req) {
-        List<NotificationResponse> res = notifService.getNotifications(req);
+    public ResponseEntity<List<NotificationResponse>> getAllNotif() {
+        List<NotificationResponse> res = notifService.getNotifications();
         return ResponseEntity.ok(res);
     }
 
-    // @PostMapping("/read")
-    // pubic ResponseEntity<NotificationResponse> markRead(@RequestBody )
+    @PostMapping("/read")
+    public ResponseEntity<Void> markRead(@RequestBody NotificationRequest req) {
+        return ResponseEntity.ok(notifService.readingNotif(req));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> notifCount() {
+        return ResponseEntity.ok(notifService.countUnreadNotif());
+    }
 }

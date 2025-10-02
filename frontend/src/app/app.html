@@ -1,5 +1,5 @@
 <router-outlet />
-<nav class="sidebar">
+<nav class="sidebar" *ngIf="showNavbar">
     <ul class="sidebar-nav">
         <li class="nav-item">
             <a href="/" class="nav-link">
@@ -15,7 +15,7 @@
         </li>
         <li class="nav-item">
             <a href="/notification" class="nav-link">
-                <span class="nav-icon">🔔</span>
+                <span class="nav-icon" *ngIf="count">🔔 {{ count }} </span>
                 <span class="nav-text">Notifications</span>
             </a>
         </li>
