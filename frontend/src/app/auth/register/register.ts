@@ -26,6 +26,18 @@ export class Register implements OnInit {
       }
     }
   }
+
+  selectedFile: File | null = null;
+  onFileSelected(e: any) {
+    const files: FileList = e.target.files;
+    if (!files || files.length === 0) {
+      this.selectedFile = null;
+      return;
+    }
+    this.selectedFile = files[0];
+    console.log('Selected file:', this.selectedFile.name);
+  }
+
   onRegister() {
     const registerData = {
       firstName: this.firstname,
@@ -35,7 +47,19 @@ export class Register implements OnInit {
       password: this.password
     }
 
-    this.authService.register(registerData).subscribe({
+    const formData = new FormData();
+
+    formData.append(
+      "user",
+      new Blob([JSON.stringify(registerData)], { type: "application/json" })
+    );
+
+    if (this.selectedFile != null) {
+      console.log("yes it enters");
+      formData.append("profileImage", this.selectedFile);
+    }
+
+    this.authService.register(formData).subscribe({
       next: (res) => {
         this.message = "register successful!!";
         this.router.navigate(['/login']);

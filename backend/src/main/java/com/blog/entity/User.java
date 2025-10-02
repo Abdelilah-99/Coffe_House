@@ -18,6 +18,7 @@ public class User {
     private String userName;
     private String role;
     private String password;
+    private String profileImagePath;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Post> posts = new ArrayList<>();
@@ -36,13 +37,23 @@ public class User {
             String lastName,
             String userName,
             String role,
-            String password) {
+            String password,
+            String profileImagePath) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.role = role;
         this.password = password;
+        this.profileImagePath = profileImagePath;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 
     public long getId() {

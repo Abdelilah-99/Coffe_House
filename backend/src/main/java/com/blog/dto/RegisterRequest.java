@@ -3,6 +3,7 @@ package com.blog.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
+import org.springframework.web.multipart.MultipartFile;
 
 public class RegisterRequest {
     @NotNull(message = "First name is required")
@@ -26,6 +27,16 @@ public class RegisterRequest {
     private String email;
 
     private String role = "ROLE_USER";
+
+    private MultipartFile profileImage;
+
+    public MultipartFile getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(MultipartFile profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public String getUsername() {
         return username;
@@ -72,6 +83,6 @@ public class RegisterRequest {
     }
 
     // public void setRole(String role) {
-    //     this.role = role;
+    // this.role = role;
     // }
 }

@@ -14,8 +14,8 @@ export class AuthService {
     return this.protocolHttp.post(`${this.URL}/login`, cre);
   }
 
-  register(cre: { firstName: string; lastName: string; username: string; email: string; password: string }): Observable<any> {
-    console.log(cre);
-    return this.protocolHttp.post(`${this.URL}/register`, cre);
+  register(formData: FormData): Observable<any> {
+    console.log(formData.get('profileImage'));
+    return this.protocolHttp.post(`${this.URL}/register`, formData);
   }
 }

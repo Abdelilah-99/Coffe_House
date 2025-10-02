@@ -11,7 +11,7 @@ import com.blog.dto.UsersRespons;
 import com.blog.service.AuthService;
 import com.blog.service.RegistrationService;
 import com.blog.service.UsersServices;
-
+import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.Valid;
 
 @RestController
@@ -37,8 +37,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest req) {
-        RegisterResponse res = registerService.register(req);
+    public ResponseEntity<RegisterResponse> register(@RequestPart("user") @Valid RegisterRequest req,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        RegisterResponse res = registerService.register(req, profileImage);
         return ResponseEntity.ok(res);
     }
 

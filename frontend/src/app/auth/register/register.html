@@ -4,6 +4,7 @@
     <input type="text" [(ngModel)]="username" name="username" placeholder="username" required>
     <input type="email" [(ngModel)]="email" name="email" placeholder="email" required>
     <input type="password" [(ngModel)]="password" name="password" placeholder="password" required>
+    <input type="file" (change)="onFileSelected($event)">
     <button type="submit" [disabled]="!isFormRegisterValid()">Register</button>
 </form>
 <p>{{ message }}</p>
