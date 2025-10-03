@@ -28,6 +28,7 @@ public class User {
     private List<Follow> followers = new ArrayList<>();
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
+    private String status;
 
     public User() {
     }
@@ -38,7 +39,8 @@ public class User {
             String userName,
             String role,
             String password,
-            String profileImagePath) {
+            String profileImagePath,
+            String status) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,6 +48,15 @@ public class User {
         this.role = role;
         this.password = password;
         this.profileImagePath = profileImagePath;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getProfileImagePath() {

@@ -53,6 +53,9 @@ public class PostService {
             UsersRespons userRes = usersServices.getCurrentUser();
             User user = userRepository.findByUuid(userRes.getUuid())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
+            if (user.getStatus().equals("ban")) {
+                throw new UserBannedException("the user is banned from creating posts");
+            }
             List<String> mediaPaths = new ArrayList<>();
             if (req.getMediaFiles() != null && req.getMediaFiles().length > 0) {
                 for (MultipartFile mediaFile : req.getMediaFiles()) {

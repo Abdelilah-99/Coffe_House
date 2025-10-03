@@ -24,5 +24,33 @@ public class AdminPannelController {
         return ResponseEntity.ok(users);
     }
 
-    
+    @GetMapping("/user/{uuid}")
+    public ResponseEntity<UsersAdmineResponse> getUser(@PathVariable String uuid) {
+        UsersAdmineResponse user = adminService.getUser(uuid);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/user/delete/{uuid}")
+    public ResponseEntity<UsersAdmineResponse> daleteUser(@PathVariable String uuid) {
+        UsersAdmineResponse user = adminService.deleteUser(uuid);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/user/ban/{uuid}")
+    public ResponseEntity<UsersAdmineResponse> banUser(@PathVariable String uuid) {
+        UsersAdmineResponse user = adminService.banUser(uuid);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/post/delete/{uuid}")
+    public ResponseEntity<PostRes> daletePost(@PathVariable String uuid) {
+        PostRes post = adminService.deletePost(uuid);
+        return ResponseEntity.ok(post);
+    }
+
+    @PostMapping("/post/hide/{uuid}")
+    public ResponseEntity<PostRes> hidePost(@PathVariable String uuid) {
+        PostRes post = adminService.hidePost(uuid);
+        return ResponseEntity.ok(post);
+    }
 }

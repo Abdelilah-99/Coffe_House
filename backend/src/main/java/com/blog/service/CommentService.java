@@ -40,6 +40,9 @@ public class CommentService {
             UsersRespons userDetail = usersServices.getCurrentUser();
             User user = userRepository.findByUuid(userDetail.getUuid())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
+            if (user.getStatus().equals("ban")) {
+                throw new UserBannedException("the user is banned from creating posts");
+            }
             if (req.getComment().trim().isEmpty()) {
                 return new CommentPostRes(post.getUuid(), user.getUuid(), req.getComment(), "comment is empty");
             }

@@ -10,6 +10,7 @@ public class UsersAdmineResponse {
     private String lastName;
     private String username;
     private String email;
+    private String message;
     private List<Post> posts;
 
     public UsersAdmineResponse() {
@@ -21,12 +22,14 @@ public class UsersAdmineResponse {
             String lastName,
             String username,
             String email,
+            String message,
             List<Post> posts) {
         this.uuid = uuid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
+        this.message = message;
         this.posts = posts;
     }
 
@@ -36,6 +39,14 @@ public class UsersAdmineResponse {
 
     public void setPost(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getUuid() {

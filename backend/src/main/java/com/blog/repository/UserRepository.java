@@ -5,7 +5,7 @@ import com.blog.entity.User;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUuid(String uuid);
 
     List<User> findByUuidNotAndUserNameStartingWith(String crrUser, String prefix);
-    
+
+    @Transactional
+    void deleteByUuid(String uuid);
 }

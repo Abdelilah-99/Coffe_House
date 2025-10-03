@@ -38,14 +38,21 @@ public class RegistrationService {
             profilePath = postService.saveMedia(profileImage);
         }
         String hashedPassword = passwordEncoder.encode(req.getPassword());
-        User newUser = new User(
-                req.getEmail(),
-                req.getFirstName(),
-                req.getLastName(),
-                req.getUsername(),
-                req.getRole(),
-                hashedPassword,
-                profilePath);
+        User newUser = new User();
+        newUser.setEmail(req.getEmail());
+        newUser.setFirstName(req.getFirstName());
+        newUser.setLastName(req.getLastName());
+        newUser.setUserName(req.getUsername());
+        newUser.setRole(req.getRole());
+        newUser.setPassword(hashedPassword);
+        newUser.setProfileImagePath(profilePath);
+        // req.getEmail(),
+        // req.getFirstName(),
+        // req.getLastName(),
+        // req.getUsername(),
+        // req.getRole(),
+        // hashedPassword,
+        // profilePath
         try {
             userRepository.save(newUser);
             return new RegisterResponse("User registered successfully", req.getRole(), req.getUsername());

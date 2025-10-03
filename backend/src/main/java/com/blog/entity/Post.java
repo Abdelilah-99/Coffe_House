@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     private String title;
     private String content;
@@ -29,16 +30,33 @@ public class Post {
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
 
+    private String status = "EXPOSED";
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Post() {
     }
 
-    public Post(String title, String content, String mediaPaths, User user, String timestamp, String uuid) {
+    public Post(String title,
+            String content,
+            String mediaPaths,
+            User user,
+            String timestamp,
+            String uuid,
+            String status) {
         this.title = title;
         this.content = content;
         this.mediaPaths = mediaPaths;
         this.user = user;
         this.timestamp = timestamp;
         this.uuid = uuid;
+        this.status = status;
     }
 
     public String getUuid() {
