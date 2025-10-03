@@ -1,11 +1,16 @@
 package com.blog.dto;
 
+import java.util.List;
+
+import com.blog.entity.Post;
+
 public class UsersAdmineResponse {
     private String uuid;
     private String firstName;
     private String lastName;
     private String username;
     private String email;
+    private List<Post> posts;
 
     public UsersAdmineResponse() {
     }
@@ -15,12 +20,22 @@ public class UsersAdmineResponse {
             String firstName,
             String lastName,
             String username,
-            String email) {
+            String email,
+            List<Post> posts) {
         this.uuid = uuid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
+        this.posts = posts;
+    }
+
+    public List<Post> getPost() {
+        return posts;
+    }
+
+    public void setPost(List<Post> posts) {
+        this.posts = posts;
     }
 
     public String getUuid() {

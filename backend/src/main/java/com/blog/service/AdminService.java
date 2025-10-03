@@ -34,6 +34,7 @@ public class AdminService {
             usersAdmineResponse.setLastName(user.getLastName());
             usersAdmineResponse.setUsername(user.getUserName());
             usersAdmineResponse.setUuid(user.getUuid());
+            usersAdmineResponse.setPost(user.getPosts());
             usersDto.add(usersAdmineResponse);
         }
         return usersDto;

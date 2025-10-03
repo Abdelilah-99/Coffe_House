@@ -23,4 +23,6 @@ public class AdminPannelController {
         List<UsersAdmineResponse> users = adminService.getUsers();
         return ResponseEntity.ok(users);
     }
+
+    
 }
