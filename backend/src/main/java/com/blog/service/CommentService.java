@@ -7,6 +7,7 @@ import com.blog.entity.*;
 import com.blog.exceptions.UserNotFoundException;
 import com.blog.exceptions.CreateCommentException;
 import com.blog.exceptions.PostNotFoundException;
+import com.blog.exceptions.UserBannedException;
 import com.blog.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,6 @@ public class CommentService {
             if (req.getComment().trim().isEmpty()) {
                 return new CommentPostRes(post.getUuid(), user.getUuid(), req.getComment(), "comment is empty");
             }
-
             Comment newComment = new Comment();
             newComment.setComment(req.getComment());
             newComment.setUser(user);
