@@ -24,6 +24,12 @@ public class AdminPannelController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/reports")
+    public ResponseEntity<List<ReportsAdmineResponse>> getReports() {
+        List<ReportsAdmineResponse> users = adminService.getReports();
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/user/{uuid}")
     public ResponseEntity<UsersAdmineResponse> getUser(@PathVariable String uuid) {
         UsersAdmineResponse user = adminService.getUser(uuid);
