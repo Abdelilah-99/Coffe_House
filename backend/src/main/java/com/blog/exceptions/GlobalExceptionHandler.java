@@ -178,4 +178,26 @@ public class GlobalExceptionHandler {
         errRes.put("path", req.getDescription(false));
         return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
     }
-}// UserBannedException
+
+    @ExceptionHandler(BanException.class)
+    public ResponseEntity<Map<String, Object>> HandleBanException(BanException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(DeleteException.class)
+    public ResponseEntity<Map<String, Object>> HandleDeleteException(DeleteException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
+}

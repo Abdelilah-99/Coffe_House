@@ -11,7 +11,6 @@ import com.blog.exceptions.UserBannedException;
 import com.blog.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 
 @Service
 public class CommentService {

@@ -24,9 +24,15 @@ public class AdminPannelController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/reports")
-    public ResponseEntity<List<ReportsAdmineResponse>> getReports() {
-        List<ReportsAdmineResponse> users = adminService.getReports();
+    @GetMapping("/reports/posts")
+    public ResponseEntity<List<ReportsAdmineResponse>> getReportsPosts() {
+        List<ReportsAdmineResponse> users = adminService.getReportsPosts();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/reports/Users")
+    public ResponseEntity<List<ReportsAdmineResponse>> getReportsUsers() {
+        List<ReportsAdmineResponse> users = adminService.getReportsUsers();
         return ResponseEntity.ok(users);
     }
 

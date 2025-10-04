@@ -8,7 +8,6 @@ import com.blog.dto.RegisterResponse;
 import com.blog.entity.User;
 import com.blog.exceptions.*;
 import com.blog.repository.UserRepository;
-import com.blog.service.PostService;
 
 @Service
 public class RegistrationService {

@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.blog.repository.UserRepository;
 import java.util.List;
-import java.util.ArrayList;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Service

@@ -1,6 +1,5 @@
 package com.blog.service;
 
-import com.blog.dto.RegisterResponse;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.Report;
 import com.blog.entity.User;
@@ -8,7 +7,6 @@ import com.blog.entity.Post;
 import com.blog.repository.PostRepository;
 import com.blog.repository.ReportRepository;
 import com.blog.repository.UserRepository;
-import com.blog.service.UsersServices;
 import org.springframework.stereotype.Service;
 import com.blog.dto.ReportResponse;
 import com.blog.exceptions.UserNotFoundException;
