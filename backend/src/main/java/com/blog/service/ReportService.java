@@ -57,7 +57,7 @@ public class ReportService {
         newReport.setReportedUserId(user);
         newReport.setReporterId(crrUser);
         newReport.setTime(System.currentTimeMillis());
-        newReport.setTypeReport("Profile");
+        // newReport.setTypeReport("Profile");
         reportRepository.save(newReport);
         return new ReportResponse("the report has created successfully");
     }
@@ -86,7 +86,7 @@ public class ReportService {
         newReport.setReportedPostId(post);
         newReport.setReporterId(crrUser);
         newReport.setTime(System.currentTimeMillis());
-        newReport.setTypeReport("Post");
+        // newReport.setTypeReport("Post");
         reportRepository.save(newReport);
         return new ReportResponse("the report has created successfully");
     }

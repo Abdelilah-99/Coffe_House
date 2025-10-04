@@ -3,7 +3,6 @@ package com.blog.repository;
 import com.blog.entity.User;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,8 +2,6 @@ package com.blog.controller;
 
 import com.blog.dto.*;
 import com.blog.service.AdminService;
-import com.blog.service.NotifService;
-import com.blog.dto.NotificationRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -25,14 +23,14 @@ public class AdminPannelController {
     }
 
     @GetMapping("/reports/posts")
-    public ResponseEntity<List<ReportsAdmineResponse>> getReportsPosts() {
-        List<ReportsAdmineResponse> users = adminService.getReportsPosts();
+    public ResponseEntity<List<ReportsAdmineResponse>> getPostsReports() {
+        List<ReportsAdmineResponse> users = adminService.getPostsReports();
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/reports/Users")
-    public ResponseEntity<List<ReportsAdmineResponse>> getReportsUsers() {
-        List<ReportsAdmineResponse> users = adminService.getReportsUsers();
+    @GetMapping("/reports/users")
+    public ResponseEntity<List<ReportsAdmineResponse>> getUsersReports() {
+        List<ReportsAdmineResponse> users = adminService.getUsersReports();
         return ResponseEntity.ok(users);
     }
 

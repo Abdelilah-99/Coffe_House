@@ -79,6 +79,7 @@ public class PostService {
             newPost.setTitle(req.getTitle());
             newPost.setTimestamp(time);
             newPost.setMediaPaths(mediaPaths);
+            newPost.setStatus("EPOSED");
             postRepository.save(newPost);
             List<Notification> notifications = new ArrayList<>();
             for (Follow follow : followers) {

@@ -45,6 +45,7 @@ public class RegistrationService {
         newUser.setRole(req.getRole());
         newUser.setPassword(hashedPassword);
         newUser.setProfileImagePath(profilePath);
+        newUser.setStatus("ACTIVE");
         // req.getEmail(),
         // req.getFirstName(),
         // req.getLastName(),

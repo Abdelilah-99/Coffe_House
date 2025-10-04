@@ -11,7 +11,7 @@ public class Report {
     private long id;
     private String reason;
     private long time;
-    private String typeReport;
+    // private String typeReport;
     @ManyToOne
     @JoinColumn(name = "reporter_id")
     private User reporterId;
@@ -27,10 +27,10 @@ public class Report {
     public Report() {
     }
 
-    public Report(String reason, long time, String typeReport, User reporterId, String uuid) {
+    public Report(String reason, long time, User reporterId, String uuid) {
         this.reason = reason;
         this.time = time;
-        this.typeReport = typeReport;
+        // this.typeReport = typeReport;
         this.reporterId = reporterId;
         this.uuid = uuid;
     }
@@ -59,13 +59,13 @@ public class Report {
         this.time = time;
     }
 
-    public String getTypeReport() {
-        return typeReport;
-    }
+    // public String getTypeReport() {
+    //     return typeReport;
+    // }
 
-    public void setTypeReport(String typeReport) {
-        this.typeReport = typeReport;
-    }
+    // public void setTypeReport(String typeReport) {
+    //     this.typeReport = typeReport;
+    // }
 
     public User getReporterId() {
         return reporterId;

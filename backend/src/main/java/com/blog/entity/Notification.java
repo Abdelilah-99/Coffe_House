@@ -1,7 +1,6 @@
 package com.blog.entity;
 
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity

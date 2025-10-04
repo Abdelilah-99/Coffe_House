@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.blog.dto.PostRes;
 import com.blog.dto.UsersRespons;
-import com.blog.service.UsersServices;
 import com.blog.exceptions.UserNotFoundException;
 import com.blog.entity.Post;
 import com.blog.exceptions.PostNotFoundException;

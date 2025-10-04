@@ -30,7 +30,7 @@ public class Post {
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
 
-    private String status = "EXPOSED";
+    private String status;
 
     public String getStatus() {
         return status;

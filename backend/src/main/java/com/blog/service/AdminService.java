@@ -2,7 +2,9 @@ package com.blog.service;
 
 import com.blog.entity.User;
 import com.blog.dto.PostRes;
+import com.blog.dto.ReportsAdmineResponse;
 import com.blog.entity.Post;
+import com.blog.entity.Report;
 import com.blog.dto.UsersAdmineResponse;
 import com.blog.dto.UsersRespons;
 import com.blog.exceptions.PostNotFoundException;
@@ -11,6 +13,7 @@ import com.blog.exceptions.UserNotLoginException;
 import com.blog.exceptions.BanException;
 import com.blog.exceptions.DeleteException;
 import com.blog.repository.PostRepository;
+import com.blog.repository.ReportRepository;
 import com.blog.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -20,14 +23,17 @@ public class AdminService {
     private UserRepository userRepository;
     private PostRepository postRepository;
     private UsersServices usersServices;
+    private ReportRepository reportRepository;
 
     public AdminService(
+            ReportRepository reportRepository,
             UserRepository userRepository,
             PostRepository postRepository,
             UsersServices usersServices) {
         this.userRepository = userRepository;
         this.usersServices = usersServices;
         this.postRepository = postRepository;
+        this.reportRepository = reportRepository;
     }
 
     public List<UsersAdmineResponse> getUsers() {
@@ -128,4 +134,33 @@ public class AdminService {
         return postRes;
     }
 
+    public List<ReportsAdmineResponse> getPostsReports() {
+        List<Report> report = reportRepository.findByReportedPostIdIsNotNull();
+        List<ReportsAdmineResponse> reportDto = cnvReportToDto(report, "Post");
+        return reportDto;
+    }
+
+    public List<ReportsAdmineResponse> getUsersReports() {
+        List<Report> report = reportRepository.findByReportedUserIdIsNotNull();
+        List<ReportsAdmineResponse> reportDto = cnvReportToDto(report, "User");
+        return reportDto;
+    }
+
+    private List<ReportsAdmineResponse> cnvReportToDto(List<Report> reports, String type) {
+        List<ReportsAdmineResponse> reportsDto = new ArrayList<>();
+        for (Report report : reports) {
+            ReportsAdmineResponse ReportsAdmineResponse = new ReportsAdmineResponse();
+            ReportsAdmineResponse.setUuid(report.getUuid());
+            ReportsAdmineResponse.setReporterUsername(report.getReporterId().getUserName());
+            ReportsAdmineResponse.setReason(report.getReason());
+            ReportsAdmineResponse.setTime(report.getTime());
+            if (type.equals("Post")) {
+                ReportsAdmineResponse.setPostOrUserUuid(report.getReportedPostId().getUuid());
+            } else if (type.equals("User")) {
+                ReportsAdmineResponse.setPostOrUserUuid(report.getReportedUserId().getUuid());
+            }
+            reportsDto.add(ReportsAdmineResponse);
+        }
+        return reportsDto;
+    }
 }

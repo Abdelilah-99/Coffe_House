@@ -1,8 +1,6 @@
 package com.blog.controller;
 
-import java.net.ResponseCache;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
