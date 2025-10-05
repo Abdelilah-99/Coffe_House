@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../auth';
+import { AuthService, LoginResponse } from '../auth';
 import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -13,6 +13,7 @@ export class Login implements OnInit {
   username: string = '';
   password: string = '';
   message: string = '';
+  loginRes?: LoginResponse;
 
   constructor(private authService: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
   ngOnInit() {
@@ -34,10 +35,9 @@ export class Login implements OnInit {
 
     this.authService.login(loginData).subscribe({
       next: (res) => {
-        this.message = "login successful!!";
-        console.info(res.token);
-        localStorage.setItem('access_token', res.token);
-        console.log('res: ', res);
+        this.loginRes = res;
+        localStorage.setItem('access_token', this.loginRes.token.toString());
+        localStorage.setItem("user_role", this.loginRes.userRole.toString());
         this.router.navigate(['/me']);
       },
       error: (err) => {

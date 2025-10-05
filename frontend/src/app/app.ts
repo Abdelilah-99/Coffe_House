@@ -22,7 +22,7 @@ export class App {
       this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
         .subscribe((event: NavigationEnd) => {
-          const hideOn = ['/login', '/register'];
+          const hideOn = ['/login', '/register', '/admin'];
           this.showNavbar = !hideOn.includes(event.urlAfterRedirects);
           if (this.showNavbar) {
             this.loadCountNotif();

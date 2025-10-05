@@ -1,6 +1,8 @@
 package com.blog.repository;
 
 import com.blog.entity.Comment;
+import com.blog.entity.User;
+import com.blog.entity.Post;
 
 import java.util.*;
 
@@ -14,4 +16,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     long countByPost_uuid(String uuid);
 
     Optional<Comment> findByUuid(String uuid);
+    
+    long countByUser(User user);
+    
+    long countByPost(Post post);
 }

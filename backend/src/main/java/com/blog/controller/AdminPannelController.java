@@ -63,4 +63,46 @@ public class AdminPannelController {
         PostRes post = adminService.hidePost(uuid);
         return ResponseEntity.ok(post);
     }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<AdminStatisticsResponse> getOverallStatistics() {
+        AdminStatisticsResponse statistics = adminService.getOverallStatistics();
+        return ResponseEntity.ok(statistics);
+    }
+
+    @GetMapping("/analytics/users/top-commenters")
+    public ResponseEntity<List<TopUserResponse>> getUsersWithMostComments() {
+        List<TopUserResponse> topUsers = adminService.getUsersWithMostComments();
+        return ResponseEntity.ok(topUsers);
+    }
+
+    @GetMapping("/analytics/users/most-followed")
+    public ResponseEntity<List<TopUserResponse>> getUsersWithMostFollowers() {
+        List<TopUserResponse> topUsers = adminService.getUsersWithMostFollowers();
+        return ResponseEntity.ok(topUsers);
+    }
+
+    @GetMapping("/analytics/users/most-reported")
+    public ResponseEntity<List<TopUserResponse>> getMostReportedUsers() {
+        List<TopUserResponse> topUsers = adminService.getMostReportedUsers();
+        return ResponseEntity.ok(topUsers);
+    }
+
+    @GetMapping("/analytics/posts/most-commented")
+    public ResponseEntity<List<TopPostResponse>> getPostsWithMostComments() {
+        List<TopPostResponse> topPosts = adminService.getPostsWithMostComments();
+        return ResponseEntity.ok(topPosts);
+    }
+
+    @GetMapping("/analytics/posts/most-liked")
+    public ResponseEntity<List<TopPostResponse>> getPostsWithMostLikes() {
+        List<TopPostResponse> topPosts = adminService.getPostsWithMostLikes();
+        return ResponseEntity.ok(topPosts);
+    }
+
+    @GetMapping("/analytics/posts/most-reported")
+    public ResponseEntity<List<TopPostResponse>> getMostReportedPosts() {
+        List<TopPostResponse> topPosts = adminService.getMostReportedPosts();
+        return ResponseEntity.ok(topPosts);
+    }
 }
