@@ -20,8 +20,8 @@ export class NotifServices {
   constructor(private http: HttpClient) { }
 
   private URL = 'http://localhost:8080/api/notif';
-  getAllNotif(uuid: string) {
-    return this.http.post<NotificationRes[]>(`${this.URL}/all`, { uuid: uuid });
+  getAllNotif() {
+    return this.http.get<NotificationRes[]>(`${this.URL}/all`);
   }
 
   getCountNotif() {

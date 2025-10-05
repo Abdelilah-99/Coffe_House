@@ -84,11 +84,12 @@ public class PostService {
             List<Notification> notifications = new ArrayList<>();
             for (Follow follow : followers) {
                 Notification newNotif = new Notification();
-                newNotif.setUserUuid(follow.getFollower().getUuid());
+                newNotif.setNotificatedUser(follow.getFollower().getUuid());
                 System.out.println("follow username: " + follow.getFollower().getId());
                 newNotif.setIsRead(false);
                 newNotif.setNotification(String.format("%s has create a post", user.getUserName()));
                 newNotif.setPostOrProfileUuid(newPost.getUuid());
+                newNotif.setNotificationOwner(user.getUuid());
                 notifications.add(newNotif);
             }
             notifRepository.saveAll(notifications);
@@ -130,7 +131,16 @@ public class PostService {
     }
 
     public List<PostRes> displayAllPosts() {
-        List<Post> posts = postRepository.findAll();
+        UsersRespons userRes;
+        try {
+            userRes = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("login please for getting posts");
+        }
+        User user = userRepository.findByUserName(userRes.getUsername()).orElseThrow(() -> {
+            throw new UserNotFoundException("error user not found");
+        });
+        List<Post> posts = postRepository.findPostsFromFollowedUsers(user.getId());
         List<PostRes> listPostRes = new ArrayList<>();
         for (Post post : posts) {
             System.err.printf("post id: %s\n", post.getId());

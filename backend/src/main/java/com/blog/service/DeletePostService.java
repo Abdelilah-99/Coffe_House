@@ -18,7 +18,6 @@ public class DeletePostService {
     private PostRepository postRepository;
     @Autowired
     private UsersServices usersServices;
-    private UsersRespons usersRespons;
 
     DeletePostService() {
     }

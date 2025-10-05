@@ -37,7 +37,7 @@ export class Notification implements OnInit {
   }
 
   loadNotif(uuid: string) {
-    this.notifService.getAllNotif(uuid).subscribe({
+    this.notifService.getAllNotif().subscribe({
       next: (res) => {
         this.notification = res;
         console.log("notif: ", res);

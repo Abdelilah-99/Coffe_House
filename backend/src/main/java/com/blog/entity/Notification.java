@@ -8,7 +8,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String userUuid;
+    private String notificatedUser;
     private String postOrProfileUuid;
     private String notification;
     @Column(name = "created_at")
@@ -16,14 +16,20 @@ public class Notification {
     @Column(name = "is_read")
     private boolean isRead = false;
     private String uuid = UUID.randomUUID().toString();
+    private String notificationOwner;
 
     public Notification() {
     }
 
-    public Notification(String userUuid, String notification, long createdAt, String postOrProfileUuid) {
-        this.userUuid = userUuid;
+    public Notification(String notificatedUser,
+            String notification,
+            long createdAt,
+            String postOrProfileUuid,
+            String notificatioOwner) {
+        this.notificatedUser = notificatedUser;
         this.notification = notification;
         this.createdAt = createdAt;
+        this.notificationOwner = notificatioOwner;
         this.uuid = UUID.randomUUID().toString();
         this.postOrProfileUuid = postOrProfileUuid;
     }
@@ -52,12 +58,20 @@ public class Notification {
         this.uuid = uuid;
     }
 
-    public String getUserUuid() {
-        return userUuid;
+    public String getNotificatedUser() {
+        return notificatedUser;
     }
 
-    public void setUserUuid(String userUuid) {
-        this.userUuid = userUuid;
+    public void setNotificatedUser(String notificatedUser) {
+        this.notificatedUser = notificatedUser;
+    }
+
+    public String getNotificationOwner() {
+        return notificationOwner;
+    }
+
+    public void setNotificationOwner(String notificationOwner) {
+        this.notificationOwner = notificationOwner;
     }
 
     public String getNotification() {

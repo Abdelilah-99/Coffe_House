@@ -37,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String userName = null;
         String token = null;
         final String authHeader = req.getHeader("Authorization");
-        String role = null;
 
         System.out.println("Processing request: " + req.getRequestURI());
         System.out.println("Auth header: " + authHeader);
@@ -46,7 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             try {
                 userName = jwtUtils.extractUsername(token);
-                role = jwtUtils.extractRole(token);
                 System.out.println("Extracted username: " + userName);
             } catch (Exception e) {
                 System.out.println("Failed to extract username: " + e.getMessage());

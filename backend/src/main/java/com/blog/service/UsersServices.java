@@ -12,19 +12,25 @@ import com.blog.dto.UserFollowRes;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.*;
 import com.blog.repository.FollowRepository;
+import com.blog.repository.NotifRepository;
 import com.blog.repository.UserRepository;
 import com.blog.exceptions.*;
 
 @Service
 public class UsersServices {
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private FollowRepository followRepository;
+    private NotifService notifService;
+    private NotifRepository notifRepository;
 
-    public UsersServices(UserRepository userRepository, FollowRepository followRepository) {
+    @Autowired
+    public UsersServices(
+            UserRepository userRepository,
+            FollowRepository followRepository,
+            NotifRepository notifRepository) {
         this.userRepository = userRepository;
         this.followRepository = followRepository;
+        this.notifRepository = notifRepository;
     }
 
     public List<UsersRespons> findAll() {
@@ -134,6 +140,8 @@ public class UsersServices {
         if (crrUser.getId() == otherUser.getId()) {
             throw new FollowException("you can't follow yourself");
         }
+
+        notifRepository.deleteByNotificatedUserAndNotificationOwner(crrUser.getUuid(), otherUser.getUuid());
         boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         long follower = followRepository.countByFollowerId(crrUser.getId());
         long following = followRepository.countByFollowingId(crrUser.getId());
@@ -188,7 +196,7 @@ public class UsersServices {
         }
         System.out.println("username search: " + username);
         System.out.println("crr username search: " + usersRespons.getUsername());
-            List<User> users = userRepository.findByUuidNotAndUserNameStartingWith(usersRespons.getUuid(), username);
+        List<User> users = userRepository.findByUuidNotAndUserNameStartingWith(usersRespons.getUuid(), username);
         List<UsersRespons> rs = convertToRes(users);
         return rs;
     }

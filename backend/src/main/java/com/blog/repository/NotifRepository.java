@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface NotifRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findByUserUuidOrderByIdDesc(String uuid);
+    List<Notification> findByNotificatedUserOrderByIdDesc(String uuid);
 
     @Modifying
     @Transactional
     @Query("UPDATE Notification n set n.isRead = true WHERE n.uuid = :uuid")
     void markAsRead(@Param("uuid") String uuid);
 
-    long countByUserUuidAndIsReadFalse(String uuid);
+    long countByNotificatedUserAndIsReadFalse(String uuid);
+
+    @Transactional
+    @Modifying
+    void deleteByNotificatedUserAndNotificationOwner(String crrUser, String otherUser);
 }
