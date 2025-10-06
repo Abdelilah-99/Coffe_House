@@ -17,12 +17,12 @@ import com.blog.exceptions.ReportException;
 
 @Service
 public class ReportService {
-    UsersServices usersServices;
-    UserRepository userRepository;
-    ReportRepository reportRepository;
-    PostRepository postRepository;
+    private final UsersServices usersServices;
+    private final UserRepository userRepository;
+    private final ReportRepository reportRepository;
+    private final PostRepository postRepository;
 
-    public ReportService(
+    ReportService(
             UsersServices usersServices,
             UserRepository userRepository,
             ReportRepository reportRepository,

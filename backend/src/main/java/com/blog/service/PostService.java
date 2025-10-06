@@ -20,12 +20,12 @@ import java.io.IOException;
 
 @Service
 public class PostService {
-    private UsersServices usersServices;
-    private UserRepository userRepository;
-    private PostRepository postRepository;
-    private CommentRepository commentRepository;
-    private LikesRepository likesRepository;
-    private NotifRepository notifRepository;
+    private final UsersServices usersServices;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final LikesRepository likesRepository;
+    private final NotifRepository notifRepository;
 
     PostService(UsersServices usersServices,
             UserRepository userRepository,

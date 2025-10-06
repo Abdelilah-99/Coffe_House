@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
 import com.blog.entity.Notification;
-import com.blog.entity.User;
 import com.blog.dto.NotificationResponse;
 import com.blog.dto.NotificationRequest;
 import com.blog.dto.UsersRespons;

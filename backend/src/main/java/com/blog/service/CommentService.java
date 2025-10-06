@@ -9,20 +9,15 @@ import com.blog.exceptions.CreateCommentException;
 import com.blog.exceptions.PostNotFoundException;
 import com.blog.exceptions.UserBannedException;
 import com.blog.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CommentService {
-    private CommentRepository commentRepository;
-    private PostRepository postRepository;
-    private UsersServices usersServices;
-    private UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
+    private final UsersServices usersServices;
+    private final UserRepository userRepository;
 
-    public CommentService() {
-    }
-
-    @Autowired
     public CommentService(CommentRepository commentRepository,
             PostRepository postRepository,
             UsersServices usersServices,

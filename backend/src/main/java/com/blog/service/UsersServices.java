@@ -2,8 +2,6 @@ package com.blog.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,13 +16,11 @@ import com.blog.exceptions.*;
 
 @Service
 public class UsersServices {
-    private UserRepository userRepository;
-    private FollowRepository followRepository;
-    private NotifService notifService;
-    private NotifRepository notifRepository;
+    private final UserRepository userRepository;
+    private final FollowRepository followRepository;
+    private final NotifRepository notifRepository;
 
-    @Autowired
-    public UsersServices(
+    UsersServices(
             UserRepository userRepository,
             FollowRepository followRepository,
             NotifRepository notifRepository) {

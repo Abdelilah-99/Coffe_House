@@ -15,7 +15,7 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final PostService postService;
 
-    public RegistrationService(
+    RegistrationService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             PostService postService) {

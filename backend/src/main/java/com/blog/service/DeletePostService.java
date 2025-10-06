@@ -1,10 +1,7 @@
 package com.blog.service;
 
 import java.io.File;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.blog.dto.PostRes;
 import com.blog.dto.UsersRespons;
 import com.blog.exceptions.UserNotFoundException;
@@ -14,16 +11,12 @@ import com.blog.repository.PostRepository;
 
 @Service
 public class DeletePostService {
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private UsersServices usersServices;
+    private final PostRepository postRepository;
+    private final UsersServices usersServices;
 
-    DeletePostService() {
-    }
-
-    @Autowired
-    DeletePostService(PostRepository postRepository, UsersServices usersServices) {
+    DeletePostService(
+            PostRepository postRepository,
+            UsersServices usersServices) {
         this.postRepository = postRepository;
         this.usersServices = usersServices;
     }

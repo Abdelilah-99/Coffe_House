@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,14 +19,10 @@ import com.blog.exceptions.PostNotFoundException;
 
 @Service
 public class EditPostService {
-    private PostRepository postRepository;
-    private CommentRepository commentRepository;
-    private LikesRepository likesRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final LikesRepository likesRepository;
 
-    EditPostService() {
-    }
-
-    @Autowired
     EditPostService(PostRepository postRepository,
             CommentRepository commentRepository,
             LikesRepository likesRepository) {

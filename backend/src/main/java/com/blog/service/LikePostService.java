@@ -5,21 +5,17 @@ import com.blog.entity.*;
 import com.blog.repository.*;
 import com.blog.exceptions.*;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LikePostService {
-    private UsersServices usersServices;
-    private LikesRepository likesRepository;
-    private PostRepository postRepository;
-    private UserRepository userRepository;
+    private final UsersServices usersServices;
+    private final LikesRepository likesRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    LikePostService() {
-    }
-
-    @Autowired
-    LikePostService(UsersServices usersServices,
+    LikePostService(
+            UsersServices usersServices,
             LikesRepository likesRepository,
             PostRepository postRepository,
             UserRepository userRepository) {
