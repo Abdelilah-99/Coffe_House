@@ -1,29 +1,61 @@
 <div class="post-card" (click)="postCard.emit(post.postUuid)">
-    <div class="post-header">
-        <div class="post-user-info">
-            <img *ngIf="post.profileImagePath"
-                 [src]="'http://localhost:8080/' + post.profileImagePath"
-                 alt="{{ post.userName }}"
-                 class="post-user-avatar">
-            <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder">
-                {{ post.userName?.charAt(0)?.toUpperCase() || '?' }}
-            </div>
-            <div class="post-user-details">
-                <span class="post-author">{{ post.userName }}</span>
-                <span class="post-date">{{ post.timestamp }}</span>
+    <!-- Post with image(s) - Image as background with overlay -->
+    <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-card-with-image">
+        <div class="post-image-container">
+            <img [src]="'http://localhost:8080/' + post.mediaPaths[0]"
+                 alt="{{ post.title }}"
+                 class="post-background-image">
+            <div class="post-overlay">
+                <div class="post-title-overlay">
+                    <h3 class="post-title">{{ post.title }}</h3>
+                </div>
             </div>
         </div>
-        <h3 class="post-title">{{ post.title }}</h3>
+        <div class="post-footer-compact">
+            <div class="post-user-info-compact">
+                <img *ngIf="post.profileImagePath"
+                     [src]="'http://localhost:8080/' + post.profileImagePath"
+                     alt="{{ post.userName }}"
+                     class="post-user-avatar-small">
+                <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder-small">
+                    {{ post.userName.charAt(0).toUpperCase() || '?' }}
+                </div>
+                <span class="post-author-small">{{ post.userName }}</span>
+                <span class="post-date-small">{{ post.timestamp }}</span>
+            </div>
+            <div class="post-actions" (click)="$event.stopPropagation()">
+                <app-post-likes [post]="post" (reaction)="reaction.emit($event)"></app-post-likes>
+                <app-post-comments [post]="post" (navigate)="postCard.emit(post.postUuid)"></app-post-comments>
+            </div>
+        </div>
     </div>
 
-    <div class="post-content">
-        <p>{{ post.content }}</p>
-    </div>
+    <!-- Post without image - Traditional layout -->
+    <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-card-traditional">
+        <div class="post-header">
+            <div class="post-user-info">
+                <img *ngIf="post.profileImagePath"
+                     [src]="'http://localhost:8080/' + post.profileImagePath"
+                     alt="{{ post.userName }}"
+                     class="post-user-avatar">
+                <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder">
+                    {{ post.userName.charAt(0).toUpperCase() || '?' }}
+                </div>
+                <div class="post-user-details">
+                    <span class="post-author">{{ post.userName }}</span>
+                    <span class="post-date">{{ post.timestamp }}</span>
+                </div>
+            </div>
+            <h3 class="post-title">{{ post.title }}</h3>
+        </div>
 
-    <app-post-gallery [post]="post" [mediaPaths]="post.mediaPaths"></app-post-gallery>
-    <div (click)="$event.stopPropagation()">
-        <app-post-likes [post]="post" (reaction)="reaction.emit($event)">
-        </app-post-likes>
-        <app-post-comments [post]="post"></app-post-comments>
+        <div class="post-content">
+            <p>{{ post.content }}</p>
+        </div>
+
+        <div class="post-actions" (click)="$event.stopPropagation()">
+            <app-post-likes [post]="post" (reaction)="reaction.emit($event)"></app-post-likes>
+            <app-post-comments [post]="post" (navigate)="postCard.emit(post.postUuid)"></app-post-comments>
+        </div>
     </div>
 </div>

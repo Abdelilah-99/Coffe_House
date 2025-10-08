@@ -1,3 +1,5 @@
-<div class="post-comment">
-    <i>💬 {{post.commentCount}}</i>
+<div class="post-comment" (click)="onCommentClick()">
+    <i class="comment-icon">💬</i>
+    <span class="comment-count">{{post.commentCount}}</span>
+    <span class="comment-text">Comments</span>
 </div>

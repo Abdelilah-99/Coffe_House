@@ -66,43 +66,78 @@
         </div>
         <div *ngIf="!isLoadingPosts && userPosts.length > 0" class="posts-grid">
             <div *ngFor="let post of userPosts" class="post-card" (click)="navigateToPost(post.postUuid)">
-                <div class="post-header">
-                    <div class="post-author">
-                        <div class="author-avatar-small">
-                            <img *ngIf="profileRes?.profileImagePath"
-                                 [src]="'http://localhost:8080/' + profileRes?.profileImagePath"
-                                 alt="Profile">
-                            <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
-                                {{profileRes?.firstName?.charAt(0) || ''}}
-                            </div>
+                <!-- Post with image(s) - Image as background with overlay -->
+                <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
+                    <div class="post-image-wrapper">
+                        <img [src]="'http://localhost:8080/' + post.mediaPaths[0]"
+                             alt="{{ post.title }}"
+                             class="post-bg-image">
+                        <div class="post-image-overlay">
+                            <h3 class="post-title-overlay">{{post.title}}</h3>
                         </div>
-                        <div class="author-info">
+                    </div>
+                    <div class="post-footer-info">
+                        <div class="post-author-compact">
+                            <div class="author-avatar-small">
+                                <img *ngIf="profileRes?.profileImagePath"
+                                     [src]="'http://localhost:8080/' + profileRes.profileImagePath"
+                                     alt="Profile">
+                                <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
+                                    {{profileRes.firstName.charAt(0) || ''}}
+                                </div>
+                            </div>
                             <span class="author-name">{{post.userName}}</span>
                             <span class="post-time">{{post.timestamp}}</span>
+                        </div>
+                        <div class="post-actions" (click)="$event.stopPropagation()">
+                            <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
+                                <span class="icon">❤️</span>
+                                <span>{{post.likeCount}}</span>
+                            </button>
+                            <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
+                                <span class="icon">💬</span>
+                                <span class="count">{{post.commentCount}}</span>
+                                <span class="text">Comments</span>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="post-content">
-                    <h3>{{post.title}}</h3>
-                    <p>{{post.content}}</p>
-                </div>
+                <!-- Post without image - Traditional layout -->
+                <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-no-image">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="author-avatar-small">
+                                <img *ngIf="profileRes?.profileImagePath"
+                                     [src]="'http://localhost:8080/' + profileRes.profileImagePath"
+                                     alt="Profile">
+                                <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
+                                    {{profileRes.firstName.charAt(0) || ''}}
+                                </div>
+                            </div>
+                            <div class="author-info">
+                                <span class="author-name">{{post.userName}}</span>
+                                <span class="post-time">{{post.timestamp}}</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-media">
-                    <img *ngFor="let mediaPath of post.mediaPaths"
-                         [src]="'http://localhost:8080/' + mediaPath"
-                         alt="Post media">
-                </div>
+                    <div class="post-content">
+                        <h3>{{post.title}}</h3>
+                        <p>{{post.content}}</p>
+                    </div>
 
-                <div class="post-actions">
-                    <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
-                        <span class="icon">❤️</span>
-                        <span>{{post.likeCount}}</span>
-                    </button>
-                    <button class="action-btn comment-btn" (click)="$event.stopPropagation(); navigateToPost(post.postUuid)">
-                        <span class="icon">💬</span>
-                        <span>{{post.commentCount}}</span>
-                    </button>
+                    <div class="post-actions" (click)="$event.stopPropagation()">
+                        <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
+                            <span class="icon">❤️</span>
+                            <span>{{post.likeCount}}</span>
+                        </button>
+                        <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
+                            <span class="icon">💬</span>
+                            <span class="count">{{post.commentCount}}</span>
+                            <span class="text">Comments</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,17 +3,126 @@
 .post-card {
   background: var(--color-bg);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
   margin-bottom: 2rem;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   transition: var(--transition);
   cursor: pointer;
+  overflow: hidden;
 }
 
 .post-card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
+}
+
+/* Post with Image - Modern Card Layout */
+.post-card-with-image {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.post-image-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.post-background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.post-card:hover .post-background-image {
+  transform: scale(1.05);
+}
+
+.post-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+  padding: 1.5rem;
+}
+
+.post-title-overlay {
+  max-width: 100%;
+}
+
+.post-title-overlay .post-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  line-height: 1.3;
+}
+
+.post-footer-compact {
+  padding: 1rem 1.5rem;
+  background: var(--color-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.post-user-info-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.post-user-avatar-small,
+.post-user-avatar-placeholder-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.post-user-avatar-small {
+  object-fit: cover;
+  border: 2px solid var(--color-border);
+}
+
+.post-user-avatar-placeholder-small {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 2px solid var(--color-border);
+}
+
+.post-author-small {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-date-small {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+/* Traditional Post Layout (No Image) */
+.post-card-traditional {
+  padding: 1.5rem;
 }
 
 .post-header {
@@ -81,26 +190,57 @@
   margin: 0;
 }
 
-.post-footer {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
-}
-
 .post-author {
   font-size: 0.875rem;
   color: var(--color-text);
   font-weight: 600;
 }
 
+.post-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 /* Responsive */
+@media (max-width: 768px) {
+  .post-image-container {
+    height: 300px;
+  }
+
+  .post-title-overlay .post-title {
+    font-size: 1.25rem;
+  }
+
+  .post-footer-compact {
+    padding: 0.75rem 1rem;
+  }
+}
+
 @media (max-width: 576px) {
-  .post-card {
+  .post-card-traditional {
     padding: 1rem;
-    margin-bottom: 1.5rem;
+  }
+
+  .post-image-container {
+    height: 250px;
+  }
+
+  .post-title-overlay .post-title {
+    font-size: 1.125rem;
   }
 
   .post-title {
     font-size: 1.25rem;
+  }
+
+  .post-footer-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .post-actions {
+    width: 100%;
   }
 }

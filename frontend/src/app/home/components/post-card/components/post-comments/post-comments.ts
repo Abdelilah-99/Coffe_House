@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Post } from '../../../../../post/services/post-service';
 
 @Component({
@@ -9,4 +9,9 @@ import { Post } from '../../../../../post/services/post-service';
 })
 export class PostComments {
   @Input() post!: Post;
+  @Output() navigate = new EventEmitter<void>();
+
+  onCommentClick() {
+    this.navigate.emit();
+  }
 }
