@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./edit.css']
 })
 export class Edit implements OnInit {
-  constructor(private postService: PostService, private route: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: Object, private navigate: Router) { }
+  constructor(private postService: PostService, private route: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: Object, public navigate: Router) { }
   post: Post | null = null;
   postUuid: String | null = null;
   updatedPost: Post | null = null;

@@ -1,17 +1,110 @@
-<div class="profile-name" *ngIf="profileRes">
-    <h1>{{ profileRes.firstName }}</h1>
-    <br>
-    <h2>{{ profileRes.lastName }}</h2>
-    <div *ngIf="ifCrrProfile == false">
-        <button (click)="onReport()">report</button>
-        <div *ngIf="reportAction">
-            <textarea name="reportProfile" placeholder="report..." #reportData></textarea>
-            <button type="submit"
-                (click)="onSubmitReport(profileRes.uuid, reportData.value); reportData.value=''">submit</button>
+<div class="profile-container" *ngIf="profileRes">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-info">
+            <div class="profile-avatar">
+                <img *ngIf="profileRes.profileImagePath"
+                     [src]="'http://localhost:8080/' + profileRes.profileImagePath"
+                     alt="Profile Picture">
+                <div *ngIf="!profileRes.profileImagePath" class="avatar-placeholder">
+                    {{profileRes.firstName.charAt(0)}}{{profileRes.lastName.charAt(0)}}
+                </div>
+            </div>
+            <div class="profile-details">
+                <h1>{{profileRes.firstName}} {{profileRes.lastName}}</h1>
+                <p class="username">&#64;{{profileRes.userName}}</p>
+                <p class="email">{{profileRes.email}}</p>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-value">{{profileRes.follower}}</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">{{profileRes.following}}</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button *ngIf="profileRes.connect"
-            (click)="followLogic(profileRes.userName, profileRes.connect)">UnFollow</button>
-        <button *ngIf="!profileRes.connect"
-            (click)="followLogic(profileRes.userName, profileRes.connect)">Follow</button>
+
+        <!-- Action Buttons for Other Users -->
+        <div *ngIf="!ifCrrProfile" class="profile-actions">
+            <button class="btn btn-follow" *ngIf="!profileRes.connect"
+                (click)="followLogic(profileRes.userName, profileRes.connect)">
+                Follow
+            </button>
+            <button class="btn btn-unfollow" *ngIf="profileRes.connect"
+                (click)="followLogic(profileRes.userName, profileRes.connect)">
+                Unfollow
+            </button>
+            <button class="btn btn-report" (click)="onReport()">
+                Report
+            </button>
+        </div>
+
+        <!-- Report Section -->
+        <div *ngIf="reportAction" class="report-section">
+            <textarea name="reportProfile" placeholder="Describe the issue..." #reportData></textarea>
+            <button class="btn btn-submit"
+                (click)="onSubmitReport(profileRes.uuid, reportData.value); reportData.value=''">
+                Submit Report
+            </button>
+        </div>
+        <div *ngIf="message" class="message">
+            {{message.message}}
+        </div>
+    </div>
+
+    <!-- User Posts Section -->
+    <div class="user-posts-section">
+        <h2>Posts</h2>
+        <div *ngIf="isLoadingPosts" class="loading">
+            Loading posts...
+        </div>
+        <div *ngIf="!isLoadingPosts && userPosts.length === 0" class="no-posts">
+            <p>No posts yet</p>
+        </div>
+        <div *ngIf="!isLoadingPosts && userPosts.length > 0" class="posts-grid">
+            <div *ngFor="let post of userPosts" class="post-card" (click)="navigateToPost(post.postUuid)">
+                <div class="post-header">
+                    <div class="post-author">
+                        <div class="author-avatar-small">
+                            <img *ngIf="profileRes?.profileImagePath"
+                                 [src]="'http://localhost:8080/' + profileRes?.profileImagePath"
+                                 alt="Profile">
+                            <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
+                                {{profileRes?.firstName?.charAt(0) || ''}}
+                            </div>
+                        </div>
+                        <div class="author-info">
+                            <span class="author-name">{{post.userName}}</span>
+                            <span class="post-time">{{post.timestamp}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-content">
+                    <h3>{{post.title}}</h3>
+                    <p>{{post.content}}</p>
+                </div>
+
+                <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-media">
+                    <img *ngFor="let mediaPath of post.mediaPaths"
+                         [src]="'http://localhost:8080/' + mediaPath"
+                         alt="Post media">
+                </div>
+
+                <div class="post-actions">
+                    <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
+                        <span class="icon">❤️</span>
+                        <span>{{post.likeCount}}</span>
+                    </button>
+                    <button class="action-btn comment-btn" (click)="$event.stopPropagation(); navigateToPost(post.postUuid)">
+                        <span class="icon">💬</span>
+                        <span>{{post.commentCount}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

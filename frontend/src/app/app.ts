@@ -2,7 +2,7 @@ import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { NotifServices, Count } from './notification/services/services';
-import { UserProfile } from './me/me.service';
+import { UserProfile } from './me/services/me.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({

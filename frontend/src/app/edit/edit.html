@@ -1,26 +1,119 @@
-<div class="edit-modal-content" *ngIf="post">
-    <h2>Edit Post</h2>
-    <input [(ngModel)]="post.title" placeholder="Edit title" required />
-    <textarea [(ngModel)]="post.content" placeholder="Edit content" required></textarea>
+<div class="edit-container" *ngIf="post">
+    <div class="edit-card">
+        <div class="edit-header">
+            <h1>Edit Post</h1>
+            <p>Update your post content and media</p>
+        </div>
 
-    <div *ngFor="let path of post?.mediaPaths">
-        <ng-container [ngSwitch]="getMediaType(path)">
-            <button (click)="deleteMedia(path, post)">x</button>
-            <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" width="100" />
-            <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls width="100"></video>
-        </ng-container>
-    </div>
+        <form class="edit-form">
+            <!-- Title Input -->
+            <div class="form-group">
+                <label for="postTitle" class="form-label">
+                    <i class="bi bi-pencil-square"></i> Post Title
+                </label>
+                <input
+                    id="postTitle"
+                    type="text"
+                    [(ngModel)]="post.title"
+                    name="title"
+                    placeholder="Enter your post title"
+                    required
+                    class="form-input" />
+            </div>
 
-    <input type="file" (change)="onFileSelected($event)" multiple>
+            <!-- Content Textarea -->
+            <div class="form-group">
+                <label for="postContent" class="form-label">
+                    <i class="bi bi-file-text"></i> Post Content
+                </label>
+                <textarea
+                    id="postContent"
+                    [(ngModel)]="post.content"
+                    name="content"
+                    placeholder="Write your post content here..."
+                    required
+                    rows="8"
+                    class="form-textarea"></textarea>
+            </div>
 
-    <div *ngFor="let url of previewUrls; index as i">
-        <button (click)="deleteFileSelected(i)">X</button>
-        <img *ngIf="url.startsWith('blob:')" [src]="url" width="100" />
-        <video *ngIf="url.startsWith('blob:')" [src]="url" controls width="100"></video>
-    </div>
+            <!-- Existing Media Section -->
+            <div class="form-group" *ngIf="post?.mediaPaths && post.mediaPaths.length > 0">
+                <label class="form-label">
+                    <i class="bi bi-images"></i> Current Media
+                </label>
+                <div class="media-grid">
+                    <div *ngFor="let path of post?.mediaPaths" class="media-item">
+                        <ng-container [ngSwitch]="getMediaType(path)">
+                            <img *ngSwitchCase="'img'"
+                                 [src]="'http://localhost:8080/' + path"
+                                 alt="Post media" />
+                            <video *ngSwitchCase="'vd'"
+                                   [src]="'http://localhost:8080/' + path"
+                                   controls></video>
+                        </ng-container>
+                        <button type="button"
+                                class="remove-media-btn"
+                                (click)="deleteMedia(path, post)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
+            <!-- File Input -->
+            <div class="form-group">
+                <label for="fileInput" class="form-label">
+                    <i class="bi bi-cloud-upload"></i> Add More Media
+                </label>
+                <div class="file-input-wrapper">
+                    <input
+                        id="fileInput"
+                        type="file"
+                        (change)="onFileSelected($event)"
+                        multiple
+                        accept="image/*,video/*"
+                        class="file-input">
+                    <label for="fileInput" class="file-input-label">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Choose Files</span>
+                    </label>
+                    <span *ngIf="selectedFiles.length > 0" class="file-count">
+                        {{selectedFiles.length}} new file(s) selected
+                    </span>
+                </div>
+            </div>
 
-    <div class="edit-modal-actions">
-        <button (click)="onSave(post)">Save</button>
+            <!-- New Media Preview Section -->
+            <div class="form-group" *ngIf="previewUrls.length > 0">
+                <label class="form-label">
+                    <i class="bi bi-eye"></i> New Media Preview
+                </label>
+                <div class="media-grid">
+                    <div *ngFor="let url of previewUrls; index as i" class="media-item">
+                        <img *ngIf="url.startsWith('blob:')"
+                             [src]="url"
+                             alt="Preview" />
+                        <video *ngIf="url.startsWith('blob:')"
+                               [src]="url"
+                               controls></video>
+                        <button type="button"
+                                class="remove-media-btn"
+                                (click)="deleteFileSelected(i)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-cancel" (click)="navigate.navigate([''])">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-save" (click)="onSave(post)">
+                    <i class="bi bi-check-circle"></i> Save Changes
+                </button>
+            </div>
+        </form>
     </div>
 </div>

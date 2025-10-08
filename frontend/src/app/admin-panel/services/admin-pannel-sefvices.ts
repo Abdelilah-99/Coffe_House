@@ -107,5 +107,4 @@ export class AdminPannelSefvices {
   getOverallStatistics() {
     return this.http.get<AdminStatisticsResponse>(`${this.URL}/statistics`);
   }
-
 }

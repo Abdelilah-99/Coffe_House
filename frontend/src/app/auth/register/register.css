@@ -1,0 +1,355 @@
+.register-container {
+  position: relative;
+  min-height: 100vh;
+  background: #F8F8F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.decorative-left,
+.decorative-right {
+  position: fixed;
+  width: 60px;
+  height: 100%;
+  background: transparent;
+  z-index: 1;
+}
+
+.decorative-left {
+  left: 0;
+  border-right: 1px solid rgba(43, 43, 43, 0.1);
+}
+
+.decorative-right {
+  right: 0;
+  border-left: 1px solid rgba(43, 43, 43, 0.1);
+}
+
+.arch-decoration {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+}
+
+.arch-top-left {
+  top: 20px;
+  left: 20px;
+  border-top: 2px solid #6B4E3D;
+  border-left: 2px solid #6B4E3D;
+}
+
+.arch-top-right {
+  top: 20px;
+  right: 20px;
+  border-top: 2px solid #6B4E3D;
+  border-right: 2px solid #6B4E3D;
+}
+
+.arch-bottom-left {
+  bottom: 20px;
+  left: 20px;
+  border-bottom: 2px solid #6B4E3D;
+  border-left: 2px solid #6B4E3D;
+}
+
+.arch-bottom-right {
+  bottom: 20px;
+  right: 20px;
+  border-bottom: 2px solid #6B4E3D;
+  border-right: 2px solid #6B4E3D;
+}
+
+.geometric-shape {
+  display: none;
+}
+
+.register-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 3rem 3.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 2;
+  max-width: 50%;
+  width: 100%;
+  border: 1px solid rgba(43, 43, 43, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(43, 43, 43, 0.1);
+}
+
+.register-header h2 {
+  color: #2C2C2C;
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.register-header h2 i {
+  color: #6B4E3D;
+}
+
+.register-header p {
+  color: #6B4E3D;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  color: #2C2C2C;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.form-label i {
+  color: #6B4E3D;
+  font-size: 1rem;
+}
+
+.form-input {
+  border: 1px solid rgba(43, 43, 43, 0.2);
+  border-radius: 4px;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #FFFFFF;
+  color: #2C2C2C;
+  width: 100%;
+}
+
+.form-input:focus {
+  border-color: #6B4E3D;
+  box-shadow: 0 0 0 3px rgba(107, 78, 61, 0.1);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #999;
+}
+
+.file-input-wrapper {
+  position: relative;
+}
+
+.file-input {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px dashed rgba(43, 43, 43, 0.3);
+  border-radius: 4px;
+  background: #FFFFFF;
+  color: #6B4E3D;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-input-label:hover {
+  border-color: #6B4E3D;
+  background: #F8F8F8;
+}
+
+.file-input:focus + .file-input-label {
+  border-color: #6B4E3D;
+  box-shadow: 0 0 0 3px rgba(107, 78, 61, 0.1);
+}
+
+.register-button {
+  background: #6B4E3D;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(107, 78, 61, 0.3);
+}
+
+.register-button:hover {
+  background: #5a3d2b;
+  box-shadow: 0 4px 12px rgba(107, 78, 61, 0.4);
+  transform: translateY(-1px);
+}
+
+.register-button:active {
+  transform: translateY(0);
+}
+
+.register-button.disabled,
+.register-button:disabled {
+  background: #CCC;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.register-button:disabled:hover {
+  transform: none;
+}
+
+.error-message {
+  margin-top: 1.5rem;
+  border-radius: 4px;
+  border-left: 3px solid #6B4E3D;
+  background: rgba(107, 78, 61, 0.05);
+  padding: 1rem;
+  color: #2C2C2C;
+  font-size: 0.95rem;
+}
+
+.error-message i {
+  color: #6B4E3D;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(43, 43, 43, 0.1);
+}
+
+.login-link p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.login-link-text {
+  color: #6B4E3D;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.login-link-text:hover {
+  color: #2C2C2C;
+}
+
+@media (max-width: 1200px) {
+  .register-card {
+    max-width: 60%;
+  }
+}
+
+@media (max-width: 992px) {
+  .register-card {
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-card {
+    max-width: 85%;
+    padding: 2.5rem 2rem;
+  }
+
+  .register-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .decorative-left,
+  .decorative-right,
+  .arch-decoration {
+    display: none;
+  }
+
+  .register-card {
+    max-width: 95%;
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+
+  .register-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .col-md-6 {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.profile-image-preview {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px dashed rgba(107, 78, 61, 0.3);
+  border-radius: 8px;
+  background: rgba(107, 78, 61, 0.05);
+}
+
+.profile-image-preview img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #6B4E3D;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.remove-profile-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remove-profile-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.remove-profile-btn i {
+  font-size: 1rem;
+}

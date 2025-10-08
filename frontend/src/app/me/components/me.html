@@ -1,23 +1,106 @@
 <div class="profle-container">
-    <h1>Profile</h1>
-    <div *ngIf="isLoading">
-        loading...
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div *ngIf="isLoading" class="loading">
+            loading...
+        </div>
+        <div *ngIf="userProfile" class="profile-info">
+            <div class="profile-avatar">
+                <img *ngIf="userProfile.profileImagePath"
+                     [src]="'http://localhost:8080/' + userProfile.profileImagePath"
+                     alt="Profile Picture">
+                <div *ngIf="!userProfile.profileImagePath" class="avatar-placeholder">
+                    {{userProfile.firstName.charAt(0)}}{{userProfile.lastName.charAt(0)}}
+                </div>
+            </div>
+            <div class="profile-details">
+                <h1>{{userProfile.firstName}} {{userProfile.lastName}}</h1>
+                <p class="username">&#64;{{userProfile.username}}</p>
+                <p class="email">{{userProfile.email}}</p>
+            </div>
+        </div>
+        <div *ngIf="!isLoading && !userProfile" class="no-data">
+            <p>No profile data available</p>
+        </div>
     </div>
-    <div *ngIf="userProfile">
-        <h2>Welcom, {{userProfile.firstName}}</h2>
-        <p><strong>Name: </strong>{{ userProfile.firstName }} {{userProfile.lastName}}</p>
-        <p><strong>Username: </strong>{{userProfile.username}}</p>
-        <p><strong>Email: </strong>{{userProfile.email}}</p>
-    </div>
-    <div *ngIf="!isLoading && !userProfile">
-        <p>no data</p>
-    </div>
-    <div>
-        <form (ngSubmit)="onCreatePost()">
-            <input [(ngModel)]="post.title" name="title" placeholder="Title">
-            <textarea [(ngModel)]="post.content" name="content" rows="5" placeholder="Content"></textarea>
-            <input type="file" (change)="onFileSelected($event)" multiple>
-            <button type="submit">Submit</button>
+
+    <!-- Post Creation Form -->
+    <div class="create-post-section">
+        <h2>Create New Post</h2>
+        <form (ngSubmit)="onCreatePost()" class="create-post-form">
+            <div class="form-group">
+                <input [(ngModel)]="post.title" name="title" placeholder="Post Title" required>
+            </div>
+            <div class="form-group">
+                <textarea [(ngModel)]="post.content" name="content" rows="5" placeholder="What's on your mind?" required></textarea>
+            </div>
+            <div class="form-group file-input-wrapper">
+                <label for="file-input" class="file-input-label">
+                    <span>📷 Add Photos</span>
+                </label>
+                <input id="file-input" type="file" (change)="onFileSelected($event)" multiple accept="image/*">
+                <span *ngIf="selectedFiles.length > 0" class="file-count">{{selectedFiles.length}} file(s) selected</span>
+            </div>
+            <div *ngIf="selectedFiles.length > 0" class="image-preview-container">
+                <div *ngFor="let file of selectedFiles; let i = index" class="image-preview-item">
+                    <img [src]="getImagePreview(file)" alt="Preview">
+                    <button type="button" class="remove-image-btn" (click)="removeImage(i)">✕</button>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">Post</button>
         </form>
+    </div>
+
+    <!-- User Posts Section -->
+    <div class="user-posts-section">
+        <h2>My Posts</h2>
+        <div *ngIf="isLoadingPosts" class="loading">
+            Loading posts...
+        </div>
+        <div *ngIf="!isLoadingPosts && userPosts.length === 0" class="no-posts">
+            <p>No posts yet. Create your first post!</p>
+        </div>
+        <div *ngIf="!isLoadingPosts && userPosts.length > 0" class="posts-grid">
+            <div *ngFor="let post of userPosts" class="post-card" (click)="navigateToPost(post.postUuid)">
+                <div class="post-header">
+                    <div class="post-author">
+                        <div class="author-avatar-small">
+                            <img *ngIf="userProfile?.profileImagePath"
+                                 [src]="'http://localhost:8080/' + userProfile?.profileImagePath"
+                                 alt="Profile">
+                            <div *ngIf="!userProfile?.profileImagePath" class="avatar-placeholder-small">
+                                {{userProfile?.firstName?.charAt(0) || ''}}
+                            </div>
+                        </div>
+                        <div class="author-info">
+                            <span class="author-name">{{post.userName}}</span>
+                            <span class="post-time">{{post.timestamp}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-content">
+                    <h3>{{post.title}}</h3>
+                    <p>{{post.content}}</p>
+                </div>
+
+                <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-media">
+                    <img *ngFor="let mediaPath of post.mediaPaths"
+                         [src]="'http://localhost:8080/' + mediaPath"
+                         alt="Post media">
+                </div>
+
+                <div class="post-actions">
+                    <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
+                        <span class="icon">❤️</span>
+                        <span>{{post.likeCount}}</span>
+                    </button>
+                    <button class="action-btn comment-btn" (click)="$event.stopPropagation(); navigateToPost(post.postUuid)">
+                        <span class="icon">💬</span>
+                        <span>{{post.commentCount}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

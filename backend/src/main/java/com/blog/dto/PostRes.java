@@ -13,6 +13,7 @@ public class PostRes {
     private List<String> mediaPaths;
     private long commentCount;
     private long likeCount;
+    private String profileImagePath;
 
     public PostRes() {
     }
@@ -27,7 +28,8 @@ public class PostRes {
             String timestamp,
             List<String> mediaPaths,
             long commentCount,
-            long likeCount) {
+            long likeCount,
+            String profileImagePath) {
         this.postUuid = postUuid;
         this.userUuid = userUuid;
         this.userName = userName;
@@ -38,6 +40,7 @@ public class PostRes {
         this.mediaPaths = mediaPaths;
         this.commentCount = commentCount;
         this.likeCount = likeCount;
+        this.profileImagePath = profileImagePath;
     }
 
     public long getCommentCount() {
@@ -118,5 +121,13 @@ public class PostRes {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 }

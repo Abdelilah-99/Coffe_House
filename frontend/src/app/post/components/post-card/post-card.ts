@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Like, Post, PostService, Comments, Message } from '../../services/post-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { MeService, UserProfile } from '../../../me/me.service';
+import { MeService, UserProfile } from '../../../me/services/me.service';
 import { error, time } from 'console';
 
 @Component({

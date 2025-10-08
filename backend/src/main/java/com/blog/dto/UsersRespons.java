@@ -10,6 +10,7 @@ public class UsersRespons {
     private long follower;
     private long following;
     private boolean connect;
+    private String profileImagePath;
 
     public UsersRespons() {
     }
@@ -20,7 +21,8 @@ public class UsersRespons {
             String role,
             long follower,
             long following,
-            boolean connect) {
+            boolean connect,
+            String profileImagePath) {
         this.uuid = uuid;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +32,7 @@ public class UsersRespons {
         this.follower = follower;
         this.following = following;
         this.connect = connect;
+        this.profileImagePath = profileImagePath;
     }
 
     public boolean getConnect() {
@@ -102,5 +105,13 @@ public class UsersRespons {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 }

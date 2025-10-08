@@ -95,6 +95,7 @@ public class EditPostService {
                 post.getTimestamp(),
                 post.getMediaPaths(),
                 commentRepository.countByPost_uuid(post.getUuid()),
-                likesRepository.countByPost_uuid(post.getUuid()));
+                likesRepository.countByPost_uuid(post.getUuid()),
+                post.getUser().getProfileImagePath());
     }
 }

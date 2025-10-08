@@ -56,7 +56,7 @@ export class AdminPanel implements OnInit {
   }
 
   loadReports() {
-    this.adminePanelServices.loadReports('user').subscribe({
+    this.adminePanelServices.loadReports('users').subscribe({
       next: (res) => {
         this.userReports = res;
         console.log("User reports loaded successfully");
@@ -66,7 +66,7 @@ export class AdminPanel implements OnInit {
       }
     });
 
-    this.adminePanelServices.loadReports('post').subscribe({
+    this.adminePanelServices.loadReports('posts').subscribe({
       next: (res) => {
         this.postReports = res;
         console.log("Post reports loaded successfully");

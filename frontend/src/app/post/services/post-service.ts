@@ -12,6 +12,7 @@ export interface Post {
   mediaPaths: string[];
   commentCount: number;
   likeCount: number;
+  profileImagePath: string;
 }
 
 export interface UserProfile {

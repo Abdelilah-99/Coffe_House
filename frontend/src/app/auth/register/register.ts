@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -28,14 +29,34 @@ export class Register implements OnInit {
   }
 
   selectedFile: File | null = null;
+  profileImagePreview: string | null = null;
+
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
     if (!files || files.length === 0) {
       this.selectedFile = null;
+      this.profileImagePreview = null;
       return;
     }
     this.selectedFile = files[0];
     console.log('Selected file:', this.selectedFile.name);
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.profileImagePreview = event.target.result;
+    };
+    reader.readAsDataURL(this.selectedFile);
+  }
+
+  removeProfileImage() {
+    this.selectedFile = null;
+    this.profileImagePreview = null;
+    // Reset file input
+    const fileInput = document.getElementById('profileImage') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 
   onRegister() {

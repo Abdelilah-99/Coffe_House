@@ -1,11 +1,19 @@
-<div class="post-card">
-    <button (click)="postCard.emit(post.postUuid)">
-        showPost
-    </button>
-
+<div class="post-card" (click)="postCard.emit(post.postUuid)">
     <div class="post-header">
+        <div class="post-user-info">
+            <img *ngIf="post.profileImagePath"
+                 [src]="'http://localhost:8080/' + post.profileImagePath"
+                 alt="{{ post.userName }}"
+                 class="post-user-avatar">
+            <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder">
+                {{ post.userName?.charAt(0)?.toUpperCase() || '?' }}
+            </div>
+            <div class="post-user-details">
+                <span class="post-author">{{ post.userName }}</span>
+                <span class="post-date">{{ post.timestamp }}</span>
+            </div>
+        </div>
         <h3 class="post-title">{{ post.title }}</h3>
-        <span class="post-date">{{ post.timestamp }}</span>
     </div>
 
     <div class="post-content">
@@ -13,10 +21,9 @@
     </div>
 
     <app-post-gallery [post]="post" [mediaPaths]="post.mediaPaths"></app-post-gallery>
-    <app-post-likes [post]="post" (reaction)="reaction.emit($event)">
-    </app-post-likes>
-    <app-post-comments [post]="post"></app-post-comments>
-    <div class="post-footer">
-        <span class="post-author">By {{ post.userName }}</span>
+    <div (click)="$event.stopPropagation()">
+        <app-post-likes [post]="post" (reaction)="reaction.emit($event)">
+        </app-post-likes>
+        <app-post-comments [post]="post"></app-post-comments>
     </div>
 </div>

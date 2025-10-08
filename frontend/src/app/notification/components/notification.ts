@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { MeService, UserProfile } from '../../me/me.service';
+import { MeService, UserProfile } from '../../me/services/me.service';
 import { NotificationRes, NotifServices } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';

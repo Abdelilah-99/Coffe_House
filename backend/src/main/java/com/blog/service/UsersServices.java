@@ -53,6 +53,7 @@ public class UsersServices {
         cnvDto.setRole(user.getRole());
         cnvDto.setFollower(follower);
         cnvDto.setFollowing(following);
+        cnvDto.setProfileImagePath(user.getProfileImagePath());
         return cnvDto;
         // );
     }
@@ -78,6 +79,7 @@ public class UsersServices {
             crrUser.setRole(user.getRole());
             crrUser.setFollower(followRepository.countByFollowerId(user.getId()));
             crrUser.setFollowing(followRepository.countByFollowingId(user.getId()));
+            crrUser.setProfileImagePath(user.getProfileImagePath());
 
             return crrUser;
         }
@@ -234,6 +236,7 @@ public class UsersServices {
         profile.setFollower(following);
         profile.setFollowing(follower);
         profile.setConnect(connecting);
+        profile.setProfileImagePath(user.getProfileImagePath());
         return profile;
     }
 }

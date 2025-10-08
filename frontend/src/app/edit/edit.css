@@ -1,0 +1,347 @@
+/* Edit Page Container */
+.edit-container {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 2rem;
+  padding-top: 120px;
+  padding-left: calc(250px + 2rem);
+  padding-right: 2rem;
+}
+
+/* Edit Card */
+.edit-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+}
+
+/* Edit Header */
+.edit-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.edit-header h1 {
+  font-size: 2rem;
+  color: var(--color-text);
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.edit-header p {
+  font-size: 1rem;
+  color: var(--color-text);
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Form Styling */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-label i {
+  font-size: 1.1rem;
+  color: var(--color-primary);
+}
+
+/* Input Styling */
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: all 0.3s ease;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(107, 78, 61, 0.1);
+  transform: translateY(-2px);
+}
+
+.form-input {
+  height: 50px;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 200px;
+}
+
+/* File Input Wrapper */
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-input-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.75rem;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.file-input-label:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(107, 78, 61, 0.3);
+}
+
+.file-input-label:active {
+  transform: translateY(0);
+}
+
+.file-input-label i {
+  font-size: 1.2rem;
+}
+
+.file-count {
+  padding: 0.5rem 1rem;
+  background: rgba(107, 78, 61, 0.1);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Media Grid */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.media-item {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  aspect-ratio: 1;
+  transition: all 0.3s ease;
+}
+
+.media-item:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.media-item img,
+.media-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-media-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(231, 76, 60, 0.95);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  opacity: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.media-item:hover .remove-media-btn {
+  opacity: 1;
+}
+
+.remove-media-btn:hover {
+  background: rgba(192, 57, 43, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.remove-media-btn i {
+  font-size: 1rem;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 2rem;
+  border-top: 2px solid var(--color-border);
+  margin-top: 1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn i {
+  font-size: 1.2rem;
+}
+
+.btn-cancel {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+
+.btn-cancel:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: var(--color-text);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(107, 78, 61, 0.4);
+}
+
+.btn-save:active,
+.btn-cancel:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .edit-container {
+    padding-left: calc(70px + 1rem);
+    padding-right: 1rem;
+    padding-top: 100px;
+  }
+
+  .edit-card {
+    padding: 2rem;
+  }
+
+  .edit-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .edit-container {
+    padding: 90px 1rem 100px 1rem;
+  }
+
+  .edit-card {
+    padding: 1.5rem;
+  }
+
+  .edit-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .edit-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .edit-header p {
+    font-size: 0.9rem;
+  }
+
+  .form-input,
+  .form-textarea {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .file-input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .file-input-label {
+    justify-content: center;
+  }
+}

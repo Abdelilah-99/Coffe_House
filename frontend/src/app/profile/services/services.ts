@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Post } from '../../post/services/post-service';
 
 export interface ProfileRes {
   email: String;
@@ -11,6 +12,7 @@ export interface ProfileRes {
   follower: number;
   following: number;
   connect: boolean;
+  profileImagePath: string;
 }
 
 export interface FollowRes {
@@ -46,5 +48,9 @@ export class ProfileService {
 
   doReport(uuid: String, reason: String) {
     return this.http.post<Message>(`http://localhost:8080/api/report/profile/${uuid}`, { reason: reason });
+  }
+
+  getUserPosts(userUuid: String): Observable<Post[]> {
+    return this.http.get<Post[]>(`http://localhost:8080/api/posts/user/${userUuid}`);
   }
 }

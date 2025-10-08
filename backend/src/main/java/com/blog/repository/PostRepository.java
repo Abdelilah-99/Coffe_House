@@ -12,19 +12,20 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-        List<Post> findByUser(User user);
+  List<Post> findByUser(User user);
 
-        Optional<Post> findByUuid(String uuid);
+  Optional<Post> findByUuid(String uuid);
 
-        @Query("""
-                          SELECT p FROM Post p
-                          WHERE p.user.id IN (
-                            SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId
-                          )
-                          ORDER BY p.timestamp DESC
-                        """)
-        List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
+  @Query("""
+        SELECT p FROM Post p
+        WHERE p.user.id IN (
+          SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId
+        )
+        or p.user.id = :userId
+        ORDER BY p.timestamp DESC
+      """)
+  List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
 
-        @Transactional
-        void deleteByUuid(String uuid);
+  @Transactional
+  void deleteByUuid(String uuid);
 }

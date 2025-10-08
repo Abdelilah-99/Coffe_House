@@ -103,7 +103,8 @@ public class PostService {
                     time,
                     mediaPaths,
                     0,
-                    0);
+                    0,
+                    user.getProfileImagePath());
         } catch (Exception e) {
             throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
         }
@@ -155,7 +156,8 @@ public class PostService {
                     post.getTimestamp(),
                     post.getMediaPaths(),
                     commentRepository.countByPost_uuid(post.getUuid()),
-                    likesRepository.countByPost_uuid(post.getUuid())));
+                    likesRepository.countByPost_uuid(post.getUuid()),
+                    post.getUser().getProfileImagePath()));
             // System.err.println(listPostRes.get(0).getUserId());
         }
         return listPostRes;
@@ -172,6 +174,28 @@ public class PostService {
                 post.getTimestamp(),
                 post.getMediaPaths(),
                 commentRepository.countByPost_uuid(post.getUuid()),
-                likesRepository.countByPost_uuid(post.getUuid()));
+                likesRepository.countByPost_uuid(post.getUuid()),
+                post.getUser().getProfileImagePath());
+    }
+
+    public List<PostRes> getPostsByUser(String userUuid) {
+        User user = userRepository.findByUuid(userUuid)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        List<Post> posts = postRepository.findByUser(user);
+        List<PostRes> listPostRes = new ArrayList<>();
+        for (Post post : posts) {
+            listPostRes.add(new PostRes(post.getUuid(),
+                    post.getUser().getUuid(),
+                    post.getUser().getUserName(),
+                    post.getContent(),
+                    post.getTitle(),
+                    "list of user posts",
+                    post.getTimestamp(),
+                    post.getMediaPaths(),
+                    commentRepository.countByPost_uuid(post.getUuid()),
+                    likesRepository.countByPost_uuid(post.getUuid()),
+                    post.getUser().getProfileImagePath()));
+        }
+        return listPostRes;
     }
 }

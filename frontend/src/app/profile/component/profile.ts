@@ -2,7 +2,8 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService, ProfileRes, FollowRes, Message } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { MeService, UserProfile } from '../../me/me.service';
+import { MeService, UserProfile } from '../../me/services/me.service';
+import { Post, PostService } from '../../post/services/post-service';
 @Component({
   selector: 'app-profile',
   imports: [CommonModule],
@@ -16,10 +17,13 @@ export class Profile implements OnInit {
   message?: Message;
   ifCrrProfile = true;
   userProfile?: UserProfile;
+  userPosts: Post[] = [];
+  isLoadingPosts = false;
   constructor(private route: ActivatedRoute, private navigate: Router,
     private profileService: ProfileService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private meProfile: MeService) { }
+    private meProfile: MeService,
+    private postService: PostService) { }
   uuid: String | null = null;
   ngOnInit(): void {
     this.uuid = this.route.snapshot.paramMap.get('id');
@@ -64,10 +68,25 @@ export class Profile implements OnInit {
       next: (res) => {
         this.profileRes = res;
         this.myProfile(this.profileRes.uuid);
+        this.loadUserPosts(uuid);
         console.log("profile has come succesfully ", res);
       },
       error: (err) => {
         console.error("error getting profile ", err);
+      }
+    })
+  }
+
+  loadUserPosts(userUuid: String) {
+    this.isLoadingPosts = true;
+    this.profileService.getUserPosts(userUuid).subscribe({
+      next: (posts) => {
+        this.userPosts = posts;
+        this.isLoadingPosts = false;
+      },
+      error: (err) => {
+        console.error("Err loading user posts: ", err);
+        this.isLoadingPosts = false;
       }
     })
   }
@@ -101,5 +120,24 @@ export class Profile implements OnInit {
         }
       })
     }
+  }
+
+  navigateToPost(postUuid: String) {
+    this.navigate.navigate(['/postCard', postUuid]);
+  }
+
+  handleLike(event: Event, postUuid: String) {
+    event.stopPropagation();
+    this.postService.doReaction(postUuid).subscribe({
+      next: (res) => {
+        const post = this.userPosts.find(p => p.postUuid === postUuid);
+        if (post) {
+          post.likeCount = res.likeCount;
+        }
+      },
+      error: (err) => {
+        console.error("Error liking post: ", err);
+      }
+    });
   }
 }

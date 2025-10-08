@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { Register } from './auth/register/register';
-import { Me } from './me/me';
+import { Me } from './me/components/me';
 import { HomeComponent } from './home/components/home-component';
 import { PostCard } from './post/components/post-card/post-card';
 import { Edit } from './edit/edit';
@@ -9,6 +9,7 @@ import { Profile } from './profile/component/profile';
 import { Notification } from './notification/components/notification';
 import { AdminPanel } from './admin-panel/components/admin-panel';
 import { adminGuard } from './admin-panel/admin-panel-guard';
+
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: Login },
