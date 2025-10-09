@@ -19,8 +19,6 @@ export class Profile implements OnInit {
   userProfile?: UserProfile;
   userPosts: Post[] = [];
   isLoadingPosts = false;
-  following?: number;
-  followers?: number;
   constructor(private route: ActivatedRoute, private navigate: Router,
     private profileService: ProfileService,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -69,7 +67,6 @@ export class Profile implements OnInit {
     this.profileService.getProfile(uuid).subscribe({
       next: (res) => {
         this.profileRes = res;
-        this.followers = this.profileRes?.follower;
         this.myProfile(this.profileRes.uuid);
         this.loadUserPosts(uuid);
         console.log("profile has come succesfully ", this.profileRes.username);
@@ -94,21 +91,14 @@ export class Profile implements OnInit {
     })
   }
 
-  block?: boolean;
-
   followLogic(userName: String, connect: boolean) {
     if (connect && this.profileRes?.uuid) {
       this.profileService.unFollow(this.profileRes?.uuid).subscribe({
         next: (res) => {
           this.followRes = res;
-          this.followers = this.profileRes?.follower;
           console.log("unfollow succeed");
           if (this.profileRes) {
             this.profileRes.connect = false;
-            if (this.followers && (this.block === undefined || this.block === true)) {
-              this.followers--;
-              this.block = true;
-            }
           }
         },
         error: (err) => {
@@ -120,15 +110,8 @@ export class Profile implements OnInit {
       this.profileService.follow(this.profileRes?.uuid).subscribe({
         next: (res) => {
           this.followRes = res;
-          this.followers = this.profileRes?.follower;
-          console.error("followers: ", this.followers);
-          console.log("follow succeed");
           if (this.profileRes) {
             this.profileRes.connect = true;
-            if (this.followers != null && (this.block === undefined || this.block === false)) {
-              this.followers++;
-              this.block = false;
-            }
           }
         },
         error: (err) => {
