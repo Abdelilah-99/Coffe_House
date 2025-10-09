@@ -4,8 +4,6 @@
   background: var(--color-bg);
   padding: 2rem;
   padding-top: 120px;
-  padding-left: calc(250px + 2rem);
-  padding-right: 2rem;
 }
 
 /* Edit Card */
@@ -13,7 +11,7 @@
   background: var(--color-bg);
   border-radius: var(--radius-md);
   padding: 2.5rem;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--color-border);
@@ -273,9 +271,15 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .edit-card {
+    max-width: 850px;
+  }
+}
+
 @media (max-width: 768px) {
   .edit-container {
-    padding-left: calc(70px + 1rem);
+    padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 100px;
   }

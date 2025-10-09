@@ -1,12 +1,9 @@
 .profile-container {
   background: var(--color-bg);
   border-radius: var(--radius-md);
-  padding: 2rem;
-  margin: 2rem auto;
-  margin-left: 250px;
-  margin-right: 2rem;
-  margin-top: 100px;
-  max-width: 1200px;
+  padding: 2.5rem;
+  margin: 100px auto 2rem auto;
+  max-width: 1300px;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
 }
@@ -151,25 +148,118 @@
 /* Report Section */
 .report-section {
   margin-top: 1.5rem;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.report-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: white;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.report-description {
+  padding: 0 1.5rem;
+  padding-top: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.report-reasons {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.reason-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
-  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.reason-option:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.reason-option input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: white;
+}
+
+.reason-option span {
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .report-section textarea {
-  width: 100%;
+  width: calc(100% - 3rem);
+  margin: 0 1.5rem;
   padding: 0.875rem 1rem;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-sm);
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: white;
   background: rgba(255, 255, 255, 0.1);
   transition: all 0.2s ease;
   font-family: inherit;
   resize: vertical;
-  min-height: 100px;
-  margin-bottom: 1rem;
+  min-height: 80px;
 }
 
 .report-section textarea::placeholder {
@@ -182,23 +272,77 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+.report-actions {
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
 .btn-submit {
   background: white;
   color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+.btn-icon {
+  font-size: 1.1rem;
 }
 
 .message {
   margin-top: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.2);
+  padding: 1rem 1.5rem;
+  background: rgba(46, 204, 113, 0.2);
   border-radius: var(--radius-sm);
   color: white;
   font-weight: 500;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.message-icon {
+  width: 24px;
+  height: 24px;
+  background: rgba(46, 204, 113, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .loading {
@@ -441,7 +585,9 @@
 }
 
 .action-btn .icon {
-  font-size: 1.1rem;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 
@@ -476,11 +622,16 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .profile-container {
+    max-width: 1100px;
+    padding: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
   .profile-container {
-    margin-left: 70px;
-    margin-right: 1rem;
-    margin-top: 90px;
+    margin: 90px 1rem 2rem 1rem;
     padding: 1.5rem;
   }
 
@@ -519,10 +670,7 @@
 @media (max-width: 576px) {
   .profile-container {
     padding: 1.25rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-top: 90px;
-    margin-bottom: 100px;
+    margin: 90px 1rem 100px 1rem;
   }
 
   .profile-header {

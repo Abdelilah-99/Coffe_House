@@ -1,29 +1,42 @@
-<router-outlet />
-<nav class="sidebar" *ngIf="showNavbar">
-    <ul class="sidebar-nav">
-        <li class="nav-item">
-            <a href="/" class="nav-link">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-text">Home</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="/me" class="nav-link">
-                <span class="nav-icon">👤</span>
-                <span class="nav-text">Profile</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="/notification" class="nav-link">
-                <span class="nav-icon" *ngIf="count">🔔 {{ count }} </span>
-                <span class="nav-text">Notifications</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="/admin" class="nav-link">
-                <span class="nav-icon">⚙️</span>
-                <span class="nav-text">Admin</span>
-            </a>
-        </li>
-    </ul>
+<nav class="navbar" *ngIf="showNavbar">
+    <div class="navbar-container">
+        <div class="navbar-brand">
+            <a href="/" class="brand-link"><img class="coffe-house"
+                    [src]="'http://localhost:8080/uploads/posts/coffe-house.png'"></a>
+        </div>
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/me" routerLinkActive="active" class="nav-link">
+                    Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/notification" routerLinkActive="active" class="nav-link">
+                    Notifications
+                    <span class="notification-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/admin" routerLinkActive="active" class="nav-link">
+                    Admin
+                </a>
+            </li>
+        </ul>
+
+        <div class="navbar-search">
+            <button class="search-toggle-btn" (click)="toggleSearch()">
+                <span class="search-icon">🔍</span>
+            </button>
+            <div class="search-dropdown" [class.show]="searchOpen">
+                <app-searchbar (closeSearch)="toggleSearch()"></app-searchbar>
+            </div>
+        </div>
+    </div>
 </nav>
+<router-outlet />

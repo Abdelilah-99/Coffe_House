@@ -87,11 +87,11 @@
                         </div>
                         <div class="post-actions" (click)="$event.stopPropagation()">
                             <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
-                                <span class="icon">❤️</span>
+                                <img src="/coffe-like.png" alt="Like" class="icon">
                                 <span>{{post.likeCount}}</span>
                             </button>
                             <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
-                                <span class="icon">💬</span>
+                                <img src="/coffe-comment.png" alt="Comment" class="icon">
                                 <span class="count">{{post.commentCount}}</span>
                                 <span class="text">Comments</span>
                             </button>
@@ -125,11 +125,11 @@
 
                     <div class="post-actions" (click)="$event.stopPropagation()">
                         <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
-                            <span class="icon">❤️</span>
+                            <img src="/coffe-like.png" alt="Like" class="icon">
                             <span>{{post.likeCount}}</span>
                         </button>
                         <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
-                            <span class="icon">💬</span>
+                            <img src="/coffe-comment.png" alt="Comment" class="icon">
                             <span class="count">{{post.commentCount}}</span>
                             <span class="text">Comments</span>
                         </button>

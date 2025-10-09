@@ -1,3 +1,6 @@
 <div class="post-like">
-    <button (click)="reaction.emit(post.postUuid)" >❤️ {{post.likeCount}} </button>
+    <button (click)="reaction.emit(post.postUuid)">
+        <img src="/coffe-like.png" alt="Like" class="like-icon">
+        {{post.likeCount}}
+    </button>
 </div>

@@ -1,12 +1,9 @@
 .profle-container {
   background: var(--color-bg);
   border-radius: var(--radius-md);
-  padding: 2rem;
-  margin: 2rem auto;
-  margin-left: 250px;
-  margin-right: 2rem;
-  margin-top: 100px;
-  max-width: 1200px;
+  padding: 2.5rem;
+  margin: 100px auto 2rem auto;
+  max-width: 1300px;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
 }
@@ -472,7 +469,9 @@
 }
 
 .action-btn .icon {
-  font-size: 1.1rem;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 
@@ -507,11 +506,16 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .profle-container {
+    max-width: 1100px;
+    padding: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
   .profle-container {
-    margin-left: 70px;
-    margin-right: 1rem;
-    margin-top: 90px;
+    margin: 90px 1rem 2rem 1rem;
     padding: 1.5rem;
   }
 
@@ -546,10 +550,7 @@
 @media (max-width: 576px) {
   .profle-container {
     padding: 1.25rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-top: 90px;
-    margin-bottom: 100px;
+    margin: 90px 1rem 100px 1rem;
   }
 
   .profile-header {

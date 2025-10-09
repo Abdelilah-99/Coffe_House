@@ -1,8 +1,22 @@
-<div *ngIf="post" class="post-card">
+<div *ngIf="post && profileData" class="post-card">
     <div class="post-header">
-        <span class="post-username">@{{ post.userName }}</span>
-        <br>
-        <span class="post-timestamp">{{ post.timestamp }}</span>
+        <div class="post-author-info">
+            <div class="author-avatar">
+                <img *ngIf="post.profileImagePath"
+                     [src]="'http://localhost:8080/' + post.profileImagePath"
+                     alt="{{ post.userName }}"
+                     class="author-avatar-img">
+                <div *ngIf="!post.profileImagePath" class="author-avatar-placeholder">
+                    {{ post.userName.charAt(0).toUpperCase() || '?' }}
+                </div>
+            </div>
+            <div class="author-details">
+                <div class="username-row">
+                    <span class="post-username">@{{ post.userName }}</span>
+                </div>
+                <span class="post-timestamp">{{ post.timestamp }}</span>
+            </div>
+        </div>
     </div>
 
     <h2 class="post-title">{{ post.title }}</h2>
@@ -19,27 +33,92 @@
     </div>
 
     <div class="post-footer">
-        <button class="likes" (click)="onReact(post.postUuid)">❤️ {{ post.likeCount }}</button>
-        <button class="comments" (click)="onComment(post.postUuid)">💬 {{ post.commentCount }}</button>
-        <div *ngIf="isCommenting">
-            <textarea name="comment" id="cleanForm" placeholder="comment..." #commentData></textarea>
-            <button type="submit"
-                (click)="onSubmitComment(commentData.value, comment?.postUuid); commentData.value = ''">comment</button>
-            <div *ngFor="let instantComment of instantComments">
-                <div class="myComment" *ngIf="profileData">
-                    {{ instantComment.username }}
-                    <br>
-                    {{ instantComment.time | date:'yyyy-MM-dd HH:mm:ss' }}
-                    <br>
-                    {{ instantComment.comment }}
+        <div class="post-actions-bar">
+            <button class="action-btn like-btn" (click)="onReact(post.postUuid)">
+                <img src="/coffe-like.png" alt="Like" class="action-icon">
+                <span class="action-count">{{ post.likeCount }}</span>
+                <span class="action-label">Likes</span>
+            </button>
+            <button class="action-btn comment-btn" (click)="onComment(post.postUuid)">
+                <img src="/coffe-comment.png" alt="Comment" class="action-icon">
+                <span class="action-count">{{ post.commentCount }}</span>
+                <span class="action-label">Comments</span>
+            </button>
+        </div>
+
+        <!-- Comments Section -->
+        <div *ngIf="isCommenting" class="comments-section">
+            <div class="comments-header">
+                <h3>Comments</h3>
+                <span class="comments-count">{{ post.commentCount }} comments</span>
+            </div>
+
+            <!-- Add Comment Form -->
+            <div class="add-comment-form">
+                <div class="comment-input-wrapper">
+                    <div class="user-avatar">
+                        <img *ngIf="profileData?.profileImagePath"
+                             [src]="'http://localhost:8080/' + profileData.profileImagePath"
+                             alt="Your avatar">
+                        <div *ngIf="!profileData?.profileImagePath" class="avatar-placeholder">
+                            {{ profileData.firstName.charAt(0) || '?' }}
+                        </div>
+                    </div>
+                    <textarea name="comment" placeholder="Write a comment..." #commentData rows="3"></textarea>
+                </div>
+                <div class="comment-actions">
+                    <button class="btn-secondary" (click)="onComment(post.postUuid)">Cancel</button>
+                    <button class="btn-primary" type="submit"
+                        (click)="onSubmitComment(commentData.value, comment?.postUuid); commentData.value = ''">
+                        <span class="btn-icon">📤</span>
+                        Post Comment
+                    </button>
                 </div>
             </div>
-            <div class="post-comments" *ngFor="let comment of comment?.comments">
-                {{ comment?.userName }}
-                <br>
-                {{ comment?.timesTamp | date:'yyyy-MM-dd HH:mm:ss' }}
-                <br>
-                {{ comment?.comment }}
+
+            <!-- Comments List -->
+            <div class="comments-list">
+                <!-- Instant Comments (Just Posted) -->
+                <div *ngFor="let instantComment of instantComments" class="comment-card new-comment">
+                    <div class="comment-avatar">
+                        <div class="avatar-placeholder">
+                            {{ instantComment.username.charAt(0).toUpperCase() }}
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="comment-author">{{ instantComment.username }}</span>
+                            <span class="comment-badge">Just now</span>
+                        </div>
+                        <p class="comment-text">{{ instantComment.comment }}</p>
+                        <div class="comment-meta">
+                            <span class="comment-time">{{ instantComment.time | date:'short' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Existing Comments -->
+                <div *ngFor="let c of comment?.comments" class="comment-card">
+                    <div class="comment-avatar">
+                        <div class="avatar-placeholder">
+                            {{ c?.userName?.charAt(0)?.toUpperCase() || '?' }}
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="comment-author">{{ c?.userName }}</span>
+                        </div>
+                        <p class="comment-text">{{ c?.comment }}</p>
+                        <div class="comment-meta">
+                            <span class="comment-time">{{ c?.timesTamp | date:'medium' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="comment?.comments?.length === 0 && instantComments?.length === 0" class="no-comments">
+                    <span class="no-comments-icon">💭</span>
+                    <p>No comments yet. Be the first to comment!</p>
+                </div>
             </div>
         </div>
     </div>

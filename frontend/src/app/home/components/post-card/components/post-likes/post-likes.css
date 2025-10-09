@@ -17,6 +17,12 @@
   color: var(--color-text);
 }
 
+.like-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
 .post-like button:hover {
   background: var(--color-primary);
   color: var(--color-bg);

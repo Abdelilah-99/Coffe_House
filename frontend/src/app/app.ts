@@ -1,13 +1,14 @@
 import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
-import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { Router, NavigationEnd, RouterOutlet, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { NotifServices, Count } from './notification/services/services';
 import { UserProfile } from './me/services/me.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Searchbar } from './home/components/searchbar/searchbar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, RouterModule, Searchbar],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -16,6 +17,7 @@ export class App {
   count: Count | null = null;
   userProfile?: UserProfile;
   showNavbar = true;
+  searchOpen = false;
 
   constructor(private notifService: NotifServices, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(platformId)) {
@@ -41,5 +43,9 @@ export class App {
         console.error("err count ", err);
       }
     });
+  }
+
+  toggleSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 }

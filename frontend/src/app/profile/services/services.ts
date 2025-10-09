@@ -8,7 +8,7 @@ export interface ProfileRes {
   firstName: string;
   lastName: string;
   uuid: string;
-  userName: string;
+  username: string;
   follower: number;
   following: number;
   connect: boolean;

@@ -12,11 +12,11 @@
             </div>
             <div class="profile-details">
                 <h1>{{profileRes.firstName}} {{profileRes.lastName}}</h1>
-                <p class="username">&#64;{{profileRes.userName}}</p>
+                <p class="username">&#64;{{profileRes.username}}</p>
                 <p class="email">{{profileRes.email}}</p>
                 <div class="profile-stats">
                     <div class="stat">
-                        <span class="stat-value">{{profileRes.follower}}</span>
+                        <span class="stat-value">{{followers}}</span>
                         <span class="stat-label">Followers</span>
                     </div>
                     <div class="stat">
@@ -30,11 +30,11 @@
         <!-- Action Buttons for Other Users -->
         <div *ngIf="!ifCrrProfile" class="profile-actions">
             <button class="btn btn-follow" *ngIf="!profileRes.connect"
-                (click)="followLogic(profileRes.userName, profileRes.connect)">
+                (click)="followLogic(profileRes.username, profileRes.connect)">
                 Follow
             </button>
             <button class="btn btn-unfollow" *ngIf="profileRes.connect"
-                (click)="followLogic(profileRes.userName, profileRes.connect)">
+                (click)="followLogic(profileRes.username, profileRes.connect)">
                 Unfollow
             </button>
             <button class="btn btn-report" (click)="onReport()">
@@ -44,13 +44,41 @@
 
         <!-- Report Section -->
         <div *ngIf="reportAction" class="report-section">
-            <textarea name="reportProfile" placeholder="Describe the issue..." #reportData></textarea>
-            <button class="btn btn-submit"
-                (click)="onSubmitReport(profileRes.uuid, reportData.value); reportData.value=''">
-                Submit Report
-            </button>
+            <div class="report-header">
+                <h3>Report User</h3>
+                <button class="close-btn" (click)="onReport()">✕</button>
+            </div>
+            <p class="report-description">Please describe why you're reporting this user. Our team will review your report.</p>
+            <div class="report-reasons">
+                <label class="reason-option">
+                    <input type="radio" name="reportReason" value="spam" #reason1>
+                    <span>Spam or misleading</span>
+                </label>
+                <label class="reason-option">
+                    <input type="radio" name="reportReason" value="harassment" #reason2>
+                    <span>Harassment or bullying</span>
+                </label>
+                <label class="reason-option">
+                    <input type="radio" name="reportReason" value="inappropriate" #reason3>
+                    <span>Inappropriate content</span>
+                </label>
+                <label class="reason-option">
+                    <input type="radio" name="reportReason" value="other" #reason4>
+                    <span>Other</span>
+                </label>
+            </div>
+            <textarea name="reportProfile" placeholder="Additional details (optional)..." #reportData></textarea>
+            <div class="report-actions">
+                <button class="btn btn-cancel" (click)="onReport()">Cancel</button>
+                <button class="btn btn-submit"
+                    (click)="onSubmitReport(profileRes.uuid, reportData.value); reportData.value=''">
+                    <span class="btn-icon">🚨</span>
+                    Submit Report
+                </button>
+            </div>
         </div>
-        <div *ngIf="message" class="message">
+        <div *ngIf="message" class="message success-message">
+            <span class="message-icon">✓</span>
             {{message.message}}
         </div>
     </div>
@@ -91,11 +119,11 @@
                         </div>
                         <div class="post-actions" (click)="$event.stopPropagation()">
                             <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
-                                <span class="icon">❤️</span>
+                                <img src="/coffe-like.png" alt="Like" class="icon">
                                 <span>{{post.likeCount}}</span>
                             </button>
                             <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
-                                <span class="icon">💬</span>
+                                <img src="/coffe-comment.png" alt="Comment" class="icon">
                                 <span class="count">{{post.commentCount}}</span>
                                 <span class="text">Comments</span>
                             </button>
@@ -129,11 +157,11 @@
 
                     <div class="post-actions" (click)="$event.stopPropagation()">
                         <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
-                            <span class="icon">❤️</span>
+                            <img src="/coffe-like.png" alt="Like" class="icon">
                             <span>{{post.likeCount}}</span>
                         </button>
                         <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
-                            <span class="icon">💬</span>
+                            <img src="/coffe-comment.png" alt="Comment" class="icon">
                             <span class="count">{{post.commentCount}}</span>
                             <span class="text">Comments</span>
                         </button>

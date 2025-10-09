@@ -18,8 +18,9 @@
 }
 
 .comment-icon {
-  font-style: normal;
-  font-size: 1rem;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .comment-count {
