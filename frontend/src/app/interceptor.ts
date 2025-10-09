@@ -41,9 +41,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
             return throwError(() => err);
           })
         );
-    } else {
-      localStorage.removeItem('access_token');
-      router.navigate(['/login']);
     }
   }
   return next(req);

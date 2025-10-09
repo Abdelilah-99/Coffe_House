@@ -1,15 +1,7 @@
 <div class="register-container">
-  <!-- Decorative side panels -->
   <div class="decorative-left"></div>
   <div class="decorative-right"></div>
 
-  <!-- Moroccan arch decorations -->
-  <div class="arch-decoration arch-top-left"></div>
-  <div class="arch-decoration arch-top-right"></div>
-  <div class="arch-decoration arch-bottom-left"></div>
-  <div class="arch-decoration arch-bottom-right"></div>
-
-  <!-- Floating geometric shapes -->
   <div class="geometric-shape star-8"></div>
   <div class="geometric-shape star-4"></div>
   <div class="geometric-shape hexagon"></div>
@@ -22,125 +14,115 @@
           <div class="register-header">
             <h2><i class="bi bi-stars me-2"></i>Rejoignez-nous</h2>
             <p>Créez votre compte pour commencer</p>
+            <div class="step-indicator">
+              <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+                <div class="step-number">1</div>
+                <span class="step-label">Informations</span>
+              </div>
+              <div class="step-divider"></div>
+              <div class="step" [class.active]="currentStep === 2">
+                <div class="step-number">2</div>
+                <span class="step-label">Sécurité</span>
+              </div>
+            </div>
           </div>
           <form (ngSubmit)="onRegister()" class="register-form" novalidate>
-            <div class="row">
-              <div class="col-md-6 mb-3 form-group">
-                <label for="firstname" class="form-label">
-                  <i class="bi bi-person me-2"></i>Prénom
-                </label>
-                <input 
-                  type="text" 
-                  id="firstname"
-                  [(ngModel)]="firstname" 
-                  name="firstname" 
-                  placeholder="Saisissez votre prénom" 
-                  required
-                  class="form-control form-input">
+            <div *ngIf="currentStep === 1" class="form-step">
+              <div class="row">
+                <div class="col-md-6 mb-3 form-group">
+                  <label for="firstname" class="form-label">
+                    <i class="bi bi-person me-2"></i>Prénom
+                  </label>
+                  <input type="text" id="firstname" [(ngModel)]="firstname" name="firstname"
+                    placeholder="Saisissez votre prénom" required class="form-control form-input">
+                </div>
+
+                <div class="col-md-6 mb-3 form-group">
+                  <label for="lastname" class="form-label">
+                    <i class="bi bi-person-check me-2"></i>Nom de famille
+                  </label>
+                  <input type="text" id="lastname" [(ngModel)]="lastname" name="lastname"
+                    placeholder="Saisissez votre nom de famille" required class="form-control form-input">
+                </div>
               </div>
-              
-              <div class="col-md-6 mb-3 form-group">
-                <label for="lastname" class="form-label">
-                  <i class="bi bi-person-check me-2"></i>Nom de famille
+
+              <div class="mb-3 form-group">
+                <label for="username" class="form-label">
+                  <i class="bi bi-at me-2"></i>Nom d'utilisateur
                 </label>
-                <input 
-                  type="text" 
-                  id="lastname"
-                  [(ngModel)]="lastname" 
-                  name="lastname" 
-                  placeholder="Saisissez votre nom de famille" 
-                  required
-                  class="form-control form-input">
+                <input type="text" id="username" [(ngModel)]="username" name="username"
+                  placeholder="Choisissez un nom d'utilisateur" required class="form-control form-input">
               </div>
-            </div>
-            
-            <div class="mb-3 form-group">
-              <label for="username" class="form-label">
-                <i class="bi bi-at me-2"></i>Nom d'utilisateur
-              </label>
-              <input 
-                type="text" 
-                id="username"
-                [(ngModel)]="username" 
-                name="username" 
-                placeholder="Choisissez un nom d'utilisateur" 
-                required
-                class="form-control form-input">
-            </div>
-            
-            <div class="mb-3 form-group">
-              <label for="email" class="form-label">
-                <i class="bi bi-envelope-heart me-2"></i>Adresse email
-              </label>
-              <input 
-                type="email" 
-                id="email"
-                [(ngModel)]="email" 
-                name="email" 
-                placeholder="Saisissez votre adresse email" 
-                required
-                class="form-control form-input">
-            </div>
-      
-            <div class="mb-3 form-group">
-              <label for="password" class="form-label">
-                <i class="bi bi-shield-lock me-2"></i>Mot de passe
-              </label>
-              <input 
-                type="password" 
-                id="password"
-                [(ngModel)]="password" 
-                name="password" 
-                placeholder="Créez un mot de passe sécurisé" 
-                required
-                class="form-control form-input">
-            </div>
-            
-            <div class="mb-4 form-group">
-              <label for="profileImage" class="form-label">
-                <i class="bi bi-camera me-2"></i>Photo de profil (Optionnel)
-              </label>
-              <div class="file-input-wrapper">
-                <input
-                  type="file"
-                  id="profileImage"
-                  (change)="onFileSelected($event)"
-                  accept="image/*"
-                  class="form-control file-input">
-                <label for="profileImage" class="file-input-label btn btn-outline-secondary" *ngIf="!profileImagePreview">
-                  <i class="bi bi-cloud-upload me-2"></i>
-                  <span class="file-input-text">Choisir une photo</span>
+
+              <div class="mb-3 form-group">
+                <label for="email" class="form-label">
+                  <i class="bi bi-envelope-heart me-2"></i>Adresse email
                 </label>
+                <input type="email" id="email" [(ngModel)]="email" name="email"
+                  placeholder="Saisissez votre adresse email" required class="form-control form-input">
               </div>
-              <div *ngIf="profileImagePreview" class="profile-image-preview">
-                <img [src]="profileImagePreview" alt="Profile Preview">
-                <button type="button" class="remove-profile-btn" (click)="removeProfileImage()">
-                  <i class="bi bi-trash"></i> Supprimer
+
+              <div class="d-grid gap-2">
+                <button type="button" (click)="nextStep()" [disabled]="!isStep1Valid()" class="btn register-button"
+                  [class.disabled]="!isStep1Valid()">
+                  <span>Suivant</span>
+                  <i class="bi bi-arrow-right ms-2"></i>
                 </button>
               </div>
             </div>
-            
-            <div class="d-grid gap-2">
-              <button 
-                type="submit" 
-                [disabled]="!isFormRegisterValid()" 
-                class="btn register-button"
-                [class.disabled]="!isFormRegisterValid()">
-                <i class="bi bi-person-plus-fill me-2"></i>Créer mon compte
-              </button>
+
+            <div *ngIf="currentStep === 2" class="form-step">
+              <div class="mb-3 form-group">
+                <label for="password" class="form-label">
+                  <i class="bi bi-shield-lock me-2"></i>Mot de passe
+                </label>
+                <input type="password" id="password" [(ngModel)]="password" name="password"
+                  placeholder="Créez un mot de passe sécurisé" required class="form-control form-input">
+              </div>
+
+              <div class="mb-4 form-group">
+                <label for="profileImage" class="form-label">
+                  <i class="bi bi-camera me-2"></i>Photo de profil (Optionnel)
+                </label>
+                <div class="file-input-wrapper">
+                  <input type="file" id="profileImage" (change)="onFileSelected($event)" accept="image/*"
+                    class="form-control file-input">
+                  <label for="profileImage" class="file-input-label btn btn-outline-secondary"
+                    *ngIf="!profileImagePreview">
+                    <i class="bi bi-cloud-upload me-2"></i>
+                    <span class="file-input-text">Choisir une photo</span>
+                  </label>
+                </div>
+                <div *ngIf="profileImagePreview" class="profile-image-preview">
+                  <img [src]="profileImagePreview" alt="Profile Preview">
+                  <button type="button" class="remove-profile-btn" (click)="removeProfileImage()">
+                    <i class="bi bi-trash"></i> Supprimer
+                  </button>
+                </div>
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" [disabled]="!isStep2Valid()" class="btn register-button"
+                  [class.disabled]="!isStep2Valid()">
+                  <i class="bi bi-person-plus-fill me-2"></i>Créer mon compte
+                </button>
+                <button type="button" (click)="previousStep()" class="btn btn-secondary back-button">
+                  <i class="bi bi-arrow-left me-2"></i>Retour
+                </button>
+              </div>
             </div>
           </form>
-          
-          <div class="alert alert-danger error-message" *ngIf="message" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ message }}
-          </div>
-          
+
+
           <div class="login-link">
-            <p class="text-muted">Vous avez déjà un compte ? 
+            <p class="text-muted">Vous avez déjà un compte ?
               <a routerLink="/login" class="login-link-text text-decoration-none">
                 <i class="bi bi-door-open me-1"></i>Se connecter
               </a>
             </p>
+          </div>
+          <div class="alert alert-danger error-message" *ngIf="message" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ message }}
           </div>
         </div>
       </div>

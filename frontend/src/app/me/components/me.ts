@@ -18,6 +18,7 @@ export class Me implements OnInit {
   isLoading = false;
   isLoadingPosts = false;
   post = { title: '', content: '' };
+  message?: string;
   constructor(private profileService: MeService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -104,6 +105,10 @@ export class Me implements OnInit {
 
   onCreatePost() {
     const formData = new FormData();
+    if (this.post.title.trim().length === 0 || this.post.content.trim().length === 0) {
+      this.message = "content and title fields are required";
+      return;
+    }
     formData.append("title", this.post.title);
     formData.append("content", this.post.content);
     console.log(formData.get("title"));

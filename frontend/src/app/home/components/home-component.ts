@@ -6,12 +6,11 @@ import { MeService, UserProfile } from '../../me/services/me.service';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Sidebar } from './sidebar/sidebar';
 import { PostCardComponent } from './post-card/post-card';
 import { Searchbar } from './searchbar/searchbar';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, Sidebar, PostCardComponent, Searchbar],
+  imports: [CommonModule, FormsModule, PostCardComponent, Searchbar],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })

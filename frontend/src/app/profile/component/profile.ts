@@ -94,17 +94,21 @@ export class Profile implements OnInit {
     })
   }
 
+  block?: boolean;
+
   followLogic(userName: String, connect: boolean) {
     if (connect && this.profileRes?.uuid) {
       this.profileService.unFollow(this.profileRes?.uuid).subscribe({
         next: (res) => {
           this.followRes = res;
-          this.followers = this.followRes?.follower;
+          this.followers = this.profileRes?.follower;
           console.log("unfollow succeed");
           if (this.profileRes) {
             this.profileRes.connect = false;
-            if (this.followers)
+            if (this.followers && (this.block === undefined || this.block === true)) {
               this.followers--;
+              this.block = true;
+            }
           }
         },
         error: (err) => {
@@ -116,14 +120,14 @@ export class Profile implements OnInit {
       this.profileService.follow(this.profileRes?.uuid).subscribe({
         next: (res) => {
           this.followRes = res;
-          this.followers = this.followRes?.follower;
+          this.followers = this.profileRes?.follower;
           console.error("followers: ", this.followers);
-
           console.log("follow succeed");
           if (this.profileRes) {
             this.profileRes.connect = true;
-            if (this.followers != null) {
+            if (this.followers != null && (this.block === undefined || this.block === false)) {
               this.followers++;
+              this.block = false;
             }
           }
         },

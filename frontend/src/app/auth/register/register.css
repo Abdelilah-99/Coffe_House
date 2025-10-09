@@ -73,7 +73,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 2;
-  max-width: 50%;
+  max-width: 100%;
   width: 100%;
   border: 1px solid rgba(43, 43, 43, 0.1);
   transition: box-shadow 0.3s ease;
@@ -107,7 +107,76 @@
 .register-header p {
   color: #6B4E3D;
   font-size: 1rem;
-  margin: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Step Indicator */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: #E8E8E8;
+  color: #999;
+  border: 2px solid #E8E8E8;
+  transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+  background: #6B4E3D;
+  color: white;
+  border-color: #6B4E3D;
+  box-shadow: 0 0 0 4px rgba(107, 78, 61, 0.1);
+}
+
+.step.completed .step-number {
+  background: #6B4E3D;
+  color: white;
+  border-color: #6B4E3D;
+}
+
+.step-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.step.active .step-label {
+  color: #6B4E3D;
+  font-weight: 600;
+}
+
+.step.completed .step-label {
+  color: #6B4E3D;
+}
+
+.step-divider {
+  width: 60px;
+  height: 2px;
+  background: #E8E8E8;
+  margin: 0 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
@@ -221,6 +290,48 @@
   transform: none;
 }
 
+/* Back Button */
+.back-button {
+  background: transparent;
+  color: #6B4E3D;
+  border: 2px solid #6B4E3D;
+  border-radius: 4px;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.back-button:hover {
+  background: #6B4E3D;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(107, 78, 61, 0.3);
+}
+
+.back-button:active {
+  transform: translateY(0);
+}
+
+/* Form Step Animation */
+.form-step {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .error-message {
   margin-top: 1.5rem;
   border-radius: 4px;
@@ -306,6 +417,24 @@
   .col-md-6 {
     padding-left: 12px;
     padding-right: 12px;
+  }
+
+  .step-indicator {
+    gap: 0.5rem;
+  }
+
+  .step-number {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .step-label {
+    font-size: 0.75rem;
+  }
+
+  .step-divider {
+    width: 40px;
   }
 }
 

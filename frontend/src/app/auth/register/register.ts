@@ -17,6 +17,8 @@ export class Register implements OnInit {
   email: string = '';
   password: string = '';
   message: string = '';
+  currentStep: number = 1;
+
   constructor(private authService: AuthService, private router: Router) { }
   ngOnInit() {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -40,8 +42,6 @@ export class Register implements OnInit {
     }
     this.selectedFile = files[0];
     console.log('Selected file:', this.selectedFile.name);
-
-    // Create preview
     const reader = new FileReader();
     reader.onload = (event: any) => {
       this.profileImagePreview = event.target.result;
@@ -52,7 +52,6 @@ export class Register implements OnInit {
   removeProfileImage() {
     this.selectedFile = null;
     this.profileImagePreview = null;
-    // Reset file input
     const fileInput = document.getElementById('profileImage') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';
@@ -87,8 +86,9 @@ export class Register implements OnInit {
         console.log('res: ', res);
       },
       error: (err) => {
-        this.message = "invalid credential";
-        console.log('err: ', err);
+        console.error('err: ', err);
+        this.message = err.error.message;
+        this.currentStep = 1;
       }
     })
   }
@@ -99,5 +99,29 @@ export class Register implements OnInit {
       this.username.trim() !== '' &&
       this.email.trim() !== '' &&
       this.password.trim() !== '';
+  }
+
+  isStep1Valid() {
+    return this.firstname.trim() !== '' &&
+      this.lastname.trim() !== '' &&
+      this.username.trim() !== '' &&
+      this.email.trim() !== '';
+  }
+
+  isStep2Valid() {
+    return this.password.trim() !== '' &&
+      this.password.trim().length > 6;
+  }
+
+  nextStep() {
+    if (this.currentStep === 1 && this.isStep1Valid()) {
+      this.currentStep = 2;
+    }
+  }
+
+  previousStep() {
+    if (this.currentStep === 2) {
+      this.currentStep = 1;
+    }
   }
 }
