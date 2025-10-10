@@ -22,7 +22,7 @@
                     <span class="notification-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="isAdmin()">
                 <a routerLink="/admin" routerLinkActive="active" class="nav-link">
                     Admin
                 </a>

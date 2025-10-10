@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { NotifServices, Count } from './notification/services/services';
@@ -12,25 +12,32 @@ import { Searchbar } from './home/components/searchbar/searchbar';
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('01-Blog');
   count: Count | null = null;
   userProfile?: UserProfile;
-  showNavbar = true;
+  showNavbar = false;
   searchOpen = false;
 
   constructor(private notifService: NotifServices, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
-    if (isPlatformBrowser(platformId)) {
+  }
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
       this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
         .subscribe((event: NavigationEnd) => {
-          const hideOn = ['/login', '/register', '/admin'];
+          const hideOn = ['/login', '/register'];
           this.showNavbar = !hideOn.includes(event.urlAfterRedirects);
           if (this.showNavbar) {
             this.loadCountNotif();
           }
         });
     }
+  }
+
+  isAdmin(): boolean {
+    return localStorage.getItem('user_role') === 'ROLE_ADMIN';
   }
 
   loadCountNotif() {

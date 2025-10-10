@@ -3,7 +3,6 @@ import { Like, Post, PostService, Comments, Message } from '../../services/post-
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MeService, UserProfile } from '../../../me/services/me.service';
-import { error, time } from 'console';
 
 @Component({
   selector: 'app-post-card',
@@ -28,8 +27,11 @@ export class PostCard implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
-    this.postUuid = this.route.snapshot.paramMap.get('id');
-    this.loadCardData();
+
+    this.route.paramMap.subscribe(params => {
+      this.postUuid = params.get('id');
+      this.loadCardData();
+    });
   }
 
   loadProfile() {

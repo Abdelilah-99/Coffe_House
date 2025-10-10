@@ -17,8 +17,10 @@ export class Edit implements OnInit {
   updatedPost: Post | null = null;
 
   ngOnInit(): void {
-    this.postUuid = this.route.snapshot.paramMap.get('id');
-    this.loadPost();
+    this.route.paramMap.subscribe(params => {
+      this.postUuid = params.get('id');
+      this.loadPost();
+    });
   }
 
   loadPost() {

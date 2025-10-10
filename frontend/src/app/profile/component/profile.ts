@@ -28,10 +28,12 @@ export class Profile implements OnInit {
     private postService: PostService) { }
   uuid: String | null = null;
   ngOnInit(): void {
-    this.uuid = this.route.snapshot.paramMap.get('id');
-    if (this.uuid && isPlatformBrowser(this.platformId)) {
-      this.loadProfile(this.uuid);
-    }
+    this.route.paramMap.subscribe(params => {
+      this.uuid = params.get('id');
+      if (this.uuid && isPlatformBrowser(this.platformId)) {
+        this.loadProfile(this.uuid);
+      }
+    });
   }
 
   myProfile(uuid: String): void {
