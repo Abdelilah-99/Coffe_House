@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.blog.dto.*;
+import com.blog.dto.FollowUserResponse;
 import com.blog.service.UsersServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,5 +57,17 @@ public class UserController {
     public ResponseEntity<UsersRespons> profile(@PathVariable String uuid) {
         UsersRespons result = userService.getProfile(uuid);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/me/followers")
+    public ResponseEntity<List<FollowUserResponse>> getMyFollowers() {
+        List<FollowUserResponse> followers = userService.getMyFollowers();
+        return ResponseEntity.ok(followers);
+    }
+
+    @GetMapping("/me/following")
+    public ResponseEntity<List<FollowUserResponse>> getMyFollowing() {
+        List<FollowUserResponse> following = userService.getMyFollowing();
+        return ResponseEntity.ok(following);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.blog.dto.UserFollowRes;
 import com.blog.dto.UsersRespons;
+import com.blog.dto.FollowUserResponse;
 import com.blog.entity.*;
 import com.blog.repository.FollowRepository;
 import com.blog.repository.NotifRepository;
@@ -240,5 +241,49 @@ public class UsersServices {
         profile.setConnect(connecting);
         profile.setProfileImagePath(user.getProfileImagePath());
         return profile;
+    }
+
+    public List<FollowUserResponse> getMyFollowers() {
+        UsersRespons currentUser;
+        try {
+            currentUser = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("You are not logged in");
+        }
+
+        User user = userRepository.findByUuid(currentUser.getUuid()).orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        });
+        List<User> followers = followRepository.findFollowersByUserId(user.getId());
+        return convertToFollowUserDTOList(followers);
+    }
+
+    public List<FollowUserResponse> getMyFollowing() {
+        UsersRespons currentUser;
+        try {
+            currentUser = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("You are not logged in");
+        }
+
+        User user = userRepository.findByUuid(currentUser.getUuid()).orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        });
+        List<User> following = followRepository.findFollowingByUserId(user.getId());
+        return convertToFollowUserDTOList(following);
+    }
+
+    private List<FollowUserResponse> convertToFollowUserDTOList(List<User> users) {
+        List<FollowUserResponse> followUserDTOs = new ArrayList<>();
+        for (User user : users) {
+            FollowUserResponse dto = new FollowUserResponse();
+            dto.setUuid(user.getUuid());
+            dto.setUsername(user.getUserName());
+            dto.setFirstName(user.getFirstName());
+            dto.setLastName(user.getLastName());
+            dto.setProfileImagePath(user.getProfileImagePath());
+            followUserDTOs.add(dto);
+        }
+        return followUserDTOs;
     }
 }

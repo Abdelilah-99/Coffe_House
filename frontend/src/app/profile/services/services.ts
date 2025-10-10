@@ -27,6 +27,14 @@ export interface Message {
   message: String;
 }
 
+export interface FollowUser {
+  uuid: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  profileImagePath: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,5 +60,21 @@ export class ProfileService {
 
   getUserPosts(userUuid: String): Observable<Post[]> {
     return this.http.get<Post[]>(`http://localhost:8080/api/posts/user/${userUuid}`);
+  }
+
+  getFollowers(userUuid: String): Observable<FollowUser[]> {
+    return this.http.get<FollowUser[]>(`${this.URL}/followers/${userUuid}`);
+  }
+
+  getFollowing(userUuid: String): Observable<FollowUser[]> {
+    return this.http.get<FollowUser[]>(`${this.URL}/following/${userUuid}`);
+  }
+
+  getMyFollowers(): Observable<FollowUser[]> {
+    return this.http.get<FollowUser[]>(`${this.URL}/me/followers`);
+  }
+
+  getMyFollowing(): Observable<FollowUser[]> {
+    return this.http.get<FollowUser[]>(`${this.URL}/me/following`);
   }
 }

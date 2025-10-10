@@ -1,42 +1,118 @@
-<nav class="navbar" *ngIf="showNavbar">
-    <div class="navbar-container">
-        <div class="navbar-brand">
-            <a href="/" class="brand-link"><img class="coffe-house"
-                    [src]="'http://localhost:8080/uploads/posts/coffe-house.png'"></a>
+<div class="components">
+    <div class="sidebar-overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+
+    <aside class="sidebar" [class.open]="sidebarOpen" *ngIf="showNavbar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+            <button class="sidebar-close" (click)="toggleSidebar()">×</button>
         </div>
+        <nav class="sidebar-nav">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidebar-link"
+                (click)="closeSidebar()">
+                <span class="sidebar-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a routerLink="/me" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">
+                <span class="sidebar-icon">👤</span>
+                <span>My Profile</span>
+            </a>
+            <a routerLink="/notification" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">
+                <span class="sidebar-icon">🔔</span>
+                <span>Notifications</span>
+                <span class="sidebar-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
+            </a>
+            <a *ngIf="isAdmin()" routerLink="/admin" routerLinkActive="active" class="sidebar-link"
+                (click)="closeSidebar()">
+                <span class="sidebar-icon">⚙️</span>
+                <span>Admin Panel</span>
+            </a>
+            <div class="sidebar-divider"></div>
 
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
-                    Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a routerLink="/me" routerLinkActive="active" class="nav-link">
-                    Profile
-                </a>
-            </li>
-            <li class="nav-item">
-                <a routerLink="/notification" routerLinkActive="active" class="nav-link">
-                    Notifications
-                    <span class="notification-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
-                </a>
-            </li>
-            <li class="nav-item" *ngIf="isAdmin()">
-                <a routerLink="/admin" routerLinkActive="active" class="nav-link">
-                    Admin
-                </a>
-            </li>
-        </ul>
+            <div class="sidebar-section">
+                <h3 class="sidebar-section-title">Following</h3>
+                <div class="following-list">
+                    <p *ngIf="loadingFollowing" class="following-loading">Loading...</p>
+                    <p *ngIf="!loadingFollowing && followingList.length === 0" class="following-empty">Not following
+                        anyone yet</p>
+                    <div *ngFor="let user of followingList" class="following-item"
+                        (click)="navigateToProfile(user.uuid)">
+                        <img [src]="'http://localhost:8080/' +  user.profileImagePath" [alt]="user.username"
+                            class="following-avatar">
+                        <div class="following-info">
+                            <p class="following-name">{{ user.firstName }} {{ user.lastName }}</p>
+                            <p class="following-username">@{{ user.username }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="navbar-search">
-            <button class="search-toggle-btn" (click)="toggleSearch()">
-                <span class="search-icon">🔍</span>
+            <div class="sidebar-divider"></div>
+            <button class="sidebar-link logout-btn" (click)="logout()">
+                <span class="sidebar-icon">🚪</span>
+                <span>Logout</span>
             </button>
-            <div class="search-dropdown" [class.show]="searchOpen">
-                <app-searchbar (closeSearch)="toggleSearch()"></app-searchbar>
+        </nav>
+    </aside>
+
+    <nav class="navbar" *ngIf="showNavbar">
+        <div class="navbar-container">
+            <!-- Hamburger Menu Button -->
+            <button class="hamburger-btn" (click)="toggleSidebar()">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <div class="navbar-brand">
+                <a href="/" class="brand-link"><img class="coffe-house"
+                        [src]="'http://localhost:8080/uploads/posts/coffe-house.png'"></a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="navbar-search">
+                    <button class="search-toggle-btn" (click)="toggleSearch()">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                    <div class="search-dropdown" [class.show]="searchOpen">
+                        <app-searchbar (closeSearch)="toggleSearch()"></app-searchbar>
+                    </div>
+                </div>
+
+                <div class="profile-menu" *ngIf="userProfile">
+                    <button class="profile-btn" (click)="toggleProfileDropdown()">
+                        <img [src]="'http://localhost:8080/' +  userProfile.profileImagePath" alt="Profile"
+                            class="profile-avatar">
+                    </button>
+                    <div class="profile-dropdown" [class.show]="profileDropdownOpen">
+                        <div class="profile-dropdown-header" *ngIf="userProfile">
+                            <img [src]="'http://localhost:8080/' +  userProfile.profileImagePath" alt="Profile"
+                                class="profile-dropdown-avatar">
+                            <div class="profile-dropdown-info">
+                                <p class="profile-dropdown-name">{{ userProfile.firstName }} {{ userProfile.lastName }}
+                                </p>
+                                <p class="profile-dropdown-username">@{{ userProfile.username }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-dropdown-divider"></div>
+                        <a routerLink="/me" class="profile-dropdown-link" (click)="toggleProfileDropdown()">
+                            <span>👤</span> My Profile
+                        </a>
+                        <a routerLink="/notification" class="profile-dropdown-link" (click)="toggleProfileDropdown()">
+                            <span>🔔</span> Notifications
+                            <span class="dropdown-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
+                        </a>
+                        <a *ngIf="isAdmin()" routerLink="/admin" class="profile-dropdown-link"
+                            (click)="toggleProfileDropdown()">
+                            <span>⚙️</span> Admin Panel
+                        </a>
+                        <div class="profile-dropdown-divider"></div>
+                        <button class="profile-dropdown-link logout-link" (click)="logout()">
+                            <span>🚪</span> Logout
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
-<router-outlet />
+    </nav>
+    <router-outlet />
+</div>
