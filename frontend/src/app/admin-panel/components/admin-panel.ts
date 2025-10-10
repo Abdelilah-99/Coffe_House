@@ -35,7 +35,7 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getOverallStatistics().subscribe({
       next: (res) => {
         this.AdminStatisticsResponse = res;
-        console.log("data has come");
+        console.log("AdminStatisticsResponse: ", res);
       },
       error: (err) => {
         console.error("statistique err: ", err);
