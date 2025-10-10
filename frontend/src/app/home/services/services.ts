@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 
 export interface UserSearch {
   uuid: string;
-  userName: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  profileImagePath: string;
 }
 
 @Injectable({

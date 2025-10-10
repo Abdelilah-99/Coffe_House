@@ -29,7 +29,6 @@ export class Searchbar implements OnInit {
       .subscribe({
         next: (res) => {
           this.searchData = res;
-          console.log("data has come");
         },
         error: (err) => {
           console.error("data didn't come ", err);

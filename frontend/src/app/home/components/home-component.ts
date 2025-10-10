@@ -7,10 +7,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PostCardComponent } from './post-card/post-card';
-import { Searchbar } from './searchbar/searchbar';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, PostCardComponent, Searchbar],
+  imports: [CommonModule, FormsModule, PostCardComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })

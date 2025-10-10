@@ -145,7 +145,8 @@ public class UsersServices {
         boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         long follower = followRepository.countByFollowerId(otherUser.getId());
         long following = followRepository.countByFollowingId(otherUser.getId());
-        System.out.println(">>>>>>>>>>>> follower: " + follower + " following: " + following + " id: " + otherUser.getId());
+        System.out.println(
+                ">>>>>>>>>>>> follower: " + follower + " following: " + following + " id: " + otherUser.getId());
 
         if (!existe) {
             return new UserFollowRes(follower, following, crrUser.getUuid(),
@@ -208,6 +209,9 @@ public class UsersServices {
             UsersRespons userRes = new UsersRespons();
             userRes.setUsername(user.getUserName());
             userRes.setUuid(user.getUuid());
+            userRes.setFirstName(user.getFirstName());
+            userRes.setLastName(user.getLastName());
+            userRes.setProfileImagePath(user.getProfileImagePath());
             userList.add(userRes);
         }
         return userList;

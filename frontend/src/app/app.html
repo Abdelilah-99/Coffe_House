@@ -9,21 +9,17 @@
         <nav class="sidebar-nav">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidebar-link"
                 (click)="closeSidebar()">
-                <span class="sidebar-icon">🏠</span>
                 <span>Home</span>
             </a>
             <a routerLink="/me" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">
-                <span class="sidebar-icon">👤</span>
                 <span>My Profile</span>
             </a>
             <a routerLink="/notification" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">
-                <span class="sidebar-icon">🔔</span>
                 <span>Notifications</span>
                 <span class="sidebar-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
             </a>
             <a *ngIf="isAdmin()" routerLink="/admin" routerLinkActive="active" class="sidebar-link"
                 (click)="closeSidebar()">
-                <span class="sidebar-icon">⚙️</span>
                 <span>Admin Panel</span>
             </a>
             <div class="sidebar-divider"></div>
@@ -48,7 +44,6 @@
 
             <div class="sidebar-divider"></div>
             <button class="sidebar-link logout-btn" (click)="logout()">
-                <span class="sidebar-icon">🚪</span>
                 <span>Logout</span>
             </button>
         </nav>
@@ -56,28 +51,26 @@
 
     <nav class="navbar" *ngIf="showNavbar">
         <div class="navbar-container">
-            <!-- Hamburger Menu Button -->
-            <button class="hamburger-btn" (click)="toggleSidebar()">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
+            <div class="navbar-left">
+                <button class="hamburger-btn" (click)="toggleSidebar()">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
 
-            <div class="navbar-brand">
-                <a href="/" class="brand-link"><img class="coffe-house"
-                        [src]="'http://localhost:8080/uploads/posts/coffe-house.png'"></a>
+                <div class="navbar-brand">
+                    <a href="/" class="brand-link">
+                        <img class="coffe-house-icon" src="/coffe-house.png" alt="Coffee House">
+                        <span class="brand-name">Coffee House</span>
+                    </a>
+                </div>
+
+                <div class="navbar-search-inline">
+                    <app-searchbar (closeSearch)="toggleSearch()"></app-searchbar>
+                </div>
             </div>
 
             <div class="navbar-actions">
-                <div class="navbar-search">
-                    <button class="search-toggle-btn" (click)="toggleSearch()">
-                        <span class="search-icon">🔍</span>
-                    </button>
-                    <div class="search-dropdown" [class.show]="searchOpen">
-                        <app-searchbar (closeSearch)="toggleSearch()"></app-searchbar>
-                    </div>
-                </div>
-
                 <div class="profile-menu" *ngIf="userProfile">
                     <button class="profile-btn" (click)="toggleProfileDropdown()">
                         <img [src]="'http://localhost:8080/' +  userProfile.profileImagePath" alt="Profile"
@@ -95,19 +88,19 @@
                         </div>
                         <div class="profile-dropdown-divider"></div>
                         <a routerLink="/me" class="profile-dropdown-link" (click)="toggleProfileDropdown()">
-                            <span>👤</span> My Profile
+                            My Profile
                         </a>
                         <a routerLink="/notification" class="profile-dropdown-link" (click)="toggleProfileDropdown()">
-                            <span>🔔</span> Notifications
+                            Notifications
                             <span class="dropdown-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
                         </a>
                         <a *ngIf="isAdmin()" routerLink="/admin" class="profile-dropdown-link"
                             (click)="toggleProfileDropdown()">
-                            <span>⚙️</span> Admin Panel
+                            Admin Panel
                         </a>
                         <div class="profile-dropdown-divider"></div>
                         <button class="profile-dropdown-link logout-link" (click)="logout()">
-                            <span>🚪</span> Logout
+                            Logout
                         </button>
                     </div>
                 </div>
