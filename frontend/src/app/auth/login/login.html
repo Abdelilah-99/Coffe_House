@@ -33,7 +33,8 @@
                 id="username"
                 [(ngModel)]="username"
                 name="username" 
-                placeholder="Saisissez votre email ou nom d'utilisateur" 
+                placeholder="Saisissez votre email ou nom d'utilisateur"
+                maxlength="20"
                 required
                 class="form-control form-input">
             </div>
@@ -42,11 +43,12 @@
               <label for="password" class="form-label">
                 <i class="bi bi-shield-lock me-2"></i>Mot de passe
               </label>
-              <input 
+              <input
                 type="password" 
                 id="password"
                 [(ngModel)]="password" 
-                name="password" 
+                name="password"
+                maxlength="12"
                 placeholder="Saisissez votre mot de passe" 
                 required
                 class="form-control form-input">

@@ -4,7 +4,7 @@ import { filter } from 'rxjs';
 import { NotifServices, Count } from './notification/services/services';
 import { UserProfile, MeService } from './me/services/me.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Searchbar } from './home/components/searchbar/searchbar';
+import { Searchbar } from './searchbar/searchbar';
 import { ProfileService, FollowUser } from './profile/services/services';
 
 @Component({
@@ -14,7 +14,6 @@ import { ProfileService, FollowUser } from './profile/services/services';
   styleUrls: ['./app.css']
 })
 export class App implements OnInit {
-  protected readonly title = signal('01-Blog');
   count: Count | null = null;
   userProfile?: UserProfile;
   showNavbar = false;

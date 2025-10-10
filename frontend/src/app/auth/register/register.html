@@ -33,7 +33,7 @@
                   <label for="firstname" class="form-label">
                     <i class="bi bi-person me-2"></i>Prénom
                   </label>
-                  <input type="text" id="firstname" [(ngModel)]="firstname" name="firstname"
+                  <input type="text" maxlength="10" id="firstname" [(ngModel)]="firstname" name="firstname"
                     placeholder="Saisissez votre prénom" required class="form-control form-input">
                 </div>
 
@@ -41,7 +41,7 @@
                   <label for="lastname" class="form-label">
                     <i class="bi bi-person-check me-2"></i>Nom de famille
                   </label>
-                  <input type="text" id="lastname" [(ngModel)]="lastname" name="lastname"
+                  <input type="text" maxlength="10" id="lastname" [(ngModel)]="lastname" name="lastname"
                     placeholder="Saisissez votre nom de famille" required class="form-control form-input">
                 </div>
               </div>
@@ -50,7 +50,7 @@
                 <label for="username" class="form-label">
                   <i class="bi bi-at me-2"></i>Nom d'utilisateur
                 </label>
-                <input type="text" id="username" [(ngModel)]="username" name="username"
+                <input type="text" maxlength="10" id="username" [(ngModel)]="username" name="username"
                   placeholder="Choisissez un nom d'utilisateur" required class="form-control form-input">
               </div>
 
@@ -58,7 +58,7 @@
                 <label for="email" class="form-label">
                   <i class="bi bi-envelope-heart me-2"></i>Adresse email
                 </label>
-                <input type="email" id="email" [(ngModel)]="email" name="email"
+                <input type="email" maxlength="20" id="email" [(ngModel)]="email" name="email"
                   placeholder="Saisissez votre adresse email" required class="form-control form-input">
               </div>
 
@@ -76,7 +76,7 @@
                 <label for="password" class="form-label">
                   <i class="bi bi-shield-lock me-2"></i>Mot de passe
                 </label>
-                <input type="password" id="password" [(ngModel)]="password" name="password"
+                <input type="password" maxlength="10" id="password" [(ngModel)]="password" name="password"
                   placeholder="Créez un mot de passe sécurisé" required class="form-control form-input">
               </div>
 
