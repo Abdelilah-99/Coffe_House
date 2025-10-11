@@ -23,6 +23,8 @@ export class PostCard implements OnInit {
   isCommenting = false;
   profileData: UserProfile | null = null;
   reportAction = false;
+  showReportConfirmation = false;
+  pendingReportReason: String = '';
   message?: Message;
 
   ngOnInit(): void {
@@ -132,7 +134,28 @@ export class PostCard implements OnInit {
   onReport() {
     this.reportAction = !this.reportAction;
     console.log("hii from outside");
-    // this.postService.doReport(id,)
+  }
+
+  onPrepareSubmitReport(reason: String) {
+    if (!reason || reason.trim() === '') {
+      alert('Please describe the issue before submitting your report.');
+      return;
+    }
+    this.pendingReportReason = reason;
+    this.showReportConfirmation = true;
+  }
+
+  onConfirmReport() {
+    if (this.post && this.pendingReportReason) {
+      this.submitReport(this.post.postUuid, this.pendingReportReason);
+    }
+    this.showReportConfirmation = false;
+    this.pendingReportReason = '';
+  }
+
+  onCancelReport() {
+    this.showReportConfirmation = false;
+    this.pendingReportReason = '';
   }
 
   submitReport(uuid: String, reason: String) {
@@ -140,6 +163,7 @@ export class PostCard implements OnInit {
     this.postService.doReport(uuid, reason).subscribe({
       next: (res) => {
         this.message = res;
+        this.reportAction = false;
       },
       error: (err) => {
         console.error(err);

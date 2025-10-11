@@ -510,6 +510,31 @@
   color: #e74c3c;
 }
 
+/* Clickable Row/Item Styles */
+.clickable-row {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clickable-row td:not(.action-cell) {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background: rgba(107, 78, 61, 0.05);
+  transform: translateX(2px);
+}
+
+.clickable-item {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clickable-item:hover {
+  transform: translateX(4px);
+  background: rgba(107, 78, 61, 0.08);
+}
+
 .post-info-compact {
   display: flex;
   flex-direction: column;

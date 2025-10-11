@@ -14,6 +14,8 @@ export class Profile implements OnInit {
   profileRes?: ProfileRes;
   followRes?: FollowRes;
   reportAction = false;
+  showReportConfirmation = false;
+  pendingReportReason: String = '';
   message?: Message;
   ifCrrProfile = true;
   userProfile?: UserProfile;
@@ -56,10 +58,33 @@ export class Profile implements OnInit {
     this.reportAction = !this.reportAction;
   }
 
+  onPrepareSubmitReport(uuid: String, reason: String) {
+    if (!reason || reason.trim() === '') {
+      alert('Please provide additional details for your report.');
+      return;
+    }
+    this.pendingReportReason = reason;
+    this.showReportConfirmation = true;
+  }
+
+  onConfirmReport() {
+    if (this.profileRes && this.pendingReportReason) {
+      this.onSubmitReport(this.profileRes.uuid, this.pendingReportReason);
+    }
+    this.showReportConfirmation = false;
+    this.pendingReportReason = '';
+  }
+
+  onCancelReport() {
+    this.showReportConfirmation = false;
+    this.pendingReportReason = '';
+  }
+
   onSubmitReport(uuid: String, reason: String) {
     this.profileService.doReport(uuid, reason).subscribe({
       next: (res) => {
         this.message = res;
+        this.reportAction = false;
       },
       error: (err) => {
         console.error("error reporting ", err);

@@ -2,6 +2,10 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AdminPannelSefvices, AdminStatisticsResponse, User, Report, TopUserResponse, TopPostResponse } from '../services/admin-pannel-sefvices';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UserProfile } from '../../post/services/post-service';
+import { UserService } from '../../home/services/services';
+import { ProfileService } from '../../profile/services/services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel',
@@ -11,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class AdminPanel implements OnInit {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private adminePanelServices: AdminPannelSefvices) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private adminePanelServices: AdminPannelSefvices, private router: Router) { }
 
   AdminStatisticsResponse?: AdminStatisticsResponse;
   users: User[] = [];
@@ -185,5 +189,13 @@ export class AdminPanel implements OnInit {
         console.error("Error hiding post: ", err);
       }
     });
+  }
+
+  goTo(destination: String, uuid: String) {
+    if (destination === "profile") {
+      this.router.navigate(['profile', uuid]);
+    } else if (destination === "post") {
+      this.router.navigate(['postCard', uuid]);
+    }
   }
 }
