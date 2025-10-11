@@ -7,19 +7,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class RegisterRequest {
     @NotNull(message = "First name is required")
-    @Size(min = 3, message = "First name must be at least 3 characters long")
+    @Size(min = 3, max = 15, message = "First name must be at least 3 characters long")
     private String firstName;
 
     @NotNull(message = "Last name is required")
-    @Size(min = 3, message = "Last name must be at least 3 characters long")
+    @Size(min = 3, max = 15, message = "Last name must be at least 3 characters long")
     private String lastName;
 
     @NotNull(message = "User name is required")
-    @Size(min = 3, message = "User name must be at least 3 characters long")
+    @Size(min = 3, max = 15, message = "User name must be at least 3 characters long")
     private String username;
 
     @NotNull(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Size(min = 6, max = 15, message = "Password must be at least 6 characters long")
     private String password;
 
     @NotNull(message = "Email is required")
