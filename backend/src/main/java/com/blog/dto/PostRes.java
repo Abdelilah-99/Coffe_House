@@ -14,6 +14,15 @@ public class PostRes {
     private long commentCount;
     private long likeCount;
     private String profileImagePath;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public PostRes() {
     }
@@ -29,7 +38,8 @@ public class PostRes {
             List<String> mediaPaths,
             long commentCount,
             long likeCount,
-            String profileImagePath) {
+            String profileImagePath,
+            String status) {
         this.postUuid = postUuid;
         this.userUuid = userUuid;
         this.userName = userName;
@@ -41,6 +51,7 @@ public class PostRes {
         this.commentCount = commentCount;
         this.likeCount = likeCount;
         this.profileImagePath = profileImagePath;
+        this.status = status;
     }
 
     public long getCommentCount() {

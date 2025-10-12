@@ -45,6 +45,7 @@ public class DeletePostService {
                     null,
                     0,
                     0,
+                    null,
                     null);
         }
         postRepository.deleteById(post.getId());
@@ -59,6 +60,7 @@ public class DeletePostService {
                 null,
                 0,
                 0,
+                null,
                 null);
     }
 }

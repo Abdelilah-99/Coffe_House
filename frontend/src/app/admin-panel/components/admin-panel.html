@@ -111,10 +111,54 @@
                         <td (click)="goTo('profile', user.uuid)">{{user.firstName}} {{user.lastName}}</td>
                         <td (click)="goTo('profile', user.uuid)">@{{user.username}}</td>
                         <td (click)="goTo('profile', user.uuid)">{{user.email}}</td>
-                        <td class="action-cell">
+                        <td class="action-cell" *ngIf="user.status === 'ACTIVE'">
                             <button class="btn-action btn-ban" (click)="banUser(user.uuid.toString())">Ban</button>
                             <button class="btn-action btn-delete"
                                 (click)="deleteUser(user.uuid.toString())">Delete</button>
+                        </td>
+                        <td class="action-cell" *ngIf="user.status === 'BAN'">
+                            <button class="btn-action btn-ban" (click)="banUser(user.uuid.toString())">Unban</button>
+                            <button class="btn-action btn-delete"
+                                (click)="deleteUser(user.uuid.toString())">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Posts Management Section -->
+    <div class="management-section">
+        <h2 class="section-title">Posts Management</h2>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Likes</th>
+                        <th>Comments</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let post of posts" class="clickable-row">
+                        <td (click)="goTo('post', post.postUuid)">{{post.title}}</td>
+                        <td (click)="goTo('post', post.postUuid)">@{{post.userName}}</td>
+                        <td (click)="goTo('post', post.postUuid)">
+                            <span class="status-badge" [class.status-hide]="post.status === 'HIDE'" [class.status-exposed]="post.status === 'EPOSED'">
+                                {{post.status}}
+                            </span>
+                        </td>
+                        <td (click)="goTo('post', post.postUuid)">{{post.likeCount}}</td>
+                        <td (click)="goTo('post', post.postUuid)">{{post.commentCount}}</td>
+                        <td class="action-cell">
+                            <button class="btn-action btn-hide" (click)="hidePost(post.postUuid)">
+                                <span *ngIf="post.status === 'EPOSED'">Hide</span>
+                                <span *ngIf="post.status === 'HIDE'">Unhide</span>
+                            </button>
+                            <button class="btn-action btn-delete" (click)="deletePost(post.postUuid.toString())">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -135,7 +179,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let report of userReports" class="clickable-row" (click)="goTo('profile', report.postOrUserUuid)">
+                    <tr *ngFor="let report of userReports" class="clickable-row"
+                        (click)="goTo('profile', report.postOrUserUuid)">
                         <td>@{{report.reporterUsername}}</td>
                         <td><span class="reason-badge">{{report.reason}}</span></td>
                         <td>{{report.time | date:'short'}}</td>
@@ -157,7 +202,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let report of postReports" class="clickable-row" (click)="goTo('post', report.postOrUserUuid)">
+                    <tr *ngFor="let report of postReports" class="clickable-row"
+                        (click)="goTo('post', report.postOrUserUuid)">
                         <td>@{{report.reporterUsername}}</td>
                         <td><span class="reason-badge">{{report.reason}}</span></td>
                         <td>{{report.time | date:'short'}}</td>
@@ -176,7 +222,8 @@
             <div class="analytics-card">
                 <h3 class="card-title">Top Commenters</h3>
                 <div class="user-list">
-                    <div class="user-item clickable-item" *ngFor="let user of topCommenters" (click)="goTo('profile', user.uuid)">
+                    <div class="user-item clickable-item" *ngFor="let user of topCommenters"
+                        (click)="goTo('profile', user.uuid)">
                         <div class="user-info-compact">
                             <span class="user-name-compact">{{user.firstName}} {{user.lastName}}</span>
                             <span class="user-username-compact">@{{user.username}}</span>
@@ -190,7 +237,8 @@
             <div class="analytics-card">
                 <h3 class="card-title">Most Followed Users</h3>
                 <div class="user-list">
-                    <div class="user-item clickable-item" *ngFor="let user of mostFollowedUsers" (click)="goTo('profile', user.uuid)">
+                    <div class="user-item clickable-item" *ngFor="let user of mostFollowedUsers"
+                        (click)="goTo('profile', user.uuid)">
                         <div class="user-info-compact">
                             <span class="user-name-compact">{{user.firstName}} {{user.lastName}}</span>
                             <span class="user-username-compact">@{{user.username}}</span>
@@ -204,7 +252,8 @@
             <div class="analytics-card">
                 <h3 class="card-title">Most Reported Users</h3>
                 <div class="user-list">
-                    <div class="user-item clickable-item" *ngFor="let user of mostReportedUsers" (click)="goTo('profile', user.uuid)">
+                    <div class="user-item clickable-item" *ngFor="let user of mostReportedUsers"
+                        (click)="goTo('profile', user.uuid)">
                         <div class="user-info-compact">
                             <span class="user-name-compact">{{user.firstName}} {{user.lastName}}</span>
                             <span class="user-username-compact">@{{user.username}}</span>
@@ -218,7 +267,8 @@
             <div class="analytics-card">
                 <h3 class="card-title">Most Commented Posts</h3>
                 <div class="post-list">
-                    <div class="post-item clickable-item" *ngFor="let post of mostCommentedPosts" (click)="goTo('post', post.uuid)">
+                    <div class="post-item clickable-item" *ngFor="let post of mostCommentedPosts"
+                        (click)="goTo('post', post.uuid)">
                         <div class="post-info-compact">
                             <span class="post-title-compact">{{post.title}}</span>
                             <span class="post-author-compact">by @{{post.authorUsername}}</span>
@@ -232,7 +282,8 @@
             <div class="analytics-card">
                 <h3 class="card-title">Most Liked Posts</h3>
                 <div class="post-list">
-                    <div class="post-item clickable-item" *ngFor="let post of mostLikedPosts" (click)="goTo('post', post.uuid)">
+                    <div class="post-item clickable-item" *ngFor="let post of mostLikedPosts"
+                        (click)="goTo('post', post.uuid)">
                         <div class="post-info-compact">
                             <span class="post-title-compact">{{post.title}}</span>
                             <span class="post-author-compact">by @{{post.authorUsername}}</span>
@@ -246,7 +297,8 @@
             <div class="analytics-card">
                 <h3 class="card-title">Most Reported Posts</h3>
                 <div class="post-list">
-                    <div class="post-item clickable-item" *ngFor="let post of mostReportedPosts" (click)="goTo('post', post.uuid)">
+                    <div class="post-item clickable-item" *ngFor="let post of mostReportedPosts"
+                        (click)="goTo('post', post.uuid)">
                         <div class="post-info-compact">
                             <span class="post-title-compact">{{post.title}}</span>
                             <span class="post-author-compact">by @{{post.authorUsername}}</span>

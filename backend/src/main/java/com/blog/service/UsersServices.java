@@ -244,6 +244,7 @@ public class UsersServices {
         profile.setFollowing(follower);
         profile.setConnect(connecting);
         profile.setProfileImagePath(user.getProfileImagePath());
+        profile.setStatus(user.getStatus());
         return profile;
     }
 

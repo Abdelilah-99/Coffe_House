@@ -19,6 +19,7 @@ export class AdminPanel implements OnInit {
 
   AdminStatisticsResponse?: AdminStatisticsResponse;
   users: User[] = [];
+  posts: any[] = [];
   userReports: Report[] = [];
   postReports: Report[] = [];
   topCommenters: TopUserResponse[] = [];
@@ -31,6 +32,7 @@ export class AdminPanel implements OnInit {
   ngOnInit(): void {
     this.laodStatistique();
     this.loadUsers();
+    this.loadPosts();
     this.loadReports();
     this.loadAnalytics();
   }
@@ -51,10 +53,23 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.loadUsers().subscribe({
       next: (res) => {
         this.users = res;
+        console.log("users: ", res);
         console.log("Users loaded successfully");
       },
       error: (err) => {
         console.error("Error loading users: ", err);
+      }
+    });
+  }
+
+  loadPosts() {
+    this.adminePanelServices.loadPosts().subscribe({
+      next: (res) => {
+        this.posts = res;
+        console.log("Posts loaded successfully");
+      },
+      error: (err) => {
+        console.error("Error loading posts: ", err);
       }
     });
   }
@@ -157,7 +172,7 @@ export class AdminPanel implements OnInit {
 
   banUser(uuid: string) {
     this.adminePanelServices.banUser(uuid).subscribe({
-      next: (res) => {
+      next: () => {
         console.log("User banned successfully");
         this.loadUsers();
       },
@@ -181,9 +196,9 @@ export class AdminPanel implements OnInit {
 
   hidePost(uuid: string) {
     this.adminePanelServices.hidePost(uuid).subscribe({
-      next: (res) => {
+      next: () => {
         console.log("Post hidden successfully");
-        this.loadAnalytics();
+        this.loadPosts();
       },
       error: (err) => {
         console.error("Error hiding post: ", err);

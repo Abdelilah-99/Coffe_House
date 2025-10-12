@@ -3,9 +3,8 @@
     <div class="profile-header">
         <div class="profile-info">
             <div class="profile-avatar">
-                <img *ngIf="profileRes.profileImagePath"
-                     [src]="'http://localhost:8080/' + profileRes.profileImagePath"
-                     alt="Profile Picture">
+                <img *ngIf="profileRes.profileImagePath" [src]="'http://localhost:8080/' + profileRes.profileImagePath"
+                    alt="Profile Picture">
                 <div *ngIf="!profileRes.profileImagePath" class="avatar-placeholder">
                     {{profileRes.firstName.charAt(0)}}{{profileRes.lastName.charAt(0)}}
                 </div>
@@ -37,12 +36,22 @@
                 (click)="followLogic(profileRes.username, profileRes.connect)">
                 Unfollow
             </button>
-            <button class="btn btn-report" (click)="onReport()">
+            <button class="btn btn-report" *ngIf="!isAdmin" (click)="onReport()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
-                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                    <path
+                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
+                    <path
+                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
                 </svg>
                 Report User
+            </button>
+            <button class="btn btn-admin-action" *ngIf="isAdmin" (click)="adminBanUser(profileRes.uuid)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
+                </svg>
+                <span *ngIf="profileRes.status === 'ACTIVE'">Ban User</span>
+                <span *ngIf="profileRes.status === 'BAN'">Unban User</span>
             </button>
         </div>
 
@@ -52,11 +61,11 @@
                 <h3>Report User</h3>
                 <button class="close-btn" (click)="onReport()">✕</button>
             </div>
-            <textarea name="reportProfile" placeholder="Describe why you're reporting this user..." #reportData></textarea>
+            <textarea name="reportProfile" placeholder="Describe why you're reporting this user..."
+                #reportData></textarea>
             <div class="report-actions">
                 <button class="btn btn-cancel" (click)="onReport()">Cancel</button>
-                <button class="btn btn-submit"
-                    (click)="onPrepareSubmitReport(profileRes.uuid, reportData.value)">
+                <button class="btn btn-submit" (click)="onPrepareSubmitReport(profileRes.uuid, reportData.value)">
                     <span class="btn-icon">🚨</span>
                     Submit Report
                 </button>
@@ -73,25 +82,32 @@
         <div class="confirmation-dialog" (click)="$event.stopPropagation()">
             <div class="confirmation-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
-                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                    <path
+                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
+                    <path
+                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
                 </svg>
             </div>
             <h3 class="confirmation-title">Submit User Report?</h3>
             <p class="confirmation-message">
-                Are you sure you want to submit this report? Our moderation team will be notified and will review this user's behavior for policy violations.
+                Are you sure you want to submit this report? Our moderation team will be notified and will review this
+                user's behavior for policy violations.
             </p>
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelReport()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                     </svg>
                     Cancel
                 </button>
                 <button class="btn-confirmation-confirm" (click)="onConfirmReport()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
                     </svg>
                     Yes, Submit Report
                 </button>
@@ -113,9 +129,8 @@
                 <!-- Post with image(s) - Image as background with overlay -->
                 <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
                     <div class="post-image-wrapper">
-                        <img [src]="'http://localhost:8080/' + post.mediaPaths[0]"
-                             alt="{{ post.title }}"
-                             class="post-bg-image">
+                        <img [src]="'http://localhost:8080/' + post.mediaPaths[0]" alt="{{ post.title }}"
+                            class="post-bg-image">
                         <div class="post-image-overlay">
                             <h3 class="post-title-overlay">{{post.title}}</h3>
                         </div>
@@ -124,8 +139,7 @@
                         <div class="post-author-compact">
                             <div class="author-avatar-small">
                                 <img *ngIf="profileRes?.profileImagePath"
-                                     [src]="'http://localhost:8080/' + profileRes.profileImagePath"
-                                     alt="Profile">
+                                    [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
                                 <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
                                     {{profileRes.firstName.charAt(0) || ''}}
                                 </div>
@@ -153,8 +167,7 @@
                         <div class="post-author">
                             <div class="author-avatar-small">
                                 <img *ngIf="profileRes?.profileImagePath"
-                                     [src]="'http://localhost:8080/' + profileRes.profileImagePath"
-                                     alt="Profile">
+                                    [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
                                 <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
                                     {{profileRes.firstName.charAt(0) || ''}}
                                 </div>
@@ -187,3 +200,18 @@
         </div>
     </div>
 </div>
+
+<!-- id | user_id |                             content                             |                                                                                                  media_paths                                                                                                   | status |           timestamp           |     title      |                 uuid                 
+----+---------+-----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+-------------------------------+----------------+--------------------------------------
+  2 |       1 | for report                                                      |                                                                                                                                                                                                                | EPOSED | 2025-10-04T15:48:00.728723136 | test 2         | d8accadf-adcf-4da5-a89d-3b8737c80a70
+  3 |       3 | test                                                            |                                                                                                                                                                                                                | EPOSED | 2025-10-05T22:58:06.350559505 | test           | 62561666-9f13-470a-80ea-4521fbaed0b9
+  4 |       3 | retytu                                                          |                                                                                                                                                                                                                | EPOSED | 2025-10-05T23:43:37.596350406 | wewretry       | c2f37801-39d3-4690-8ec6-5eed8d23840c
+  5 |       3 | qwe                                                             |                                                                                                                                                                                                                | EPOSED | 2025-10-06T00:11:44.450624310 | qwe            | 530b11f8-e396-4c55-b14d-29cc7cb4858d
+  6 |       1 | ewrethryjt                                                      |                                                                                                                                                                                                                | EPOSED | 2025-10-06T00:49:39.672452983 | aefrgtrh       | 552c6151-8a97-4b8a-8c3b-72ae8d2df142
+  9 |       1 | test                                                            |                                                                                                                                                                                                                | EPOSED | 2025-10-08T15:14:45.782722963 | test           | 8c7aa5d0-62bc-47ab-8f22-3db9afaedff0
+ 10 |       3 | ewfgewfrg                                                       |                                                                                                                                                                                                                | EPOSED | 2025-10-08T16:34:33.547626900 | ewfgre         | aa74ac67-8e00-4730-a7fa-1b49a2c7f0e6
+  1 |       1 | test reports admine                                             | uploads/posts/1759953730175_0d816e9f-5792-44bb-8c3d-686921421261.png,uploads/posts/1760006256100_0aca6b8a-7a08-41e6-a23f-b03297ad557c.png,uploads/posts/1760006256102_2e1b50e0-3e3f-4b1e-bb1b-e14e115b8f55.png | EPOSED | 2025-10-04T15:47:45.570098597 | test           | 1df5a75b-1135-423c-9331-6d5e918e1aec
+ 11 |       1 | wertg                                                           | uploads/posts/1760011983683_754b02bf-1099-4de0-a5e0-b6047e5b2e13.png                                                                                                                                           | EPOSED | 2025-10-08T20:43:55.579006943 | sdfe           | 1227fd0c-0176-4ca3-8dfe-d65375724950
+ 12 |       7 | dewfegtrhytjy                                                   | uploads/posts/1760096451487_673a1ade-e810-4ec5-bd46-9d3c5b44ea81.png                                                                                                                                           | EPOSED | 2025-10-10T12:40:51.489637725 | test           | ad791011-2b74-4a27-bdd3-451388bc951a
+ 14 |       3 | creating of our first blogging app and this will gonna our face | uploads/posts/1760116922893_82507264-8933-40e6-8da4-b34dd0775da6.jpeg                                                                                                                                          | EPOSED | 2025-10-10T18:22:02.893475977 | Lets finish it | a7bf5a97-16ca-4bff-9b7c-3bc6aac2b846
+: -->

@@ -104,7 +104,8 @@ public class PostService {
                     mediaPaths,
                     0,
                     0,
-                    user.getProfileImagePath());
+                    user.getProfileImagePath(),
+                    "EXPOSED");
         } catch (Exception e) {
             throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
         }
@@ -157,7 +158,8 @@ public class PostService {
                     post.getMediaPaths(),
                     commentRepository.countByPost_uuid(post.getUuid()),
                     likesRepository.countByPost_uuid(post.getUuid()),
-                    post.getUser().getProfileImagePath()));
+                    post.getUser().getProfileImagePath(),
+                    post.getStatus()));
             // System.err.println(listPostRes.get(0).getUserId());
         }
         return listPostRes;
@@ -175,7 +177,8 @@ public class PostService {
                 post.getMediaPaths(),
                 commentRepository.countByPost_uuid(post.getUuid()),
                 likesRepository.countByPost_uuid(post.getUuid()),
-                post.getUser().getProfileImagePath());
+                post.getUser().getProfileImagePath(),
+                post.getStatus());
     }
 
     public List<PostRes> getPostsByUser(String userUuid) {
@@ -194,7 +197,8 @@ public class PostService {
                     post.getMediaPaths(),
                     commentRepository.countByPost_uuid(post.getUuid()),
                     likesRepository.countByPost_uuid(post.getUuid()),
-                    post.getUser().getProfileImagePath()));
+                    post.getUser().getProfileImagePath(),
+                    post.getStatus()));
         }
         return listPostRes;
     }

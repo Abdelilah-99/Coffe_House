@@ -13,6 +13,7 @@ export interface Post {
   commentCount: number;
   likeCount: number;
   profileImagePath: string;
+  status: String;
 }
 
 export interface UserProfile {

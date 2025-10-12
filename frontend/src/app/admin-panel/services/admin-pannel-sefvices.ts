@@ -8,6 +8,7 @@ export interface User {
   username: String;
   email: String;
   message: String;
+  status: String;
 }
 
 export interface Report {
@@ -54,6 +55,10 @@ export class AdminPannelSefvices {
 
   loadUsers() {
     return this.http.get<User[]>(`${this.URL}/users`);
+  }
+
+  loadPosts() {
+    return this.http.get<any[]>(`${this.URL}/posts`);
   }
 
   loadReports(type: String) {

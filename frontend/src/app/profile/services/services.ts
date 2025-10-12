@@ -13,6 +13,7 @@ export interface ProfileRes {
   following: number;
   connect: boolean;
   profileImagePath: string;
+  status: String;
 }
 
 export interface FollowRes {

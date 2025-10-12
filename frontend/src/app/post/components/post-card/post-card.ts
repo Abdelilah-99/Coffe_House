@@ -3,6 +3,7 @@ import { Like, Post, PostService, Comments, Message } from '../../services/post-
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MeService, UserProfile } from '../../../me/services/me.service';
+import { AdminPannelSefvices } from '../../../admin-panel/services/admin-pannel-sefvices';
 
 @Component({
   selector: 'app-post-card',
@@ -15,7 +16,8 @@ export class PostCard implements OnInit {
     private route: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object,
     private navigate: Router,
-    private profileService: MeService) { }
+    private profileService: MeService,
+    private adminService: AdminPannelSefvices) { }
   postUuid: String | null = null;
   post?: Post;
   like?: Like;
@@ -26,6 +28,7 @@ export class PostCard implements OnInit {
   showReportConfirmation = false;
   pendingReportReason: String = '';
   message?: Message;
+  isAdmin: boolean = false;
 
   ngOnInit(): void {
     this.loadProfile();
@@ -34,6 +37,10 @@ export class PostCard implements OnInit {
       this.postUuid = params.get('id');
       this.loadCardData();
     });
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.isAdmin = localStorage.getItem('user_role') === 'ROLE_ADMIN';
+    }
   }
 
   loadProfile() {
@@ -196,5 +203,29 @@ export class PostCard implements OnInit {
       return true;
     }
     return false;
+  }
+
+  adminHidePost(postUuid: String) {
+    this.adminService.hidePost(postUuid).subscribe({
+      next: () => {
+        console.log("Post hide/unhide status toggled successfully");
+        this.loadCardData();
+      },
+      error: (err) => {
+        console.error("Error hiding post: ", err);
+      }
+    });
+  }
+
+  adminDeletePost(postUuid: String) {
+    this.adminService.deletePost(postUuid).subscribe({
+      next: () => {
+        console.log("Post deleted successfully");
+        this.navigate.navigate(['']);
+      },
+      error: (err) => {
+        console.error("Error deleting post: ", err);
+      }
+    });
   }
 }

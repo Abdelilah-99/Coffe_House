@@ -418,6 +418,36 @@
   text-transform: capitalize;
 }
 
+.btn-hide {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: white;
+  box-shadow: 0 2px 8px rgba(155, 89, 182, 0.3);
+}
+
+.btn-hide:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(155, 89, 182, 0.4);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.status-exposed {
+  background: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+}
+
+.status-badge.status-hide {
+  background: rgba(149, 165, 166, 0.1);
+  color: #7f8c8d;
+}
+
 .uuid-cell {
   font-family: monospace;
   font-size: 0.85rem;

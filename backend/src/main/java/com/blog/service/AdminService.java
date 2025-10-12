@@ -63,6 +63,32 @@ public class AdminService {
         return usersToDto;
     }
 
+    public List<PostRes> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        List<PostRes> postsDto = cnvPostsToDto(posts);
+        return postsDto;
+    }
+
+    private List<PostRes> cnvPostsToDto(List<Post> posts) {
+        List<PostRes> postsDto = new ArrayList<>();
+        for (Post post : posts) {
+            PostRes postRes = new PostRes();
+            postRes.setPostUuid(post.getUuid());
+            postRes.setUserUuid(post.getUser().getUuid());
+            postRes.setUserName(post.getUser().getUserName());
+            postRes.setTitle(post.getTitle());
+            postRes.setContent(post.getContent().length() > 150 ? post.getContent().substring(0, 150) + "..." : post.getContent());
+            postRes.setTimestamp(post.getTimestamp().toString());
+            postRes.setMediaPaths(post.getMediaPaths());
+            postRes.setStatus(post.getStatus());
+            postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));
+            postRes.setLikeCount(likesRepository.countByPost_uuid(post.getUuid()));
+            postRes.setProfileImagePath(post.getUser().getProfileImagePath());
+            postsDto.add(postRes);
+        }
+        return postsDto;
+    }
+
     private List<UsersAdmineResponse> cnvToDto(List<User> users, UsersRespons usersRespons) {
         List<UsersAdmineResponse> usersDto = new ArrayList<>();
         for (User user : users) {
@@ -75,6 +101,8 @@ public class AdminService {
             usersAdmineResponse.setLastName(user.getLastName());
             usersAdmineResponse.setUsername(user.getUserName());
             usersAdmineResponse.setUuid(user.getUuid());
+            usersAdmineResponse.setStatus(user.getStatus());
+            System.out.println("usersAdmineResponse: =======================>>>" + usersAdmineResponse.getStatus());
             usersDto.add(usersAdmineResponse);
         }
         return usersDto;
@@ -124,10 +152,19 @@ public class AdminService {
         if (uuid.equals(usersRespons.getUuid())) {
             throw new BanException("u can't ban youre own account");
         }
-        user.setStatus("ban");
+        String status = user.getStatus();
+        String msg = new String();
+        System.out.println("status: ===========>>> " + status);
+        if (status.equals("BAN")) {
+            user.setStatus("ACTIVE");
+            msg = "unbanned";
+        } else if (status.equals("ACTIVE")) {
+            user.setStatus("BAN");
+            msg = "banned";
+        }
         userRepository.save(user);
         UsersAdmineResponse usersAdmineResponse = new UsersAdmineResponse();
-        usersAdmineResponse.setMessage("user has banned successfully");
+        usersAdmineResponse.setMessage(String.format("user has %s successfully", msg));
         return usersAdmineResponse;
     }
 
@@ -142,10 +179,20 @@ public class AdminService {
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new PostNotFoundException("post not found for admin pannel");
         });
-        post.setStatus("hide");
+        String status = post.getStatus();
+        String msg = new String();
+        if (status.equals("EPOSED")) {
+            post.setStatus("HIDE");
+            msg = "hide";
+        } else if (status.equals("HIDE")) {
+            post.setStatus("EPOSED");
+            msg = "exposed";
+        }
+        System.out.println("post status: =======================+> " + post.getStatus());
+
         postRepository.save(post);
         PostRes postRes = new PostRes();
-        postRes.setMessage("post has hide successfully");
+        postRes.setMessage(String.format("post has %s successfully", msg));
         return postRes;
     }
 

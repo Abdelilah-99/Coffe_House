@@ -156,6 +156,27 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+.btn-admin-action {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-admin-action svg {
+  flex-shrink: 0;
+}
+
+.btn-admin-action:hover {
+  background: linear-gradient(135deg, #8e44ad 0%, #7d3c98 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(155, 89, 182, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
 /* Report Section */
 .report-section {
   margin-top: 1.5rem;

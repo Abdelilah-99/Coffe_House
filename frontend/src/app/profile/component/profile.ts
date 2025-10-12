@@ -4,6 +4,7 @@ import { ProfileService, ProfileRes, FollowRes, Message } from '../services/serv
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MeService, UserProfile } from '../../me/services/me.service';
 import { Post, PostService } from '../../post/services/post-service';
+import { AdminPannelSefvices } from '../../admin-panel/services/admin-pannel-sefvices';
 @Component({
   selector: 'app-profile',
   imports: [CommonModule],
@@ -23,11 +24,13 @@ export class Profile implements OnInit {
   isLoadingPosts = false;
   following?: number;
   followers?: number;
+  isAdmin: boolean = false;
   constructor(private route: ActivatedRoute, private navigate: Router,
     private profileService: ProfileService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private meProfile: MeService,
-    private postService: PostService) { }
+    private postService: PostService,
+    private adminService: AdminPannelSefvices) { }
   uuid: String | null = null;
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -36,6 +39,9 @@ export class Profile implements OnInit {
         this.loadProfile(this.uuid);
       }
     });
+    if (isPlatformBrowser(this.platformId)) {
+      this.isAdmin = localStorage.getItem('user_role') === 'ROLE_ADMIN';
+    }
   }
 
   myProfile(uuid: String): void {
@@ -180,6 +186,20 @@ export class Profile implements OnInit {
       },
       error: (err) => {
         console.error("Error liking post: ", err);
+      }
+    });
+  }
+
+  adminBanUser(uuid: String) {
+    this.adminService.banUser(uuid).subscribe({
+      next: (res) => {
+        console.log("User ban status toggled successfully");
+        if (this.uuid) {
+          this.loadProfile(this.uuid);
+        }
+      },
+      error: (err) => {
+        console.error("Error toggling user ban status: ", err);
       }
     });
   }

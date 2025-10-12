@@ -22,6 +22,12 @@ public class AdminPannelController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/posts")
+    public ResponseEntity<List<PostRes>> getPostsInfo() {
+        List<PostRes> posts = adminService.getAllPosts();
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/reports/posts")
     public ResponseEntity<List<ReportsAdmineResponse>> getPostsReports() {
         List<ReportsAdmineResponse> users = adminService.getPostsReports();
@@ -51,6 +57,7 @@ public class AdminPannelController {
         UsersAdmineResponse user = adminService.banUser(uuid);
         return ResponseEntity.ok(user);
     }
+
 
     @PostMapping("/post/delete/{uuid}")
     public ResponseEntity<PostRes> daletePost(@PathVariable String uuid) {
