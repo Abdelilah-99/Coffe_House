@@ -173,10 +173,10 @@ public class GlobalExceptionHandler {
             WebRequest req) {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());
-        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("status", HttpStatus.UNAUTHORIZED);
         errRes.put("message", ex.getMessage());
         errRes.put("path", req.getDescription(false));
-        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(errRes, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BanException.class)

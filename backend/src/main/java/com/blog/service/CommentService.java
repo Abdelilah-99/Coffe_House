@@ -1,7 +1,5 @@
 package com.blog.service;
 
-import com.blog.dto.CommentPostReq;
-import com.blog.dto.UsersRespons;
 import com.blog.repository.*;
 import com.blog.entity.*;
 import com.blog.exceptions.UserNotFoundException;
@@ -35,7 +33,7 @@ public class CommentService {
             UsersRespons userDetail = usersServices.getCurrentUser();
             User user = userRepository.findByUuid(userDetail.getUuid())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
-            if (user.getStatus().equals("ban")) {
+            if (user.getStatus() != null && user.getStatus().equals("BAN")) {
                 throw new UserBannedException("the user is banned from creating posts");
             }
             if (req.getComment().trim().isEmpty()) {

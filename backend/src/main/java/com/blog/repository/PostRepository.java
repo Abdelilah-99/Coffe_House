@@ -18,14 +18,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
   @Query("""
         SELECT p FROM Post p
-        WHERE p.user.id IN (
+        WHERE p.status != 'HIDE' and p.user.id IN (
           SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId
         )
         or p.user.id = :userId
         ORDER BY p.timestamp DESC
       """)
   List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
-
+  
   @Transactional
   void deleteByUuid(String uuid);
 }

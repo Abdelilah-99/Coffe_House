@@ -41,7 +41,7 @@ export class Login implements OnInit {
         this.router.navigate(['/me']);
       },
       error: (err) => {
-        this.message = "Invalid credential";
+        this.message = err.error.message;
         console.log('res: ', err);
       }
     });
