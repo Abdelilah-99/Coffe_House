@@ -7,7 +7,7 @@ export interface Post {
   userUuid: String;
   title: string;
   content: string;
-  timestamp: String;
+  timestamp: number;
   userName: String;
   mediaPaths: string[];
   commentCount: number;

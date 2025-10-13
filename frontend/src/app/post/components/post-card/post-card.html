@@ -1,7 +1,7 @@
 <div *ngIf="post && profileData" class="post-card">
     <div class="post-header">
         <div class="post-author-info">
-            <div class="author-avatar">
+            <div class="author-avatar" (click)="moveToProfile(post.userUuid)">
                 <img *ngIf="post.profileImagePath" [src]="'http://localhost:8080/' + post.profileImagePath"
                     alt="{{ post.userName }}" class="author-avatar-img">
                 <div *ngIf="!post.profileImagePath" class="author-avatar-placeholder">
@@ -12,7 +12,7 @@
                 <div class="username-row">
                     <span class="post-username">@{{ post.userName }}</span>
                 </div>
-                <span class="post-timestamp">{{ post.timestamp }}</span>
+                <span class="post-timestamp">{{ post.timestamp | date:'short' }}</span>
             </div>
         </div>
     </div>
@@ -151,8 +151,7 @@
                 </svg>
                 Report Post
             </button>
-            <button class="btn-admin-hide" *ngIf="isAdmin"
-                (click)="adminHidePost(post.postUuid)">
+            <button class="btn-admin-hide" *ngIf="isAdmin" (click)="adminHidePost(post.postUuid)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path
                         d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z" />

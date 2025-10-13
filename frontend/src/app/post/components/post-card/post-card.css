@@ -23,6 +23,7 @@
 
 .author-avatar {
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .author-avatar-img {

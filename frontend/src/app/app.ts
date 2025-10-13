@@ -43,7 +43,6 @@ export class App implements OnInit {
             this.loadCountNotif();
             this.loadUserProfile();
           }
-          // Close sidebar on navigation
           this.sidebarOpen = false;
           this.profileDropdownOpen = false;
         });

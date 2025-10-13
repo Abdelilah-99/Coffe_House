@@ -16,7 +16,7 @@
             </a>
             <a routerLink="/notification" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">
                 <span>Notifications</span>
-                <span class="sidebar-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
+                <span class="sidebar-badge" *ngIf="count">{{ count }}</span>
             </a>
             <a *ngIf="isAdmin()" routerLink="/admin" routerLinkActive="active" class="sidebar-link"
                 (click)="closeSidebar()">

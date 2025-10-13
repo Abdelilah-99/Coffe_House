@@ -228,4 +228,8 @@ export class PostCard implements OnInit {
       }
     });
   }
+
+  moveToProfile(uuid: String) {
+    this.navigate.navigate(['profile', uuid]);
+  }
 }

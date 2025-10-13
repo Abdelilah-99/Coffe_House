@@ -61,7 +61,7 @@
                     </svg>
                     Content
                 </label>
-                <textarea id="post-content" maxlength="10" [(ngModel)]="post.content" name="content" rows="6"
+                <textarea id="post-content" maxlength="20000" [(ngModel)]="post.content" name="content" rows="6"
                     placeholder="What's on your mind? Share your story..." required></textarea>
             </div>
             <div *ngIf="selectedFiles.length > 0" class="image-preview-container">

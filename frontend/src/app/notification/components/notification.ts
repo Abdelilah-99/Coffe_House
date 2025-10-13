@@ -40,7 +40,7 @@ export class Notification implements OnInit {
     this.notifService.getAllNotif().subscribe({
       next: (res) => {
         this.notification = res;
-        console.log("notif: ", res);
+        console.log("notif: ", res[0].isRead);
       },
       error: (err) => {
         console.error(err);
@@ -50,16 +50,25 @@ export class Notification implements OnInit {
 
   goTo(i: number) {
     if (this.notification?.at(i)?.content.includes("post")) {
-      this.notifService.markRead(this.notification?.at(i)?.uuid).subscribe({
-        next: () => {
-          console.info("user has read the notification");
-        },
-        error: (err) => {
-          console.error("notificatiuoin error: ", err);
-        }
-      });
-      this.navigate.navigate(['/postCard', this.notification?.at(i)?.postOrProfileUuid]);
+      const notif = this.notification?.at(i);
+
+      if (notif && !notif.isRead) {
+        notif.isRead = true;
+
+        this.notifService.markRead(notif.uuid).subscribe({
+          next: () => {
+            console.info("user has read the notification");
+          },
+          error: (err) => {
+            console.error("notification error: ", err);
+            if (notif) {
+              notif.isRead = false;
+            }
+          }
+        });
+      }
+
+      this.navigate.navigate(['/postCard', notif?.postOrProfileUuid]);
     }
-    // console.log("hola", );
   }
 }

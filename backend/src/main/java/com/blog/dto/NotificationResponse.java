@@ -6,18 +6,24 @@ public class NotificationResponse {
     private String message;
     private long time;
     private String postOrProfileUuid;
-    private boolean read;
+    private boolean isRead;
 
     public NotificationResponse() {
     }
 
-    public NotificationResponse(String uuid, String postOrProfileUuid, String content, String message, long time, boolean read) {
+    public NotificationResponse(
+            String uuid,
+            String postOrProfileUuid,
+            String content,
+            String message,
+            long time,
+            boolean isRead) {
         this.uuid = uuid;
         this.content = content;
         this.message = message;
         this.time = time;
         this.postOrProfileUuid = postOrProfileUuid;
-        this.read = read;
+        this.isRead = isRead;
     }
 
     public String getMessage() {
@@ -28,12 +34,12 @@ public class NotificationResponse {
         this.message = message;
     }
 
-    public boolean getRead() {
-        return this.read;
+    public boolean getIsRead() {
+        return this.isRead;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
     public long getTime() {

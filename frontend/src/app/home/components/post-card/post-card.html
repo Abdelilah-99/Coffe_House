@@ -22,7 +22,7 @@
                 </div>
                 <div class="author-date">
                     <span class="post-author-small">{{ post.userName }}</span>
-                    <span class="post-date-small">{{ post.timestamp }}</span>
+                    <span class="post-date-small">{{ post.timestamp | date:'short' }}</span>
                 </div>
             </div>
             <!-- | date:'short' -->

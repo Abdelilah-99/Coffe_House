@@ -7,6 +7,7 @@ export interface NotificationRes {
   content: string;
   time: number;
   uuid: string;
+  isRead: boolean;
 }
 
 export interface Count {
