@@ -166,6 +166,11 @@ public class PostService {
 
     public PostRes getPost(String uuid) {
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("post not found"));
+
+        if ("HIDE".equals(post.getStatus())) {
+            throw new PostNotFoundException("This post is not available");
+        }
+
         return new PostRes(post.getUuid(),
                 post.getUser().getUuid(),
                 post.getUser().getUserName(),
@@ -186,6 +191,9 @@ public class PostService {
         List<Post> posts = postRepository.findByUser(user);
         List<PostRes> listPostRes = new ArrayList<>();
         for (Post post : posts) {
+            if ("HIDE".equals(post.getStatus())) {
+                continue;
+            }
             listPostRes.add(new PostRes(post.getUuid(),
                     post.getUser().getUuid(),
                     post.getUser().getUserName(),

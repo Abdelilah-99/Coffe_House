@@ -66,22 +66,30 @@ export class PostCard implements OnInit {
         },
         error: (err) => {
           console.error("errorl loading post ", err);
+          if (err.status === 404 || err.error?.message?.includes('not available')) {
+            alert('This post is not available');
+            this.navigate.navigate(['']);
+          }
         }
       })
     }
   }
 
-  instantComments?: { comment: String, username: String, time: number }[] = [];
+  instantComments?: { userUuid: String, image: string, comment: String, username: String, time: number }[] = [];
 
   onSubmitComment(comment: String, uuid: String | null = null) {
     if (uuid) {
       this.postService.submitComment(comment, uuid).subscribe({
         next: (res) => {
-          this.instantComments?.push({
-            comment: res.comment,
-            username: this.profileData?.username || '',
-            time: Date.now()
-          });
+          if (this.profileData) {
+            this.instantComments?.push({
+              userUuid: this.profileData.uuid,
+              image: this.profileData.profileImagePath,
+              comment: res.comment,
+              username: this.profileData.username || '',
+              time: Date.now()
+            });
+          }
           this.instantComments?.reverse();
           if (this.post) {
             this.post.commentCount += 1;
@@ -125,7 +133,7 @@ export class PostCard implements OnInit {
       this.postService.getComments(uuid).subscribe({
         next: (comment) => {
           this.comment = comment;
-          console.log(comment);
+          console.log("comment.comments; ", comment.comments);
         },
         error: (err) => {
           console.error("error loading comments ", err);
@@ -229,7 +237,9 @@ export class PostCard implements OnInit {
     });
   }
 
-  moveToProfile(uuid: String) {
+  moveToProfile(uuid: String | undefined) {
+    console.log("====================================", uuid);
+
     this.navigate.navigate(['profile', uuid]);
   }
 }

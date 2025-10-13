@@ -31,7 +31,7 @@ export interface Like {
 }
 
 export interface Comments {
-  comments: { userName: String, timesTamp: number, comment: String, uuid: String }[];
+  comments: { userUuid: String, imageProfile: String, userName: String, timesTamp: number, comment: String, uuid: String }[];
   postUuid: String;
   UserUuid: String;
 }

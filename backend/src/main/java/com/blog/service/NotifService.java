@@ -4,22 +4,27 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
 import com.blog.entity.Notification;
+import com.blog.entity.Post;
 import com.blog.dto.NotificationResponse;
 import com.blog.dto.NotificationRequest;
 import com.blog.dto.UsersRespons;
 import com.blog.repository.NotifRepository;
+import com.blog.repository.PostRepository;
 import com.blog.exceptions.UserNotLoginException;
 
 @Service
 public class NotifService {
     private final NotifRepository notifRepository;
     private final UsersServices usersServices;
+    private final PostRepository postRepository;
 
     NotifService(
             NotifRepository notifRepository,
-            UsersServices usersServices) {
+            UsersServices usersServices,
+            PostRepository postRepository) {
         this.notifRepository = notifRepository;
         this.usersServices = usersServices;
+        this.postRepository = postRepository;
     }
 
     public List<NotificationResponse> getNotifications() {
@@ -37,12 +42,19 @@ public class NotifService {
     private List<NotificationResponse> toNotifDto(List<Notification> notifications) {
         List<NotificationResponse> notificationResponseList = new ArrayList<>();
         for (Notification notification : notifications) {
+            String postOrProfileUuid = notification.getPostOrProfileUuid();
+            if (postOrProfileUuid != null) {
+                Post post = postRepository.findByUuid(postOrProfileUuid).orElse(null);
+                if (post != null && "HIDE".equals(post.getStatus())) {
+                    continue;
+                }
+            }
             NotificationResponse notificationResponse = new NotificationResponse();
             notificationResponse.setContent(notification.getNotification());
             notificationResponse.setUuid(notification.getUuid());
             notificationResponse.setPostOrProfileUuid(notification.getPostOrProfileUuid());
             notificationResponse.setTime(notification.getCreatedAt());
-            notificationResponse.setRead(notification.getIsRead());
+            notificationResponse.setIsRead(notification.getIsRead());
             notificationResponseList.add(notificationResponse);
         }
         return notificationResponseList;
@@ -61,6 +73,6 @@ public class NotifService {
             throw new UserNotLoginException("login for getting notification count");
         }
         System.out.println("login user for notif: " + usersRespons.getUsername());
-        return notifRepository.countByNotificatedUserAndIsReadFalse(usersRespons.getUuid());
+        return notifRepository.countUnreadNotificationsExcludingHiddenPosts(usersRespons.getUuid());
     }
 }

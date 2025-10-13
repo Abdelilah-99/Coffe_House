@@ -24,6 +24,16 @@ public class Comment {
     private String uuid = UUID.randomUUID().toString();
     private long timesTamp;
     private String userName;
+    private String imageProfile;
+    private String UserUuid;
+
+    public String getUserUuid() {
+        return UserUuid;
+    }
+
+    public void setUserUuid(String userUuid) {
+        UserUuid = userUuid;
+    }
 
     public Comment() {
     }
@@ -33,13 +43,23 @@ public class Comment {
             Post post,
             String uuid,
             long timesTamp,
-            String userName) {
+            String userName,
+            String imageProfile) {
         this.comment = comment;
         this.user = user;
         this.post = post;
         this.uuid = uuid;
         this.timesTamp = timesTamp;
         this.userName = userName;
+        this.imageProfile = imageProfile;
+    }
+
+    public String getImageProfile() {
+        return imageProfile;
+    }
+
+    public void setImageProfile(String imageProfile) {
+        this.imageProfile = imageProfile;
     }
 
     public String getUserName() {

@@ -20,6 +20,13 @@ public interface NotifRepository extends JpaRepository<Notification, Long> {
 
     long countByNotificatedUserAndIsReadFalse(String uuid);
 
+    List<Notification> findByNotificatedUserAndIsReadFalse(String uuid);
+
+    @Query("""
+                select COUNT(n) from Notification n left join Post p on n.postOrProfileUuid = p.uuid where n.notificatedUser = :userUuid and n.isRead = false and (p.status is NULL or p.status != 'HIDE')
+            """)
+    long countUnreadNotificationsExcludingHiddenPosts(@Param("userUuid") String userUuid);
+
     @Transactional
     @Modifying
     void deleteByNotificatedUserAndNotificationOwner(String crrUser, String otherUser);

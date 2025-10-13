@@ -77,10 +77,8 @@
             <div class="comments-list">
                 <!-- Instant Comments (Just Posted) -->
                 <div *ngFor="let instantComment of instantComments" class="comment-card new-comment">
-                    <div class="comment-avatar">
-                        <div class="avatar-placeholder">
-                            {{ instantComment.username.charAt(0).toUpperCase() }}
-                        </div>
+                    <div class="comment-avatar" (click)="moveToProfile(instantComment.userUuid)">
+                            <img [src]="'http://localhost:8080/' + instantComment.image" class="avatar-placeholder" alt="">
                     </div>
                     <div class="comment-content">
                         <div class="comment-header">
@@ -96,10 +94,8 @@
 
                 <!-- Existing Comments -->
                 <div *ngFor="let c of comment?.comments" class="comment-card">
-                    <div class="comment-avatar">
-                        <div class="avatar-placeholder">
-                            {{ c?.userName?.charAt(0)?.toUpperCase() || '?' }}
-                        </div>
+                    <div class="comment-avatar" (click)="moveToProfile(c.userUuid)">
+                            <img [src]="'http://localhost:8080/' + c?.imageProfile" class="avatar-placeholder" alt="">
                     </div>
                     <div class="comment-content">
                         <div class="comment-header">
@@ -107,7 +103,7 @@
                         </div>
                         <p class="comment-text">{{ c?.comment }}</p>
                         <div class="comment-meta">
-                            <span class="comment-time">{{ c?.timesTamp | date:'medium' }}</span>
+                            <span class="comment-time">{{ c?.timesTamp | date:'short' }}</span>
                         </div>
                     </div>
                 </div>
