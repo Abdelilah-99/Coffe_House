@@ -9,7 +9,7 @@ public class PostRes {
     private String content;
     private String title;
     private String message;
-    private String timestamp;
+    private long timestamp;
     private List<String> mediaPaths;
     private long commentCount;
     private long likeCount;
@@ -34,7 +34,7 @@ public class PostRes {
             String content,
             String title,
             String message,
-            String timestamp,
+            long timestamp,
             List<String> mediaPaths,
             long commentCount,
             long likeCount,
@@ -94,11 +94,11 @@ public class PostRes {
         return this.userUuid;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

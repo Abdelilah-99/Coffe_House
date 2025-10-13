@@ -78,7 +78,7 @@ public class AdminService {
             postRes.setUserName(post.getUser().getUserName());
             postRes.setTitle(post.getTitle());
             postRes.setContent(post.getContent().length() > 150 ? post.getContent().substring(0, 150) + "..." : post.getContent());
-            postRes.setTimestamp(post.getTimestamp().toString());
+            postRes.setTimestamp(post.getTimestamp());
             postRes.setMediaPaths(post.getMediaPaths());
             postRes.setStatus(post.getStatus());
             postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));

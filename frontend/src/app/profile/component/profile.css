@@ -525,7 +525,7 @@
 
 .action-btn {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
   padding: 0;
@@ -537,8 +537,8 @@
 }
 
 .action-btn .icon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
@@ -549,7 +549,7 @@
 
 .action-btn span {
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   color: var(--color-text);
 }
 
@@ -687,12 +687,12 @@
   }
 
   .action-btn .icon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
   }
 
   .action-btn span {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
   }
 
   .profile-stats {

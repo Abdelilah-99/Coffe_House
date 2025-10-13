@@ -1,6 +1,6 @@
 .post-comment {
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
   background: transparent;
@@ -15,15 +15,15 @@
 }
 
 .comment-icon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
 
 .comment-count {
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   color: var(--color-text);
 }
 
@@ -33,11 +33,11 @@
 
 @media (max-width: 576px) {
   .comment-icon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
   }
 
   .comment-count {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
   }
 }

@@ -200,6 +200,7 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  justify-content: flex-end;
 }
 
 /* Responsive */
@@ -243,4 +244,9 @@
   .post-actions {
     width: 100%;
   }
+}
+
+.author-date {
+  display: flex;
+  flex-direction: column;
 }

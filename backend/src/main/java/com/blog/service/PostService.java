@@ -66,7 +66,7 @@ public class PostService {
                 }
             }
             List<Follow> followers = user.getFollowers();
-            String time = LocalDateTime.now().toString();
+            long time = System.currentTimeMillis();
             // Post newPost = new Post(
             // req.getTitle(),
             // req.getContent(),

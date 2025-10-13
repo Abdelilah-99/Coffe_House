@@ -1,6 +1,8 @@
 <div class="post-like">
     <button (click)="reaction.emit(post.postUuid)">
         <img src="/coffe-like.png" alt="Like" class="like-icon">
-        {{post.likeCount}}
+        <div class="like-count">
+            {{post.likeCount}}
+        </div>
     </button>
 </div>

@@ -17,7 +17,8 @@ public class Post {
     private String content;
     @Column(columnDefinition = "TEXT")
     private String mediaPaths;
-    private String timestamp;
+    @Column(columnDefinition = "BIGINT")
+    private long timestamp;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -47,7 +48,7 @@ public class Post {
             String content,
             String mediaPaths,
             User user,
-            String timestamp,
+            long timestamp,
             String uuid,
             String status) {
         this.title = title;
@@ -130,11 +131,11 @@ public class Post {
         this.user = user;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

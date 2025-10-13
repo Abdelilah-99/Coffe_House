@@ -10,15 +10,15 @@
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
   color: var(--color-text);
 }
 
 .like-icon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
@@ -32,18 +32,23 @@
 }
 
 .post-like button span {
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--color-text);
 }
 
 @media (max-width: 576px) {
   .like-icon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
   }
 
   .post-like button span {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
   }
+}
+
+.like-count {
+  font-weight: 600;
+  font-size: 0.7rem;
 }

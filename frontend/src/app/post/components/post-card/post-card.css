@@ -129,7 +129,7 @@
 
 .action-btn {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
   padding: 0;
@@ -141,8 +141,8 @@
 }
 
 .action-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
@@ -153,7 +153,7 @@
 
 .action-count {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.75rem;
   color: var(--color-text);
 }
 
@@ -885,12 +885,12 @@
   }
 
   .action-icon {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
   }
 
   .action-count {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
   }
 }
 

@@ -184,9 +184,9 @@ export class AdminPanel implements OnInit {
 
   deletePost(uuid: string) {
     this.adminePanelServices.deletePost(uuid).subscribe({
-      next: (res) => {
+      next: () => {
         console.log("Post deleted successfully");
-        this.loadAnalytics();
+        this.loadPosts();
       },
       error: (err) => {
         console.error("Error deleting post: ", err);

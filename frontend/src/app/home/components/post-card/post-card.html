@@ -20,9 +20,12 @@
                 <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder-small">
                     {{ post.userName.charAt(0).toUpperCase() || '?' }}
                 </div>
-                <span class="post-author-small">{{ post.userName }}</span>
-                <span class="post-date-small">{{ post.timestamp }}</span>
+                <div class="author-date">
+                    <span class="post-author-small">{{ post.userName }}</span>
+                    <span class="post-date-small">{{ post.timestamp }}</span>
+                </div>
             </div>
+            <!-- | date:'short' -->
             <div class="post-actions" (click)="$event.stopPropagation()">
                 <app-post-likes [post]="post" (reaction)="reaction.emit($event)"></app-post-likes>
                 <app-post-comments [post]="post" (navigate)="postCard.emit(post.postUuid)"></app-post-comments>
