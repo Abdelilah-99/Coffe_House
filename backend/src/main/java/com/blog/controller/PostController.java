@@ -2,17 +2,12 @@ package com.blog.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.blog.dto.*;
 import com.blog.service.PostService;
+import com.blog.service.PostService.PostPage;
 import com.blog.service.CommentService;
 import com.blog.service.DeletePostService;
 import com.blog.service.EditPostService;
@@ -44,6 +39,15 @@ public class PostController {
     public ResponseEntity<List<PostRes>> displayPost() {
         List<PostRes> res = postService.displayAllPosts();
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<PostPage> getPostByPage(
+            @RequestParam(value = "lastTime", required = false) Long lastTime,
+            @RequestParam("lastId") Long lastId) {
+        System.out.println("=================++++++++++: " + lastTime + " " + lastId);
+        PostPage data = postService.getPosts(lastTime, lastId);
+        return ResponseEntity.ok(data);
     }
 
     @PostMapping("/create")

@@ -3,6 +3,8 @@ package com.blog.service;
 import java.io.File;
 import java.util.*;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -129,6 +131,40 @@ public class PostService {
         } catch (IOException e) {
             throw new ErrSavingException(String.format("Error file i/o: " + e.getMessage(), e));
         }
+    }
+
+    public record PostPage(List<PostRes> posts, Long lastTime, Long lastId) {
+    }
+
+    public PostPage getPosts(Long lastTime, Long lastId) {
+        Pageable pageable = PageRequest.of(0, 5);
+
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis() + 1000;
+        }
+
+        List<Post> posts = postRepository.findByPagination(lastTime, lastId, pageable);
+
+        List<PostRes> listPostRes = new ArrayList<>();
+        for (Post post : posts) {
+            PostRes postRes = new PostRes();
+            postRes.setPostUuid(post.getUuid());
+            postRes.setUserUuid(post.getUser().getUuid());
+            postRes.setUserName(post.getUser().getUserName());
+            postRes.setContent(post.getContent());
+            postRes.setTitle(post.getTitle());
+            postRes.setMessage("list of post");
+            postRes.setCreatedAt(post.getCreatedAt());
+            postRes.setMediaPaths(post.getMediaPaths());
+            postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));
+            postRes.setLikeCount(likesRepository.countByPost_uuid(post.getUuid()));
+            postRes.setProfileImagePath(post.getUser().getProfileImagePath());
+            postRes.setStatus(post.getStatus());
+            listPostRes.add(postRes);
+        }
+        Long newLastId = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        Long newLastTime = posts.isEmpty() ? null : posts.get(posts.size() - 1).getCreatedAt();
+        return new PostPage(listPostRes, newLastTime, newLastId);
     }
 
     public List<PostRes> displayAllPosts() {

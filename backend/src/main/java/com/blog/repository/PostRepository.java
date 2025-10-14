@@ -5,6 +5,7 @@ import com.blog.entity.User;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +26,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         ORDER BY p.createdAt DESC
       """)
   List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
-  
+
   @Transactional
   void deleteByUuid(String uuid);
+
+  @Query("""
+          SELECT p FROM Post p
+          where (:lastTime IS NULL OR p.createdAt < :lastTime
+          OR (p.createdAt = :lastTime AND p.id < :lastId))
+          order by p.createdAt DESC
+      """)
+  List<Post> findByPagination(
+      @Param("lastTime") Long lastTime,
+      @Param("lastId") Long lastId,
+      Pageable pageable);
 }

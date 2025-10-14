@@ -15,6 +15,23 @@ public class PostRes {
     private long likeCount;
     private String profileImagePath;
     private String status;
+    public Long getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Long lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    private Long lastTime;
+    private Long lastId;
+    public Long getLastId() {
+        return lastId;
+    }
+
+    public void setLastId(Long lastId) {
+        this.lastId = lastId;
+    }
 
     public String getStatus() {
         return status;
