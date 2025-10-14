@@ -56,7 +56,7 @@ public class ReportService {
         newReport.setReason(reason.getReason());
         newReport.setReportedUserId(user);
         newReport.setReporterId(crrUser);
-        newReport.setTime(System.currentTimeMillis());
+        newReport.setCreatedAt(System.currentTimeMillis());
         // newReport.setTypeReport("Profile");
         reportRepository.save(newReport);
         return new ReportResponse("the report has created successfully");
@@ -85,7 +85,7 @@ public class ReportService {
         newReport.setReason(reason.getReason());
         newReport.setReportedPostId(post);
         newReport.setReporterId(crrUser);
-        newReport.setTime(System.currentTimeMillis());
+        newReport.setCreatedAt(System.currentTimeMillis());
         // newReport.setTypeReport("Post");
         reportRepository.save(newReport);
         return new ReportResponse("the report has created successfully");

@@ -78,7 +78,7 @@
   text-transform: capitalize;
 }
 
-.post-timestamp {
+.post-createdAt {
   font-size: 0.875rem;
   color: var(--color-text-muted);
 }
@@ -920,7 +920,7 @@
     font-size: 1rem;
   }
 
-  .post-timestamp {
+  .post-createdAt {
     font-size: 0.8rem;
   }
 

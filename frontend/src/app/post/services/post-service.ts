@@ -7,7 +7,7 @@ export interface Post {
   userUuid: String;
   title: string;
   content: string;
-  timestamp: number;
+  createdAt: number;
   userName: String;
   mediaPaths: string[];
   commentCount: number;
@@ -31,7 +31,7 @@ export interface Like {
 }
 
 export interface Comments {
-  comments: { userUuid: String, imageProfile: String, userName: String, timesTamp: number, comment: String, uuid: String }[];
+  comments: { userUuid: String, imageProfile: String, userName: String, createdAt: number, comment: String, uuid: String }[];
   postUuid: String;
   UserUuid: String;
 }

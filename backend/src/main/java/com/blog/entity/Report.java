@@ -8,9 +8,9 @@ import jakarta.persistence.*;
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String reason;
-    private long time;
+    private Long createdAt;
     // private String typeReport;
     @ManyToOne
     @JoinColumn(name = "reporter_id")
@@ -27,9 +27,9 @@ public class Report {
     public Report() {
     }
 
-    public Report(String reason, long time, User reporterId, String uuid) {
+    public Report(String reason, long createdAt, User reporterId, String uuid) {
         this.reason = reason;
-        this.time = time;
+        this.createdAt = createdAt;
         // this.typeReport = typeReport;
         this.reporterId = reporterId;
         this.uuid = uuid;
@@ -51,12 +51,12 @@ public class Report {
         this.reason = reason;
     }
 
-    public long getTime() {
-        return time;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     // public String getTypeReport() {

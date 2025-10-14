@@ -22,7 +22,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
           SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId
         )
         or p.user.id = :userId
-        ORDER BY p.timestamp DESC
+        ORDER BY p.createdAt DESC
       """)
   List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
   

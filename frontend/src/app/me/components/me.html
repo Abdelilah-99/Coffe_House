@@ -139,7 +139,7 @@
                                 </div>
                             </div>
                             <span class="author-name">{{post.userName}}</span>
-                            <span class="post-time">{{post.timestamp}}</span>
+                            <span class="post-time">{{post.createdAt | date: 'short'}}</span>
                         </div>
                         <div class="post-actions" (click)="$event.stopPropagation()">
                             <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
@@ -170,7 +170,7 @@
                             </div>
                             <div class="author-info">
                                 <span class="author-name">{{post.userName}}</span>
-                                <span class="post-time">{{post.timestamp}}</span>
+                                <span class="post-time">{{post.createdAt | date: 'short'}}</span>
                             </div>
                         </div>
                     </div>

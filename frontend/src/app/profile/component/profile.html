@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                             <span class="author-name">{{post.userName}}</span>
-                            <span class="post-time">{{post.timestamp}}</span>
+                            <span class="post-time">{{post.createdAt | date: 'short'}}</span>
                         </div>
                         <div class="post-actions" (click)="$event.stopPropagation()">
                             <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
@@ -174,7 +174,7 @@
                             </div>
                             <div class="author-info">
                                 <span class="author-name">{{post.userName}}</span>
-                                <span class="post-time">{{post.timestamp}}</span>
+                                <span class="post-time">{{post.createdAt | date: 'short'}}</span>
                             </div>
                         </div>
                     </div>
@@ -201,7 +201,7 @@
     </div>
 </div>
 
-<!-- id | user_id |                             content                             |                                                                                                  media_paths                                                                                                   | status |           timestamp           |     title      |                 uuid                 
+<!-- id | user_id |                             content                             |                                                                                                  media_paths                                                                                                   | status |           createdAt           |     title      |                 uuid                 
 ----+---------+-----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+-------------------------------+----------------+--------------------------------------
   2 |       1 | for report                                                      |                                                                                                                                                                                                                | EPOSED | 2025-10-04T15:48:00.728723136 | test 2         | d8accadf-adcf-4da5-a89d-3b8737c80a70
   3 |       3 | test                                                            |                                                                                                                                                                                                                | EPOSED | 2025-10-05T22:58:06.350559505 | test           | 62561666-9f13-470a-80ea-4521fbaed0b9

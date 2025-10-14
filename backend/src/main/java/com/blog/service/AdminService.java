@@ -78,7 +78,7 @@ public class AdminService {
             postRes.setUserName(post.getUser().getUserName());
             postRes.setTitle(post.getTitle());
             postRes.setContent(post.getContent().length() > 150 ? post.getContent().substring(0, 150) + "..." : post.getContent());
-            postRes.setTimestamp(post.getTimestamp());
+            postRes.setCreatedAt(post.getCreatedAt());
             postRes.setMediaPaths(post.getMediaPaths());
             postRes.setStatus(post.getStatus());
             postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));
@@ -215,7 +215,7 @@ public class AdminService {
             ReportsAdmineResponse.setUuid(report.getUuid());
             ReportsAdmineResponse.setReporterUsername(report.getReporterId().getUserName());
             ReportsAdmineResponse.setReason(report.getReason());
-            ReportsAdmineResponse.setTime(report.getTime());
+            ReportsAdmineResponse.setTime(report.getCreatedAt());
             if (type.equals("Post")) {
                 ReportsAdmineResponse.setPostOrUserUuid(report.getReportedPostId().getUuid());
             } else if (type.equals("User")) {

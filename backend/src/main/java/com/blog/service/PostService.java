@@ -76,7 +76,7 @@ public class PostService {
             newPost.setUser(user);
             newPost.setContent(req.getContent());
             newPost.setTitle(req.getTitle());
-            newPost.setTimestamp(time);
+            newPost.setCreatedAt(time);
             newPost.setMediaPaths(mediaPaths);
             newPost.setStatus("EPOSED");
             postRepository.save(newPost);
@@ -153,7 +153,7 @@ public class PostService {
                     post.getContent(),
                     post.getTitle(),
                     "list of post",
-                    post.getTimestamp(),
+                    post.getCreatedAt(),
                     post.getMediaPaths(),
                     commentRepository.countByPost_uuid(post.getUuid()),
                     likesRepository.countByPost_uuid(post.getUuid()),
@@ -177,7 +177,7 @@ public class PostService {
                 post.getContent(),
                 post.getTitle(),
                 "data extracted success",
-                post.getTimestamp(),
+                post.getCreatedAt(),
                 post.getMediaPaths(),
                 commentRepository.countByPost_uuid(post.getUuid()),
                 likesRepository.countByPost_uuid(post.getUuid()),
@@ -200,7 +200,7 @@ public class PostService {
                     post.getContent(),
                     post.getTitle(),
                     "list of user posts",
-                    post.getTimestamp(),
+                    post.getCreatedAt(),
                     post.getMediaPaths(),
                     commentRepository.countByPost_uuid(post.getUuid()),
                     likesRepository.countByPost_uuid(post.getUuid()),

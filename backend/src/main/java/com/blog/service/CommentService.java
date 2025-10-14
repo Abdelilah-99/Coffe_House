@@ -44,7 +44,7 @@ public class CommentService {
             newComment.setUser(user);
             newComment.setPost(post);
             newComment.setUserName(user.getUserName());
-            newComment.setTimesTamp(System.currentTimeMillis());
+            newComment.setCreatedAt(System.currentTimeMillis());
             newComment.setImageProfile(user.getProfileImagePath());
             newComment.setUserUuid(user.getUuid());
             commentRepository.save(newComment);

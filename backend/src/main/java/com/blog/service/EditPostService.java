@@ -92,7 +92,7 @@ public class EditPostService {
                 post.getContent(),
                 post.getTitle(),
                 "post updated!!",
-                post.getTimestamp(),
+                post.getCreatedAt(),
                 post.getMediaPaths(),
                 commentRepository.countByPost_uuid(post.getUuid()),
                 likesRepository.countByPost_uuid(post.getUuid()),

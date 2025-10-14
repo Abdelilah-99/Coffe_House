@@ -9,7 +9,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
-    private long id;
+    private Long id;
     @Column(columnDefinition = "TEXT")
     private String comment;
     @ManyToOne
@@ -22,7 +22,7 @@ public class Comment {
     private Post post;
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
-    private long timesTamp;
+    private Long createdAt;
     private String userName;
     private String imageProfile;
     private String UserUuid;
@@ -42,14 +42,14 @@ public class Comment {
             User user,
             Post post,
             String uuid,
-            long timesTamp,
+            long createdAt,
             String userName,
             String imageProfile) {
         this.comment = comment;
         this.user = user;
         this.post = post;
         this.uuid = uuid;
-        this.timesTamp = timesTamp;
+        this.createdAt = createdAt;
         this.userName = userName;
         this.imageProfile = imageProfile;
     }
@@ -70,12 +70,12 @@ public class Comment {
         this.userName = userName;
     }
 
-    public long getTimesTamp() {
-        return timesTamp;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTimesTamp(long timesTamp) {
-        this.timesTamp = timesTamp;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getUuid() {

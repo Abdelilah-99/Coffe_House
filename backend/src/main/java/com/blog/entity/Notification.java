@@ -7,13 +7,11 @@ import jakarta.persistence.*;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String notificatedUser;
     private String postOrProfileUuid;
     private String notification;
-    @Column(name = "created_at")
-    private long createdAt = System.currentTimeMillis();
-    @Column(name = "is_read")
+    private Long createdAt = System.currentTimeMillis();
     private boolean isRead = false;
     private String uuid = UUID.randomUUID().toString();
     private String notificationOwner;
