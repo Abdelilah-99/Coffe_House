@@ -1,11 +1,8 @@
 <div class="main-content">
-<div class="posts-container">
-  <app-post-card
-    *ngFor="let post of posts"
-    [post]="post"
-    (reaction)="onReact($event)"
-    (postCard)="onPostCardSection($event)"
-    >
-  </app-post-card>
-</div>
+  <div class="posts-container">
+    <app-post-card *ngFor="let post of posts" [post]="post" (reaction)="onReact($event)"
+      (postCard)="onPostCardSection($event)">
+    </app-post-card>
+    <div #anchor class="loading-trigger"></div>
+  </div>
 </div>

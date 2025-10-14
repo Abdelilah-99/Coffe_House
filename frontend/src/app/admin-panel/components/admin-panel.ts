@@ -3,7 +3,7 @@ import { AdminPannelSefvices, AdminStatisticsResponse, User, Report, TopUserResp
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserProfile } from '../../post/services/post-service';
-import { UserService } from '../../home/services/services';
+import { UserService } from '../../searchbar/services/services';
 import { ProfileService } from '../../profile/services/services';
 import { Router } from '@angular/router';
 

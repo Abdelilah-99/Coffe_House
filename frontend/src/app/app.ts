@@ -4,7 +4,7 @@ import { filter } from 'rxjs';
 import { NotifServices, Count } from './notification/services/services';
 import { UserProfile, MeService } from './me/services/me.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Searchbar } from './searchbar/searchbar';
+import { Searchbar } from './searchbar/components/searchbar';
 import { ProfileService, FollowUser } from './profile/services/services';
 
 @Component({

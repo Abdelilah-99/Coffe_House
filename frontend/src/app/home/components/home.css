@@ -38,3 +38,15 @@
     padding-bottom: 80px;
   }
 }
+
+.loading-trigger {
+  height: 10px;
+  width: 100%;
+}
+
+.spinner {
+  text-align: center;
+  padding: 1rem;
+  color: #7b6f5a;
+  font-family: 'Poppins', sans-serif;
+}

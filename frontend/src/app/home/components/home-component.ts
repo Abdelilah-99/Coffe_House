@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Like, Post, PostService } from '../../post/services/post-service';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Like, Post, PostPage, PostService } from '../../post/services/post-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MeService, UserProfile } from '../../me/services/me.service';
@@ -13,39 +13,84 @@ import { PostCardComponent } from './post-card/post-card';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+  @ViewChild('anchor', { static: true }) anchor!: ElementRef<HTMLElement>;
+  observer!: IntersectionObserver;
+  postsPage?: PostPage;
   posts: Post[] = [];
   like: Like = { userUuid: null, postUuid: null, likeCount: 0 };
   selectedPost?: Post;
-  isLoding = true;
+  lastId: number | null = null;
+  lastTime: number | null = null;
+  isLoding = false;
   post = { title: '', content: '' }
   constructor(private postService: PostService,
     private router: Router,
     private profileService: MeService,
     @Inject(PLATFORM_ID) private platformId: Object) { }
 
-  ngOnInit() {
-    this.loadPosts();
+  private initObserver() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastId) {
+        console.log('Reached bottom fetching next page');
+        this.loadPostByPage(this.lastTime, this.lastId);
+      }
+    });
+    this.observer.observe(this.anchor.nativeElement);
   }
 
-  loadPosts() {
+
+  ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('access_token');
       if (!token) {
         this.router.navigate(['/login']);
+        return;
       }
-      this.postService.getAllPosts().subscribe({
-        next: (posts) => {
-          this.posts = posts;
-          console.log(posts);
-          this.isLoding = false;
-        },
-        error: (err) => {
-          console.error("err loading posts: ", err);
-          this.isLoding = false;
-        }
+      this.loadPostByPage(null, null, () => {
+        this.initObserver();
       });
     }
+  }
+
+  loadPostByPage(lastTime: number | null, lastId: number | null, onFinish?: () => void) {
+    this.isLoding = true;
+    this.postService.loadMore(lastTime, lastId).subscribe({
+      next: (res) => {
+        this.postsPage = res;
+        this.lastTime = res.lastTime;
+        this.lastId = res.lastId;
+        this.posts.push(...res.posts);
+        this.isLoding = false;
+        console.log("data page: ", res.posts);
+        if (onFinish) onFinish();
+      },
+      error: (err) => {
+        console.error("failed loading pages: ", err);
+        this.isLoding = false;
+        if (onFinish) onFinish();
+      }
+    });
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.observer) this.observer.disconnect();
+  }
+
+  loadPosts() {
+    this.postService.getAllPosts().subscribe({
+      next: (posts) => {
+        this.posts = posts;
+        console.log(posts);
+        this.isLoding = false;
+      },
+      error: (err) => {
+        console.error("err loading posts: ", err);
+        this.isLoding = false;
+      }
+    });
   }
 
   onPostCardSection(postUuid: String) {

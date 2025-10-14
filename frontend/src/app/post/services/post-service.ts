@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 export interface Post {
   postUuid: String;
@@ -14,6 +14,12 @@ export interface Post {
   likeCount: number;
   profileImagePath: string;
   status: String;
+}
+
+export interface PostPage {
+  posts: Post[];
+  lastTime: number;
+  lastId: number;
 }
 
 export interface UserProfile {
@@ -86,5 +92,15 @@ export class PostService {
 
   doReport(uuid: String, reason: String) {
     return this.http.post<Message>(`http://localhost:8080/api/report/post/${uuid}`, { reason: reason });
+  }
+
+  loadMore(lastTime: number | null, lastId: number | null) {
+    if (!lastTime || !lastId) {
+      return this.http.get<PostPage>(`http://localhost:8080/api/posts/pages`);
+    }
+    const params = new HttpParams()
+      .set('lastTime', lastTime)
+      .set('lastId', lastId);
+    return this.http.get<PostPage>(`http://localhost:8080/api/posts/pages`, { params });
   }
 }
