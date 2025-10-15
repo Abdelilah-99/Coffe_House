@@ -9,6 +9,7 @@ import { Profile } from './profile/component/profile';
 import { Notification } from './notification/components/notification';
 import { AdminPanel } from './admin-panel/components/admin-panel';
 import { adminGuard } from './admin-panel/admin-panel-guard';
+import { ErrorPage } from './error/components/error-page';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,5 +20,7 @@ export const routes: Routes = [
     { path: 'edit/:id', component: Edit },
     { path: 'profile/:id', component: Profile },
     { path: 'notification', component: Notification },
-    { path: 'admin', component: AdminPanel, canActivate: [adminGuard] }
+    { path: 'admin', component: AdminPanel, canActivate: [adminGuard] },
+    { path: 'error', component: ErrorPage },
+    { path: '**', component: ErrorPage }
 ];

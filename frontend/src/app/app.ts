@@ -33,13 +33,13 @@ export class App implements OnInit {
   }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this  .platformId)) {
       this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
         .subscribe((event: NavigationEnd) => {
           const hideOn = ['/login', '/register'];
           this.showNavbar = !hideOn.includes(event.urlAfterRedirects);
-          if (this.showNavbar) {
+          if (this.showNavbar && localStorage.getItem('access_token')) {
             this.loadCountNotif();
             this.loadUserProfile();
           }
@@ -86,7 +86,9 @@ export class App implements OnInit {
         console.log("count: ", res);
       },
       error: (err) => {
-        console.error("err count ", err);
+        if (err.message !== 'Authentication invalid') {
+          console.error("err count ", err);
+        }
       }
     });
   }

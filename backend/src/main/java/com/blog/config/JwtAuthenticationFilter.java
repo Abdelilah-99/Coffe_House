@@ -34,11 +34,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("Request URI: " + req.getRequestURI());
         System.out.println("Request Method: " + req.getMethod());
 
+        // Skip filter for public endpoints
+        String requestPath = req.getRequestURI();
+        if (isPublicEndpoint(requestPath)) {
+            System.out.println("Public endpoint, skipping JWT validation");
+            filterChain.doFilter(req, res);
+            return;
+        }
+
         String userName = null;
         String token = null;
         final String authHeader = req.getHeader("Authorization");
 
-        System.out.println("Processing request: " + req.getRequestURI());
+        System.out.println("Processing request: " + requestPath);
         System.out.println("Auth header: " + authHeader);
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -48,6 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println("Extracted username: " + userName);
             } catch (Exception e) {
                 System.out.println("Failed to extract username: " + e.getMessage());
+                // Invalid token format - let Spring Security handle it
             }
         }
 
@@ -67,11 +76,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 } else {
                     System.out.println("Token validation failed for user: " + userName);
+                    // Invalid token - let Spring Security handle the 401 response
                 }
             } catch (Exception e) {
                 System.out.println("Error during authentication: " + e.getMessage());
+                // Error during authentication - let Spring Security handle it
             }
         }
+
+        // Always proceed to next filter - Spring Security will handle authorization
         filterChain.doFilter(req, res);
+    }
+
+    /**
+     * Check if the request path is a public endpoint that doesn't require authentication
+     */
+    private boolean isPublicEndpoint(String path) {
+        return path.startsWith("/api/auth/login") ||
+               path.startsWith("/api/auth/register") ||
+               path.startsWith("/uploads/");
     }
 }
