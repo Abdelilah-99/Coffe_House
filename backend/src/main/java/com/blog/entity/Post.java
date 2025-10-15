@@ -17,7 +17,6 @@ public class Post {
     private String content;
     @Column(columnDefinition = "TEXT")
     private String mediaPaths;
-    @Column(columnDefinition = "BIGINT")
     private Long createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)

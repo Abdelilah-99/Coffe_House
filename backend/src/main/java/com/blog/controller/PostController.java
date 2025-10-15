@@ -44,9 +44,9 @@ public class PostController {
     @GetMapping("/pages")
     public ResponseEntity<PostPage> getPostByPage(
             @RequestParam(value = "lastTime", required = false) Long lastTime,
-            @RequestParam(value = "lastId", required = false) Long lastId) {
-        System.out.println("=================++++++++++: " + lastTime + " " + lastId);
-        PostPage data = postService.getPosts(lastTime, lastId);
+            @RequestParam(value = "lastId", required = false) String lastUuid) {
+        System.out.println("=================++++++++++: " + lastTime + " " + lastUuid);
+        PostPage data = postService.getPosts(lastTime, lastUuid);
         return ResponseEntity.ok(data);
     }
 

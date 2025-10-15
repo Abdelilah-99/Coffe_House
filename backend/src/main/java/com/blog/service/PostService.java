@@ -133,17 +133,30 @@ public class PostService {
         }
     }
 
-    public record PostPage(List<PostRes> posts, Long lastTime, Long lastId) {
+    public record PostPage(List<PostRes> posts, Long lastTime, String lastUuid) {
     }
 
-    public PostPage getPosts(Long lastTime, Long lastId) {
+    public PostPage getPosts(Long lastTime, String lastUuid) {
+        UsersRespons userRes;
+        try {
+            userRes = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("login please for getting posts");
+        }
+        User user = userRepository.findByUserName(userRes.getUsername()).orElseThrow(() -> {
+            throw new UserNotFoundException("error user not found");
+        });
         Pageable pageable = PageRequest.of(0, 5);
 
         if (lastTime == null) {
             lastTime = System.currentTimeMillis() + 1000;
         }
-
-        List<Post> posts = postRepository.findByPagination(lastTime, lastId, pageable);
+        Long lastId = null;
+        if (lastUuid != null) {
+            Post post = postRepository.findByUuid(lastUuid).orElseThrow(() -> new PostNotFoundException("post not found for id"));
+            lastId = post.getId();
+        }
+        List<Post> posts = postRepository.findByPagination(lastTime, lastId, user.getId(), pageable);
 
         List<PostRes> listPostRes = new ArrayList<>();
         for (Post post : posts) {
@@ -162,9 +175,10 @@ public class PostService {
             postRes.setStatus(post.getStatus());
             listPostRes.add(postRes);
         }
-        Long newLastId = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        // Long newLastId = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        String newLastUuid = posts.isEmpty() ? null : posts.get(posts.size() - 1).getUuid();
         Long newLastTime = posts.isEmpty() ? null : posts.get(posts.size() - 1).getCreatedAt();
-        return new PostPage(listPostRes, newLastTime, newLastId);
+        return new PostPage(listPostRes, newLastTime, newLastUuid);
     }
 
     public List<PostRes> displayAllPosts() {
