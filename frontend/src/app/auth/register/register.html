@@ -92,6 +92,7 @@
                     <i class="bi bi-cloud-upload me-2"></i>
                     <span class="file-input-text">Choisir une photo</span>
                   </label>
+                  <div *ngIf="message">{{message}}</div>
                 </div>
                 <div *ngIf="profileImagePreview" class="profile-image-preview">
                   <img [src]="profileImagePreview" alt="Profile Preview">

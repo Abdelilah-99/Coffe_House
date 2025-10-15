@@ -112,14 +112,14 @@
                         <td (click)="goTo('profile', user.uuid)">@{{user.username}}</td>
                         <td (click)="goTo('profile', user.uuid)">{{user.email}}</td>
                         <td class="action-cell" *ngIf="user.status === 'ACTIVE'">
-                            <button class="btn-action btn-ban" (click)="banUser(user.uuid.toString())">Ban</button>
+                            <button class="btn-action btn-ban" (click)="onPrepareBanUser(user.uuid.toString(), user)">Ban</button>
                             <button class="btn-action btn-delete"
-                                (click)="deleteUser(user.uuid.toString())">Delete</button>
+                                (click)="onPrepareDeleteUser(user.uuid.toString(), user)">Delete</button>
                         </td>
                         <td class="action-cell" *ngIf="user.status === 'BAN'">
-                            <button class="btn-action btn-ban" (click)="banUser(user.uuid.toString())">Unban</button>
+                            <button class="btn-action btn-ban" (click)="onPrepareBanUser(user.uuid.toString(), user)">Unban</button>
                             <button class="btn-action btn-delete"
-                                (click)="deleteUser(user.uuid.toString())">Delete</button>
+                                (click)="onPrepareDeleteUser(user.uuid.toString(), user)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -154,11 +154,11 @@
                         <td (click)="goTo('post', post.postUuid)">{{post.likeCount}}</td>
                         <td (click)="goTo('post', post.postUuid)">{{post.commentCount}}</td>
                         <td class="action-cell">
-                            <button class="btn-action btn-hide" (click)="hidePost(post.postUuid)">
+                            <button class="btn-action btn-hide" (click)="onPrepareHidePost(post.postUuid, post)">
                                 <span *ngIf="post.status === 'EPOSED'">Hide</span>
                                 <span *ngIf="post.status === 'HIDE'">Unhide</span>
                             </button>
-                            <button class="btn-action btn-delete" (click)="deletePost(post.postUuid.toString())">Delete</button>
+                            <button class="btn-action btn-delete" (click)="onPrepareDeletePost(post.postUuid.toString(), post)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -306,6 +306,172 @@
                         <span class="post-count warning">{{post.count}}</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete User Confirmation Dialog -->
+    <div *ngIf="showDeleteUserConfirmation" class="confirmation-overlay" (click)="onCancelDeleteUser()">
+        <div class="confirmation-dialog" (click)="$event.stopPropagation()">
+            <div class="confirmation-icon delete-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </div>
+            <h3 class="confirmation-title">Delete User?</h3>
+            <p class="confirmation-message" *ngIf="pendingActionData">
+                Are you sure you want to permanently delete the user <strong>{{pendingActionData.firstName}} {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This action cannot be undone and will remove all their data from the system.
+            </p>
+            <div class="confirmation-actions">
+                <button class="btn-confirmation-cancel" (click)="onCancelDeleteUser()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                    Cancel
+                </button>
+                <button class="btn-confirmation-confirm btn-delete-confirm" (click)="onConfirmDeleteUser()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                        <path
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                    </svg>
+                    Yes, Delete User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ban/Unban User Confirmation Dialog -->
+    <div *ngIf="showBanUserConfirmation" class="confirmation-overlay" (click)="onCancelBanUser()">
+        <div class="confirmation-dialog" (click)="$event.stopPropagation()">
+            <div class="confirmation-icon ban-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
+                </svg>
+            </div>
+            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'ACTIVE'">Ban User?</h3>
+            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'BAN'">Unban User?</h3>
+            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'ACTIVE'">
+                Are you sure you want to ban <strong>{{pendingActionData.firstName}} {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This will prevent them from accessing the platform.
+            </p>
+            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'BAN'">
+                Are you sure you want to unban <strong>{{pendingActionData.firstName}} {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This will restore their access to the platform.
+            </p>
+            <div class="confirmation-actions">
+                <button class="btn-confirmation-cancel" (click)="onCancelBanUser()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                    Cancel
+                </button>
+                <button class="btn-confirmation-confirm btn-ban-confirm" (click)="onConfirmBanUser()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
+                    </svg>
+                    <span *ngIf="pendingActionData?.status === 'ACTIVE'">Yes, Ban User</span>
+                    <span *ngIf="pendingActionData?.status === 'BAN'">Yes, Unban User</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Post Confirmation Dialog -->
+    <div *ngIf="showDeletePostConfirmation" class="confirmation-overlay" (click)="onCancelDeletePost()">
+        <div class="confirmation-dialog" (click)="$event.stopPropagation()">
+            <div class="confirmation-icon delete-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path
+                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </div>
+            <h3 class="confirmation-title">Delete Post?</h3>
+            <p class="confirmation-message" *ngIf="pendingActionData">
+                Are you sure you want to permanently delete the post "<strong>{{pendingActionData.title}}</strong>" by @{{pendingActionData.userName}}? This action cannot be undone.
+            </p>
+            <div class="confirmation-actions">
+                <button class="btn-confirmation-cancel" (click)="onCancelDeletePost()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                    Cancel
+                </button>
+                <button class="btn-confirmation-confirm btn-delete-confirm" (click)="onConfirmDeletePost()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                        <path
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                    </svg>
+                    Yes, Delete Post
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hide/Unhide Post Confirmation Dialog -->
+    <div *ngIf="showHidePostConfirmation" class="confirmation-overlay" (click)="onCancelHidePost()">
+        <div class="confirmation-dialog" (click)="$event.stopPropagation()">
+            <div class="confirmation-icon hide-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z" />
+                    <path
+                        d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829" />
+                    <path
+                        d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
+                </svg>
+            </div>
+            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'EPOSED'">Hide Post?</h3>
+            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'HIDE'">Unhide Post?</h3>
+            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'EPOSED'">
+                Are you sure you want to hide the post "<strong>{{pendingActionData.title}}</strong>" by @{{pendingActionData.userName}}? This will remove it from public view.
+            </p>
+            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'HIDE'">
+                Are you sure you want to unhide the post "<strong>{{pendingActionData.title}}</strong>" by @{{pendingActionData.userName}}? This will make it visible to users again.
+            </p>
+            <div class="confirmation-actions">
+                <button class="btn-confirmation-cancel" (click)="onCancelHidePost()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                    Cancel
+                </button>
+                <button class="btn-confirmation-confirm btn-hide-confirm" (click)="onConfirmHidePost()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z" />
+                        <path
+                            d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829" />
+                        <path
+                            d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
+                    </svg>
+                    <span *ngIf="pendingActionData?.status === 'EPOSED'">Yes, Hide Post</span>
+                    <span *ngIf="pendingActionData?.status === 'HIDE'">Yes, Unhide Post</span>
+                </button>
             </div>
         </div>
     </div>

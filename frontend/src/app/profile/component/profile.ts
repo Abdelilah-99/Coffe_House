@@ -25,6 +25,9 @@ export class Profile implements OnInit {
   following?: number;
   followers?: number;
   isAdmin: boolean = false;
+
+  // Admin action confirmation state
+  showAdminBanConfirmation = false;
   constructor(private route: ActivatedRoute, private navigate: Router,
     private profileService: ProfileService,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -190,6 +193,25 @@ export class Profile implements OnInit {
     });
   }
 
+  // Admin actions - prepare
+  onPrepareAdminBanUser() {
+    this.showAdminBanConfirmation = true;
+  }
+
+  // Admin actions - confirm
+  onConfirmAdminBanUser() {
+    if (this.profileRes) {
+      this.adminBanUser(this.profileRes.uuid);
+    }
+    this.showAdminBanConfirmation = false;
+  }
+
+  // Admin actions - cancel
+  onCancelAdminBanUser() {
+    this.showAdminBanConfirmation = false;
+  }
+
+  // Actual admin API call
   adminBanUser(uuid: String) {
     this.adminService.banUser(uuid).subscribe({
       next: (res) => {

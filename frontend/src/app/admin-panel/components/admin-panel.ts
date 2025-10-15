@@ -29,6 +29,13 @@ export class AdminPanel implements OnInit {
   mostLikedPosts: TopPostResponse[] = [];
   mostReportedPosts: TopPostResponse[] = [];
 
+  showDeleteUserConfirmation = false;
+  showBanUserConfirmation = false;
+  showDeletePostConfirmation = false;
+  showHidePostConfirmation = false;
+  pendingActionUuid: string = '';
+  pendingActionData: any = null;
+
   ngOnInit(): void {
     this.laodStatistique();
     this.loadUsers();
@@ -156,6 +163,90 @@ export class AdminPanel implements OnInit {
         console.error("Error loading most reported posts: ", err);
       }
     });
+  }
+
+  onPrepareDeleteUser(uuid: string, userData: any) {
+    this.pendingActionUuid = uuid;
+    this.pendingActionData = userData;
+    this.showDeleteUserConfirmation = true;
+  }
+
+  onPrepareBanUser(uuid: string, userData: any) {
+    this.pendingActionUuid = uuid;
+    this.pendingActionData = userData;
+    this.showBanUserConfirmation = true;
+  }
+
+  onPrepareDeletePost(uuid: string, postData: any) {
+    this.pendingActionUuid = uuid;
+    this.pendingActionData = postData;
+    this.showDeletePostConfirmation = true;
+  }
+
+  onPrepareHidePost(uuid: string, postData: any) {
+    this.pendingActionUuid = uuid;
+    this.pendingActionData = postData;
+    this.showHidePostConfirmation = true;
+  }
+
+  onConfirmDeleteUser() {
+    if (this.pendingActionUuid) {
+      this.deleteUser(this.pendingActionUuid);
+    }
+    this.showDeleteUserConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
+  }
+
+  onConfirmBanUser() {
+    if (this.pendingActionUuid) {
+      this.banUser(this.pendingActionUuid);
+    }
+    this.showBanUserConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
+  }
+
+  onConfirmDeletePost() {
+    if (this.pendingActionUuid) {
+      this.deletePost(this.pendingActionUuid);
+    }
+    this.showDeletePostConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
+  }
+
+  onConfirmHidePost() {
+    if (this.pendingActionUuid) {
+      this.hidePost(this.pendingActionUuid);
+    }
+    this.showHidePostConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
+  }
+
+  onCancelDeleteUser() {
+    this.showDeleteUserConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
+  }
+
+  onCancelBanUser() {
+    this.showBanUserConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
+  }
+
+  onCancelDeletePost() {
+    this.showDeletePostConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
+  }
+
+  onCancelHidePost() {
+    this.showHidePostConfirmation = false;
+    this.pendingActionUuid = '';
+    this.pendingActionData = null;
   }
 
   deleteUser(uuid: string) {

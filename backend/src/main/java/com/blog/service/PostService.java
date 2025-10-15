@@ -17,6 +17,8 @@ import com.blog.entity.Post;
 import com.blog.entity.User;
 import com.blog.exceptions.*;
 import com.blog.repository.*;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
 import java.io.IOException;
 
 @Service
@@ -61,8 +63,14 @@ public class PostService {
             if (req.getMediaFiles() != null && req.getMediaFiles().length > 0) {
                 for (MultipartFile mediaFile : req.getMediaFiles()) {
                     if (!mediaFile.isEmpty()) {
-                        String mediaPath = saveMedia(mediaFile);
-                        mediaPaths.add(mediaPath);
+                        String mimeType = mediaFile.getContentType();
+                        if (mimeType == null ||
+                                !(mimeType.startsWith("image/") || mimeType.startsWith("video/"))) {
+                            throw new InvalidFormatException(null, "Invalid MIME type", mimeType, getClass());
+                        } else {
+                            String mediaPath = saveMedia(mediaFile);
+                            mediaPaths.add(mediaPath);
+                        }
                     }
                 }
             }
@@ -108,7 +116,7 @@ public class PostService {
                     user.getProfileImagePath(),
                     "EXPOSED");
         } catch (Exception e) {
-            throw new ErrSavingException(String.format("Error saving post in DB: " + e.getMessage(), e));
+            throw new ErrSavingException(e.getMessage());
         }
     }
 
@@ -153,7 +161,8 @@ public class PostService {
         }
         Long lastId = null;
         if (lastUuid != null) {
-            Post post = postRepository.findByUuid(lastUuid).orElseThrow(() -> new PostNotFoundException("post not found for id"));
+            Post post = postRepository.findByUuid(lastUuid)
+                    .orElseThrow(() -> new PostNotFoundException("post not found for id"));
             lastId = post.getId();
         }
         List<Post> posts = postRepository.findByPagination(lastTime, lastId, user.getId(), pageable);
@@ -175,7 +184,8 @@ public class PostService {
             postRes.setStatus(post.getStatus());
             listPostRes.add(postRes);
         }
-        // Long newLastId = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        // Long newLastId = posts.isEmpty() ? null : posts.get(posts.size() -
+        // 1).getId();
         String newLastUuid = posts.isEmpty() ? null : posts.get(posts.size() - 1).getUuid();
         Long newLastTime = posts.isEmpty() ? null : posts.get(posts.size() - 1).getCreatedAt();
         return new PostPage(listPostRes, newLastTime, newLastUuid);

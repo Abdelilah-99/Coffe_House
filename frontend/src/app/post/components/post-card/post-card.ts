@@ -30,6 +30,10 @@ export class PostCard implements OnInit {
   message?: Message;
   isAdmin: boolean = false;
 
+  // Admin action confirmation states
+  showAdminHideConfirmation = false;
+  showAdminDeleteConfirmation = false;
+
   ngOnInit(): void {
     this.loadProfile();
 
@@ -213,6 +217,40 @@ export class PostCard implements OnInit {
     return false;
   }
 
+  // Admin actions - prepare
+  onPrepareAdminHidePost() {
+    this.showAdminHideConfirmation = true;
+  }
+
+  onPrepareAdminDeletePost() {
+    this.showAdminDeleteConfirmation = true;
+  }
+
+  // Admin actions - confirm
+  onConfirmAdminHidePost() {
+    if (this.post) {
+      this.adminHidePost(this.post.postUuid);
+    }
+    this.showAdminHideConfirmation = false;
+  }
+
+  onConfirmAdminDeletePost() {
+    if (this.post) {
+      this.adminDeletePost(this.post.postUuid);
+    }
+    this.showAdminDeleteConfirmation = false;
+  }
+
+  // Admin actions - cancel
+  onCancelAdminHidePost() {
+    this.showAdminHideConfirmation = false;
+  }
+
+  onCancelAdminDeletePost() {
+    this.showAdminDeleteConfirmation = false;
+  }
+
+  // Actual admin API calls
   adminHidePost(postUuid: String) {
     this.adminService.hidePost(postUuid).subscribe({
       next: () => {

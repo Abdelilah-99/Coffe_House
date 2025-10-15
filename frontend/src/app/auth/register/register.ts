@@ -35,12 +35,19 @@ export class Register implements OnInit {
 
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
+    // console.log(files[0].type);
+
     if (!files || files.length === 0) {
       this.selectedFile = null;
       this.profileImagePreview = null;
       return;
     }
     this.selectedFile = files[0];
+    if (!files[0].type.includes("image")) {
+      this.message = "format image are only allowed";
+      console.error(files[0].type.split('/')[0]);
+      return;
+    }
     console.log('Selected file:', this.selectedFile.name);
     const reader = new FileReader();
     reader.onload = (event: any) => {
@@ -86,7 +93,7 @@ export class Register implements OnInit {
         console.log('res: ', res);
       },
       error: (err) => {
-        console.error('err: ', err);
+        console.error('err: ', err.error.message);
         this.message = err.error.message;
         this.currentStep = 1;
       }

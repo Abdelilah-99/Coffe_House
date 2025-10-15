@@ -70,6 +70,11 @@ export class Me implements OnInit {
     const files: FileList = e.target.files;
     if (!files || files.length === 0) return;
     for (let i = 0; i < files.length; i++) {
+      if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
+        this.message = "format image and video are only allowed";
+        console.error(files[i].type.split('/')[0]);
+        return;
+      }
       this.selectedFiles.push(files[i]);
     }
     console.log('Selected files:', this.selectedFiles.map(f => f.name));
@@ -114,6 +119,11 @@ export class Me implements OnInit {
     console.log(formData.get("title"));
 
     this.selectedFiles.forEach(element => {
+      if (!element.type.includes("image") && !element.type.includes("video")) {
+        this.message = "format image and video are only allowed";
+        console.error(element.type.split('/')[0]);
+        return;
+      }
       formData.append("mediaFiles", element);
     });
     this.profileService.createPost(formData).subscribe({
