@@ -1,18 +1,18 @@
-<div class="profle-container">
+<div class="profle-container container-fluid">
     <!-- Profile Header -->
     <div class="profile-header">
         <div *ngIf="isLoading" class="loading">
             loading...
         </div>
-        <div *ngIf="userProfile" class="profile-info">
-            <div class="profile-avatar">
+        <div *ngIf="userProfile" class="profile-info row">
+            <div class="profile-avatar col-12 col-md-auto d-flex justify-content-center justify-content-md-start">
                 <img *ngIf="userProfile.profileImagePath"
                     [src]="'http://localhost:8080/' + userProfile.profileImagePath" alt="Profile Picture">
                 <div *ngIf="!userProfile.profileImagePath" class="avatar-placeholder">
                     {{userProfile.firstName.charAt(0)}}{{userProfile.lastName.charAt(0)}}
                 </div>
             </div>
-            <div class="profile-details">
+            <div class="profile-details col-12 col-md text-center text-md-start">
                 <h1>{{userProfile.firstName}} {{userProfile.lastName}}</h1>
                 <p class="username">&#64;{{userProfile.username}}</p>
                 <p class="email">{{userProfile.email}}</p>
@@ -118,82 +118,86 @@
         <div *ngIf="!isLoadingPosts && userPosts.length === 0" class="no-posts">
             <p>No posts yet. Create your first post!</p>
         </div>
-        <div *ngIf="!isLoadingPosts && userPosts.length > 0" class="posts-grid">
-            <div *ngFor="let post of userPosts" class="post-card" (click)="navigateToPost(post.postUuid)">
-                <!-- Post with image(s) - Image as background with overlay -->
-                <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
-                    <div class="post-image-wrapper">
-                        <img [src]="'http://localhost:8080/' + post.mediaPaths[0]" alt="{{ post.title }}"
-                            class="post-bg-image">
-                        <div class="post-image-overlay">
-                            <h3 class="post-title-overlay">{{post.title}}</h3>
-                        </div>
-                    </div>
-                    <div class="post-footer-info">
-                        <div class="post-author-compact">
-                            <div class="author-avatar-small">
-                                <img *ngIf="userProfile?.profileImagePath"
-                                    [src]="'http://localhost:8080/' + userProfile?.profileImagePath" alt="Profile">
-                                <div *ngIf="!userProfile?.profileImagePath" class="avatar-placeholder-small">
-                                    {{userProfile?.firstName?.charAt(0) || ''}}
+        <div *ngIf="!isLoadingPosts && userPosts.length > 0">
+            <div class="row g-4">
+                <div *ngFor="let post of userPosts" class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="post-card" (click)="navigateToPost(post.postUuid)">
+                        <!-- Post with image(s) - Image as background with overlay -->
+                        <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
+                            <div class="post-image-wrapper">
+                                <img [src]="'http://localhost:8080/' + post.mediaPaths[0]" alt="{{ post.title }}"
+                                    class="post-bg-image">
+                                <div class="post-image-overlay">
+                                    <h3 class="post-title-overlay">{{post.title}}</h3>
                                 </div>
                             </div>
-                            <span class="author-name">{{post.userName}}</span>
-                            <span class="post-time">{{post.createdAt | date: 'short'}}</span>
-                        </div>
-                        <div class="post-actions" (click)="$event.stopPropagation()">
-                            <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
-                                <img src="/coffe-like.png" alt="Like" class="icon">
-                                <div class="like-count">
-                                    <span>{{post.likeCount}}</span>
+                            <div class="py-3 px-4 bg-body">
+                                <div class="post-author-compact">
+                                    <div class="author-avatar-small">
+                                        <img *ngIf="userProfile?.profileImagePath"
+                                            [src]="'http://localhost:8080/' + userProfile?.profileImagePath" alt="Profile">
+                                        <div *ngIf="!userProfile?.profileImagePath" class="avatar-placeholder-small">
+                                            {{userProfile?.firstName?.charAt(0) || ''}}
+                                        </div>
+                                    </div>
+                                    <span class="author-name">{{post.userName}}</span>
+                                    <span class="post-time">{{post.createdAt | date: 'short'}}</span>
                                 </div>
-                            </button>
-                            <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
-                                <img src="/coffe-comment.png" alt="Comment" class="icon">
-                                <span class="count">{{post.commentCount}}</span>
-                                <span class="text">Comments</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Post without image - Traditional layout -->
-                <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-no-image">
-                    <div class="post-header">
-                        <div class="post-author">
-                            <div class="author-avatar-small">
-                                <img *ngIf="userProfile?.profileImagePath"
-                                    [src]="'http://localhost:8080/' + userProfile?.profileImagePath" alt="Profile">
-                                <div *ngIf="!userProfile?.profileImagePath" class="avatar-placeholder-small">
-                                    {{userProfile?.firstName?.charAt(0) || ''}}
+                                <div class="post-actions" (click)="$event.stopPropagation()">
+                                    <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
+                                        <img src="/coffe-like.png" alt="Like" class="icon">
+                                        <div class="like-count">
+                                            <span>{{post.likeCount}}</span>
+                                        </div>
+                                    </button>
+                                    <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
+                                        <img src="/coffe-comment.png" alt="Comment" class="icon">
+                                        <span class="count">{{post.commentCount}}</span>
+                                        <span class="text">Comments</span>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="author-info">
-                                <span class="author-name">{{post.userName}}</span>
-                                <span class="post-time">{{post.createdAt | date: 'short'}}</span>
+                        </div>
+
+                        <!-- Post without image - Traditional layout -->
+                        <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-no-image">
+                            <div class="post-header">
+                                <div class="post-author">
+                                    <div class="author-avatar-small">
+                                        <img *ngIf="userProfile?.profileImagePath"
+                                            [src]="'http://localhost:8080/' + userProfile?.profileImagePath" alt="Profile">
+                                        <div *ngIf="!userProfile?.profileImagePath" class="avatar-placeholder-small">
+                                            {{userProfile?.firstName?.charAt(0) || ''}}
+                                        </div>
+                                    </div>
+                                    <div class="author-info">
+                                        <span class="author-name">{{post.userName}}</span>
+                                        <span class="post-time">{{post.createdAt | date: 'short'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="post-content">
+                                <h3>{{post.title}}</h3>
+                                <p>{{post.content}}</p>
+                            </div>
+
+                            <div class="post-actions" (click)="$event.stopPropagation()">
+                                <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
+                                    <img src="/coffe-like.png" alt="Like" class="icon">
+                                    <div class="like-count">
+                                        <span class="count">{{post.likeCount}}</span>
+                                    </div>
+                                </button>
+                                <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
+                                    <img src="/coffe-comment.png" alt="Comment" class="icon">
+                                    <div class="comment-count">
+                                        <span class="count">{{post.commentCount}}</span>
+                                    </div>
+                                    <span class="text">Comments</span>
+                                </button>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="post-content">
-                        <h3>{{post.title}}</h3>
-                        <p>{{post.content}}</p>
-                    </div>
-
-                    <div class="post-actions" (click)="$event.stopPropagation()">
-                        <button class="action-btn like-btn" (click)="handleLike($event, post.postUuid)">
-                            <img src="/coffe-like.png" alt="Like" class="icon">
-                            <div class="like-count">
-                                <span class="count">{{post.likeCount}}</span>
-                            </div>
-                        </button>
-                        <button class="action-btn comment-btn" (click)="navigateToPost(post.postUuid)">
-                            <img src="/coffe-comment.png" alt="Comment" class="icon">
-                            <div class="comment-count">
-                                <span class="count">{{post.commentCount}}</span>
-                            </div>
-                            <span class="text">Comments</span>
-                        </button>
                     </div>
                 </div>
             </div>

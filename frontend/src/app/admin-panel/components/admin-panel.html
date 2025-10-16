@@ -1,4 +1,4 @@
-<div class="admin-panel">
+<div class="admin-panel container-fluid">
     <!-- Page Header -->
     <div class="admin-header">
         <div class="header-content">
@@ -11,9 +11,9 @@
     <div class="statistics-section" *ngIf="AdminStatisticsResponse">
         <h2 class="section-title">Overview Statistics</h2>
 
-        <div class="stats-grid">
+        <div class="stats-grid row g-4">
             <!-- Total Users Card -->
-            <div class="stat-card stat-users">
+            <div class="stat-card stat-users col-12 col-md-6 col-lg-4 col-xl-2-4">
                 <div class="stat-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         viewBox="0 0 16 16">
@@ -28,7 +28,7 @@
             </div>
 
             <!-- Total Posts Card -->
-            <div class="stat-card stat-posts">
+            <div class="stat-card stat-posts col-12 col-md-6 col-lg-4 col-xl-2-4">
                 <div class="stat-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         viewBox="0 0 16 16">
@@ -45,7 +45,7 @@
             </div>
 
             <!-- Total Comments Card -->
-            <div class="stat-card stat-comments">
+            <div class="stat-card stat-comments col-12 col-md-6 col-lg-4 col-xl-2-4">
                 <div class="stat-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         viewBox="0 0 16 16">
@@ -60,7 +60,7 @@
             </div>
 
             <!-- Total Reports Card -->
-            <div class="stat-card stat-reports">
+            <div class="stat-card stat-reports col-12 col-md-6 col-lg-4 col-xl-2-4">
                 <div class="stat-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         viewBox="0 0 16 16">
@@ -77,7 +77,7 @@
             </div>
 
             <!-- Total Follows Card -->
-            <div class="stat-card stat-follows">
+            <div class="stat-card stat-follows col-12 col-md-6 col-lg-4 col-xl-2-4">
                 <div class="stat-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         viewBox="0 0 16 16">
@@ -217,9 +217,9 @@
     <div class="analytics-section">
         <h2 class="section-title">Community Analytics</h2>
 
-        <div class="analytics-grid">
+        <div class="analytics-grid row g-4">
             <!-- Top Commenters -->
-            <div class="analytics-card">
+            <div class="analytics-card col-12 col-md-6 col-lg-4">
                 <h3 class="card-title">Top Commenters</h3>
                 <div class="user-list">
                     <div class="user-item clickable-item" *ngFor="let user of topCommenters"
@@ -234,7 +234,7 @@
             </div>
 
             <!-- Most Followed Users -->
-            <div class="analytics-card">
+            <div class="analytics-card col-12 col-md-6 col-lg-4">
                 <h3 class="card-title">Most Followed Users</h3>
                 <div class="user-list">
                     <div class="user-item clickable-item" *ngFor="let user of mostFollowedUsers"
@@ -249,7 +249,7 @@
             </div>
 
             <!-- Most Reported Users -->
-            <div class="analytics-card">
+            <div class="analytics-card col-12 col-md-6 col-lg-4">
                 <h3 class="card-title">Most Reported Users</h3>
                 <div class="user-list">
                     <div class="user-item clickable-item" *ngFor="let user of mostReportedUsers"
@@ -264,7 +264,7 @@
             </div>
 
             <!-- Most Commented Posts -->
-            <div class="analytics-card">
+            <div class="analytics-card col-12 col-md-6 col-lg-4">
                 <h3 class="card-title">Most Commented Posts</h3>
                 <div class="post-list">
                     <div class="post-item clickable-item" *ngFor="let post of mostCommentedPosts"
@@ -279,7 +279,7 @@
             </div>
 
             <!-- Most Liked Posts -->
-            <div class="analytics-card">
+            <div class="analytics-card col-12 col-md-6 col-lg-4">
                 <h3 class="card-title">Most Liked Posts</h3>
                 <div class="post-list">
                     <div class="post-item clickable-item" *ngFor="let post of mostLikedPosts"
@@ -294,7 +294,7 @@
             </div>
 
             <!-- Most Reported Posts -->
-            <div class="analytics-card">
+            <div class="analytics-card col-12 col-md-6 col-lg-4">
                 <h3 class="card-title">Most Reported Posts</h3>
                 <div class="post-list">
                     <div class="post-item clickable-item" *ngFor="let post of mostReportedPosts"

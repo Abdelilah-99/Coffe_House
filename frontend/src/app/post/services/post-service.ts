@@ -19,7 +19,7 @@ export interface Post {
 export interface PostPage {
   posts: Post[];
   lastTime: number;
-  lastId: number;
+  lastUuid: String;
 }
 
 export interface UserProfile {
@@ -94,13 +94,13 @@ export class PostService {
     return this.http.post<Message>(`http://localhost:8080/api/report/post/${uuid}`, { reason: reason });
   }
 
-  loadMore(lastTime: number | null, lastId: number | null) {
-    if (!lastTime || !lastId) {
+  loadMore(lastTime: number | null, lastUuid: string | null) {
+    if (!lastTime || !lastUuid) {
       return this.http.get<PostPage>(`http://localhost:8080/api/posts/pages`);
     }
     const params = new HttpParams()
       .set('lastTime', lastTime)
-      .set('lastId', lastId);
+      .set('lastUuid', lastUuid);
     return this.http.get<PostPage>(`http://localhost:8080/api/posts/pages`, { params });
   }
 }

@@ -4,11 +4,6 @@
   min-height: 100vh;
 }
 
-.posts-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
 .edit-modal {
   position: fixed;
   top: 0;
@@ -22,23 +17,6 @@
   z-index: 1000;
 }
 
-@media (max-width: 768px) {
-  .main-content {
-    margin-left: 70px;
-    margin-top: 70px;
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .main-content {
-    margin-left: 0;
-    margin-top: 70px;
-    padding: 1rem;
-    padding-bottom: 80px;
-  }
-}
-
 .loading-trigger {
   height: 10px;
   width: 100%;
@@ -49,4 +27,12 @@
   padding: 1rem;
   color: #7b6f5a;
   font-family: 'Poppins', sans-serif;
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    margin-top: 70px;
+    padding: 1rem;
+    padding-bottom: 80px;
+  }
 }

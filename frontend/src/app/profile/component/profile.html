@@ -1,19 +1,19 @@
-<div class="profile-container" *ngIf="profileRes">
+<div class="profile-container container-fluid" *ngIf="profileRes">
     <!-- Profile Header -->
     <div class="profile-header">
-        <div class="profile-info">
-            <div class="profile-avatar">
+        <div class="profile-info row">
+            <div class="profile-avatar col-12 col-md-auto d-flex justify-content-center justify-content-md-start">
                 <img *ngIf="profileRes.profileImagePath" [src]="'http://localhost:8080/' + profileRes.profileImagePath"
                     alt="Profile Picture">
                 <div *ngIf="!profileRes.profileImagePath" class="avatar-placeholder">
                     {{profileRes.firstName.charAt(0)}}{{profileRes.lastName.charAt(0)}}
                 </div>
             </div>
-            <div class="profile-details">
+            <div class="profile-details col-12 col-md text-center text-md-start">
                 <h1>{{profileRes.firstName}} {{profileRes.lastName}}</h1>
                 <p class="username">&#64;{{profileRes.username}}</p>
                 <p class="email">{{profileRes.email}}</p>
-                <div class="profile-stats">
+                <div class="profile-stats d-flex justify-content-center justify-content-md-start">
                     <div class="stat">
                         <span class="stat-value">{{followers}}</span>
                         <span class="stat-label">Followers</span>
@@ -27,7 +27,7 @@
         </div>
 
         <!-- Action Buttons for Other Users -->
-        <div *ngIf="!ifCrrProfile" class="profile-actions">
+        <div *ngIf="!ifCrrProfile" class="profile-actions d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
             <button class="btn btn-follow" *ngIf="!profileRes.connect"
                 (click)="followLogic(profileRes.username, profileRes.connect)">
                 Follow
@@ -164,8 +164,9 @@
         <div *ngIf="!isLoadingPosts && userPosts.length === 0" class="no-posts">
             <p>No posts yet</p>
         </div>
-        <div *ngIf="!isLoadingPosts && userPosts.length > 0" class="posts-grid">
-            <div *ngFor="let post of userPosts" class="post-card" (click)="navigateToPost(post.postUuid)">
+        <div *ngIf="!isLoadingPosts && userPosts.length > 0" class="posts-grid row">
+            <div *ngFor="let post of userPosts" class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="post-card" (click)="navigateToPost(post.postUuid)">
                 <!-- Post with image(s) - Image as background with overlay -->
                 <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
                     <div class="post-image-wrapper">
@@ -236,22 +237,8 @@
                         </button>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- id | user_id |                             content                             |                                                                                                  media_paths                                                                                                   | status |           createdAt           |     title      |                 uuid                 
-----+---------+-----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+-------------------------------+----------------+--------------------------------------
-  2 |       1 | for report                                                      |                                                                                                                                                                                                                | EPOSED | 2025-10-04T15:48:00.728723136 | test 2         | d8accadf-adcf-4da5-a89d-3b8737c80a70
-  3 |       3 | test                                                            |                                                                                                                                                                                                                | EPOSED | 2025-10-05T22:58:06.350559505 | test           | 62561666-9f13-470a-80ea-4521fbaed0b9
-  4 |       3 | retytu                                                          |                                                                                                                                                                                                                | EPOSED | 2025-10-05T23:43:37.596350406 | wewretry       | c2f37801-39d3-4690-8ec6-5eed8d23840c
-  5 |       3 | qwe                                                             |                                                                                                                                                                                                                | EPOSED | 2025-10-06T00:11:44.450624310 | qwe            | 530b11f8-e396-4c55-b14d-29cc7cb4858d
-  6 |       1 | ewrethryjt                                                      |                                                                                                                                                                                                                | EPOSED | 2025-10-06T00:49:39.672452983 | aefrgtrh       | 552c6151-8a97-4b8a-8c3b-72ae8d2df142
-  9 |       1 | test                                                            |                                                                                                                                                                                                                | EPOSED | 2025-10-08T15:14:45.782722963 | test           | 8c7aa5d0-62bc-47ab-8f22-3db9afaedff0
- 10 |       3 | ewfgewfrg                                                       |                                                                                                                                                                                                                | EPOSED | 2025-10-08T16:34:33.547626900 | ewfgre         | aa74ac67-8e00-4730-a7fa-1b49a2c7f0e6
-  1 |       1 | test reports admine                                             | uploads/posts/1759953730175_0d816e9f-5792-44bb-8c3d-686921421261.png,uploads/posts/1760006256100_0aca6b8a-7a08-41e6-a23f-b03297ad557c.png,uploads/posts/1760006256102_2e1b50e0-3e3f-4b1e-bb1b-e14e115b8f55.png | EPOSED | 2025-10-04T15:47:45.570098597 | test           | 1df5a75b-1135-423c-9331-6d5e918e1aec
- 11 |       1 | wertg                                                           | uploads/posts/1760011983683_754b02bf-1099-4de0-a5e0-b6047e5b2e13.png                                                                                                                                           | EPOSED | 2025-10-08T20:43:55.579006943 | sdfe           | 1227fd0c-0176-4ca3-8dfe-d65375724950
- 12 |       7 | dewfegtrhytjy                                                   | uploads/posts/1760096451487_673a1ade-e810-4ec5-bd46-9d3c5b44ea81.png                                                                                                                                           | EPOSED | 2025-10-10T12:40:51.489637725 | test           | ad791011-2b74-4a27-bdd3-451388bc951a
- 14 |       3 | creating of our first blogging app and this will gonna our face | uploads/posts/1760116922893_82507264-8933-40e6-8da4-b34dd0775da6.jpeg                                                                                                                                          | EPOSED | 2025-10-10T18:22:02.893475977 | Lets finish it | a7bf5a97-16ca-4bff-9b7c-3bc6aac2b846
-: -->

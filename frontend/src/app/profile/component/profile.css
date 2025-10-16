@@ -22,10 +22,25 @@
   align-items: center;
   gap: 2rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .profile-info {
+    justify-content: flex-start;
+  }
 }
 
 .profile-avatar {
   flex-shrink: 0;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .profile-avatar {
+    text-align: left;
+  }
 }
 
 .profile-avatar img {
@@ -360,9 +375,9 @@
 }
 
 .posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+  /* Bootstrap row class will handle the grid layout */
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
 }
 
 /* Post Card */
@@ -374,6 +389,9 @@
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-card:hover {
@@ -562,85 +580,6 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .profile-container {
-    max-width: 1100px;
-    padding: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .profile-container {
-    margin: 90px 1rem 2rem 1rem;
-    padding: 1.5rem;
-  }
-
-  .profile-info {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .profile-avatar img,
-  .avatar-placeholder {
-    width: 100px;
-    height: 100px;
-  }
-
-  .avatar-placeholder {
-    font-size: 2rem;
-  }
-
-  .profile-details h1 {
-    font-size: 1.5rem;
-  }
-
-  .profile-stats {
-    justify-content: center;
-  }
-
-  .posts-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .profile-actions {
-    justify-content: center;
-  }
-
-  /* Report Section Responsive */
-  .report-section {
-    margin-top: 1.25rem;
-  }
-
-  .report-header {
-    padding: 1.25rem;
-  }
-
-  .report-header h3 {
-    font-size: 1.1rem;
-  }
-
-  .close-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 1.1rem;
-  }
-
-  .report-section textarea {
-    width: calc(100% - 2.5rem);
-    margin: 1.25rem 1.25rem;
-    font-size: 0.9rem;
-  }
-
-  .report-actions {
-    padding: 1.25rem;
-  }
-
-  .btn {
-    padding: 0.65rem 1.25rem;
-    font-size: 0.9rem;
-  }
-}
-
 @media (max-width: 576px) {
   .profile-container {
     padding: 1.25rem;
@@ -707,7 +646,6 @@
     font-size: 0.8rem;
   }
 
-  /* Report Section Mobile */
   .report-section {
     margin-top: 1rem;
   }
@@ -762,9 +700,7 @@
     height: 22px;
     font-size: 0.9rem;
   }
-}
 
-@media (max-width: 480px) {
   .profile-header {
     padding: 1.25rem 1rem;
   }
@@ -774,12 +710,6 @@
     width: 100%;
   }
 
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Report Section Extra Small */
   .report-header {
     padding: 0.875rem 1rem;
   }

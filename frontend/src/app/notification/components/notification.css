@@ -98,19 +98,6 @@
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .notification-container {
-    margin-left: 70px;
-    margin-right: 1rem;
-    margin-top: 90px;
-    padding: 1.5rem;
-  }
-
-  .notification-container h2 {
-    font-size: 1.5rem;
-  }
-}
-
 @media (max-width: 576px) {
   .notification-container {
     padding: 1.25rem;

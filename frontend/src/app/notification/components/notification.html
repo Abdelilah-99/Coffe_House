@@ -1,6 +1,8 @@
-<div class="notification-container">
-    <h2>Notifications</h2>
-    <div class="notifications-list">
+<div class="notification-container container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-8 mx-auto">
+            <h2>Notifications</h2>
+            <div class="notifications-list">
         <div *ngIf="notification && notification.length > 0; else noNotifications">
             <div class="notification-item" *ngFor="let notif of notification; let i = index" (click)="goTo(i)"
                 [class.isRead]="notif.isRead" [class.unread]="!notif.isRead">
@@ -17,5 +19,7 @@
                 <p>No notifications available</p>
             </div>
         </ng-template>
+            </div>
+        </div>
     </div>
 </div>

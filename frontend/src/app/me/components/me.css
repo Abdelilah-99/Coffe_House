@@ -21,10 +21,25 @@
   display: flex;
   align-items: center;
   gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .profile-info {
+    justify-content: flex-start;
+  }
 }
 
 .profile-avatar {
   flex-shrink: 0;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .profile-avatar {
+    text-align: left;
+  }
 }
 
 .profile-avatar img {
@@ -477,11 +492,7 @@
   opacity: 0.7;
 }
 
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-}
+/* Bootstrap row class will handle the grid layout */
 
 /* Post Card */
 .post-card {
@@ -492,6 +503,9 @@
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-card:hover {
@@ -686,88 +700,6 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .profle-container {
-    max-width: 1100px;
-    padding: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .profle-container {
-    margin: 90px 1rem 2rem 1rem;
-    padding: 1.5rem;
-  }
-
-  .profile-info {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .profile-avatar img,
-  .avatar-placeholder {
-    width: 100px;
-    height: 100px;
-  }
-
-  .avatar-placeholder {
-    font-size: 2rem;
-  }
-
-  .profile-details h1 {
-    font-size: 1.5rem;
-  }
-
-  .posts-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .create-post-section {
-    padding: 0;
-  }
-
-  .create-post-header {
-    padding: 1.25rem 1.5rem;
-  }
-
-  .header-icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .header-text h2 {
-    font-size: 1.25rem;
-  }
-
-  .header-text p {
-    font-size: 0.85rem;
-  }
-
-  .create-post-form {
-    padding: 1.5rem;
-  }
-
-  .title-input {
-    font-size: 1.5rem;
-    padding: 0.75rem 0;
-  }
-
-  .form-actions {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .file-input-wrapper {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .submit-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
 @media (max-width: 576px) {
   .profle-container {
     padding: 1.25rem;

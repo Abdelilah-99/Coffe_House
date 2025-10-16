@@ -1,4 +1,5 @@
-<div *ngIf="post && profileData" class="post-card">
+<div *ngIf="post && profileData" class="col-12 col-lg-8 mx-auto mb-4">
+<div class="post-card">
     <div class="post-header">
         <div class="post-author-info">
             <div class="author-avatar" (click)="moveToProfile(post.userUuid)">
@@ -333,4 +334,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

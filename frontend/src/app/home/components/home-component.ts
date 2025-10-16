@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   like: Like = { userUuid: null, postUuid: null, likeCount: 0 };
   selectedPost?: Post;
-  lastId: number | null = null;
+  lastUuid: string | null = null;
   lastTime: number | null = null;
   isLoding = false;
   post = { title: '', content: '' }
@@ -32,9 +32,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private initObserver() {
     if (!isPlatformBrowser(this.platformId)) return;
     this.observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastId) {
-        console.log('Reached bottom fetching next page');
-        this.loadPostByPage(this.lastTime, this.lastId);
+      console.error('Reached bottom fetching next page');
+      console.log('Loading next page - lastTime:', this.lastTime, 'lastUuid:', this.lastUuid);
+      if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastUuid) {
+        this.loadPostByPage(this.lastTime, this.lastUuid);
       }
     });
     this.observer.observe(this.anchor.nativeElement);
@@ -54,13 +55,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadPostByPage(lastTime: number | null, lastId: number | null, onFinish?: () => void) {
+  loadPostByPage(lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
     this.isLoding = true;
-    this.postService.loadMore(lastTime, lastId).subscribe({
+    this.postService.loadMore(lastTime, lastUuid).subscribe({
       next: (res) => {
         this.postsPage = res;
         this.lastTime = res.lastTime;
-        this.lastId = res.lastId;
+        if (res.lastUuid) {
+          this.lastUuid = res.lastUuid.toString();
+        }
         this.posts.push(...res.posts);
         this.isLoding = false;
         console.log("data page: ", res.posts);

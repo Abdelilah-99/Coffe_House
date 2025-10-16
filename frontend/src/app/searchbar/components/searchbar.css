@@ -189,49 +189,6 @@
   opacity: 0.8;
 }
 
-@media (max-width: 768px) {
-  .search-input {
-    font-size: 0.95rem;
-    padding: 0.6rem 0;
-  }
-
-  .search-results {
-    margin-top: 0.5rem;
-    max-height: 350px;
-    border-radius: 10px;
-  }
-
-  .results-header {
-    padding: 0.65rem 0.875rem;
-  }
-
-  .results-count {
-    font-size: 0.75rem;
-  }
-
-  .user-result {
-    padding: 0.875rem 1rem;
-    gap: 0.875rem;
-  }
-
-  .user-result:hover {
-    padding-left: 1.25rem;
-  }
-
-  .user-avatar {
-    width: 42px;
-    height: 42px;
-  }
-
-  .user-name {
-    font-size: 0.9rem;
-  }
-
-  .user-username {
-    font-size: 0.8rem;
-  }
-}
-
 @media (max-width: 576px) {
   .search-input {
     font-size: 0.9rem;

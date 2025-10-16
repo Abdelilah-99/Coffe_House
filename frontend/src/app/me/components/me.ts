@@ -116,6 +116,7 @@ export class Me implements OnInit {
     }
     formData.append("title", this.post.title);
     formData.append("content", this.post.content);
+    this.message = "";
     console.log(formData.get("title"));
 
     this.selectedFiles.forEach(element => {

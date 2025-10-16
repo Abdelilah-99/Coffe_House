@@ -1,22 +1,26 @@
-<div class="search-bar">
-    <div class="search-input-wrapper">
-        <input
-            [formControl]="searchControl"
-            placeholder="Search for people..."
-            maxlength="10"
-            class="search-input"
-            required>
-        <div class="search-underline"></div>
-    </div>
-    <div class="search-results" *ngIf="searchData.length > 0">
-        <div class="results-header">
-            <span class="results-count">{{ searchData.length }} {{ searchData.length === 1 ? 'person' : 'people' }} found</span>
-        </div>
-        <div class="user-result" *ngFor="let user of searchData" (click)="goToProfile(user.uuid)">
-            <img [src]="'http://localhost:8080/' + user.profileImagePath" [alt]="user.username" class="user-avatar">
-            <div class="user-info">
-                <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p>
-                <p class="user-username">@{{ user.username }}</p>
+<div class="search-bar container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-8 mx-auto">
+            <div class="search-input-wrapper">
+                <input
+                    [formControl]="searchControl"
+                    placeholder="Search for people..."
+                    maxlength="10"
+                    class="search-input"
+                    required>
+                <div class="search-underline"></div>
+            </div>
+            <div class="search-results" *ngIf="searchData.length > 0">
+                <div class="results-header">
+                    <span class="results-count">{{ searchData.length }} {{ searchData.length === 1 ? 'person' : 'people' }} found</span>
+                </div>
+                <div class="user-result" *ngFor="let user of searchData" (click)="goToProfile(user.uuid)">
+                    <img [src]="'http://localhost:8080/' + user.profileImagePath" [alt]="user.username" class="user-avatar">
+                    <div class="user-info">
+                        <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p>
+                        <p class="user-username">@{{ user.username }}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -43,13 +43,6 @@
   border-bottom: 2px solid var(--color-border);
 }
 
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
 /* Stat Card */
 .stat-card {
   background: white;
@@ -160,72 +153,6 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .admin-panel {
-    padding: 1.5rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .header-content h1 {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .admin-panel {
-    margin: 90px 1rem 2rem 1rem;
-    padding: 1.25rem;
-  }
-
-  .admin-header {
-    padding: 2rem 1.5rem;
-  }
-
-  .header-content h1 {
-    font-size: 1.75rem;
-  }
-
-  .header-subtitle {
-    font-size: 1rem;
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .stat-card {
-    padding: 1.5rem;
-    gap: 1.25rem;
-  }
-
-  .stat-icon {
-    width: 64px;
-    height: 64px;
-  }
-
-  .stat-icon svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  .stat-value {
-    font-size: 2rem;
-  }
-
-  .stat-label {
-    font-size: 0.8rem;
-  }
-}
-
 @media (max-width: 576px) {
   .admin-panel {
     margin: 85px 0.75rem 100px 0.75rem;
@@ -459,12 +386,6 @@
   margin-bottom: 2.5rem;
 }
 
-.analytics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 1.5rem;
-}
-
 .analytics-card {
   background: white;
   border-radius: 12px;
@@ -587,38 +508,11 @@
 }
 
 /* Responsive Tables and Analytics */
-@media (max-width: 1024px) {
-  .analytics-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .table-container {
     overflow-x: auto;
   }
 
-  .admin-table th,
-  .admin-table td {
-    padding: 1rem;
-    font-size: 0.875rem;
-  }
-
-  .btn-action {
-    padding: 0.4rem 1rem;
-    font-size: 0.8rem;
-  }
-
-  .analytics-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .analytics-card {
-    padding: 1.25rem;
-  }
-}
-
-@media (max-width: 576px) {
   .admin-table th,
   .admin-table td {
     padding: 0.75rem 0.875rem;
@@ -660,25 +554,10 @@
   .user-count, .post-count {
     font-size: 1.1rem;
   }
-}
-
-@media (max-width: 480px) {
-  .admin-table {
-    font-size: 0.75rem;
-  }
-
-  .admin-table th,
-  .admin-table td {
-    padding: 0.65rem 0.75rem;
-  }
 
   .reason-badge {
     font-size: 0.7rem;
     padding: 0.25rem 0.5rem;
-  }
-
-  .uuid-cell {
-    font-size: 0.7rem;
   }
 }
 
