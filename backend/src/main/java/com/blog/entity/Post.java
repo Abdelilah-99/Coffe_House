@@ -14,6 +14,7 @@ public class Post {
     @JsonIgnore
     private Long id;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     @Column(columnDefinition = "TEXT")
     private String mediaPaths;

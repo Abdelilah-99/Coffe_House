@@ -17,6 +17,15 @@
   color: white;
 }
 
+.post-preview {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* Number of lines */
+  -webkit-box-orient: vertical;
+}
+
+
 .profile-info {
   display: flex;
   align-items: center;
@@ -968,4 +977,3 @@
     height: 14px;
   }
 }
-

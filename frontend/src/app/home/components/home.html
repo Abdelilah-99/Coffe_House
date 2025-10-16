@@ -1,4 +1,4 @@
-<div class="main-content container-fluid">
+<div class="main-content container-fluid custom-width">
   <div class="posts-container row g-4">
     <app-post-card *ngFor="let post of posts" [post]="post" (reaction)="onReact($event)"
       (postCard)="onPostCardSection($event)">

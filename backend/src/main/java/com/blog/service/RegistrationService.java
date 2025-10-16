@@ -33,6 +33,11 @@ public class RegistrationService {
             if (userRepository.findByUserName(req.getUsername()).isPresent()) {
                 throw new UserAlreadyExistException(String.format("Username already Exists %s", req.getUsername()));
             }
+            String username = req.getUsername();
+            String usernameRegex = "^[a-zA-Z0-9._-]{3,20}$";
+            if (!username.matches(usernameRegex)) {
+                throw new InvalidFormatException(null, "Invalid username format. ", null, null);
+            }
             String profilePath = "uploads/posts/profile.png";
             if (profileImage != null && !profileImage.isEmpty()) {
                 // String originalName = profileImage.getOriginalFilename();
