@@ -62,6 +62,8 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
               alert('🚨 Server is currently unavailable. Please try again later.');
             } else if (error.status === 401) {
               alert('🔒 You are not authorized. Please log in again.');
+              localStorage.removeItem('access_token');
+              localStorage.removeItem('user_role');
             } else if (error.status === 403) {
               alert('⛔ You do not have permission to access this resource.');
             } else if (error.status >= 500) {

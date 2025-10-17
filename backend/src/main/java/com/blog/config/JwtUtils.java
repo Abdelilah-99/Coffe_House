@@ -1,5 +1,6 @@
 package com.blog.config;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
 
@@ -29,7 +30,7 @@ public class JwtUtils {
     }
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = secretKey.getBytes();
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         SecretKey key = Keys.hmacShaKeyFor(keyBytes);
         System.out.println("Generated signing key: " + key.getAlgorithm());
         return key;
@@ -48,13 +49,10 @@ public class JwtUtils {
     }
 
     public String extractUsername(String token) {
-        System.out.println("Attempting to extract username from token: " + token.substring(0, 50) + "...");
         try {
             String username = extractClaims(token).getSubject();
-            System.out.println("Successfully extracted username: " + username);
             return username;
         } catch (Exception e) {
-            System.err.println("Error extracting username: " + e.getMessage());
             throw e;
         }
     }
