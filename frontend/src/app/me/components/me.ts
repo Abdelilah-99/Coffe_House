@@ -114,6 +114,14 @@ export class Me implements OnInit {
       this.message = "content and title fields are required";
       return;
     }
+    if (this.post.title.length > 200) {
+      this.message = "Title must not exceed 200 characters";
+      return;
+    }
+    if (this.post.content.length > 10000) {
+      this.message = "Content must not exceed 10000 characters";
+      return;
+    }
     formData.append("title", this.post.title);
     formData.append("content", this.post.content);
     this.message = "";

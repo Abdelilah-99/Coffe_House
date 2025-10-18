@@ -15,28 +15,42 @@ import java.io.IOException;
 
 import com.blog.entity.*;
 import com.blog.exceptions.ErrSavingException;
+import com.blog.exceptions.InvalidFormatException;
 import com.blog.exceptions.PostNotFoundException;
+import com.blog.security.FileValidationService;
+import com.blog.security.InputSanitizationService;
 
 @Service
 public class EditPostService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final LikesRepository likesRepository;
+    private final FileValidationService fileValidationService;
+    private final InputSanitizationService inputSanitizationService;
 
     EditPostService(PostRepository postRepository,
             CommentRepository commentRepository,
-            LikesRepository likesRepository) {
+            LikesRepository likesRepository,
+            FileValidationService fileValidationService,
+            InputSanitizationService inputSanitizationService) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.likesRepository = likesRepository;
+        this.fileValidationService = fileValidationService;
+        this.inputSanitizationService = inputSanitizationService;
     }
 
     public PostRes editPost(String uuid, EditPostReq req) {
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("Post not found"));
-        if (req.getContent() != null)
-            post.setContent(req.getContent());
-        if (req.getTitle() != null)
-            post.setTitle(req.getTitle());
+
+        if (req.getContent() != null) {
+            String sanitizedContent = inputSanitizationService.sanitizeContent(req.getContent());
+            post.setContent(sanitizedContent);
+        }
+        if (req.getTitle() != null) {
+            String sanitizedTitle = inputSanitizationService.sanitizeTitle(req.getTitle());
+            post.setTitle(sanitizedTitle);
+        }
         List<String> oldPaths = post.getMediaPaths();
         List<String> updatedPaths = new ArrayList<>(req.getPathFiles());
 
@@ -44,13 +58,27 @@ public class EditPostService {
 
             File dir = new File("uploads/posts/");
             for (MultipartFile mediaFile : req.getMediaFiles()) {
+                try {
+                    fileValidationService.validateFile(mediaFile);
+                } catch (InvalidFormatException e) {
+                    throw new RuntimeException("File validation failed: " + e.getMessage(), e);
+                }
+
                 String uploadDir = "uploads/posts/";
                 String orgName = mediaFile.getOriginalFilename();
                 if (orgName == null) {
                     throw new RuntimeException("Invalid media file: null name");
                 }
-                String ext = orgName.substring(orgName.lastIndexOf('.'));
-                String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + ext;
+
+                String sanitizedName;
+                try {
+                    sanitizedName = fileValidationService.sanitizeFilename(orgName);
+                } catch (InvalidFormatException e) {
+                    throw new RuntimeException("Invalid filename: " + e.getMessage(), e);
+                }
+
+                String ext = sanitizedName.substring(sanitizedName.lastIndexOf('.'));
+                String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + ext.toLowerCase();
                 String filePath = uploadDir + fileName;
                 System.err.printf("=== check file ===\n");
                 System.err.printf("filePath: %s\n", filePath);

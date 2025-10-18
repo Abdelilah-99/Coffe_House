@@ -109,10 +109,28 @@ export class Register implements OnInit {
   }
 
   isStep1Valid() {
-    return this.firstname.trim() !== '' &&
-      this.lastname.trim() !== '' &&
-      this.username.trim() !== '' &&
-      this.email.trim() !== '';
+    if (this.firstname.trim() === '' || this.lastname.trim() === '' ||
+        this.username.trim() === '' || this.email.trim() === '') {
+      return false;
+    }
+
+    if (this.firstname.length < 3 || this.firstname.length > 15) {
+      this.message = 'First name must be between 3 and 15 characters';
+      return false;
+    }
+
+    if (this.lastname.length < 3 || this.lastname.length > 15) {
+      this.message = 'Last name must be between 3 and 15 characters';
+      return false;
+    }
+
+    if (this.username.length < 3 || this.username.length > 50) {
+      this.message = 'Username must be between 3 and 50 characters';
+      return false;
+    }
+
+    this.message = '';
+    return true;
   }
 
   isStep2Valid() {

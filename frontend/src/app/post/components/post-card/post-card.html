@@ -62,7 +62,10 @@
                             {{ profileData.firstName.charAt(0) || '?' }}
                         </div>
                     </div>
-                    <textarea name="comment" placeholder="Write a comment..." #commentData rows="3"></textarea>
+                    <textarea name="comment" placeholder="Write a comment..." #commentData rows="3" maxlength="1000" required></textarea>
+                    <div class="comment-char-count">
+                        <span class="char-count">{{ (commentData.value?.length || 0) }}/1000</span>
+                    </div>
                 </div>
                 <div class="comment-actions">
                     <button class="btn-secondary" (click)="onComment(post.postUuid)">Cancel</button>

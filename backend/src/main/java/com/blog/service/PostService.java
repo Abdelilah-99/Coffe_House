@@ -17,7 +17,8 @@ import com.blog.entity.Post;
 import com.blog.entity.User;
 import com.blog.exceptions.*;
 import com.blog.repository.*;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.blog.security.FileValidationService;
+import com.blog.security.InputSanitizationService;
 
 import java.io.IOException;
 
@@ -29,30 +30,39 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final LikesRepository likesRepository;
     private final NotifRepository notifRepository;
+    private final FileValidationService fileValidationService;
+    private final InputSanitizationService inputSanitizationService;
 
     PostService(UsersServices usersServices,
             UserRepository userRepository,
             PostRepository postRepository,
             CommentRepository commentRepository,
             LikesRepository likesRepository,
-            NotifRepository notifRepository) {
+            NotifRepository notifRepository,
+            FileValidationService fileValidationService,
+            InputSanitizationService inputSanitizationService) {
         this.usersServices = usersServices;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.likesRepository = likesRepository;
         this.notifRepository = notifRepository;
+        this.fileValidationService = fileValidationService;
+        this.inputSanitizationService = inputSanitizationService;
     }
 
     public PostRes createPost(CreatePostReq req) {
-        if (req.getTitle().trim().isEmpty()) {
+        String sanitizedTitle = inputSanitizationService.sanitizeTitle(req.getTitle());
+        String sanitizedContent = inputSanitizationService.sanitizeContent(req.getContent());
+
+        if (sanitizedTitle.isEmpty()) {
             throw new TitleEmptyException("Title not found");
         }
-        if (req.getContent().trim().isEmpty()) {
+        if (sanitizedContent.isEmpty()) {
             throw new ContentEmptyException("Content not found");
         }
+
         try {
-            // System.out.printf("req.getTitle(): \n", req.getTitle());
             UsersRespons userRes = usersServices.getCurrentUser();
             User user = userRepository.findByUuid(userRes.getUuid())
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -63,13 +73,12 @@ public class PostService {
             if (req.getMediaFiles() != null && req.getMediaFiles().length > 0) {
                 for (MultipartFile mediaFile : req.getMediaFiles()) {
                     if (!mediaFile.isEmpty()) {
-                        String mimeType = mediaFile.getContentType();
-                        if (mimeType == null ||
-                                !(mimeType.startsWith("image/") || mimeType.startsWith("video/"))) {
-                            throw new InvalidFormatException(null, "Invalid MIME type", mimeType, getClass());
-                        } else {
+                        try {
+                            fileValidationService.validateFile(mediaFile);
                             String mediaPath = saveMedia(mediaFile);
                             mediaPaths.add(mediaPath);
+                        } catch (com.blog.exceptions.InvalidFormatException e) {
+                            throw new RuntimeException("File validation failed: " + e.getMessage(), e);
                         }
                     }
                 }
@@ -84,8 +93,8 @@ public class PostService {
             // time);
             Post newPost = new Post();
             newPost.setUser(user);
-            newPost.setContent(req.getContent());
-            newPost.setTitle(req.getTitle());
+            newPost.setContent(sanitizedContent);
+            newPost.setTitle(sanitizedTitle);
             newPost.setCreatedAt(time);
             newPost.setMediaPaths(mediaPaths);
             newPost.setStatus("EPOSED");
@@ -106,8 +115,8 @@ public class PostService {
                     newPost.getUuid(),
                     user.getUuid(),
                     user.getUserName(),
-                    req.getContent(),
-                    req.getTitle(),
+                    sanitizedContent,
+                    sanitizedTitle,
                     "Post created successefully",
                     time,
                     mediaPaths,
@@ -131,13 +140,18 @@ public class PostService {
             if (orgName == null) {
                 throw new RuntimeException("Failed to catch name media file: " + mediaFile.getOriginalFilename());
             }
-            String ext = orgName.substring(orgName.lastIndexOf('.'));
-            String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + ext;
+
+            String sanitizedName = fileValidationService.sanitizeFilename(orgName);
+            String ext = sanitizedName.substring(sanitizedName.lastIndexOf('.'));
+            String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + ext.toLowerCase();
             String filePath = uploadDir + fileName;
+
             mediaFile.transferTo(new File(dir.getAbsolutePath() + "/" + fileName));
             return filePath;
         } catch (IOException e) {
             throw new ErrSavingException(String.format("Error file i/o: " + e.getMessage(), e));
+        } catch (com.blog.exceptions.InvalidFormatException e) {
+            throw new ErrSavingException(String.format("Invalid filename: " + e.getMessage(), e));
         }
     }
 

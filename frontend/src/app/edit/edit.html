@@ -17,8 +17,12 @@
                     [(ngModel)]="post.title"
                     name="title"
                     placeholder="Enter your post title"
+                    maxlength="200"
                     required
                     class="form-input" />
+                <div class="char-count-hint">
+                    <span class="char-count">{{ (post.title?.length || 0) }}/200</span>
+                </div>
             </div>
 
             <!-- Content Textarea -->
@@ -31,9 +35,13 @@
                     [(ngModel)]="post.content"
                     name="content"
                     placeholder="Write your post content here..."
+                    maxlength="10000"
                     required
                     rows="8"
                     class="form-textarea"></textarea>
+                <div class="char-count-hint">
+                    <span class="char-count">{{ (post.content?.length || 0) }}/10000</span>
+                </div>
             </div>
 
             <!-- Existing Media Section -->
@@ -103,6 +111,11 @@
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="message-err" *ngIf="message">
+                {{message}}
             </div>
 
             <!-- Action Buttons -->

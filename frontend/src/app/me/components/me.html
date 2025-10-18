@@ -42,12 +42,12 @@
         <form (ngSubmit)="onCreatePost()" class="create-post-form">
             <div class="form-group title-group">
                 <div class="title-input-wrapper">
-                    <input id="post-title" [(ngModel)]="post.title" name="title" maxlength="100" type="text"
+                    <input id="post-title" [(ngModel)]="post.title" name="title" maxlength="200" type="text"
                         class="title-input" placeholder="Enter your story title..." required>
                     <div class="title-underline"></div>
                 </div>
                 <div class="title-hint">
-                    <span class="char-count">{{ (post.title.length || 0) }}/100</span>
+                    <span class="char-count">{{ (post.title.length || 0) }}/200</span>
                 </div>
             </div>
             <div class="form-group">
@@ -61,8 +61,11 @@
                     </svg>
                     Content
                 </label>
-                <textarea id="post-content" maxlength="20000" [(ngModel)]="post.content" name="content" rows="6"
+                <textarea id="post-content" maxlength="10000" [(ngModel)]="post.content" name="content" rows="6"
                     placeholder="What's on your mind? Share your story..." required></textarea>
+                <div class="content-hint">
+                    <span class="char-count">{{ (post.content.length || 0) }}/10000</span>
+                </div>
             </div>
             <div *ngIf="selectedFiles.length > 0" class="image-preview-container">
                 <div *ngFor="let file of selectedFiles; let i = index" class="image-preview-item">

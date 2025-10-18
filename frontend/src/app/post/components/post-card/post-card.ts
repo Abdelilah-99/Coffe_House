@@ -29,8 +29,6 @@ export class PostCard implements OnInit {
   pendingReportReason: String = '';
   message?: Message;
   isAdmin: boolean = false;
-
-  // Admin action confirmation states
   showAdminHideConfirmation = false;
   showAdminDeleteConfirmation = false;
 
@@ -82,28 +80,38 @@ export class PostCard implements OnInit {
   instantComments?: { userUuid: String, image: string, comment: String, username: String, time: number }[] = [];
 
   onSubmitComment(comment: String, uuid: String | null = null) {
-    if (uuid) {
-      this.postService.submitComment(comment, uuid).subscribe({
-        next: (res) => {
-          if (this.profileData) {
-            this.instantComments?.push({
-              userUuid: this.profileData.uuid,
-              image: this.profileData.profileImagePath,
-              comment: res.comment,
-              username: this.profileData.username || '',
-              time: Date.now()
-            });
-          }
-          this.instantComments?.reverse();
-          if (this.post) {
-            this.post.commentCount += 1;
-          }
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      })
+    if (!uuid || comment.trim() === "") {
+      this.message = { message: 'Comment cannot be empty' };
+      return;
     }
+
+    if (comment.length > 1000) {
+      this.message = { message: 'Comment must not exceed 1000 characters' };
+      return;
+    }
+
+    this.postService.submitComment(comment, uuid).subscribe({
+      next: (res) => {
+        if (this.profileData) {
+          this.instantComments?.push({
+            userUuid: this.profileData.uuid,
+            image: this.profileData.profileImagePath,
+            comment: res.comment,
+            username: this.profileData.username || '',
+            time: Date.now()
+          });
+        }
+        this.instantComments?.reverse();
+        if (this.post) {
+          this.post.commentCount += 1;
+        }
+        this.message = undefined;
+      },
+      error: (err) => {
+        console.error(err);
+        this.message = { message: 'Failed to post comment' };
+      }
+    })
   }
 
   getMediaType(media: String): String {

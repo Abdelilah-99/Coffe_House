@@ -15,6 +15,7 @@ export class Edit implements OnInit {
   post: Post | null = null;
   postUuid: String | null = null;
   updatedPost: Post | null = null;
+  message?: string;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -72,6 +73,25 @@ export class Edit implements OnInit {
 
   onSave(updatedPost: any) {
     console.log(updatedPost);
+
+    if (!updatedPost.title || updatedPost.title.trim().length === 0) {
+      this.message = "Title is required";
+      return;
+    }
+    if (updatedPost.title.length > 200) {
+      this.message = "Title must not exceed 200 characters";
+      return;
+    }
+
+    if (!updatedPost.content || updatedPost.content.trim().length === 0) {
+      this.message = "Content is required";
+      return;
+    }
+    if (updatedPost.content.length > 10000) {
+      this.message = "Content must not exceed 10000 characters";
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", updatedPost.title);
     formData.append("content", updatedPost.content);
@@ -88,6 +108,7 @@ export class Edit implements OnInit {
       },
       error: (err) => {
         console.error("error updating post: ", err);
+        this.message = "Error updating post";
       }
     });
   }
