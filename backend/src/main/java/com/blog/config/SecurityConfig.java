@@ -12,7 +12,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -39,16 +38,7 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .exceptionHandling(exceptions -> exceptions
-                                                .authenticationEntryPoint(jwtAuthEntryPoint)
-                                                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                                                        response.setContentType("application/json");
-                                                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                                                        response.getWriter().write(
-                                                                        "{\"error\":\"Access Denied\",\"message\":\""
-                                                                                        + accessDeniedException
-                                                                                                        .getMessage()
-                                                                                        + "\"}");
-                                                }));
+                                                .authenticationEntryPoint(jwtAuthEntryPoint));
                 http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
                 return http.build();
         }
