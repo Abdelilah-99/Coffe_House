@@ -15,28 +15,32 @@ public class RegistrationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PostService postService;
+    private final com.blog.security.InputSanitizationService inputSanitizationService;
 
     RegistrationService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            PostService postService) {
+            PostService postService,
+            com.blog.security.InputSanitizationService inputSanitizationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.postService = postService;
+        this.inputSanitizationService = inputSanitizationService;
     }
 
     public RegisterResponse register(RegisterRequest req, MultipartFile profileImage) {
         try {
-            if (userRepository.findByEmail(req.getEmail()).isPresent()) {
-                throw new UserAlreadyExistException(String.format("Email already Exists %s", req.getEmail()));
+            String sanitizedFirstName = inputSanitizationService.sanitizeFirstName(req.getFirstName());
+            String sanitizedLastName = inputSanitizationService.sanitizeLastName(req.getLastName());
+            String sanitizedEmail = inputSanitizationService.sanitizeEmail(req.getEmail());
+            String sanitizedUsername = inputSanitizationService.sanitizeUsername(req.getUsername());
+            String sanitizedPassword = inputSanitizationService.sanitizePassword(req.getPassword());
+
+            if (userRepository.findByEmail(sanitizedEmail).isPresent()) {
+                throw new UserAlreadyExistException(String.format("Email already exists: %s", sanitizedEmail));
             }
-            if (userRepository.findByUserName(req.getUsername()).isPresent()) {
-                throw new UserAlreadyExistException(String.format("Username already Exists %s", req.getUsername()));
-            }
-            String username = req.getUsername();
-            String usernameRegex = "^[a-zA-Z0-9._-]{3,20}$";
-            if (!username.matches(usernameRegex)) {
-                throw new InvalidFormatException(null, "Invalid username format. ", null, null);
+            if (userRepository.findByUserName(sanitizedUsername).isPresent()) {
+                throw new UserAlreadyExistException(String.format("Username already exists: %s", sanitizedUsername));
             }
             String profilePath = "uploads/posts/profile.png";
             if (profileImage != null && !profileImage.isEmpty()) {
@@ -50,18 +54,22 @@ public class RegistrationService {
                     profilePath = postService.saveMedia(profileImage);
                 }
             }
-            String hashedPassword = passwordEncoder.encode(req.getPassword());
+            String hashedPassword = passwordEncoder.encode(sanitizedPassword);
             User newUser = new User();
-            newUser.setEmail(req.getEmail());
-            newUser.setFirstName(req.getFirstName());
-            newUser.setLastName(req.getLastName());
-            newUser.setUserName(req.getUsername());
-            newUser.setRole(req.getRole());
+            newUser.setEmail(sanitizedEmail);
+            newUser.setFirstName(sanitizedFirstName);
+            newUser.setLastName(sanitizedLastName);
+            newUser.setUserName(sanitizedUsername);
+            newUser.setRole("ROLE_USER");
             newUser.setPassword(hashedPassword);
             newUser.setProfileImagePath(profilePath);
             newUser.setStatus("ACTIVE");
             userRepository.save(newUser);
-            return new RegisterResponse("User registered successfully", req.getRole(), req.getUsername());
+            return new RegisterResponse("User registered successfully", "ROLE_USER  ", sanitizedUsername);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (UserAlreadyExistException e) {
+            throw e;
         } catch (Exception e) {
             throw new ErrSavingException(e.getMessage());
         }

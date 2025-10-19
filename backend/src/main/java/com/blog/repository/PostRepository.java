@@ -32,7 +32,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
   @Query("""
           SELECT p FROM Post p
-          where (p.status != 'HIDE' and p.user.id IN (
+          where p.status != 'HIDE' and (p.user.id IN (
           SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId)
           or p.user.id = :userId)
           and (:lastTime IS NULL OR p.createdAt < :lastTime

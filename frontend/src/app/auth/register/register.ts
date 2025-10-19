@@ -16,7 +16,7 @@ export class Register implements OnInit {
   username: string = '';
   email: string = '';
   password: string = '';
-  message: string = '';
+  errorMessage: string | null = null;
   currentStep: number = 1;
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -44,7 +44,7 @@ export class Register implements OnInit {
     }
     this.selectedFile = files[0];
     if (!files[0].type.includes("image")) {
-      this.message = "format image are only allowed";
+      this.errorMessage = "format image are only allowed";
       console.error(files[0].type.split('/')[0]);
       return;
     }
@@ -88,14 +88,18 @@ export class Register implements OnInit {
 
     this.authService.register(formData).subscribe({
       next: (res) => {
-        this.message = "register successful!!";
+        this.errorMessage = "register successful!!";
         this.router.navigate(['/login']);
         console.log('res: ', res);
       },
       error: (err) => {
         console.error('err: ', err.error.message);
-        this.message = err.error.message;
-        this.currentStep = 1;
+        this.errorMessage = err.error.message;
+
+        if (!err.error.message.includes('Password')) {
+          this.currentStep = 1;
+        }
+        this.hideErrorAfterDelay();
       }
     })
   }
@@ -110,26 +114,9 @@ export class Register implements OnInit {
 
   isStep1Valid() {
     if (this.firstname.trim() === '' || this.lastname.trim() === '' ||
-        this.username.trim() === '' || this.email.trim() === '') {
+      this.username.trim() === '' || this.email.trim() === '') {
       return false;
     }
-
-    if (this.firstname.length < 3 || this.firstname.length > 15) {
-      this.message = 'First name must be between 3 and 15 characters';
-      return false;
-    }
-
-    if (this.lastname.length < 3 || this.lastname.length > 15) {
-      this.message = 'Last name must be between 3 and 15 characters';
-      return false;
-    }
-
-    if (this.username.length < 3 || this.username.length > 50) {
-      this.message = 'Username must be between 3 and 50 characters';
-      return false;
-    }
-
-    this.message = '';
     return true;
   }
 
@@ -148,5 +135,11 @@ export class Register implements OnInit {
     if (this.currentStep === 2) {
       this.currentStep = 1;
     }
+  }
+
+  hideErrorAfterDelay() {
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 3000);
   }
 }
