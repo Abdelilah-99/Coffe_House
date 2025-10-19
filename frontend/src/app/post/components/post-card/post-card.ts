@@ -32,6 +32,7 @@ export class PostCard implements OnInit {
   showAdminHideConfirmation = false;
   showAdminDeleteConfirmation = false;
   errorMessage: string | null = null;
+  toastMessage: { text: string, type: 'success' | 'error' | 'warning' } | null = null;
 
   ngOnInit(): void {
     this.loadProfile();
@@ -81,13 +82,17 @@ export class PostCard implements OnInit {
   instantComments?: { userUuid: String, image: string, comment: String, username: String, time: number }[] = [];
 
   onSubmitComment(comment: String, uuid: String | null = null) {
+    console.error(":jefh");
+
     if (!uuid || comment.trim() === "") {
-      this.message = { message: 'Comment cannot be empty' };
+      const message = 'Comment cannot be empty';
+      this.showToast(message, this.getMessageType(message));
       return;
     }
 
     if (comment.length > 1000) {
-      this.message = { message: 'Comment must not exceed 1000 characters' };
+      const message = 'Comment must not exceed 1000 characters';
+      this.showToast(message, this.getMessageType(message));
       return;
     }
 
@@ -110,8 +115,8 @@ export class PostCard implements OnInit {
       },
       error: (err) => {
         console.error(err.error.message);
-        this.errorMessage = err.error?.message || 'Failed to submit comment. Please try again.';
-        this.hideErrorAfterDelay();
+        const message = err.error?.message || 'Failed to submit comment. Please try again.';
+        this.showToast(message, this.getMessageType(message));
       }
     })
   }
@@ -129,15 +134,18 @@ export class PostCard implements OnInit {
   onReact(uuid: String) {
     this.postService.doReaction(uuid).subscribe({
       next: (like) => {
+        console.log("like: ===>> ", like);
+
         if (this.post) {
           this.post.likeCount = like.likeCount;
         }
         this.errorMessage = null;
+        this.toastMessage = null;
       },
       error: (err) => {
-        console.error("error loading like data ", err);
-        this.errorMessage = err.error?.message || 'Failed to like post. Please try again.';
-        this.hideErrorAfterDelay();
+        console.error("error loading like data ", err.error?.message);
+        const message = err.error?.message || 'Failed to like post. Please try again.';
+        this.showToast(message, this.getMessageType(message));
       }
     });
   }
@@ -152,11 +160,12 @@ export class PostCard implements OnInit {
           this.comment = comment;
           console.log("comment.comments; ", comment.comments);
           this.errorMessage = null;
+          this.toastMessage = null;
         },
         error: (err) => {
           console.error("error loading comments ", err.error.message);
-          this.errorMessage = err.error?.message || 'Failed to load comments. Please try again.';
-          this.hideErrorAfterDelay();
+          const message = err.error?.message || 'Failed to load comments. Please try again.';
+          this.showToast(message, this.getMessageType(message));
         }
       })
     }
@@ -164,6 +173,9 @@ export class PostCard implements OnInit {
 
   onEdit(postUuid: String) {
     console.log("this section will navigate throw the post section ", postUuid);
+    // isMyPost() {
+
+    // }
     this.navigate.navigate(['/edit', postUuid]);
   }
   onReport() {
@@ -199,9 +211,14 @@ export class PostCard implements OnInit {
       next: (res) => {
         this.message = res;
         this.reportAction = false;
+        this.showToast(String(res.message), 'success');
       },
       error: (err) => {
         console.error(err);
+        const message = err.error?.message || 'Failed to submit report. Please try again.';
+        console.log("message: === ", this.toastMessage);
+        this.showToast(message, this.getMessageType(message));
+        this.reportAction = false;
       }
     });
   }
@@ -297,5 +314,25 @@ export class PostCard implements OnInit {
     setTimeout(() => {
       this.errorMessage = null;
     }, 5000);
+  }
+
+  showToast(text: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = { text, type };
+    console.log("this.toastMessage: ", this.toastMessage);
+
+    setTimeout(() => {
+      this.toastMessage = null;
+    }, 5000);
+  }
+
+  getMessageType(message: string): 'success' | 'error' | 'warning' {
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('banned') || lowerMessage.includes('deleted')) {
+      return 'warning';
+    }
+    if (lowerMessage.includes('success') || lowerMessage.includes('successfully')) {
+      return 'success';
+    }
+    return 'error';
   }
 }

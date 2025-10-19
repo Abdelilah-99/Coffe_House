@@ -26,28 +26,19 @@ public class DeletePostService {
         try {
             user = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("hiii");
+            throw new UserNotFoundException("User not authenticated");
         }
         Post post = postRepository.findByUuid(uuid)
                 .orElseThrow(() -> new PostNotFoundException("post not found for deleting"));
+
+        if (!post.getUser().getUuid().equals(user.getUuid())) {
+            throw new SecurityException("You are not authorized to delete this post");
+        }
+
         for (String pathRemove : post.getMediaPaths()) {
             new File(pathRemove).delete();
         }
-        if (!post.getUser().getUuid().equals(user.getUuid())) {
-            return new PostRes(
-                    post.getUuid(),
-                    post.getUser().getUuid(),
-                    null,
-                    null,
-                    null,
-                    "this is not ur post",
-                    0,
-                    null,
-                    0,
-                    0,
-                    null,
-                    null);
-        }
+
         postRepository.deleteById(post.getId());
         return new PostRes(
                 post.getUuid(),

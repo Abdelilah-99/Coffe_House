@@ -5,6 +5,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MeService, UserProfile } from '../../me/services/me.service';
 import { Post, PostService } from '../../post/services/post-service';
 import { AdminPannelSefvices } from '../../admin-panel/services/admin-pannel-sefvices';
+
 @Component({
   selector: 'app-profile',
   imports: [CommonModule],
@@ -26,8 +27,8 @@ export class Profile implements OnInit {
   followers?: number;
   isAdmin: boolean = false;
 
-  // Admin action confirmation state
   showAdminBanConfirmation = false;
+  toastMessage: { text: string, type: 'success' | 'error' | 'warning' } | null = null;
   constructor(private route: ActivatedRoute, private navigate: Router,
     private profileService: ProfileService,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -40,6 +41,7 @@ export class Profile implements OnInit {
       this.uuid = params.get('id');
       if (this.uuid && isPlatformBrowser(this.platformId)) {
         this.loadProfile(this.uuid);
+        this.message = undefined;
       }
     });
     if (isPlatformBrowser(this.platformId)) {
@@ -94,9 +96,13 @@ export class Profile implements OnInit {
       next: (res) => {
         this.message = res;
         this.reportAction = false;
+        this.showToast(String(res.message), 'success');
       },
       error: (err) => {
         console.error("error reporting ", err);
+        const message = err.error?.message || 'Failed to submit report. Please try again.';
+        this.showToast(message, this.getMessageType(message));
+        this.reportAction = false;
       }
     })
   }
@@ -146,9 +152,12 @@ export class Profile implements OnInit {
               this.block = true;
             }
           }
+          this.showToast('Successfully unfollowed ' + userName, 'success');
         },
         error: (err) => {
           console.error("error unfollowing ", err);
+          const message = err.error?.message || 'Failed to unfollow user. Please try again.';
+          this.showToast(message, this.getMessageType(message));
         }
       })
     }
@@ -166,9 +175,12 @@ export class Profile implements OnInit {
               this.block = false;
             }
           }
+          this.showToast('Successfully followed ' + userName, 'success');
         },
         error: (err) => {
           console.error("error following ", err);
+          const message = err.error?.message || 'Failed to follow user. Please try again.';
+          this.showToast(message, this.getMessageType(message));
         }
       })
     }
@@ -193,12 +205,10 @@ export class Profile implements OnInit {
     });
   }
 
-  // Admin actions - prepare
   onPrepareAdminBanUser() {
     this.showAdminBanConfirmation = true;
   }
 
-  // Admin actions - confirm
   onConfirmAdminBanUser() {
     if (this.profileRes) {
       this.adminBanUser(this.profileRes.uuid);
@@ -206,15 +216,13 @@ export class Profile implements OnInit {
     this.showAdminBanConfirmation = false;
   }
 
-  // Admin actions - cancel
   onCancelAdminBanUser() {
     this.showAdminBanConfirmation = false;
   }
 
-  // Actual admin API call
   adminBanUser(uuid: String) {
     this.adminService.banUser(uuid).subscribe({
-      next: (res) => {
+      next: () => {
         console.log("User ban status toggled successfully");
         if (this.uuid) {
           this.loadProfile(this.uuid);
@@ -224,5 +232,23 @@ export class Profile implements OnInit {
         console.error("Error toggling user ban status: ", err);
       }
     });
+  }
+
+  showToast(text: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = { text, type };
+    setTimeout(() => {
+      this.toastMessage = null;
+    }, 5000);
+  }
+
+  getMessageType(message: string): 'success' | 'error' | 'warning' {
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('banned') || lowerMessage.includes('deleted')) {
+      return 'warning';
+    }
+    if (lowerMessage.includes('success') || lowerMessage.includes('successfully')) {
+      return 'success';
+    }
+    return 'error';
   }
 }

@@ -65,8 +65,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
               localStorage.removeItem('access_token');
               localStorage.removeItem('user_role');
               router.navigate(['/login']);
-            } else if (error.status === 403) {
-              alert('⛔ You do not have permission to access this resource.');
             } else if (error.status >= 500) {
               alert('⚠️ Server error occurred. Try again later.');
             }

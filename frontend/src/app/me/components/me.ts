@@ -19,6 +19,8 @@ export class Me implements OnInit {
   isLoadingPosts = false;
   post = { title: '', content: '' };
   message?: string;
+  toastMessage: { text: string, type: 'success' | 'error' | 'warning' } | null = null;
+  errorMessage: string | null = null;
   constructor(private profileService: MeService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -112,14 +114,17 @@ export class Me implements OnInit {
     const formData = new FormData();
     if (this.post.title.trim().length === 0 || this.post.content.trim().length === 0) {
       this.message = "content and title fields are required";
+      this.showToast(this.message, 'error');
       return;
     }
     if (this.post.title.length > 200) {
       this.message = "Title must not exceed 200 characters";
+      this.showToast(this.message, 'error');
       return;
     }
     if (this.post.content.length > 10000) {
       this.message = "Content must not exceed 10000 characters";
+      this.showToast(this.message, 'error');
       return;
     }
     formData.append("title", this.post.title);
@@ -137,7 +142,12 @@ export class Me implements OnInit {
     });
     this.profileService.createPost(formData).subscribe({
       next: () => {
+        this.showToast("Post has successfully created", 'success');
         this.loadUserPosts(this.userProfile!.uuid);
+      },
+      error: (err) => {
+        this.showToast(err.error.message, 'error');
+        console.error("failed to create post: ", err);
       }
     })
     this.post.title = '';
@@ -160,8 +170,34 @@ export class Me implements OnInit {
         }
       },
       error: (err) => {
+        this.showToast(err.error.message, 'error');
         console.error("Error liking post: ", err);
       }
     });
+  }
+  hideErrorAfterDelay() {
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 5000);
+  }
+
+  showToast(text: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = { text, type };
+    console.log("this.toastMessage: ", this.toastMessage);
+
+    setTimeout(() => {
+      this.toastMessage = null;
+    }, 5000);
+  }
+
+  getMessageType(message: string): 'success' | 'error' | 'warning' {
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('banned') || lowerMessage.includes('deleted')) {
+      return 'warning';
+    }
+    if (lowerMessage.includes('success') || lowerMessage.includes('successfully')) {
+      return 'success';
+    }
+    return 'error';
   }
 }

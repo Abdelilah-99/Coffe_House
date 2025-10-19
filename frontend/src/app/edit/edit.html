@@ -1,4 +1,37 @@
-<div class="edit-container" *ngIf="post">
+<div class="edit-container" *ngIf="post && isAuthorized">
+    <!-- Multi-type Toast Message -->
+    <div *ngIf="toastMessage" class="toast-message" [ngClass]="{
+        'toast-success': toastMessage.type === 'success',
+        'toast-error': toastMessage.type === 'error',
+        'toast-warning': toastMessage.type === 'warning'
+    }">
+        <!-- Success Icon -->
+        <svg *ngIf="toastMessage.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+        </svg>
+        <!-- Error Icon -->
+        <svg *ngIf="toastMessage.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
+        </svg>
+        <!-- Warning Icon -->
+        <svg *ngIf="toastMessage.type === 'warning'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            fill="currentColor" viewBox="0 0 16 16">
+            <path
+                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+        </svg>
+        <span>{{ toastMessage.text }}</span>
+        <button class="close-toast-btn" (click)="toastMessage = null">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+            </svg>
+        </button>
+    </div>
+
     <div class="edit-card">
         <div class="edit-header">
             <h1>Edit Post</h1>
@@ -11,15 +44,8 @@
                 <label for="postTitle" class="form-label">
                     <i class="bi bi-pencil-square"></i> Post Title
                 </label>
-                <input
-                    id="postTitle"
-                    type="text"
-                    [(ngModel)]="post.title"
-                    name="title"
-                    placeholder="Enter your post title"
-                    maxlength="200"
-                    required
-                    class="form-input" />
+                <input id="postTitle" type="text" [(ngModel)]="post.title" name="title"
+                    placeholder="Enter your post title" maxlength="200" required class="form-input" />
                 <div class="char-count-hint">
                     <span class="char-count">{{ (post.title.length || 0) }}/200</span>
                 </div>
@@ -30,14 +56,8 @@
                 <label for="postContent" class="form-label">
                     <i class="bi bi-file-text"></i> Post Content
                 </label>
-                <textarea
-                    id="postContent"
-                    [(ngModel)]="post.content"
-                    name="content"
-                    placeholder="Write your post content here..."
-                    maxlength="10000"
-                    required
-                    rows="8"
+                <textarea id="postContent" [(ngModel)]="post.content" name="content"
+                    placeholder="Write your post content here..." maxlength="10000" required rows="8"
                     class="form-textarea"></textarea>
                 <div class="char-count-hint">
                     <span class="char-count">{{ (post.content.length || 0) }}/10000</span>
@@ -52,16 +72,10 @@
                 <div class="media-grid">
                     <div *ngFor="let path of post?.mediaPaths" class="media-item">
                         <ng-container [ngSwitch]="getMediaType(path)">
-                            <img *ngSwitchCase="'img'"
-                                 [src]="'http://localhost:8080/' + path"
-                                 alt="Post media" />
-                            <video *ngSwitchCase="'vd'"
-                                   [src]="'http://localhost:8080/' + path"
-                                   controls></video>
+                            <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" alt="Post media" />
+                            <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls></video>
                         </ng-container>
-                        <button type="button"
-                                class="remove-media-btn"
-                                (click)="deleteMedia(path, post)">
+                        <button type="button" class="remove-media-btn" (click)="deleteMedia(path)">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
@@ -74,13 +88,8 @@
                     <i class="bi bi-cloud-upload"></i> Add More Media
                 </label>
                 <div class="file-input-wrapper">
-                    <input
-                        id="fileInput"
-                        type="file"
-                        (change)="onFileSelected($event)"
-                        multiple
-                        accept="image/*,video/*"
-                        class="file-input">
+                    <input id="fileInput" type="file" (change)="onFileSelected($event)" multiple
+                        accept="image/*,video/*" class="file-input">
                     <label for="fileInput" class="file-input-label">
                         <i class="bi bi-plus-circle"></i>
                         <span>Choose Files</span>
@@ -98,15 +107,9 @@
                 </label>
                 <div class="media-grid">
                     <div *ngFor="let url of previewUrls; index as i" class="media-item">
-                        <img *ngIf="url.startsWith('blob:')"
-                             [src]="url"
-                             alt="Preview" />
-                        <video *ngIf="url.startsWith('blob:')"
-                               [src]="url"
-                               controls></video>
-                        <button type="button"
-                                class="remove-media-btn"
-                                (click)="deleteFileSelected(i)">
+                        <img *ngIf="url.startsWith('blob:')" [src]="url" alt="Preview" />
+                        <video *ngIf="url.startsWith('blob:')" [src]="url" controls></video>
+                        <button type="button" class="remove-media-btn" (click)="deleteFileSelected(i)">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>

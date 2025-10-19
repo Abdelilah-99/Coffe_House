@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.blog.dto.EditPostReq;
 import com.blog.dto.PostRes;
@@ -17,23 +20,27 @@ import com.blog.entity.*;
 import com.blog.exceptions.ErrSavingException;
 import com.blog.exceptions.InvalidFormatException;
 import com.blog.exceptions.PostNotFoundException;
+import com.blog.exceptions.UserNotLoginException;
 import com.blog.security.FileValidationService;
 import com.blog.security.InputSanitizationService;
 
 @Service
 public class EditPostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final LikesRepository likesRepository;
     private final FileValidationService fileValidationService;
     private final InputSanitizationService inputSanitizationService;
 
     EditPostService(PostRepository postRepository,
+            UserRepository userRepository,
             CommentRepository commentRepository,
             LikesRepository likesRepository,
             FileValidationService fileValidationService,
             InputSanitizationService inputSanitizationService) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.likesRepository = likesRepository;
         this.fileValidationService = fileValidationService;
@@ -41,7 +48,21 @@ public class EditPostService {
     }
 
     public PostRes editPost(String uuid, EditPostReq req) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            throw new UserNotLoginException("User not authenticated");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        User currentUser = userRepository.findByUserName(username)
+                .orElseThrow(() -> new UserNotLoginException("User not found"));
+
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("Post not found"));
+
+        if (post.getUser().getId() != currentUser.getId()) {
+            throw new SecurityException("You are not authorized to edit this post");
+        }
 
         if (req.getContent() != null) {
             String sanitizedContent = inputSanitizationService.sanitizeContent(req.getContent());
@@ -51,8 +72,11 @@ public class EditPostService {
             String sanitizedTitle = inputSanitizationService.sanitizeTitle(req.getTitle());
             post.setTitle(sanitizedTitle);
         }
+
         List<String> oldPaths = post.getMediaPaths();
         List<String> updatedPaths = new ArrayList<>(req.getPathFiles());
+
+        
 
         if (req.getMediaFiles() != null) {
 

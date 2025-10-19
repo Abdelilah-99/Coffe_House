@@ -41,8 +41,13 @@ public class ReportService {
             throw new UserNotFoundException("user not found for reporting");
         }
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new UserNotFoundException("user not found for reporting");
+            throw new UserNotFoundException("User not available");
         });
+
+        if (user.getStatus() != null && user.getStatus().equalsIgnoreCase("BAN")) {
+            throw new ReportException("This user is already banned");
+        }
+
         User crrUser = userRepository.findByUserName(usersRespons.getUsername()).orElseThrow(() -> {
             throw new UserNotLoginException("user not logged in or not rregistred");
         });
@@ -72,6 +77,12 @@ public class ReportService {
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new PostNotFoundException("post not found for reporting");
         });
+
+        User postOwner = post.getUser();
+        if (postOwner.getStatus() != null && postOwner.getStatus().equalsIgnoreCase("BAN")) {
+            throw new ReportException("This user is already banned");
+        }
+
         User crrUser = userRepository.findByUserName(usersRespons.getUsername()).orElseThrow(() -> {
             throw new UserNotLoginException("user not logged in or not registred");
         });

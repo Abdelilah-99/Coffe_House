@@ -98,8 +98,13 @@ public class UsersServices {
             throw new UserNotFoundException("need to login");
         });
         User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new UserNotFoundException("invalid user");
+            throw new UserNotFoundException("This user not available");
         });
+
+        if (otherUser.getStatus() != null && otherUser.getStatus().equalsIgnoreCase("BAN")) {
+            throw new FollowException("This user is banned and cannot be followed");
+        }
+
         if (crrUser.getId() == otherUser.getId()) {
             throw new FollowException("you can't follow yourself");
         }
@@ -137,6 +142,15 @@ public class UsersServices {
         User otherUser = userRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new UserNotFoundException("invalid user");
         });
+
+        // Check if user is banned or deleted
+        if (otherUser.getStatus() != null && otherUser.getStatus().equalsIgnoreCase("BANNED")) {
+            throw new FollowException("This user is banned");
+        }
+        if (otherUser.getStatus() != null && otherUser.getStatus().equalsIgnoreCase("DELETED")) {
+            throw new FollowException("This user has been deleted");
+        }
+
         if (crrUser.getId() == otherUser.getId()) {
             throw new FollowException("you can't follow yourself");
         }
