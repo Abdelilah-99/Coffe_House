@@ -17,10 +17,10 @@ public class Report {
     private User reporterId;
     @ManyToOne
     @JoinColumn(name = "reported_user_id", nullable = true)
-    private User reportedUserId;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "reported_post_id", nullable = true)
-    private Post reportedPostId;
+    private Post post;
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
 
@@ -75,20 +75,20 @@ public class Report {
         this.reporterId = reporterId;
     }
 
-    public User getReportedUserId() {
-        return reportedUserId;
+    public User getUser() {
+        return user;
     }
 
-    public void setReportedUserId(User reportedUserId) {
-        this.reportedUserId = reportedUserId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Post getReportedPostId() {
-        return reportedPostId;
+    public Post getPost() {
+        return post;
     }
 
-    public void setReportedPostId(Post reportedPostId) {
-        this.reportedPostId = reportedPostId;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public String getUuid() {

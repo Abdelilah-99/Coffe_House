@@ -11,11 +11,11 @@ import com.blog.entity.Post;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    List<Report> findByReportedPostIdIsNotNull();
+    List<Report> findByPostIsNotNull();
 
-    List<Report> findByReportedUserIdIsNotNull();
+    List<Report> findByUserIsNotNull();
     
-    long countByReportedUserId(User user);
+    long countByUser(User user);
     
-    long countByReportedPostId(Post post);
+    long countByPost(Post post);
 }

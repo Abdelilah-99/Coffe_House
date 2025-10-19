@@ -20,7 +20,7 @@ public class Post {
     private String mediaPaths;
     private Long createdAt;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Like> likes;
@@ -30,7 +30,9 @@ public class Post {
     private User user;
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Report> reports;
     private String status;
 
     public String getStatus() {

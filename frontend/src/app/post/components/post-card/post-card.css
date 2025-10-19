@@ -849,7 +849,86 @@
   transform: translateY(0);
 }
 
+/* Error Toast Message */
+.error-toast {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(231, 76, 60, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10001;
+  animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  max-width: 400px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.error-toast svg {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.error-toast span {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.close-error-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.close-error-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.close-error-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
 @media (max-width: 576px) {
+  .error-toast {
+    top: 80px;
+    left: 10px;
+    right: 10px;
+    max-width: calc(100% - 20px);
+    padding: 0.875rem 1.25rem;
+  }
+
+  .error-toast span {
+    font-size: 0.875rem;
+  }
+
   .post-card {
     padding: 1.25rem;
     margin-left: 0.5rem;

@@ -31,6 +31,7 @@ export class PostCard implements OnInit {
   isAdmin: boolean = false;
   showAdminHideConfirmation = false;
   showAdminDeleteConfirmation = false;
+  errorMessage: string | null = null;
 
   ngOnInit(): void {
     this.loadProfile();
@@ -108,8 +109,9 @@ export class PostCard implements OnInit {
         this.message = undefined;
       },
       error: (err) => {
-        console.error(err);
-        this.message = { message: 'Failed to post comment' };
+        console.error(err.error.message);
+        this.errorMessage = err.error?.message || 'Failed to submit comment. Please try again.';
+        this.hideErrorAfterDelay();
       }
     })
   }
@@ -130,9 +132,12 @@ export class PostCard implements OnInit {
         if (this.post) {
           this.post.likeCount = like.likeCount;
         }
+        this.errorMessage = null;
       },
       error: (err) => {
         console.error("error loading like data ", err);
+        this.errorMessage = err.error?.message || 'Failed to like post. Please try again.';
+        this.hideErrorAfterDelay();
       }
     });
   }
@@ -146,9 +151,12 @@ export class PostCard implements OnInit {
         next: (comment) => {
           this.comment = comment;
           console.log("comment.comments; ", comment.comments);
+          this.errorMessage = null;
         },
         error: (err) => {
-          console.error("error loading comments ", err);
+          console.error("error loading comments ", err.error.message);
+          this.errorMessage = err.error?.message || 'Failed to load comments. Please try again.';
+          this.hideErrorAfterDelay();
         }
       })
     }
@@ -225,7 +233,6 @@ export class PostCard implements OnInit {
     return false;
   }
 
-  // Admin actions - prepare
   onPrepareAdminHidePost() {
     this.showAdminHideConfirmation = true;
   }
@@ -234,7 +241,6 @@ export class PostCard implements OnInit {
     this.showAdminDeleteConfirmation = true;
   }
 
-  // Admin actions - confirm
   onConfirmAdminHidePost() {
     if (this.post) {
       this.adminHidePost(this.post.postUuid);
@@ -249,7 +255,6 @@ export class PostCard implements OnInit {
     this.showAdminDeleteConfirmation = false;
   }
 
-  // Admin actions - cancel
   onCancelAdminHidePost() {
     this.showAdminHideConfirmation = false;
   }
@@ -258,7 +263,6 @@ export class PostCard implements OnInit {
     this.showAdminDeleteConfirmation = false;
   }
 
-  // Actual admin API calls
   adminHidePost(postUuid: String) {
     this.adminService.hidePost(postUuid).subscribe({
       next: () => {
@@ -287,5 +291,11 @@ export class PostCard implements OnInit {
     console.log("====================================", uuid);
 
     this.navigate.navigate(['profile', uuid]);
+  }
+
+  hideErrorAfterDelay() {
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 5000);
   }
 }

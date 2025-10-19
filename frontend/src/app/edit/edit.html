@@ -21,7 +21,7 @@
                     required
                     class="form-input" />
                 <div class="char-count-hint">
-                    <span class="char-count">{{ (post.title?.length || 0) }}/200</span>
+                    <span class="char-count">{{ (post.title.length || 0) }}/200</span>
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
                     rows="8"
                     class="form-textarea"></textarea>
                 <div class="char-count-hint">
-                    <span class="char-count">{{ (post.content?.length || 0) }}/10000</span>
+                    <span class="char-count">{{ (post.content.length || 0) }}/10000</span>
                 </div>
             </div>
 

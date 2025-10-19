@@ -197,13 +197,13 @@ public class AdminService {
     }
 
     public List<ReportsAdmineResponse> getPostsReports() {
-        List<Report> report = reportRepository.findByReportedPostIdIsNotNull();
+        List<Report> report = reportRepository.findByPostIsNotNull();
         List<ReportsAdmineResponse> reportDto = cnvReportToDto(report, "Post");
         return reportDto;
     }
 
     public List<ReportsAdmineResponse> getUsersReports() {
-        List<Report> report = reportRepository.findByReportedUserIdIsNotNull();
+        List<Report> report = reportRepository.findByUserIsNotNull();
         List<ReportsAdmineResponse> reportDto = cnvReportToDto(report, "User");
         return reportDto;
     }
@@ -217,9 +217,9 @@ public class AdminService {
             ReportsAdmineResponse.setReason(report.getReason());
             ReportsAdmineResponse.setTime(report.getCreatedAt());
             if (type.equals("Post")) {
-                ReportsAdmineResponse.setPostOrUserUuid(report.getReportedPostId().getUuid());
+                ReportsAdmineResponse.setPostOrUserUuid(report.getPost().getUuid());
             } else if (type.equals("User")) {
-                ReportsAdmineResponse.setPostOrUserUuid(report.getReportedUserId().getUuid());
+                ReportsAdmineResponse.setPostOrUserUuid(report.getUser().getUuid());
             }
             reportsDto.add(ReportsAdmineResponse);
         }
@@ -289,7 +289,7 @@ public class AdminService {
         List<TopUserResponse> topUsers = new ArrayList<>();
 
         for (User user : allUsers) {
-            long reportCount = reportRepository.countByReportedUserId(user);
+            long reportCount = reportRepository.countByUser(user);
             if (reportCount > 0) {
                 TopUserResponse topUser = new TopUserResponse();
                 topUser.setUuid(user.getUuid());
@@ -334,7 +334,7 @@ public class AdminService {
         List<TopPostResponse> topPosts = new ArrayList<>();
 
         for (Post post : allPosts) {
-            long reportCount = reportRepository.countByReportedPostId(post);
+            long reportCount = reportRepository.countByPost(post);
             if (reportCount > 0) {
                 TopPostResponse topPost = new TopPostResponse();
                 topPost.setUuid(post.getUuid());

@@ -20,6 +20,8 @@ import com.blog.repository.*;
 import com.blog.security.FileValidationService;
 import com.blog.security.InputSanitizationService;
 
+import jakarta.transaction.Transactional;
+
 import java.io.IOException;
 
 @Service
@@ -51,6 +53,7 @@ public class PostService {
         this.inputSanitizationService = inputSanitizationService;
     }
 
+    @Transactional
     public PostRes createPost(CreatePostReq req) {
         String sanitizedTitle = inputSanitizationService.sanitizeTitle(req.getTitle());
         String sanitizedContent = inputSanitizationService.sanitizeContent(req.getContent());

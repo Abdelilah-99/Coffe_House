@@ -20,7 +20,7 @@ public class InputSanitizationService {
                     String.format("Title exceeds maximum length of %d characters", MAX_TITLE_LENGTH)
             );
         }
-        title = HtmlUtils.htmlEscape(title);
+        // title = HtmlUtils.htmlEscape(title);
         return title;
     }
 
@@ -34,7 +34,7 @@ public class InputSanitizationService {
                     String.format("Content exceeds maximum length of %d characters", MAX_CONTENT_LENGTH)
             );
         }
-        content = HtmlUtils.htmlEscape(content);
+        // content = HtmlUtils.htmlEscape(content);
         return content;
     }
 
@@ -48,7 +48,7 @@ public class InputSanitizationService {
                     String.format("Comment exceeds maximum length of %d characters", MAX_COMMENT_LENGTH)
             );
         }
-        comment = HtmlUtils.htmlEscape(comment);
+        // comment = HtmlUtils.htmlEscape(comment);
 
         return comment;
     }
@@ -88,7 +88,7 @@ public class InputSanitizationService {
             );
         }
 
-        text = HtmlUtils.htmlEscape(text);
+        // text = HtmlUtils.htmlEscape(text);
 
         return text;
     }

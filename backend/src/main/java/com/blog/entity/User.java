@@ -24,11 +24,14 @@ public class User {
     private List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     private List<Follow> following = new ArrayList<>();
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Follow> followers = new ArrayList<>();
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
     private String status;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Report> reports;
 
     public User() {
     }
