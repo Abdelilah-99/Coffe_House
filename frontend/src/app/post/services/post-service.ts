@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+export interface MediaDTO {
+  path: string;
+  type: string;
+}
+
 export interface Post {
   postUuid: String;
   userUuid: String;
@@ -9,7 +14,7 @@ export interface Post {
   content: string;
   createdAt: number;
   userName: String;
-  mediaPaths: string[];
+  mediaPaths: MediaDTO[];
   commentCount: number;
   likeCount: number;
   profileImagePath: string;

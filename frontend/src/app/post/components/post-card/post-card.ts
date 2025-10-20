@@ -121,14 +121,12 @@ export class PostCard implements OnInit {
     })
   }
 
-  getMediaType(media: String): String {
-    const ext = media.split('.').pop()?.toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext!)) {
-      return 'img';
-    } else if (['mp4', 'webm', 'ogg'].includes(ext!)) {
-      return 'vd';
-    }
-    return 'null';
+  isImage(type: string): boolean {
+    return type.startsWith('image/');
+  }
+
+  isVideo(type: string): boolean {
+    return type.startsWith('video/');
   }
 
   onReact(uuid: String) {

@@ -2,9 +2,12 @@
     <!-- Post with image(s) - Image as background with overlay -->
     <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-card-with-image">
         <div class="post-image-container">
-            <img [src]="'http://localhost:8080/' + post.mediaPaths[0]"
-                 alt="{{ post.title }}"
-                 class="post-background-image">
+            <img *ngIf="post.mediaPaths[0].type.startsWith('image/')"
+                [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+                class="post-background-image">
+            <!-- <video *ngIf="post.mediaPaths[0].type.startsWith('video/')"
+                [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+                class="post-background-image"></video> -->
             <div class="post-overlay">
                 <div class="post-title-overlay">
                     <h3 class="post-title">{{ post.title }}</h3>
@@ -13,10 +16,8 @@
         </div>
         <div class="post-footer-compact">
             <div class="post-user-info-compact">
-                <img *ngIf="post.profileImagePath"
-                     [src]="'http://localhost:8080/' + post.profileImagePath"
-                     alt="{{ post.userName }}"
-                     class="post-user-avatar-small">
+                <img *ngIf="post.profileImagePath" [src]="'http://localhost:8080/' + post.profileImagePath"
+                    alt="{{ post.userName }}" class="post-user-avatar-small">
                 <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder-small">
                     {{ post.userName.charAt(0).toUpperCase() || '?' }}
                 </div>
@@ -37,10 +38,8 @@
     <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-card-traditional">
         <div class="post-header">
             <div class="post-user-info">
-                <img *ngIf="post.profileImagePath"
-                     [src]="'http://localhost:8080/' + post.profileImagePath"
-                     alt="{{ post.userName }}"
-                     class="post-user-avatar">
+                <img *ngIf="post.profileImagePath" [src]="'http://localhost:8080/' + post.profileImagePath"
+                    alt="{{ post.userName }}" class="post-user-avatar">
                 <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder">
                     {{ post.userName.charAt(0).toUpperCase() || '?' }}
                 </div>

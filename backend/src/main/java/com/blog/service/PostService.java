@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.dto.CreatePostReq;
+import com.blog.dto.MediaDTO;
 import com.blog.dto.PostRes;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.Follow;
@@ -123,7 +124,7 @@ public class PostService {
                     sanitizedTitle,
                     "Post created successefully",
                     time,
-                    mediaPaths,
+                    convertToMediaDTOs(mediaPaths),
                     0,
                     0,
                     user.getProfileImagePath(),
@@ -131,6 +132,40 @@ public class PostService {
         } catch (Exception e) {
             throw new ErrSavingException(e.getMessage());
         }
+    }
+
+    private List<MediaDTO> convertToMediaDTOs(List<String> mediaPaths) {
+        List<MediaDTO> mediaDTOs = new ArrayList<>();
+        for (String path : mediaPaths) {
+            String type = getMediaType(path);
+            mediaDTOs.add(new MediaDTO(path, type));
+        }
+        return mediaDTOs;
+    }
+
+    private String getMediaType(String filePath) {
+        if (filePath == null || filePath.isEmpty()) {
+            return "unknown";
+        }
+        String lowerCasePath = filePath.toLowerCase();
+        if (lowerCasePath.endsWith(".jpg") || lowerCasePath.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (lowerCasePath.endsWith(".png")) {
+            return "image/png";
+        } else if (lowerCasePath.endsWith(".gif")) {
+            return "image/gif";
+        } else if (lowerCasePath.endsWith(".webp")) {
+            return "image/webp";
+        } else if (lowerCasePath.endsWith(".mp4")) {
+            return "video/mp4";
+        } else if (lowerCasePath.endsWith(".webm")) {
+            return "video/webm";
+        } else if (lowerCasePath.endsWith(".mov")) {
+            return "video/mov";
+        } else if (lowerCasePath.endsWith(".avi")) {
+            return "video/avi";
+        }
+        return "unknown";
     }
 
     public String saveMedia(MultipartFile mediaFile) {
@@ -195,7 +230,7 @@ public class PostService {
             postRes.setTitle(post.getTitle());
             postRes.setMessage("list of post");
             postRes.setCreatedAt(post.getCreatedAt());
-            postRes.setMediaPaths(post.getMediaPaths());
+            postRes.setMediaPaths(convertToMediaDTOs(post.getMediaPaths()));
             postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));
             postRes.setLikeCount(likesRepository.countByPost_uuid(post.getUuid()));
             postRes.setProfileImagePath(post.getUser().getProfileImagePath());
@@ -232,7 +267,7 @@ public class PostService {
                     post.getTitle(),
                     "list of post",
                     post.getCreatedAt(),
-                    post.getMediaPaths(),
+                    convertToMediaDTOs(post.getMediaPaths()),
                     commentRepository.countByPost_uuid(post.getUuid()),
                     likesRepository.countByPost_uuid(post.getUuid()),
                     post.getUser().getProfileImagePath(),
@@ -256,7 +291,7 @@ public class PostService {
                 post.getTitle(),
                 "data extracted success",
                 post.getCreatedAt(),
-                post.getMediaPaths(),
+                convertToMediaDTOs(post.getMediaPaths()),
                 commentRepository.countByPost_uuid(post.getUuid()),
                 likesRepository.countByPost_uuid(post.getUuid()),
                 post.getUser().getProfileImagePath(),
@@ -279,7 +314,7 @@ public class PostService {
                     post.getTitle(),
                     "list of user posts",
                     post.getCreatedAt(),
-                    post.getMediaPaths(),
+                    convertToMediaDTOs(post.getMediaPaths()),
                     commentRepository.countByPost_uuid(post.getUuid()),
                     likesRepository.countByPost_uuid(post.getUuid()),
                     post.getUser().getProfileImagePath(),

@@ -91,7 +91,8 @@
             </div>
             <div *ngIf="selectedFiles.length > 0" class="image-preview-container">
                 <div *ngFor="let file of selectedFiles; let i = index" class="image-preview-item">
-                    <img [src]="getImagePreview(file)" alt="Preview">
+                    <img *ngIf="file.type.startsWith('image/')" [src]="getImagePreview(file)" alt="Preview">
+                    <video *ngIf="file.type.startsWith('video/')" [src]="getImagePreview(file)" alt="Preview"></video>
                     <button type="button" class="remove-image-btn" (click)="removeImage(i)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             viewBox="0 0 16 16">
@@ -112,8 +113,8 @@
                         </svg>
                         <span>Add Photos</span>
                     </label>
-                    <input id="file-input" type="file" (change)="onFileSelected($event)" multiple accept="image/*">
-                    <span *ngIf="selectedFiles.length > 0" class="file-count">{{selectedFiles.length}} photo(s)</span>
+                    <input id="file-input" type="file" (change)="onFileSelected($event)" multiple>
+                    <span *ngIf="selectedFiles.length > 0" class="file-count">{{selectedFiles.length}} photo(s)/video(s)</span>
                 </div>
                 <button type="submit" class="submit-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
@@ -123,13 +124,6 @@
                     </svg>
                     Publish Post
                 </button>
-            </div>
-            <div class="message-err" *ngIf="message">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path
-                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
-                </svg>
-                {{message}}
             </div>
         </form>
     </div>
@@ -150,7 +144,7 @@
                         <!-- Post with image(s) - Image as background with overlay -->
                         <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
                             <div class="post-image-wrapper">
-                                <img [src]="'http://localhost:8080/' + post.mediaPaths[0]" alt="{{ post.title }}"
+                                <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                                     class="post-bg-image">
                                 <div class="post-image-overlay">
                                     <h3 class="post-title-overlay">{{post.title}}</h3>

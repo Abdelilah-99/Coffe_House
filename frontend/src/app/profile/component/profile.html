@@ -193,7 +193,7 @@
                     <!-- Post with image(s) - Image as background with overlay -->
                     <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
                         <div class="post-image-wrapper">
-                            <img [src]="'http://localhost:8080/' + post.mediaPaths[0]" alt="{{ post.title }}"
+                            <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                                 class="post-bg-image">
                             <div class="post-image-overlay">
                                 <h3 class="post-title-overlay">{{post.title}}</h3>

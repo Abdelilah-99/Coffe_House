@@ -46,12 +46,9 @@
         <p class="post-content">{{ post.content }}</p>
 
         <div class="post-images" *ngIf="post.mediaPaths && post.mediaPaths.length > 0">
-            <div *ngFor="let mediaPath of post.mediaPaths">
-                <ng-container [ngSwitch]="getMediaType(mediaPath)">
-                    <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + mediaPath" width="300" />
-                    <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + mediaPath" controls
-                        width="300"></video>
-                </ng-container>
+            <div *ngFor="let media of post.mediaPaths">
+                <img *ngIf="isImage(media.type)" [src]="'http://localhost:8080/' + media.path" width="300" />
+                <video *ngIf="isVideo(media.type)" [src]="'http://localhost:8080/' + media.path" controls width="300"></video>
             </div>
         </div>
 

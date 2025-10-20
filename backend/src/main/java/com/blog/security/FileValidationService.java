@@ -12,7 +12,7 @@ import java.util.*;
 @Service
 public class FileValidationService {
 
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+    private static final long MAX_FILE_SIZE = 100 * 1024 * 1024;
 
     private static final Set<String> ALLOWED_IMAGE_EXTENSIONS = Set.of(
             "jpg", "jpeg", "png", "gif", "webp");

@@ -60,12 +60,10 @@
                     <i class="bi bi-images"></i> Current Media
                 </label>
                 <div class="media-grid">
-                    <div *ngFor="let path of post?.mediaPaths" class="media-item">
-                        <ng-container [ngSwitch]="getMediaType(path)">
-                            <img *ngSwitchCase="'img'" [src]="'http://localhost:8080/' + path" alt="Post media" />
-                            <video *ngSwitchCase="'vd'" [src]="'http://localhost:8080/' + path" controls></video>
-                        </ng-container>
-                        <button type="button" class="remove-media-btn" (click)="deleteMedia(path)">
+                    <div *ngFor="let media of post?.mediaPaths" class="media-item">
+                        <img *ngIf="isImage(media.type)" [src]="'http://localhost:8080/' + media.path" alt="Post media" />
+                        <video *ngIf="isVideo(media.type)" [src]="'http://localhost:8080/' + media.path" controls></video>
+                        <button type="button" class="remove-media-btn" (click)="deleteMedia(media.path)">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>

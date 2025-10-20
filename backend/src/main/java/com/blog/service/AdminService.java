@@ -1,6 +1,7 @@
 package com.blog.service;
 
 import com.blog.entity.User;
+import com.blog.dto.MediaDTO;
 import com.blog.dto.PostRes;
 import com.blog.dto.ReportsAdmineResponse;
 import com.blog.dto.AdminStatisticsResponse;
@@ -51,6 +52,40 @@ public class AdminService {
         this.likesRepository = likesRepository;
     }
 
+    private List<MediaDTO> convertToMediaDTOs(List<String> mediaPaths) {
+        List<MediaDTO> mediaDTOs = new ArrayList<>();
+        for (String path : mediaPaths) {
+            String type = getMediaType(path);
+            mediaDTOs.add(new MediaDTO(path, type));
+        }
+        return mediaDTOs;
+    }
+
+    private String getMediaType(String filePath) {
+        if (filePath == null || filePath.isEmpty()) {
+            return "unknown";
+        }
+        String lowerCasePath = filePath.toLowerCase();
+        if (lowerCasePath.endsWith(".jpg") || lowerCasePath.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (lowerCasePath.endsWith(".png")) {
+            return "image/png";
+        } else if (lowerCasePath.endsWith(".gif")) {
+            return "image/gif";
+        } else if (lowerCasePath.endsWith(".webp")) {
+            return "image/webp";
+        } else if (lowerCasePath.endsWith(".mp4")) {
+            return "video/mp4";
+        } else if (lowerCasePath.endsWith(".webm")) {
+            return "video/webm";
+        } else if (lowerCasePath.endsWith(".mov")) {
+            return "video/mov";
+        } else if (lowerCasePath.endsWith(".avi")) {
+            return "video/avi";
+        }
+        return "unknown";
+    }
+
     public List<UsersAdmineResponse> getUsers() {
         List<User> users = userRepository.findAll();
         UsersRespons usersRespons;
@@ -79,7 +114,7 @@ public class AdminService {
             postRes.setTitle(post.getTitle());
             postRes.setContent(post.getContent().length() > 150 ? post.getContent().substring(0, 150) + "..." : post.getContent());
             postRes.setCreatedAt(post.getCreatedAt());
-            postRes.setMediaPaths(post.getMediaPaths());
+            postRes.setMediaPaths(convertToMediaDTOs(post.getMediaPaths()));
             postRes.setStatus(post.getStatus());
             postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));
             postRes.setLikeCount(likesRepository.countByPost_uuid(post.getUuid()));

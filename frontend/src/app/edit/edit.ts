@@ -73,12 +73,12 @@ export class Edit implements OnInit {
     }
   }
 
-  deleteMedia(media: String) {
+  deleteMedia(mediaPath: String) {
     let mediaPaths = this.post?.mediaPaths;
     if (mediaPaths === undefined) return;
     for (let index = 0; index < mediaPaths.length; index++) {
       const element = mediaPaths[index];
-      if (media === element) {
+      if (mediaPath === element.path) {
         this.post?.mediaPaths.splice(index, 1);
       }
     }
@@ -130,7 +130,8 @@ export class Edit implements OnInit {
     const formData = new FormData();
     formData.append("title", updatedPost.title);
     formData.append("content", updatedPost.content);
-    formData.append("pathFiles", updatedPost.mediaPaths);
+    const pathsOnly = updatedPost.mediaPaths.map((media: any) => media.path).join(',');
+    formData.append("pathFiles", pathsOnly);
     this.selectedFiles.forEach(element => {
       formData.append("mediaFiles", element);
     });
@@ -154,15 +155,12 @@ export class Edit implements OnInit {
     });
   }
 
-  getMediaType(media: String): String {
-    console.log("media", media);
-    const ext = media.split('.').pop()?.toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext!)) {
-      return "img";
-    } else if (['mp4', 'webm', 'ogg'].includes(ext!)) {
-      return "vd";
-    }
-    return "null";
+  isImage(type: string): boolean {
+    return type.startsWith('image/');
+  }
+
+  isVideo(type: string): boolean {
+    return type.startsWith('video/');
   }
 
   showToast(text: string, type: 'success' | 'error' | 'warning') {

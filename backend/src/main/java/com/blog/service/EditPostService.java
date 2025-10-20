@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.blog.dto.EditPostReq;
+import com.blog.dto.MediaDTO;
 import com.blog.dto.PostRes;
 import com.blog.repository.*;
 
@@ -45,6 +46,40 @@ public class EditPostService {
         this.likesRepository = likesRepository;
         this.fileValidationService = fileValidationService;
         this.inputSanitizationService = inputSanitizationService;
+    }
+
+    private List<MediaDTO> convertToMediaDTOs(List<String> mediaPaths) {
+        List<MediaDTO> mediaDTOs = new ArrayList<>();
+        for (String path : mediaPaths) {
+            String type = getMediaType(path);
+            mediaDTOs.add(new MediaDTO(path, type));
+        }
+        return mediaDTOs;
+    }
+
+    private String getMediaType(String filePath) {
+        if (filePath == null || filePath.isEmpty()) {
+            return "unknown";
+        }
+        String lowerCasePath = filePath.toLowerCase();
+        if (lowerCasePath.endsWith(".jpg") || lowerCasePath.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (lowerCasePath.endsWith(".png")) {
+            return "image/png";
+        } else if (lowerCasePath.endsWith(".gif")) {
+            return "image/gif";
+        } else if (lowerCasePath.endsWith(".webp")) {
+            return "image/webp";
+        } else if (lowerCasePath.endsWith(".mp4")) {
+            return "video/mp4";
+        } else if (lowerCasePath.endsWith(".webm")) {
+            return "video/webm";
+        } else if (lowerCasePath.endsWith(".mov")) {
+            return "video/mov";
+        } else if (lowerCasePath.endsWith(".avi")) {
+            return "video/avi";
+        }
+        return "unknown";
     }
 
     public PostRes editPost(String uuid, EditPostReq req) {
@@ -145,7 +180,7 @@ public class EditPostService {
                 post.getTitle(),
                 "post updated!!",
                 post.getCreatedAt(),
-                post.getMediaPaths(),
+                convertToMediaDTOs(post.getMediaPaths()),
                 commentRepository.countByPost_uuid(post.getUuid()),
                 likesRepository.countByPost_uuid(post.getUuid()),
                 post.getUser().getProfileImagePath(),

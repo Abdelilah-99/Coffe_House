@@ -10,7 +10,7 @@ public class PostRes {
     private String title;
     private String message;
     private long createdAt;
-    private List<String> mediaPaths;
+    private List<MediaDTO> mediaPaths;
     private long commentCount;
     private long likeCount;
     private String profileImagePath;
@@ -35,7 +35,7 @@ public class PostRes {
             String title,
             String message,
             long createdAt,
-            List<String> mediaPaths,
+            List<MediaDTO> mediaPaths,
             long commentCount,
             long likeCount,
             String profileImagePath,
@@ -70,11 +70,11 @@ public class PostRes {
         this.likeCount = likeCount;
     }
 
-    public List<String> getMediaPaths() {
+    public List<MediaDTO> getMediaPaths() {
         return mediaPaths;
     }
 
-    public void setMediaPaths(List<String> mediaPaths) {
+    public void setMediaPaths(List<MediaDTO> mediaPaths) {
         this.mediaPaths = mediaPaths;
     }
 

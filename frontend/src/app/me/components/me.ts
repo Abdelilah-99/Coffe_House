@@ -73,7 +73,7 @@ export class Me implements OnInit {
     if (!files || files.length === 0) return;
     for (let i = 0; i < files.length; i++) {
       if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
-        this.message = "format image and video are only allowed";
+        this.showToast("format image and video are only allowed", "error");
         console.error(files[i].type.split('/')[0]);
         return;
       }
@@ -85,14 +85,11 @@ export class Me implements OnInit {
   getImagePreview(file: File): string {
     const index = this.selectedFiles.indexOf(file);
     if (!this.imagePreviews[index]) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreviews[index] = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      this.imagePreviews[index] = URL.createObjectURL(file);
     }
-    return this.imagePreviews[index] || '';
+    return this.imagePreviews[index];
   }
+
 
   removeImage(index: number) {
     this.selectedFiles.splice(index, 1);
