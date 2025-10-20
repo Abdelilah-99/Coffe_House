@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.*;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -243,8 +244,8 @@ public class PostService {
 
     public PostRes getPost(String uuid) {
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("post not found"));
-
-        if ("HIDE".equals(post.getStatus())) {
+        String status = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
+        if ("HIDE".equals(post.getStatus()) && !status.contains("ROLE_ADMIN")) {
             throw new PostNotFoundException("This post is not available");
         }
 

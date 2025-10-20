@@ -100,7 +100,7 @@
   margin: 2rem 0;
 }
 
-.post-images > div {
+.post-images>div {
   margin-bottom: 1rem;
 }
 
@@ -177,6 +177,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -364,6 +365,7 @@
   0% {
     background: rgba(107, 78, 61, 0.1);
   }
+
   100% {
     background: var(--color-bg);
   }
@@ -497,14 +499,20 @@
 }
 
 .btn-report-post {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+  box-shadow: 0 4px 12px rgba(107, 78, 61, 0.3);
 }
 
 .btn-report-post:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(243, 156, 18, 0.5);
+  box-shadow: 0 6px 16px rgba(107, 78, 61, 0.5);
+}
+
+.btn-report-post:focus,
+.btn-report-post:active {
+  outline: none;
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
 }
 
 .btn-admin-hide {
@@ -532,12 +540,12 @@
 .report-window {
   margin-top: 1.5rem;
   padding: 0;
-  background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(243, 156, 18, 0.01) 100%);
+  background: var(--color-bg);
   border-radius: 12px;
-  border: 2px solid rgba(243, 156, 18, 0.2);
+  border: 2px solid var(--color-border);
   overflow: hidden;
   animation: slideDown 0.3s ease-out;
-  box-shadow: 0 4px 16px rgba(243, 156, 18, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 @keyframes slideDown {
@@ -545,6 +553,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -552,12 +561,12 @@
 }
 
 .report-window-header {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   padding: 1.25rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .report-window-header h4 {
@@ -609,7 +618,7 @@
   border-radius: 8px;
   font-size: 1rem;
   color: var(--color-text);
-  background: white;
+  background: var(--color-bg-light);
   transition: all 0.3s ease;
   font-family: inherit;
   resize: vertical;
@@ -619,12 +628,12 @@
 
 .report-window textarea:focus {
   outline: none;
-  border-color: #f39c12;
-  box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(107, 78, 61, 0.1);
 }
 
 .report-window textarea::placeholder {
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--color-text-muted);
 }
 
 .report-actions {
@@ -653,7 +662,7 @@
 }
 
 .btn-submit-report {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -665,7 +674,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+  box-shadow: 0 4px 12px rgba(107, 78, 61, 0.3);
 }
 
 .btn-submit-report svg {
@@ -674,7 +683,7 @@
 
 .btn-submit-report:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(243, 156, 18, 0.5);
+  box-shadow: 0 6px 16px rgba(107, 78, 61, 0.5);
 }
 
 .report-success {
@@ -700,6 +709,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -740,6 +750,7 @@
     opacity: 0;
     transform: scale(0.8) translateY(-20px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -760,9 +771,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4);
   }
+
   50% {
     box-shadow: 0 0 0 20px rgba(243, 156, 18, 0);
   }
@@ -889,6 +903,7 @@
     opacity: 0;
     transform: translateX(100%);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -943,6 +958,10 @@
 
   .toast-message span {
     font-size: 0.875rem;
+  }
+
+  .btn-warning:hover {
+    color: white !important;
   }
 
   .post-card {

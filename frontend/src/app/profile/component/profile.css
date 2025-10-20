@@ -1034,16 +1034,4 @@
   .btn-confirmation-confirm {
     width: 100%;
   }
-
-  .toast-message {
-    top: 80px;
-    left: 10px;
-    right: 10px;
-    max-width: calc(100% - 20px);
-    padding: 0.875rem 1.25rem;
-  }
-
-  .toast-message span {
-    font-size: 0.875rem;
-  }
 }

@@ -185,7 +185,8 @@ export class PostCard implements OnInit {
 
   onPrepareSubmitReport(reason: String) {
     if (!reason || reason.trim() === '') {
-      alert('Please describe the issue before submitting your report.');
+      // alert('Please describe the issue before submitting your report.');
+      this.showToast('Please describe the issue before submitting your report.', 'error');
       return;
     }
     this.pendingReportReason = reason;

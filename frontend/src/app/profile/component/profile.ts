@@ -71,7 +71,7 @@ export class Profile implements OnInit {
 
   onPrepareSubmitReport(uuid: String, reason: String) {
     if (!reason || reason.trim() === '') {
-      alert('Please provide additional details for your report.');
+      this.showToast("Please provide additional details for your report", "error");
       return;
     }
     this.pendingReportReason = reason;

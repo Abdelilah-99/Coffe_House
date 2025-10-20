@@ -3,32 +3,22 @@
     <div *ngIf="toastMessage" class="toast-message" [ngClass]="{
         'toast-success': toastMessage.type === 'success',
         'toast-error': toastMessage.type === 'error',
-        'toast-warning': toastMessage.type === 'warning'
-    }">
+        'toast-warning': toastMessage.type === 'warning'}">
         <!-- Success Icon -->
-        <svg *ngIf="toastMessage.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            fill="currentColor" viewBox="0 0 16 16">
-            <path
-                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-        </svg>
+        <i *ngIf="toastMessage.type === 'success'" class="bi bi-check-circle-fill text-success fs-5"></i>
+
         <!-- Error Icon -->
-        <svg *ngIf="toastMessage.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            fill="currentColor" viewBox="0 0 16 16">
-            <path
-                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
-        </svg>
+        <i *ngIf="toastMessage.type === 'error'" class="bi bi-x-circle-fill text-danger fs-5"></i>
+
         <!-- Warning Icon -->
-        <svg *ngIf="toastMessage.type === 'warning'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            fill="currentColor" viewBox="0 0 16 16">
-            <path
-                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-        </svg>
-        <span>{{ toastMessage.text }}</span>
-        <button class="close-toast-btn" (click)="toastMessage = null">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path
-                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-            </svg>
+        <i *ngIf="toastMessage.type === 'warning'" class="bi bi-exclamation-triangle-fill text-warning fs-5"></i>
+
+        <!-- Toast Message -->
+        <span class="ms-2">{{ toastMessage.text }}</span>
+
+        <!-- Close Button -->
+        <button class="close-toast-btn btn btn-link p-0 ms-2" (click)="toastMessage = null">
+            <i class="bi bi-x-lg text-secondary"></i>
         </button>
     </div>
     <!-- Profile Header -->
