@@ -8,6 +8,9 @@ import com.blog.exceptions.PostNotFoundException;
 import com.blog.exceptions.UserBannedException;
 import com.blog.dto.*;
 import com.blog.security.InputSanitizationService;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -74,5 +77,25 @@ public class CommentService {
             throw new UserNotFoundException("user not found for comment retriving");
         }
         return new CommentRes(userDetail.getUsername(), post.getUuid(), post.getUser().getUuid(), post.getComments());
+    }
+
+    public CommentPostRes deleteComment(String uuid) {
+        UsersRespons crrUser;
+        try {
+            crrUser = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotFoundException("user not found for comment deleting");
+        }
+        Comment comment = commentRepository.findByUuid(uuid).orElseThrow(()->{
+            throw new EntityNotFoundException("comment not found");
+        });
+        if (!comment.getUserUuid().equals(crrUser.getUuid())) {
+            throw new SecurityException("not your comment");
+        }
+
+        String postUuid = comment.getPost().getUuid();
+        commentRepository.deleteByUuid(uuid);
+
+        return new CommentPostRes(postUuid, crrUser.getUuid(), "", "Comment deleted successfully");
     }
 }

@@ -98,6 +98,12 @@ public class PostController {
         return ResponseEntity.ok(res);
     }
 
+    @PostMapping("/comment/delete/{uuid}")
+    public ResponseEntity<CommentPostRes> deletecommentPost(@PathVariable String uuid) {
+        CommentPostRes res = commentService.deleteComment(uuid);
+        return ResponseEntity.ok(res);
+    }
+
     @PostMapping("/like/{uuid}")
     public ResponseEntity<LikePostRes> likePost(@PathVariable String uuid) {
         LikePostRes res = likePostService.likeLogic(uuid);

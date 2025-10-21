@@ -397,11 +397,36 @@
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 0.5rem;
+  justify-content: space-between;
 }
 
 .comment-author {
   font-weight: 600;
   color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.btn-delete-comment {
+  background: transparent;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.btn-delete-comment:hover {
+  opacity: 1;
+  background: rgba(231, 76, 60, 0.1);
+  transform: scale(1.1);
+}
+
+.btn-delete-comment i {
   font-size: 0.95rem;
 }
 

@@ -95,6 +95,10 @@ export class PostService {
     return this.http.post<Comment>(this.URL + '/comment/create/' + uuid, { comment: comment })
   }
 
+  deleteComment(uuid: String) {
+    return this.http.post<Message>(this.URL + '/comment/delete/' + uuid, null);
+  }
+
   doReport(uuid: String, reason: String) {
     return this.http.post<Message>(`http://localhost:8080/api/report/post/${uuid}`, { reason: reason });
   }

@@ -334,4 +334,27 @@ export class PostCard implements OnInit {
     }
     return 'error';
   }
+
+  onDeleteComment(commentUuid: String) {
+    this.postService.deleteComment(commentUuid).subscribe({
+      next: (res) => {
+        this.showToast(String(res.message), 'success');
+        if (this.post) {
+          this.post.commentCount = Math.max(0, this.post.commentCount - 1);
+        }
+        if (this.comment) {
+          this.comment.comments = this.comment.comments.filter(c => c.uuid !== commentUuid);
+        }
+      },
+      error: (err) => {
+        console.error('Error deleting comment:', err);
+        const message = err.error?.message || 'Failed to delete comment. Please try again.';
+        this.showToast(message, this.getMessageType(message));
+      }
+    });
+  }
+
+  myComment(commentUserUuid: String): boolean {
+    return commentUserUuid === this.profileData?.uuid;
+  }
 }

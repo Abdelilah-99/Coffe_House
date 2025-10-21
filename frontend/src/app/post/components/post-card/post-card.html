@@ -124,6 +124,11 @@
                         <div class="comment-content">
                             <div class="comment-header">
                                 <span class="comment-author">{{ c?.userName }}</span>
+                                <button *ngIf="myComment(c.userUuid)" class="btn-delete-comment"
+                                        (click)="onDeleteComment(c.uuid)"
+                                        title="Delete comment">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
                             </div>
                             <p class="comment-text">{{ c?.comment }}</p>
                             <div class="comment-meta">

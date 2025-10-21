@@ -2,11 +2,15 @@ package com.blog.repository;
 
 import com.blog.entity.Comment;
 import com.blog.entity.User;
+
+import jakarta.transaction.Transactional;
+
 import com.blog.entity.Post;
 
 import java.util.*;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,4 +24,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     long countByUser(User user);
     
     long countByPost(Post post);
+
+    @Transactional
+    @Modifying
+    void deleteByUuid(String uuid);
 }
