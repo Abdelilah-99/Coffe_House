@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -217,6 +218,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SecurityException.class)
     public ResponseEntity<Map<String, Object>> HandleSecurityException(SecurityException ex,
+            WebRequest req) {
+        Map<String, Object> errRes = new HashMap<>();
+        errRes.put("timestamp", LocalDateTime.now());
+        errRes.put("status", HttpStatus.FORBIDDEN);
+        errRes.put("message", ex.getMessage());
+        errRes.put("path", req.getDescription(false));
+        return new ResponseEntity<>(errRes, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, Object>> HandleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex,
             WebRequest req) {
         Map<String, Object> errRes = new HashMap<>();
         errRes.put("timestamp", LocalDateTime.now());

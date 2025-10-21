@@ -22,7 +22,6 @@ export class AuthService {
   }
 
   register(formData: FormData): Observable<any> {
-    console.log(formData.get('profileImage'));
     return this.protocolHttp.post(`${this.URL}/register`, formData);
   }
 

@@ -69,17 +69,28 @@ export class Me implements OnInit {
   imagePreviews: { [key: number]: string } = {};
 
   onFileSelected(e: any) {
+    console.log("event triggered");
+
     const files: FileList = e.target.files;
     if (!files || files.length === 0) return;
+    if (files.length > 5 || this.selectedFiles.length > 4) {
+      this.showToast("5 file maximum", "error");
+      return;
+    }
     for (let i = 0; i < files.length; i++) {
       if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
         this.showToast("format image and video are only allowed", "error");
         console.error(files[i].type.split('/')[0]);
         return;
       }
+      if (files[i].size > 100 * 1024 * 1024) {
+        this.showToast("Max upload size exceeded", "error");
+        return;
+      }
       this.selectedFiles.push(files[i]);
     }
     console.log('Selected files:', this.selectedFiles.map(f => f.name));
+    e.target.value = '';
   }
 
   getImagePreview(file: File): string {
@@ -94,7 +105,6 @@ export class Me implements OnInit {
   removeImage(index: number) {
     this.selectedFiles.splice(index, 1);
     delete this.imagePreviews[index];
-    // Reindex the previews
     const newPreviews: { [key: number]: string } = {};
     Object.keys(this.imagePreviews).forEach((key) => {
       const oldIndex = parseInt(key);

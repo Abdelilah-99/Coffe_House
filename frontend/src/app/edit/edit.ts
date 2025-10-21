@@ -55,7 +55,6 @@ export class Edit implements OnInit {
       this.postService.getPost(this.postUuid).subscribe({
         next: (post) => {
           this.post = post;
-          console.log("post in edit ", this.post);
 
           if (this.currentUser && post.userUuid !== this.currentUser.uuid) {
             this.navigate.navigate(['']);
@@ -96,7 +95,6 @@ export class Edit implements OnInit {
       this.selectedFiles.push(file);
 
       const url = URL.createObjectURL(file);
-      console.log(url);
       this.previewUrls.push(url);
     }
   }
@@ -107,8 +105,6 @@ export class Edit implements OnInit {
   }
 
   onSave(updatedPost: any) {
-    console.log(updatedPost);
-
     if (!updatedPost.title || updatedPost.title.trim().length === 0) {
       this.showToast("Title is required", 'error');
       return;
@@ -165,8 +161,6 @@ export class Edit implements OnInit {
 
   showToast(text: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = { text, type };
-    console.log("this.toastMessage: ", this.toastMessage);
-
     setTimeout(() => {
       this.toastMessage = null;
     }, 2000);

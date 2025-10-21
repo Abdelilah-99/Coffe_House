@@ -7,7 +7,6 @@ export const adminGuard: CanActivateFn = () => {
     const platformId = inject(PLATFORM_ID);
     if (isPlatformBrowser(platformId)) {
         const role = localStorage.getItem('user_role');
-        console.log("role", role);
         if (role === 'ROLE_ADMIN') return true;
     }
     router.navigate(['/']);

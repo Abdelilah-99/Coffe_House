@@ -20,7 +20,6 @@ export class Login implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('access_token');
       if (token) {
-        console.log("token: ", token);
         this.router.navigate(['/me']);
       }
     }
@@ -42,7 +41,6 @@ export class Login implements OnInit {
       },
       error: (err) => {
         this.message = err.error.message;
-        console.log('res: ', err);
       }
     });
   }

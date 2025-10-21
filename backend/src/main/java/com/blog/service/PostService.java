@@ -66,6 +66,9 @@ public class PostService {
         if (sanitizedContent.isEmpty()) {
             throw new ContentEmptyException("Content not found");
         }
+        if (req.getMediaFiles().length > 5) {
+            throw new SecurityException("5 file maximum");
+        }
 
         try {
             UsersRespons userRes = usersServices.getCurrentUser();

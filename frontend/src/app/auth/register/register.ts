@@ -24,7 +24,6 @@ export class Register implements OnInit {
     if (typeof window !== 'undefined' && window.localStorage) {
       const token = localStorage.getItem('access_token');
       if (token) {
-        console.log("token: ", token);
         this.router.navigate(['/me']);
       }
     }
@@ -35,7 +34,6 @@ export class Register implements OnInit {
 
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
-    // console.log(files[0].type);
 
     if (!files || files.length === 0) {
       this.selectedFile = null;
@@ -48,7 +46,6 @@ export class Register implements OnInit {
       console.error(files[0].type.split('/')[0]);
       return;
     }
-    console.log('Selected file:', this.selectedFile.name);
     const reader = new FileReader();
     reader.onload = (event: any) => {
       this.profileImagePreview = event.target.result;
@@ -82,7 +79,6 @@ export class Register implements OnInit {
     );
 
     if (this.selectedFile != null) {
-      console.log("yes it enters");
       formData.append("profileImage", this.selectedFile);
     }
 
@@ -90,7 +86,6 @@ export class Register implements OnInit {
       next: (res) => {
         this.errorMessage = "register successful!!";
         this.router.navigate(['/login']);
-        console.log('res: ', res);
       },
       error: (err) => {
         console.error('err: ', err.error.message);

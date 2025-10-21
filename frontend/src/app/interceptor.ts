@@ -9,7 +9,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
   if (isPlatformBrowser(platformId)) {
-    console.log("derghgfdg");
 
     const token = localStorage.getItem('access_token');
     const role = localStorage.getItem('user_role');
@@ -41,7 +40,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           return throwError(() => new Error('Token expired'));
         }
 
-        console.log("tokenRole: ", tokenRole);
       } catch (error) {
         console.error('Invalid token format');
         localStorage.removeItem('access_token');
@@ -56,7 +54,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
       });
       return next(authReq)
         .pipe(
-          tap(value => console.log("hi ", value)),
           catchError((error: HttpErrorResponse) => {
             if (error.status === 0) {
               alert('🚨 Server is currently unavailable. Please try again later.');

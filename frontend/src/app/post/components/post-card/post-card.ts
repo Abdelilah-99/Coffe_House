@@ -131,9 +131,7 @@ export class PostCard implements OnInit {
 
   onReact(uuid: String) {
     this.postService.doReaction(uuid).subscribe({
-      next: (like) => {
-        console.log("like: ===>> ", like);
-
+      next: (like) => { 
         if (this.post) {
           this.post.likeCount = like.likeCount;
         }

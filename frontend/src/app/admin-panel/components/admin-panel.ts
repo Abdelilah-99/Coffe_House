@@ -48,7 +48,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getOverallStatistics().subscribe({
       next: (res) => {
         this.AdminStatisticsResponse = res;
-        console.log("AdminStatisticsResponse: ", res);
       },
       error: (err) => {
         console.error("statistique err: ", err);
@@ -60,8 +59,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.loadUsers().subscribe({
       next: (res) => {
         this.users = res;
-        console.log("users: ", res);
-        console.log("Users loaded successfully");
       },
       error: (err) => {
         console.error("Error loading users: ", err);
@@ -73,7 +70,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.loadPosts().subscribe({
       next: (res) => {
         this.posts = res;
-        console.log("Posts loaded successfully");
       },
       error: (err) => {
         console.error("Error loading posts: ", err);
@@ -85,7 +81,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.loadReports('users').subscribe({
       next: (res) => {
         this.userReports = res;
-        console.log("User reports loaded successfully");
       },
       error: (err) => {
         console.error("Error loading user reports: ", err);
@@ -95,7 +90,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.loadReports('posts').subscribe({
       next: (res) => {
         this.postReports = res;
-        console.log("Post reports loaded successfully");
       },
       error: (err) => {
         console.error("Error loading post reports: ", err);
@@ -107,7 +101,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getUsersWithMostComments().subscribe({
       next: (res) => {
         this.topCommenters = res;
-        console.log("Top commenters loaded successfully");
       },
       error: (err) => {
         console.error("Error loading top commenters: ", err);
@@ -117,7 +110,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getUsersWithMostFollowers().subscribe({
       next: (res) => {
         this.mostFollowedUsers = res;
-        console.log("Most followed users loaded successfully");
       },
       error: (err) => {
         console.error("Error loading most followed users: ", err);
@@ -127,7 +119,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getMostReportedUsers().subscribe({
       next: (res) => {
         this.mostReportedUsers = res;
-        console.log("Most reported users loaded successfully");
       },
       error: (err) => {
         console.error("Error loading most reported users: ", err);
@@ -137,7 +128,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getPostsWithMostComments().subscribe({
       next: (res) => {
         this.mostCommentedPosts = res;
-        console.log("Most commented posts loaded successfully");
       },
       error: (err) => {
         console.error("Error loading most commented posts: ", err);
@@ -147,7 +137,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getPostsWithMostLikes().subscribe({
       next: (res) => {
         this.mostLikedPosts = res;
-        console.log("Most liked posts loaded successfully");
       },
       error: (err) => {
         console.error("Error loading most liked posts: ", err);
@@ -157,7 +146,6 @@ export class AdminPanel implements OnInit {
     this.adminePanelServices.getMostReportedPosts().subscribe({
       next: (res) => {
         this.mostReportedPosts = res;
-        console.log("Most reported posts loaded successfully");
       },
       error: (err) => {
         console.error("Error loading most reported posts: ", err);
@@ -252,7 +240,6 @@ export class AdminPanel implements OnInit {
   deleteUser(uuid: string) {
     this.adminePanelServices.deleteUser(uuid).subscribe({
       next: (res) => {
-        console.log("User deleted successfully");
         this.loadUsers();
       },
       error: (err) => {
@@ -264,7 +251,6 @@ export class AdminPanel implements OnInit {
   banUser(uuid: string) {
     this.adminePanelServices.banUser(uuid).subscribe({
       next: () => {
-        console.log("User banned successfully");
         this.loadUsers();
       },
       error: (err) => {
@@ -276,7 +262,6 @@ export class AdminPanel implements OnInit {
   deletePost(uuid: string) {
     this.adminePanelServices.deletePost(uuid).subscribe({
       next: () => {
-        console.log("Post deleted successfully");
         this.loadPosts();
       },
       error: (err) => {
@@ -288,7 +273,6 @@ export class AdminPanel implements OnInit {
   hidePost(uuid: string) {
     this.adminePanelServices.hidePost(uuid).subscribe({
       next: () => {
-        console.log("Post hidden successfully");
         this.loadPosts();
       },
       error: (err) => {

@@ -136,7 +136,7 @@ export class Profile implements OnInit {
     })
   }
 
-  block?: boolean;
+  block: boolean = false;
 
   followLogic(userName: String, connect: boolean) {
     if (connect && this.profileRes?.uuid) {
@@ -144,10 +144,9 @@ export class Profile implements OnInit {
         next: (res) => {
           this.followRes = res;
           this.followers = this.profileRes?.follower;
-          console.log("unfollow succeed");
           if (this.profileRes) {
             this.profileRes.connect = false;
-            if (this.followers && (this.block === undefined || this.block === true)) {
+            if (this.followers && !this.block) {
               this.followers--;
               this.block = true;
             }
@@ -155,7 +154,6 @@ export class Profile implements OnInit {
           this.showToast('Successfully unfollowed ' + userName, 'success');
         },
         error: (err) => {
-          console.error("error unfollowing ", err);
           const message = err.error?.message || 'Failed to unfollow user. Please try again.';
           this.showToast(message, this.getMessageType(message));
         }
@@ -166,11 +164,9 @@ export class Profile implements OnInit {
         next: (res) => {
           this.followRes = res;
           this.followers = this.profileRes?.follower;
-          console.error("followers: ", this.followers);
-          console.log("follow succeed");
           if (this.profileRes) {
             this.profileRes.connect = true;
-            if (this.followers != null && (this.block === undefined || this.block === false)) {
+            if (this.followers != null && !this.block) {
               this.followers++;
               this.block = false;
             }

@@ -83,7 +83,6 @@ export class App implements OnInit {
     this.notifService.getCountNotif().subscribe({
       next: (res) => {
         this.count = res;
-        console.log("count: ", res);
       },
       error: (err) => {
         if (err.message !== 'Authentication invalid') {

@@ -20,14 +20,6 @@ public class FileValidationService {
     private static final Set<String> ALLOWED_VIDEO_EXTENSIONS = Set.of(
             "mp4", "webm");
 
-    private static final Set<String> BLOCKED_EXTENSIONS = Set.of(
-            "svg", "svgz",
-            "html", "htm", "xhtml",
-            "php", "jsp", "asp", "aspx",
-            "js", "exe", "bat", "sh",
-            "xml", "xsl", "xslt"
-    );
-
     public void validateFile(MultipartFile file) throws InvalidFormatException {
         if (file == null || file.isEmpty()) {
             throw new InvalidFormatException("File is empty or null");
@@ -90,11 +82,6 @@ public class FileValidationService {
     }
 
     private void validateExtension(String extension) throws InvalidFormatException {
-        if (BLOCKED_EXTENSIONS.contains(extension)) {
-            throw new InvalidFormatException(
-                    String.format("File extension '.%s' is not allowed for security reasons", extension));
-        }
-
         if (!ALLOWED_IMAGE_EXTENSIONS.contains(extension) &&
                 !ALLOWED_VIDEO_EXTENSIONS.contains(extension)) {
             throw new InvalidFormatException(
@@ -109,7 +96,6 @@ public class FileValidationService {
         if (mimeType == null || mimeType.trim().isEmpty()) {
             throw new InvalidFormatException("MIME type is null or empty");
         }
-        System.out.println("MimeType================================>>>>> " + mimeType);
         mimeType = mimeType.split(";")[0].trim().toLowerCase();
         if (!mimeType.contains("/")) {
             throw new InvalidFormatException("Invalid MIME type format: " + mimeType);

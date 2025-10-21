@@ -2,7 +2,6 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Like, Post, PostPage, PostService } from '../../post/services/post-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MeService, UserProfile } from '../../me/services/me.service';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -26,14 +25,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   post = { title: '', content: '' }
   constructor(private postService: PostService,
     private router: Router,
-    private profileService: MeService,
     @Inject(PLATFORM_ID) private platformId: Object) { }
 
   private initObserver() {
     if (!isPlatformBrowser(this.platformId)) return;
     this.observer = new IntersectionObserver((entries) => {
-      console.error('Reached bottom fetching next page');
-      console.log('Loading next page - lastTime:', this.lastTime, 'lastUuid:', this.lastUuid);
       if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastUuid) {
         this.loadPostByPage(this.lastTime, this.lastUuid);
       }
@@ -66,7 +62,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
         this.posts.push(...res.posts);
         this.isLoding = false;
-        console.log("data page: ", res.posts);
         if (onFinish) onFinish();
       },
       error: (err) => {
@@ -86,7 +81,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.postService.getAllPosts().subscribe({
       next: (posts) => {
         this.posts = posts;
-        console.log(posts);
         this.isLoding = false;
       },
       error: (err) => {
@@ -97,18 +91,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onPostCardSection(postUuid: String) {
-    console.log("this section will navigate throw the post section ", postUuid);
     this.router.navigate(['/postCard', postUuid]);
   }
 
   onReact(uuid: String) {
     this.postService.doReaction(uuid).subscribe({
       next: (like) => {
-        console.log(like);
         for (let i = 0; i < this.posts.length; i++) {
           const element = this.posts[i];
           if (element.postUuid == uuid) {
-            console.log(this.posts[i].likeCount, like.likeCount);
             element.likeCount = like.likeCount;
             this.posts[i] = element;
           }
