@@ -5,9 +5,11 @@
             <img *ngIf="post.mediaPaths[0].type.startsWith('image/')"
                 [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                 class="post-background-image">
-            <!-- <video *ngIf="post.mediaPaths[0].type.startsWith('video/')"
-                [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
-                class="post-background-image"></video> -->
+            <video *ngIf="post.mediaPaths?.length && post.mediaPaths[0].type.startsWith('video/')"
+                [src]="'http://localhost:8080/' + post.mediaPaths[0].path"
+                class="post-background-image">
+            </video>
+
             <div class="post-overlay">
                 <div class="post-title-overlay">
                     <h3 class="post-title">{{ post.title }}</h3>
