@@ -69,8 +69,6 @@ export class Me implements OnInit {
   imagePreviews: { [key: number]: string } = {};
 
   onFileSelected(e: any) {
-    console.log("event triggered");
-
     const files: FileList = e.target.files;
     if (!files || files.length === 0) return;
     if (files.length > 5 || this.selectedFiles.length > 4) {
@@ -89,7 +87,6 @@ export class Me implements OnInit {
       }
       this.selectedFiles.push(files[i]);
     }
-    console.log('Selected files:', this.selectedFiles.map(f => f.name));
     e.target.value = '';
   }
 
@@ -137,7 +134,6 @@ export class Me implements OnInit {
     formData.append("title", this.post.title);
     formData.append("content", this.post.content);
     this.message = "";
-    console.log(formData.get("title"));
 
     this.selectedFiles.forEach(element => {
       if (!element.type.includes("image") && !element.type.includes("video")) {
@@ -190,7 +186,6 @@ export class Me implements OnInit {
 
   showToast(text: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = { text, type };
-    console.log("this.toastMessage: ", this.toastMessage);
 
     setTimeout(() => {
       this.toastMessage = null;

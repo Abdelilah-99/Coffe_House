@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 export class Searchbar implements OnInit {
   searchControl = new FormControl('');
   searchData: any[] = [];
-  @Output() closeSearch = new EventEmitter<void>();
 
   constructor(private userService: UserService, private route: Router) { }
   ngOnInit(): void {
@@ -40,6 +39,5 @@ export class Searchbar implements OnInit {
     this.route.navigate(['profile', uuid]);
     this.searchControl.setValue('');
     this.searchData = [];
-    this.closeSearch.emit();
   }
 }

@@ -110,10 +110,4 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     })
   }
-
-  printPaths(paths: String[]) {
-    paths.forEach(element => {
-      console.log("paths:: ", element);
-    });
-  }
 }

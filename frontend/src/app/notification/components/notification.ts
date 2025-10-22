@@ -40,7 +40,6 @@ export class Notification implements OnInit {
     this.notifService.getAllNotif().subscribe({
       next: (res) => {
         this.notification = res;
-        console.log("notif: ", res[0].isRead);
       },
       error: (err) => {
         console.error(err);
