@@ -16,6 +16,7 @@ import com.blog.dto.UsersRespons;
 import com.blog.entity.Follow;
 import com.blog.entity.Notification;
 import com.blog.entity.Post;
+
 import com.blog.entity.User;
 import com.blog.exceptions.*;
 import com.blog.repository.*;
@@ -63,10 +64,12 @@ public class PostService {
         if (sanitizedTitle.isEmpty()) {
             throw new TitleEmptyException("Title not found");
         }
+
         if (sanitizedContent.isEmpty()) {
             throw new ContentEmptyException("Content not found");
         }
-        if (req.getMediaFiles().length > 5) {
+
+        if (req.getMediaFiles() != null && req.getMediaFiles().length > 5) {
             throw new SecurityException("5 file maximum");
         }
 
@@ -192,7 +195,7 @@ public class PostService {
             return filePath;
         } catch (IOException e) {
             throw new ErrSavingException(String.format("Error file i/o: " + e.getMessage(), e));
-        } catch (com.blog.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             throw new ErrSavingException(String.format("Invalid filename: " + e.getMessage(), e));
         }
     }
