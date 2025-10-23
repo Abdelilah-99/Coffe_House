@@ -95,8 +95,8 @@
                 </label>
                 <div class="media-grid">
                     <div *ngFor="let url of previewUrls; index as i" class="media-item">
-                        <img *ngIf="url.startsWith('blob:')" [src]="url" alt="Preview" />
-                        <video *ngIf="url.startsWith('blob:')" [src]="url" controls></video>
+                        <img *ngIf="url.url.startsWith('blob:') && url.fileType.startsWith('image')" [src]="url.url" alt="Preview" />
+                        <video *ngIf="url.url.startsWith('blob:') && url.fileType.startsWith('video')" [src]="url.url" controls></video>
                         <button type="button" class="remove-media-btn" (click)="deleteFileSelected(i)">
                             <i class="bi bi-trash"></i>
                         </button>

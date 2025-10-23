@@ -149,7 +149,6 @@ public class EditPostService {
                 updatedPaths.add(filePath);
             }
         }
-
         List<String> pathToRemove = new ArrayList<>();
         List<String> pathFromReq = req.getPathFiles();
         int max = Math.max(oldPaths.size(), pathFromReq.size());
@@ -163,11 +162,6 @@ public class EditPostService {
                 pathToRemove,
                 updatedPaths,
                 pathFromReq);
-        // for (String oldPath : oldPaths) {
-        // if (!updatedPaths.contains(oldPath)) {
-        // pathToRemove.add(oldPath);
-        // }
-        // }
         for (String pathRemove : pathToRemove) {
             new File(pathRemove).delete();
         }

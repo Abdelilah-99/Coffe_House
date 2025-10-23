@@ -71,7 +71,6 @@ export class PostService {
   }
 
   editPost(uuid: String, formData: FormData): Observable<any> {
-    console.log(this.URL + uuid);
     return this.http.post<Post>(this.URL + '/edit/' + uuid, formData);
   }
 

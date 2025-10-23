@@ -66,15 +66,15 @@ export class Me implements OnInit {
     })
   }
   selectedFiles: File[] = [];
-  imagePreviews: { [key: number]: string } = {};
+  previewUrls: { url: String, type: string }[] = [];
 
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
-    if (!files || files.length === 0) return;
     if (files.length > 5 || this.selectedFiles.length > 4) {
       this.showToast("5 file maximum", "error");
       return;
     }
+    if (!files || files.length === 0) return;
     for (let i = 0; i < files.length; i++) {
       if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
         this.showToast("format image and video are only allowed", "error");
@@ -85,33 +85,17 @@ export class Me implements OnInit {
         this.showToast("Max upload size exceeded", "error");
         return;
       }
-      this.selectedFiles.push(files[i]);
+      const file = files[i];
+      this.selectedFiles.push(file);
+      const url = URL.createObjectURL(file);
+      this.previewUrls.push({ url: url, type: file.type });
     }
     e.target.value = '';
   }
 
-  getImagePreview(file: File): string {
-    const index = this.selectedFiles.indexOf(file);
-    if (!this.imagePreviews[index]) {
-      this.imagePreviews[index] = URL.createObjectURL(file);
-    }
-    return this.imagePreviews[index];
-  }
-
-
-  removeImage(index: number) {
+  deleteFileSelected(index: number) {
     this.selectedFiles.splice(index, 1);
-    delete this.imagePreviews[index];
-    const newPreviews: { [key: number]: string } = {};
-    Object.keys(this.imagePreviews).forEach((key) => {
-      const oldIndex = parseInt(key);
-      if (oldIndex > index) {
-        newPreviews[oldIndex - 1] = this.imagePreviews[oldIndex];
-      } else if (oldIndex < index) {
-        newPreviews[oldIndex] = this.imagePreviews[oldIndex];
-      }
-    });
-    this.imagePreviews = newPreviews;
+    this.previewUrls.splice(index, 1);
   }
 
   onCreatePost() {
@@ -156,7 +140,7 @@ export class Me implements OnInit {
     this.post.title = '';
     this.post.content = '';
     this.selectedFiles = [];
-    this.imagePreviews = {};
+    this.previewUrls = [];
   }
 
   navigateToPost(postUuid: String) {
@@ -178,6 +162,7 @@ export class Me implements OnInit {
       }
     });
   }
+
   hideErrorAfterDelay() {
     setTimeout(() => {
       this.errorMessage = null;

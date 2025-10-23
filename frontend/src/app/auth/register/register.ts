@@ -46,11 +46,12 @@ export class Register implements OnInit {
       console.error(files[0].type.split('/')[0]);
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.profileImagePreview = event.target.result;
-    };
-    reader.readAsDataURL(this.selectedFile);
+    if (files[0].size > 10 * 1024 * 1024) {
+      this.errorMessage = "Max upload size exceeded";
+      return;
+    }
+    this.profileImagePreview = URL.createObjectURL(files[0]);
+    console.log(this.profileImagePreview);
   }
 
   removeProfileImage() {

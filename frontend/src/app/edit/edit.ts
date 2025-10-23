@@ -84,19 +84,35 @@ export class Edit implements OnInit {
   }
 
   selectedFiles: File[] = [];
-  previewUrls: string[] = [];
+  previewUrls: { url: String, fileType: string }[] = [];
+  oldFileLen: number = 0;
 
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
+    if (this.post) {
+      this.oldFileLen = this.post.mediaPaths.length;
+    }
     if (!files || files.length === 0) return;
-
+    if (files.length + this.oldFileLen > 5 || this.selectedFiles.length + this.oldFileLen > 4) {
+      this.showToast("5 file maximum", "error");
+      return;
+    }
     for (let i = 0; i < files.length; i++) {
+      if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
+        this.showToast("format image and video are only allowed", "error");
+        console.error(files[i].type.split('/')[0]);
+        return;
+      }
+      if (files[i].size > 100 * 1024 * 1024) {
+        this.showToast("Max upload size exceeded", "error");
+        return;
+      }
       const file = files[i];
       this.selectedFiles.push(file);
-
       const url = URL.createObjectURL(file);
-      this.previewUrls.push(url);
+      this.previewUrls.push({ url: url, fileType: file.type });
     }
+    e.target.value = '';
   }
 
   deleteFileSelected(index: number) {

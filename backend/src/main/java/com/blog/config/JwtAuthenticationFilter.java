@@ -29,14 +29,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-
-        System.out.println("=== JWT FILTER CALLED ===");
-        System.out.println("Request URI: " + req.getRequestURI());
-        System.out.println("Request Method: " + req.getMethod());
-
         String requestPath = req.getRequestURI();
         if (isPublicEndpoint(requestPath)) {
-            System.out.println("Public endpoint, skipping JWT validation");
             filterChain.doFilter(req, res);
             return;
         }
@@ -44,15 +38,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String userName = null;
         String token = null;
         final String authHeader = req.getHeader("Authorization");
-
-        System.out.println("Processing request: " + requestPath);
-        System.out.println("Auth header: " + authHeader);
-
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             try {
                 userName = jwtUtils.extractUsername(token);
-                System.out.println("Extracted username: " + userName);
             } catch (Exception e) {
                 System.out.println("Failed to extract username: " + e.getMessage());
             }

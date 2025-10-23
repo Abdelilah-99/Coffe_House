@@ -22,11 +22,6 @@ public class JwtUtils {
             @Value("${security.jwt.expiration-time}") long expTime) {
         this.secretKey = secretKey;
         this.expTime = expTime;
-        System.out.println("=== JWT DEBUG INFO ===");
-        System.out.println("Secret Key: " + secretKey);
-        System.out.println("Secret Key Length: " + secretKey.length());
-        System.out.println("Expiration Time: " + expTime);
-        System.out.println("=====================");
     }
 
     private SecretKey getSigningKey() {
@@ -78,8 +73,6 @@ public class JwtUtils {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        System.out.printf("username from validate: %s\n", username);
-        System.out.printf("username details from validate: %s\n", userDetails.getUsername());
         return username.equals(userDetails.getUsername()) && isTokenExpired(token) == false;
     }
 

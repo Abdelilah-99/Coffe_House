@@ -114,7 +114,6 @@ export class Profile implements OnInit {
         this.followers = this.profileRes?.follower;
         this.myProfile(this.profileRes.uuid);
         this.loadUserPosts(uuid);
-        console.log("profile has come succesfully ", this.profileRes.username);
       },
       error: (err) => {
         console.error("error getting profile ", err);
@@ -219,7 +218,6 @@ export class Profile implements OnInit {
   adminBanUser(uuid: String) {
     this.adminService.banUser(uuid).subscribe({
       next: () => {
-        console.log("User ban status toggled successfully");
         if (this.uuid) {
           this.loadProfile(this.uuid);
         }

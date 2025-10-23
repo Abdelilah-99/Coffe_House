@@ -25,7 +25,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         tokenRole = decodeToken.role;
 
         if (role && tokenRole && !role.includes(tokenRole)) {
-          console.error('Role tampering detected! Clearing authentication.');
           localStorage.removeItem('access_token');
           localStorage.removeItem('user_role');
           router.navigate(['/login']);
@@ -41,7 +40,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
       } catch (error) {
-        console.error('Invalid token format');
         localStorage.removeItem('access_token');
         localStorage.removeItem('user_role');
         router.navigate(['/login']);
@@ -55,9 +53,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
       return next(authReq)
         .pipe(
           catchError((error: HttpErrorResponse) => {
-            if (error.status === 0) {
-              alert('🚨 Server is currently unavailable. Please try again later.');
-            } else if (error.status === 401) {
+            if (error.status === 401) {
               alert('🔒 You are not authorized. Please log in again.');
               localStorage.removeItem('access_token');
               localStorage.removeItem('user_role');
@@ -66,7 +62,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
               alert('⚠️ Server error occurred. Try again later.');
             }
             return throwError(() => error);
-          })
+          }),
         );
     }
   }

@@ -21,9 +21,7 @@ export class Searchbar implements OnInit {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        // tap(value => console.log('🔎 User typed:', value)),
         switchMap(value => this.userService.getUserFromSearch(value as string))
-        // tap(res => console.log('✅ API response:', res))
       )
       .subscribe({
         next: (res) => {

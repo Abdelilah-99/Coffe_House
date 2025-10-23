@@ -52,7 +52,6 @@ export class PostCard implements OnInit {
       this.profileService.getProfile().subscribe({
         next: (data) => {
           this.profileData = data;
-          console.log("test: ", this.profileData);
         },
         error: (err) => {
           console.error("err loading profile for post check: ", err);
@@ -66,7 +65,6 @@ export class PostCard implements OnInit {
       this.postService.getPost(this.postUuid).subscribe({
         next: (post) => {
           this.post = post;
-          console.log(this.post);
         },
         error: (err) => {
           console.error("errorl loading post ", err);
@@ -148,13 +146,11 @@ export class PostCard implements OnInit {
 
   onComment(uuid: String) {
     this.isCommenting = !this.isCommenting;
-    console.log(this.isCommenting);
     this.instantComments = [];
     if (this.isCommenting) {
       this.postService.getComments(uuid).subscribe({
         next: (comment) => {
           this.comment = comment;
-          console.log("comment.comments; ", comment.comments);
           this.errorMessage = null;
           this.toastMessage = null;
         },
@@ -168,20 +164,14 @@ export class PostCard implements OnInit {
   }
 
   onEdit(postUuid: String) {
-    console.log("this section will navigate throw the post section ", postUuid);
-    // isMyPost() {
-
-    // }
     this.navigate.navigate(['/edit', postUuid]);
   }
   onReport() {
     this.reportAction = !this.reportAction;
-    console.log("hii from outside");
   }
 
   onPrepareSubmitReport(reason: String) {
     if (!reason || reason.trim() === '') {
-      // alert('Please describe the issue before submitting your report.');
       this.showToast('Please describe the issue before submitting your report.', 'error');
       return;
     }
@@ -203,7 +193,6 @@ export class PostCard implements OnInit {
   }
 
   submitReport(uuid: String, reason: String) {
-    console.log("hii from inside ", uuid, reason);
     this.postService.doReport(uuid, reason).subscribe({
       next: (res) => {
         this.message = res;
@@ -213,7 +202,6 @@ export class PostCard implements OnInit {
       error: (err) => {
         console.error(err);
         const message = err.error?.message || 'Failed to submit report. Please try again.';
-        console.log("message: === ", this.toastMessage);
         this.showToast(message, this.getMessageType(message));
         this.reportAction = false;
       }
@@ -223,7 +211,6 @@ export class PostCard implements OnInit {
   onDelete(uuid: String) {
     this.postService.deletePost(uuid).subscribe({
       next: (res) => {
-        console.log("post has been deleted ", res);
         this.navigate.navigate(['']);
       },
       error: (err) => {
@@ -239,7 +226,6 @@ export class PostCard implements OnInit {
         this.navigate.navigate(['/login']);
       }
     }
-    console.log(userUuid + "t" + this.profileData?.uuid);
 
     if (userUuid === this.profileData?.uuid) {
       return true;
@@ -280,7 +266,6 @@ export class PostCard implements OnInit {
   adminHidePost(postUuid: String) {
     this.adminService.hidePost(postUuid).subscribe({
       next: () => {
-        console.log("Post hide/unhide status toggled successfully");
         this.loadCardData();
       },
       error: (err) => {
@@ -292,7 +277,6 @@ export class PostCard implements OnInit {
   adminDeletePost(postUuid: String) {
     this.adminService.deletePost(postUuid).subscribe({
       next: () => {
-        console.log("Post deleted successfully");
         this.navigate.navigate(['']);
       },
       error: (err) => {
@@ -302,8 +286,6 @@ export class PostCard implements OnInit {
   }
 
   moveToProfile(uuid: String | undefined) {
-    console.log("====================================", uuid);
-
     this.navigate.navigate(['profile', uuid]);
   }
 
@@ -315,8 +297,6 @@ export class PostCard implements OnInit {
 
   showToast(text: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = { text, type };
-    console.log("this.toastMessage: ", this.toastMessage);
-
     setTimeout(() => {
       this.toastMessage = null;
     }, 5000);

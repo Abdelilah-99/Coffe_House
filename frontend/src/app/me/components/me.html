@@ -81,10 +81,10 @@
                 </div>
             </div>
             <div *ngIf="selectedFiles.length > 0" class="image-preview-container">
-                <div *ngFor="let file of selectedFiles; let i = index" class="image-preview-item">
-                    <img *ngIf="file.type.startsWith('image/')" [src]="getImagePreview(file)" alt="Preview">
-                    <video *ngIf="file.type.startsWith('video/')" [src]="getImagePreview(file)" alt="Preview" controls></video>
-                    <button type="button" class="remove-image-btn" (click)="removeImage(i)">
+                <div *ngFor="let file of previewUrls; let   i = index" class="image-preview-item">
+                    <img *ngIf="file.type.startsWith('image/')" [src]="file.url" alt="Preview">
+                    <video *ngIf="file.type.startsWith('video/')" [src]="file.url" alt="Preview" controls></video>
+                    <button type="button" class="remove-image-btn" (click)="deleteFileSelected(i)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             viewBox="0 0 16 16">
                             <path
