@@ -114,7 +114,6 @@ public class PostService {
             for (Follow follow : followers) {
                 Notification newNotif = new Notification();
                 newNotif.setNotificatedUser(follow.getFollower().getUuid());
-                System.out.println("follow username: " + follow.getFollower().getId());
                 newNotif.setIsRead(false);
                 newNotif.setNotification(String.format("%s has create a post", user.getUserName()));
                 newNotif.setPostOrProfileUuid(newPost.getUuid());

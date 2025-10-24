@@ -72,7 +72,6 @@ public class NotifService {
         } catch (Exception e) {
             throw new UserNotLoginException("login for getting notification count");
         }
-        System.out.println("login user for notif: " + usersRespons.getUsername());
         return notifRepository.countUnreadNotificationsExcludingHiddenPosts(usersRespons.getUuid());
     }
 }

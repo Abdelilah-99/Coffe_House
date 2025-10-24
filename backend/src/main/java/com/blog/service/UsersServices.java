@@ -62,14 +62,10 @@ public class UsersServices {
     public UsersRespons getCurrentUser() throws Exception {
         System.err.println("here");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authentication = " + authentication);
-        System.out.println("Principal = " + authentication.getPrincipal());
-        System.out.println("Authorities = " + authentication.getAuthorities());
 
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String username = userDetails.getUsername();
-            // System.out.printf("username in getcrr: \n", username);
             User user = userRepository.findByUserName(username).orElseThrow();
             UsersRespons crrUser = new UsersRespons();
             crrUser.setUuid(user.getUuid());
@@ -88,7 +84,6 @@ public class UsersServices {
     }
 
     public UserFollowRes follow(String uuid) {
-        // System.out.println("========================================== " + userRepository.getClass() + " =======================================");
         UsersRespons user;
         try {
             user = getCurrentUser();
@@ -124,7 +119,6 @@ public class UsersServices {
         followRepository.save(follow);
         follower = followRepository.countByFollowerId(otherUser.getId());
         following = followRepository.countByFollowingId(otherUser.getId());
-        System.out.println("follower: " + follower + "following: " + following);
         return new UserFollowRes(follower, following, crrUser.getUuid(),
                 otherUser.getUuid(),
                 "user has succseffully followed");
@@ -160,15 +154,12 @@ public class UsersServices {
         boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         long follower = followRepository.countByFollowerId(otherUser.getId());
         long following = followRepository.countByFollowingId(otherUser.getId());
-        System.out.println(
-                ">>>>>>>>>>>> follower: " + follower + " following: " + following + " id: " + otherUser.getId());
 
         if (!existe) {
             return new UserFollowRes(follower, following, crrUser.getUuid(),
                     otherUser.getUuid(),
                     "already unfollowed");
         }
-        System.out.println("hii follow");
         followRepository.deleteByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         follower = followRepository.countByFollowerId(otherUser.getId());
         following = followRepository.countByFollowingId(otherUser.getId());
@@ -211,8 +202,6 @@ public class UsersServices {
         } catch (Exception e) {
             throw new UserNotLoginException("u are not login or registered to search");
         }
-        System.out.println("username search: " + username);
-        System.out.println("crr username search: " + usersRespons.getUsername());
         List<User> users = userRepository.findByUuidNotAndUserNameStartingWith(usersRespons.getUuid(), username);
         List<UsersRespons> rs = convertToRes(users);
         return rs;
@@ -248,7 +237,6 @@ public class UsersServices {
         long follower = followRepository.countByFollowerId(user.getId());
         long following = followRepository.countByFollowingId(user.getId());
         boolean connecting = followRepository.existsByFollowerIdAndFollowingId(crrUserData.getId(), user.getId());
-        System.out.println("user " + user.getId() + " crrUser " + crrUserData.getId());
         UsersRespons profile = new UsersRespons();
         profile.setEmail(user.getEmail());
         profile.setFirstName(user.getFirstName());

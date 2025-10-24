@@ -46,7 +46,6 @@ public class RegistrationService {
             if (profileImage != null && !profileImage.isEmpty()) {
                 // String originalName = profileImage.getOriginalFilename();
                 String mimeType = profileImage.getContentType();
-                System.out.println("Uploading image: " + mimeType);
                 if (mimeType == null ||
                         !(mimeType.startsWith("image/"))) {
                     throw new InvalidFormatException(null, "Invalide Format Type", mimeType, getClass());

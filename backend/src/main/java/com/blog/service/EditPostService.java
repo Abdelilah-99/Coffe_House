@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.blog.dto.EditPostReq;
 import com.blog.dto.MediaDTO;
 import com.blog.dto.PostRes;
+import com.blog.dto.UsersRespons;
 import com.blog.repository.*;
 
 import java.io.IOException;
@@ -21,6 +19,7 @@ import com.blog.entity.*;
 import com.blog.exceptions.ErrSavingException;
 import com.blog.exceptions.InvalidFormatException;
 import com.blog.exceptions.PostNotFoundException;
+import com.blog.exceptions.UserNotFoundException;
 import com.blog.exceptions.UserNotLoginException;
 import com.blog.security.FileValidationService;
 import com.blog.security.InputSanitizationService;
@@ -33,19 +32,22 @@ public class EditPostService {
     private final LikesRepository likesRepository;
     private final FileValidationService fileValidationService;
     private final InputSanitizationService inputSanitizationService;
+    private final UsersServices usersServices;
 
     EditPostService(PostRepository postRepository,
             UserRepository userRepository,
             CommentRepository commentRepository,
             LikesRepository likesRepository,
             FileValidationService fileValidationService,
-            InputSanitizationService inputSanitizationService) {
+            InputSanitizationService inputSanitizationService,
+            UsersServices usersServices) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.likesRepository = likesRepository;
         this.fileValidationService = fileValidationService;
         this.inputSanitizationService = inputSanitizationService;
+        this.usersServices = usersServices;
     }
 
     private List<MediaDTO> convertToMediaDTOs(List<String> mediaPaths) {
@@ -83,18 +85,19 @@ public class EditPostService {
     }
 
     public PostRes editPost(String uuid, EditPostReq req) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
-            throw new UserNotLoginException("User not authenticated");
+        UsersRespons crrUser;
+        try {
+            crrUser = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotFoundException("user error");
         }
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String username = userDetails.getUsername();
+        String username = crrUser.getUsername();
         User currentUser = userRepository.findByUserName(username)
                 .orElseThrow(() -> new UserNotLoginException("User not found"));
 
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("Post not found"));
 
+        System.out.println("----------------------" + currentUser.getUserName());
         if (post.getUser().getId() != currentUser.getId()) {
             throw new SecurityException("You are not authorized to edit this post");
         }
@@ -110,8 +113,6 @@ public class EditPostService {
 
         List<String> oldPaths = post.getMediaPaths();
         List<String> updatedPaths = new ArrayList<>(req.getPathFiles());
-
-        
 
         if (req.getMediaFiles() != null) {
 

@@ -54,17 +54,15 @@ export class Edit implements OnInit {
     if (this.postUuid && isPlatformBrowser(this.platformId)) {
       this.postService.getPost(this.postUuid).subscribe({
         next: (post) => {
-          this.post = post;
-
           if (this.currentUser && post.userUuid !== this.currentUser.uuid) {
+            this.isAuthorized = false;
             this.navigate.navigate(['']);
             return;
           }
-
+          this.post = post;
           this.isAuthorized = true;
         },
-        error: (err) => {
-          console.error("post not found ", err);
+        error: () => {
           this.showToast('Post not found', 'error');
           this.navigate.navigate(['']);
         }
@@ -150,8 +148,6 @@ export class Edit implements OnInit {
     this.postService.editPost(updatedPost.postUuid, formData).subscribe({
       next: (data) => {
         this.updatedPost = data;
-        console.error("Post updated successfully");
-
         this.showToast("Post updated successfully", 'success');
         setTimeout(() => {
           this.navigate.navigate(['']);

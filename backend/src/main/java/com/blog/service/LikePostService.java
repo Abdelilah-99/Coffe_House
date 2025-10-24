@@ -27,7 +27,6 @@ public class LikePostService {
 
     @Transactional
     public LikePostRes likeLogic(String uuid) {
-        System.out.printf("uuid: %s\n", uuid);
         Post post = postRepository.findByUuid(uuid)
                 .orElseThrow(() -> new PostNotFoundException("post not found for like"));
         try {

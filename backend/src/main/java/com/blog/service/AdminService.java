@@ -137,7 +137,6 @@ public class AdminService {
             usersAdmineResponse.setUsername(user.getUserName());
             usersAdmineResponse.setUuid(user.getUuid());
             usersAdmineResponse.setStatus(user.getStatus());
-            System.out.println("usersAdmineResponse: =======================>>>" + usersAdmineResponse.getStatus());
             usersDto.add(usersAdmineResponse);
         }
         return usersDto;
@@ -189,7 +188,6 @@ public class AdminService {
         }
         String status = user.getStatus();
         String msg = new String();
-        System.out.println("status: ===========>>> " + status);
         if (status.equals("BAN")) {
             user.setStatus("ACTIVE");
             msg = "unbanned";
@@ -223,8 +221,6 @@ public class AdminService {
             post.setStatus("EPOSED");
             msg = "exposed";
         }
-        System.out.println("post status: =======================+> " + post.getStatus());
-
         postRepository.save(post);
         PostRes postRes = new PostRes();
         postRes.setMessage(String.format("post has %s successfully", msg));

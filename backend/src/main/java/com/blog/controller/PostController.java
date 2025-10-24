@@ -45,7 +45,6 @@ public class PostController {
     public ResponseEntity<PostPage> getPostByPage(
             @RequestParam(value = "lastTime", required = false) Long lastTime,
             @RequestParam(value = "lastId", required = false) String lastUuid) {
-        System.out.println("=================++++++++++: " + lastTime + " " + lastUuid);
         PostPage data = postService.getPosts(lastTime, lastUuid);
         return ResponseEntity.ok(data);
     }
@@ -55,8 +54,6 @@ public class PostController {
             @RequestParam("content") String content,
             @RequestParam(value = "mediaFiles", required = false) MultipartFile[] mediaFiles) {
         CreatePostReq req = new CreatePostReq(content, title, mediaFiles);
-        System.out.printf("req.getTitle(): \n", req.getTitle());
-
         PostRes res = postService.createPost(req);
         return ResponseEntity.ok(res);
     }
@@ -87,7 +84,6 @@ public class PostController {
 
     @GetMapping("/comment/{uuid}")
     public ResponseEntity<CommentRes> getComment(@PathVariable String uuid) {
-        System.out.println("=============hi==============");
         CommentRes res = commentService.getComment(uuid);
         return ResponseEntity.ok(res);
     }

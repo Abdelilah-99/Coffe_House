@@ -129,7 +129,7 @@ export class PostCard implements OnInit {
 
   onReact(uuid: String) {
     this.postService.doReaction(uuid).subscribe({
-      next: (like) => { 
+      next: (like) => {
         if (this.post) {
           this.post.likeCount = like.likeCount;
         }
@@ -166,6 +166,7 @@ export class PostCard implements OnInit {
   onEdit(postUuid: String) {
     this.navigate.navigate(['/edit', postUuid]);
   }
+
   onReport() {
     this.reportAction = !this.reportAction;
   }

@@ -42,7 +42,6 @@
                   <input type="text" maxlength="15" id="firstname" [(ngModel)]="firstname" name="firstname"
                     placeholder="Saisissez votre prénom" required class="form-control form-input">
                   <div class="char-count-hint">
-                    <span class="char-count">{{ (firstname.length || 0) }}/15</span>
                   </div>
                 </div>
 
@@ -53,7 +52,6 @@
                   <input type="text" maxlength="15" id="lastname" [(ngModel)]="lastname" name="lastname"
                     placeholder="Saisissez votre nom de famille" required class="form-control form-input">
                   <div class="char-count-hint">
-                    <span class="char-count">{{ (lastname.length || 0) }}/15</span>
                   </div>
                 </div>
               </div>
@@ -65,7 +63,6 @@
                 <input type="text" maxlength="50" id="username" [(ngModel)]="username" name="username"
                   placeholder="Choisissez un nom d'utilisateur" required class="form-control form-input">
                 <div class="char-count-hint">
-                  <span class="char-count">{{ (username.length || 0) }}/50</span>
                 </div>
               </div>
 
@@ -73,7 +70,7 @@
                 <label for="email" class="form-label">
                   <i class="bi bi-envelope-heart me-2"></i>Adresse email
                 </label>
-                <input type="email" maxlength="20" id="email" [(ngModel)]="email" name="email"
+                <input type="email" maxlength="100" id="email" [(ngModel)]="email" name="email"
                   placeholder="Saisissez votre adresse email" required class="form-control form-input">
               </div>
 
@@ -136,9 +133,6 @@
               </a>
             </p>
           </div>
-          <!-- <div class="alert alert-danger error-message" *ngIf="message" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ message }}
-          </div> -->
         </div>
       </div>
     </div>

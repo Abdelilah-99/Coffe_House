@@ -27,7 +27,6 @@ public class JwtUtils {
     private SecretKey getSigningKey() {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         SecretKey key = Keys.hmacShaKeyFor(keyBytes);
-        System.out.println("Generated signing key: " + key.getAlgorithm());
         return key;
     }
 
@@ -39,7 +38,6 @@ public class JwtUtils {
                 .setExpiration(new Date(System.currentTimeMillis() + expTime))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
-        System.out.println("Generated token: " + token);
         return token;
     }
 
@@ -63,7 +61,6 @@ public class JwtUtils {
     public String extractRole(String token) {
         try {
             String role = extractClaims(token).get("role", String.class);
-            System.out.println("Successfully extracted role: " + role);
             return role;
         } catch (Exception e) {
             System.err.println("Error extracting username: " + e.getMessage());
@@ -77,7 +74,6 @@ public class JwtUtils {
     }
 
     private boolean isTokenExpired(String token) {
-        System.out.println(extractClaims(token).getExpiration().before(new Date()));
         return extractClaims(token).getExpiration().before(new Date());
     }
 }

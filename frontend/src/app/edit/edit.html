@@ -4,19 +4,10 @@
         'toast-success': toastMessage.type === 'success',
         'toast-error': toastMessage.type === 'error',
         'toast-warning': toastMessage.type === 'warning'}">
-        <!-- Success Icon -->
         <i *ngIf="toastMessage.type === 'success'" class="bi bi-check-circle-fill text-success fs-5"></i>
-
-        <!-- Error Icon -->
         <i *ngIf="toastMessage.type === 'error'" class="bi bi-x-circle-fill text-danger fs-5"></i>
-
-        <!-- Warning Icon -->
         <i *ngIf="toastMessage.type === 'warning'" class="bi bi-exclamation-triangle-fill text-warning fs-5"></i>
-
-        <!-- Toast Message -->
         <span class="ms-2">{{ toastMessage.text }}</span>
-
-        <!-- Close Button -->
         <button class="close-toast-btn btn btn-link p-0 ms-2" (click)="toastMessage = null">
             <i class="bi bi-x-lg text-secondary"></i>
         </button>
