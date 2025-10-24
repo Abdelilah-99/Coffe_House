@@ -42,7 +42,7 @@ export class Edit implements OnInit {
           this.loadPost();
         },
         error: (err) => {
-          console.error("Error loading user profile: ", err);
+          console.log("Error loading user profile: ", err);
           this.showToast('You must be logged in to edit posts', 'error');
           this.navigate.navigate(['/login']);
         }
@@ -98,7 +98,7 @@ export class Edit implements OnInit {
     for (let i = 0; i < files.length; i++) {
       if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
         this.showToast("format image and video are only allowed", "error");
-        console.error(files[i].type.split('/')[0]);
+        console.log(files[i].type.split('/')[0]);
         return;
       }
       if (files[i].size > 100 * 1024 * 1024) {
@@ -156,7 +156,7 @@ export class Edit implements OnInit {
         }, 500)
       },
       error: (err) => {
-        console.error("error updating post: ", err);
+        console.log("error updating post: ", err);
         const message = err.error?.message || 'Error updating post. Please try again.';
         this.showToast(message, this.getMessageType(message));
       }

@@ -28,7 +28,7 @@ export class Searchbar implements OnInit {
           this.searchData = res;
         },
         error: (err) => {
-          console.error("data didn't come ", err);
+          console.log("data didn't come ", err);
         }
       });
   }

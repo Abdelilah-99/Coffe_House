@@ -50,7 +50,7 @@ export class AdminPanel implements OnInit {
         this.AdminStatisticsResponse = res;
       },
       error: (err) => {
-        console.error("statistique err: ", err);
+        console.log("statistique err: ", err);
       }
     })
   }
@@ -61,7 +61,7 @@ export class AdminPanel implements OnInit {
         this.users = res;
       },
       error: (err) => {
-        console.error("Error loading users: ", err);
+        console.log("Error loading users: ", err);
       }
     });
   }
@@ -72,7 +72,7 @@ export class AdminPanel implements OnInit {
         this.posts = res;
       },
       error: (err) => {
-        console.error("Error loading posts: ", err);
+        console.log("Error loading posts: ", err);
       }
     });
   }
@@ -83,7 +83,7 @@ export class AdminPanel implements OnInit {
         this.userReports = res;
       },
       error: (err) => {
-        console.error("Error loading user reports: ", err);
+        console.log("Error loading user reports: ", err);
       }
     });
 
@@ -92,7 +92,7 @@ export class AdminPanel implements OnInit {
         this.postReports = res;
       },
       error: (err) => {
-        console.error("Error loading post reports: ", err);
+        console.log("Error loading post reports: ", err);
       }
     });
   }
@@ -103,7 +103,7 @@ export class AdminPanel implements OnInit {
         this.topCommenters = res;
       },
       error: (err) => {
-        console.error("Error loading top commenters: ", err);
+        console.log("Error loading top commenters: ", err);
       }
     });
 
@@ -112,7 +112,7 @@ export class AdminPanel implements OnInit {
         this.mostFollowedUsers = res;
       },
       error: (err) => {
-        console.error("Error loading most followed users: ", err);
+        console.log("Error loading most followed users: ", err);
       }
     });
 
@@ -121,7 +121,7 @@ export class AdminPanel implements OnInit {
         this.mostReportedUsers = res;
       },
       error: (err) => {
-        console.error("Error loading most reported users: ", err);
+        console.log("Error loading most reported users: ", err);
       }
     });
 
@@ -130,7 +130,7 @@ export class AdminPanel implements OnInit {
         this.mostCommentedPosts = res;
       },
       error: (err) => {
-        console.error("Error loading most commented posts: ", err);
+        console.log("Error loading most commented posts: ", err);
       }
     });
 
@@ -139,7 +139,7 @@ export class AdminPanel implements OnInit {
         this.mostLikedPosts = res;
       },
       error: (err) => {
-        console.error("Error loading most liked posts: ", err);
+        console.log("Error loading most liked posts: ", err);
       }
     });
 
@@ -148,7 +148,7 @@ export class AdminPanel implements OnInit {
         this.mostReportedPosts = res;
       },
       error: (err) => {
-        console.error("Error loading most reported posts: ", err);
+        console.log("Error loading most reported posts: ", err);
       }
     });
   }
@@ -243,7 +243,7 @@ export class AdminPanel implements OnInit {
         this.loadUsers();
       },
       error: (err) => {
-        console.error("Error deleting user: ", err);
+        console.log("Error deleting user: ", err);
       }
     });
   }
@@ -254,7 +254,7 @@ export class AdminPanel implements OnInit {
         this.loadUsers();
       },
       error: (err) => {
-        console.error("Error banning user: ", err);
+        console.log("Error banning user: ", err);
       }
     });
   }
@@ -265,7 +265,7 @@ export class AdminPanel implements OnInit {
         this.loadPosts();
       },
       error: (err) => {
-        console.error("Error deleting post: ", err);
+        console.log("Error deleting post: ", err);
       }
     });
   }
@@ -276,7 +276,7 @@ export class AdminPanel implements OnInit {
         this.loadPosts();
       },
       error: (err) => {
-        console.error("Error hiding post: ", err);
+        console.log("Error hiding post: ", err);
       }
     });
   }

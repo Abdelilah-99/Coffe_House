@@ -31,7 +31,7 @@ export class Notification implements OnInit {
         this.loadNotif(this.userProfile.uuid as string);
       },
       error: (err) => {
-        console.error("error to load profile ", err);
+        console.log("error to load profile ", err);
       }
     })
   }
@@ -42,7 +42,7 @@ export class Notification implements OnInit {
         this.notification = res;
       },
       error: (err) => {
-        console.error(err);
+        console.log(err);
       }
     })
   }
@@ -59,7 +59,7 @@ export class Notification implements OnInit {
             console.info("user has read the notification");
           },
           error: (err) => {
-            console.error("notification error: ", err);
+            console.log("notification error: ", err);
             if (notif) {
               notif.isRead = false;
             }

@@ -60,7 +60,7 @@ export class Profile implements OnInit {
         }
       },
       error: (err) => {
-        console.error("error fetching user profile ", err);
+        console.log("error fetching user profile ", err);
       }
     })
   }
@@ -99,7 +99,7 @@ export class Profile implements OnInit {
         this.showToast(String(res.message), 'success');
       },
       error: (err) => {
-        console.error("error reporting ", err);
+        console.log("error reporting ", err);
         const message = err.error?.message || 'Failed to submit report. Please try again.';
         this.showToast(message, this.getMessageType(message));
         this.reportAction = false;
@@ -116,7 +116,7 @@ export class Profile implements OnInit {
         this.loadUserPosts(uuid);
       },
       error: (err) => {
-        console.error("error getting profile ", err);
+        console.log("error getting profile ", err);
       }
     })
   }
@@ -129,7 +129,7 @@ export class Profile implements OnInit {
         this.isLoadingPosts = false;
       },
       error: (err) => {
-        console.error("Err loading user posts: ", err);
+        console.log("Err loading user posts: ", err);
         this.isLoadingPosts = false;
       }
     })
@@ -173,7 +173,7 @@ export class Profile implements OnInit {
           this.showToast('Successfully followed ' + userName, 'success');
         },
         error: (err) => {
-          console.error("error following ", err);
+          console.log("error following ", err);
           const message = err.error?.message || 'Failed to follow user. Please try again.';
           this.showToast(message, this.getMessageType(message));
         }
@@ -195,7 +195,7 @@ export class Profile implements OnInit {
         }
       },
       error: (err) => {
-        console.error("Error liking post: ", err);
+        console.log("Error liking post: ", err);
       }
     });
   }
@@ -223,7 +223,7 @@ export class Profile implements OnInit {
         }
       },
       error: (err) => {
-        console.error("Error toggling user ban status: ", err);
+        console.log("Error toggling user ban status: ", err);
       }
     });
   }

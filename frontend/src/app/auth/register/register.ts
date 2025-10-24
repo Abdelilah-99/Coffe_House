@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -43,7 +43,7 @@ export class Register implements OnInit {
     this.selectedFile = files[0];
     if (!files[0].type.includes("image")) {
       this.errorMessage = "format image are only allowed";
-      console.error(files[0].type.split('/')[0]);
+      console.log(files[0].type.split('/')[0]);
       return;
     }
     if (files[0].size > 10 * 1024 * 1024) {
@@ -84,12 +84,14 @@ export class Register implements OnInit {
     }
 
     this.authService.register(formData).subscribe({
-      next: (res) => {
+      next: () => {
         this.errorMessage = "register successful!!";
-        this.router.navigate(['/login']);
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 500);
       },
       error: (err) => {
-        console.error('err: ', err.error.message);
+        console.log('err: ', err.error.message);
         this.errorMessage = err.error.message;
 
         if (!err.error.message.includes('Password')) {

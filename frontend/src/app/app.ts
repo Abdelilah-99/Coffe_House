@@ -33,12 +33,14 @@ export class App implements OnInit {
   }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this  .platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
         .subscribe((event: NavigationEnd) => {
           const hideOn = ['/login', '/register'];
           this.showNavbar = !hideOn.includes(event.urlAfterRedirects);
+          console.log(event.urlAfterRedirects);
+          
           if (this.showNavbar && localStorage.getItem('access_token')) {
             this.loadCountNotif();
             this.loadUserProfile();
@@ -56,7 +58,7 @@ export class App implements OnInit {
         this.loadFollowingList();
       },
       error: (err) => {
-        console.error("Error loading user profile:", err);
+        console.log("Error loading user profile:", err);
       }
     });
   }
@@ -69,7 +71,7 @@ export class App implements OnInit {
         this.loadingFollowing = false;
       },
       error: (err) => {
-        console.error("Error loading following list:", err);
+        console.log("Error loading following list:", err);
         this.loadingFollowing = false;
       }
     });
@@ -86,7 +88,7 @@ export class App implements OnInit {
       },
       error: (err) => {
         if (err.message !== 'Authentication invalid') {
-          console.error("err count ", err);
+          console.log("err count ", err);
         }
       }
     });

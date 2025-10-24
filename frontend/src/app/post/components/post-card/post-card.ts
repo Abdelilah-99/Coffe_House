@@ -54,7 +54,7 @@ export class PostCard implements OnInit {
           this.profileData = data;
         },
         error: (err) => {
-          console.error("err loading profile for post check: ", err);
+          console.log("err loading profile for post check: ", err);
         }
       });
     }
@@ -67,7 +67,7 @@ export class PostCard implements OnInit {
           this.post = post;
         },
         error: (err) => {
-          console.error("errorl loading post ", err);
+          console.log("errorl loading post ", err);
           if (err.status === 404 || err.error?.message?.includes('not available')) {
             alert('This post is not available');
             this.navigate.navigate(['']);
@@ -80,7 +80,7 @@ export class PostCard implements OnInit {
   instantComments?: { userUuid: String, image: string, comment: String, username: String, time: number }[] = [];
 
   onSubmitComment(comment: String, uuid: String | null = null) {
-    console.error(":jefh");
+    console.log(":jefh");
 
     if (!uuid || comment.trim() === "") {
       const message = 'Comment cannot be empty';
@@ -112,7 +112,7 @@ export class PostCard implements OnInit {
         this.message = undefined;
       },
       error: (err) => {
-        console.error(err.error.message);
+        console.log(err.error.message);
         const message = err.error?.message || 'Failed to submit comment. Please try again.';
         this.showToast(message, this.getMessageType(message));
       }
@@ -137,7 +137,7 @@ export class PostCard implements OnInit {
         this.toastMessage = null;
       },
       error: (err) => {
-        console.error("error loading like data ", err.error?.message);
+        console.log("error loading like data ", err.error?.message);
         const message = err.error?.message || 'Failed to like post. Please try again.';
         this.showToast(message, this.getMessageType(message));
       }
@@ -155,7 +155,7 @@ export class PostCard implements OnInit {
           this.toastMessage = null;
         },
         error: (err) => {
-          console.error("error loading comments ", err.error.message);
+          console.log("error loading comments ", err.error.message);
           const message = err.error?.message || 'Failed to load comments. Please try again.';
           this.showToast(message, this.getMessageType(message));
         }
@@ -201,7 +201,7 @@ export class PostCard implements OnInit {
         this.showToast(String(res.message), 'success');
       },
       error: (err) => {
-        console.error(err);
+        console.log(err);
         const message = err.error?.message || 'Failed to submit report. Please try again.';
         this.showToast(message, this.getMessageType(message));
         this.reportAction = false;
@@ -215,7 +215,7 @@ export class PostCard implements OnInit {
         this.navigate.navigate(['']);
       },
       error: (err) => {
-        console.error("error deleting post ", err);
+        console.log("error deleting post ", err);
       }
     })
   }
@@ -270,7 +270,7 @@ export class PostCard implements OnInit {
         this.loadCardData();
       },
       error: (err) => {
-        console.error("Error hiding post: ", err);
+        console.log("Error hiding post: ", err);
       }
     });
   }
@@ -281,7 +281,7 @@ export class PostCard implements OnInit {
         this.navigate.navigate(['']);
       },
       error: (err) => {
-        console.error("Error deleting post: ", err);
+        console.log("Error deleting post: ", err);
       }
     });
   }
@@ -326,7 +326,7 @@ export class PostCard implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error deleting comment:', err);
+        console.log('Error deleting comment:', err);
         const message = err.error?.message || 'Failed to delete comment. Please try again.';
         this.showToast(message, this.getMessageType(message));
       }

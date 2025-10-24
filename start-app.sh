@@ -9,7 +9,7 @@ echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}  Starting Blog Application${NC}"
 echo -e "${BLUE}========================================${NC}"
 
-echo -e "\n${YELLOW}[1/4] Starting PostgreSQL in Docker...${NC}"
+echo -e "\n${YELLOW} Starting PostgreSQL in Docker...${NC}"
 docker-compose up -d
 
 if [ $? -ne 0 ]; then
@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo -e "\n${YELLOW}[2/4] Waiting for PostgreSQL to be ready...${NC}"
+echo -e "\n${YELLOW} Waiting for PostgreSQL to be ready...${NC}"
 attempt=0
 max_attempts=30
 

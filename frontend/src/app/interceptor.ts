@@ -54,7 +54,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         .pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.status === 401) {
-              alert('🔒 You are not authorized. Please log in again.');
               localStorage.removeItem('access_token');
               localStorage.removeItem('user_role');
               router.navigate(['/login']);

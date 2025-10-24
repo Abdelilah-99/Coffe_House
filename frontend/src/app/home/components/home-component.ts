@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (onFinish) onFinish();
       },
       error: (err) => {
-        console.error("failed loading pages: ", err);
+        console.log("failed loading pages: ", err);
         this.isLoding = false;
         if (onFinish) onFinish();
       }
@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.isLoding = false;
       },
       error: (err) => {
-        console.error("err loading posts: ", err);
+        console.log("err loading posts: ", err);
         this.isLoding = false;
       }
     });
@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        console.error("error like ", err);
+        console.log("error like ", err);
       }
     })
   }

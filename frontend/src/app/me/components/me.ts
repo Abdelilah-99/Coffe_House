@@ -44,7 +44,7 @@ export class Me implements OnInit {
           this.loadUserPosts(profile.uuid);
         },
         error: (err) => {
-          console.error("Err loading profile: ", err);
+          console.log("Err loading profile: ", err);
           this.isLoading = !this.isLoading;
           throw new Error('Failed to load profile: ' + err.message);
         }
@@ -60,7 +60,7 @@ export class Me implements OnInit {
         this.isLoadingPosts = false;
       },
       error: (err) => {
-        console.error("Err loading user posts: ", err);
+        console.log("Err loading user posts: ", err);
         this.isLoadingPosts = false;
       }
     })
@@ -78,7 +78,7 @@ export class Me implements OnInit {
     for (let i = 0; i < files.length; i++) {
       if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
         this.showToast("format image and video are only allowed", "error");
-        console.error(files[i].type.split('/')[0]);
+        console.log(files[i].type.split('/')[0]);
         return;
       }
       if (files[i].size > 100 * 1024 * 1024) {
@@ -122,7 +122,7 @@ export class Me implements OnInit {
     this.selectedFiles.forEach(element => {
       if (!element.type.includes("image") && !element.type.includes("video")) {
         this.message = "format image and video are only allowed";
-        console.error(element.type.split('/')[0]);
+        console.log(element.type.split('/')[0]);
         return;
       }
       formData.append("mediaFiles", element);
@@ -131,10 +131,10 @@ export class Me implements OnInit {
       next: () => {
         this.showToast("Post has successfully created", 'success');
         this.loadUserPosts(this.userProfile!.uuid);
-      },
+        },
       error: (err) => {
         this.showToast(err.error.message, 'error');
-        console.error("failed to create post: ", err);
+        console.log("failed to create post: ", err);
       }
     })
     this.post.title = '';
@@ -158,7 +158,7 @@ export class Me implements OnInit {
       },
       error: (err) => {
         this.showToast(err.error.message, 'error');
-        console.error("Error liking post: ", err);
+        console.log("Error liking post: ", err);
       }
     });
   }
