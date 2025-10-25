@@ -6,10 +6,11 @@ import { UserProfile, MeService } from './me/services/me.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Searchbar } from './searchbar/components/searchbar';
 import { ProfileService, FollowUser } from './profile/services/services';
+import { ToastComponent } from './toast/component/toastComponent';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, RouterModule, Searchbar],
+  imports: [RouterOutlet, CommonModule, RouterModule, Searchbar, ToastComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })

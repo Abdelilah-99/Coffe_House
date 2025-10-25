@@ -5,6 +5,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MeService, UserProfile } from '../../me/services/me.service';
 import { Post, PostService } from '../../post/services/post-service';
 import { AdminPannelSefvices } from '../../admin-panel/services/admin-pannel-sefvices';
+import { ToastService } from '../../toast/service/toast';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +35,8 @@ export class Profile implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     private meProfile: MeService,
     private postService: PostService,
-    private adminService: AdminPannelSefvices) { }
+    private adminService: AdminPannelSefvices,
+    private toastService: ToastService) { }
   uuid: String | null = null;
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -71,7 +73,7 @@ export class Profile implements OnInit {
 
   onPrepareSubmitReport(uuid: String, reason: String) {
     if (!reason || reason.trim() === '') {
-      this.showToast("Please provide additional details for your report", "error");
+      this.toastService.show("Please provide additional details for your report", "error");
       return;
     }
     this.pendingReportReason = reason;
@@ -96,12 +98,12 @@ export class Profile implements OnInit {
       next: (res) => {
         this.message = res;
         this.reportAction = false;
-        this.showToast(String(res.message), 'success');
+        this.toastService.show(String(res.message), 'success');
       },
       error: (err) => {
         console.log("error reporting ", err);
         const message = err.error?.message || 'Failed to submit report. Please try again.';
-        this.showToast(message, this.getMessageType(message));
+        this.toastService.show(message, this.toastService.getMessageType(message));
         this.reportAction = false;
       }
     })
@@ -148,11 +150,11 @@ export class Profile implements OnInit {
           if (this.profileRes) {
             this.profileRes.connect = false;
           }
-          this.showToast('Successfully unfollowed ' + userName, 'success');
+          this.toastService.show('Successfully unfollowed ' + userName, 'success');
         },
         error: (err) => {
           const message = err.error?.message || 'Failed to unfollow user. Please try again.';
-          this.showToast(message, this.getMessageType(message));
+          this.toastService.show(message, this.toastService.getMessageType(message));
         }
       })
     }
@@ -164,12 +166,12 @@ export class Profile implements OnInit {
           if (this.profileRes) {
             this.profileRes.connect = true;
           }
-          this.showToast('Successfully followed ' + userName, 'success');
+          this.toastService.show('Successfully followed ' + userName, 'success');
         },
         error: (err) => {
           console.log("error following ", err);
           const message = err.error?.message || 'Failed to follow user. Please try again.';
-          this.showToast(message, this.getMessageType(message));
+          this.toastService.show(message, this.toastService.getMessageType(message));
         }
       })
     }
@@ -220,23 +222,5 @@ export class Profile implements OnInit {
         console.log("Error toggling user ban status: ", err);
       }
     });
-  }
-
-  showToast(text: string, type: 'success' | 'error' | 'warning') {
-    this.toastMessage = { text, type };
-    setTimeout(() => {
-      this.toastMessage = null;
-    }, 5000);
-  }
-
-  getMessageType(message: string): 'success' | 'error' | 'warning' {
-    const lowerMessage = message.toLowerCase();
-    if (lowerMessage.includes('banned') || lowerMessage.includes('deleted')) {
-      return 'warning';
-    }
-    if (lowerMessage.includes('success') || lowerMessage.includes('successfully')) {
-      return 'success';
-    }
-    return 'error';
   }
 }
