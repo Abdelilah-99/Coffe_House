@@ -38,7 +38,7 @@ public class UsersServices {
         for (User user : users) {
             follower = followRepository.countByFollowerId(user.getId());
             following = followRepository.countByFollowingId(user.getId());
-            UsersRespons dto = convertToDto(user, follower, following);
+            UsersRespons dto = convertToDto(user, following, follower);
             userDTOs.add(dto);
         }
         return userDTOs;
@@ -109,7 +109,7 @@ public class UsersServices {
 
         boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         if (existe) {
-            return new UserFollowRes(follower, following, crrUser.getUuid(),
+            return new UserFollowRes(following, follower, crrUser.getUuid(),
                     otherUser.getUuid(),
                     "already following");
         }
@@ -119,7 +119,7 @@ public class UsersServices {
         followRepository.save(follow);
         follower = followRepository.countByFollowerId(otherUser.getId());
         following = followRepository.countByFollowingId(otherUser.getId());
-        return new UserFollowRes(follower, following, crrUser.getUuid(),
+        return new UserFollowRes(following, follower, crrUser.getUuid(),
                 otherUser.getUuid(),
                 "user has succseffully followed");
     }
@@ -156,14 +156,14 @@ public class UsersServices {
         long following = followRepository.countByFollowingId(otherUser.getId());
 
         if (!existe) {
-            return new UserFollowRes(follower, following, crrUser.getUuid(),
+            return new UserFollowRes(following, follower, crrUser.getUuid(),
                     otherUser.getUuid(),
                     "already unfollowed");
         }
         followRepository.deleteByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         follower = followRepository.countByFollowerId(otherUser.getId());
         following = followRepository.countByFollowingId(otherUser.getId());
-        return new UserFollowRes(follower, following, crrUser.getUuid(),
+        return new UserFollowRes(following, follower, crrUser.getUuid(),
                 otherUser.getUuid(),
                 "user has succseffully unfollowed");
     }
@@ -185,10 +185,10 @@ public class UsersServices {
         long following = followRepository.countByFollowingId(crrUser.getId());
         boolean existe = followRepository.existsByFollowerIdAndFollowingId(crrUser.getId(), otherUser.getId());
         if (!existe) {
-            return new UserFollowRes(follower, following, crrUser.getUuid(),
+            return new UserFollowRes(following, follower, crrUser.getUuid(),
                     otherUser.getUuid(), "no follow");
         }
-        return new UserFollowRes(follower, following, crrUser.getUuid(),
+        return new UserFollowRes(following, follower, crrUser.getUuid(),
                 otherUser.getUuid(), "follow");
     }
 

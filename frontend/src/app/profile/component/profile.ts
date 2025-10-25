@@ -111,7 +111,8 @@ export class Profile implements OnInit {
     this.profileService.getProfile(uuid).subscribe({
       next: (res) => {
         this.profileRes = res;
-        this.followers = this.profileRes?.follower;
+        this.followers = this.profileRes.follower;
+        this.following = this.profileRes.following;
         this.myProfile(this.profileRes.uuid);
         this.loadUserPosts(uuid);
       },
@@ -141,14 +142,11 @@ export class Profile implements OnInit {
     if (connect && this.profileRes?.uuid) {
       this.profileService.unFollow(this.profileRes?.uuid).subscribe({
         next: (res) => {
-          this.followRes = res;
-          this.followers = this.profileRes?.follower;
+          console.log(res);
+          this.followers = res.follower;
+          this.following = res.following;
           if (this.profileRes) {
             this.profileRes.connect = false;
-            if (this.followers && !this.block) {
-              this.followers--;
-              this.block = true;
-            }
           }
           this.showToast('Successfully unfollowed ' + userName, 'success');
         },
@@ -161,14 +159,10 @@ export class Profile implements OnInit {
     if (!connect && this.profileRes?.uuid) {
       this.profileService.follow(this.profileRes?.uuid).subscribe({
         next: (res) => {
-          this.followRes = res;
-          this.followers = this.profileRes?.follower;
+          this.followers = res.follower;
+          this.following = res.following;
           if (this.profileRes) {
             this.profileRes.connect = true;
-            if (this.followers != null && !this.block) {
-              this.followers++;
-              this.block = false;
-            }
           }
           this.showToast('Successfully followed ' + userName, 'success');
         },

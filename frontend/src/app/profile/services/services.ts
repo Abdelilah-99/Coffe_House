@@ -47,11 +47,11 @@ export class ProfileService {
     return this.http.get<ProfileRes>(`${this.URL}/profile/${uuid}`);
   }
 
-  follow(uuid: String): Observable<any> {
+  follow(uuid: String): Observable<FollowRes> {
     return this.http.post<FollowRes>(`${this.URL}/follow/${uuid}`, null);
   }
 
-  unFollow(uuid: String): Observable<any> {
+  unFollow(uuid: String): Observable<FollowRes> {
     return this.http.post<FollowRes>(`${this.URL}/unfollow/${uuid}`, null);
   }
 
