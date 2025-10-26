@@ -33,10 +33,11 @@ public class InputSanitizationService {
         if (content == null) {
             return "";
         }
+        content = content.replaceAll("\\r", "");
         content = content.trim();
         if (content.length() > MAX_CONTENT_LENGTH) {
             throw new IllegalArgumentException(
-                    String.format("Content exceeds maximum length of %d characters", MAX_CONTENT_LENGTH));
+                    String.format("Content exceeds maximum length of %d characters", content.length()));
         }
         return content;
     }
@@ -201,14 +202,12 @@ public class InputSanitizationService {
 
         if (password.length() < MIN_PASSWORD_LENGTH) {
             throw new IllegalArgumentException(
-                    String.format("Password must be at least %d characters long", MIN_PASSWORD_LENGTH)
-            );
+                    String.format("Password must be at least %d characters long", MIN_PASSWORD_LENGTH));
         }
 
         if (password.length() > MAX_PASSWORD_LENGTH) {
             throw new IllegalArgumentException(
-                    String.format("Password exceeds maximum length of %d characters", MAX_PASSWORD_LENGTH)
-            );
+                    String.format("Password exceeds maximum length of %d characters", MAX_PASSWORD_LENGTH));
         }
 
         if (password.contains(" ")) {

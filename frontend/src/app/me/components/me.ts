@@ -164,29 +164,4 @@ export class Me implements OnInit {
       }
     });
   }
-
-  hideErrorAfterDelay() {
-    setTimeout(() => {
-      this.errorMessage = null;
-    }, 5000);
-  }
-
-  showToast(text: string, type: 'success' | 'error' | 'warning') {
-    this.toastMessage = { text, type };
-
-    setTimeout(() => {
-      this.toastMessage = null;
-    }, 5000);
-  }
-
-  getMessageType(message: string): 'success' | 'error' | 'warning' {
-    const lowerMessage = message.toLowerCase();
-    if (lowerMessage.includes('banned') || lowerMessage.includes('deleted')) {
-      return 'warning';
-    }
-    if (lowerMessage.includes('success') || lowerMessage.includes('successfully')) {
-      return 'success';
-    }
-    return 'error';
-  }
 }

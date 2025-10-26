@@ -25,10 +25,9 @@ export class Notification implements OnInit {
       const token = localStorage.getItem('access_token');
       if (token) {
         this.loadProfile();
-        this.show = false;
-        this.navigate.navigate(['/']);
-      } else {
         this.show = true;
+      } else {
+        this.show = false;
         this.navigate.navigate(['/login']);
       }
     }
