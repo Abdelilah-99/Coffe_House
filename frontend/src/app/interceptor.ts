@@ -38,7 +38,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           router.navigate(['/login']);
           return throwError(() => new Error('Token expired'));
         }
-
       } catch (error) {
         localStorage.removeItem('access_token');
         localStorage.removeItem('user_role');

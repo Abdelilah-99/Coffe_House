@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService, LoginResponse } from '../auth';
+import { AuthService, LoginResponse } from '../service/auth';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ToastService } from '../../toast/service/toast';
@@ -15,7 +15,7 @@ export class Login implements OnInit {
   password: string = '';
   message: string = '';
   loginRes?: LoginResponse;
-
+  show: boolean = false;
   constructor(private authService: AuthService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -24,8 +24,11 @@ export class Login implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('access_token');
       if (token) {
+        this.show = false;
         this.toast.show("Already logged in", 'warning');
         this.router.navigate(['/me']);
+      } else {
+        this.show = true;
       }
     }
   }
@@ -47,7 +50,10 @@ export class Login implements OnInit {
       },
       error: (err) => {
         this.message = err.error.message;
-        this.toast.show(err.error.message, 'error');
+        if (!this.message) {
+          this.message = 'failed to register';
+        }
+        this.toast.show(this.message, 'error');
       }
     });
   }

@@ -1,20 +1,4 @@
-<div class="login-container">
-  <!-- Decorative side panels -->
-  <div class="decorative-left"></div>
-  <div class="decorative-right"></div>
-
-  <!-- Moroccan arch decorations -->
-  <div class="arch-decoration arch-top-left"></div>
-  <div class="arch-decoration arch-top-right"></div>
-  <div class="arch-decoration arch-bottom-left"></div>
-  <div class="arch-decoration arch-bottom-right"></div>
-
-  <!-- Floating geometric shapes -->
-  <div class="geometric-shape star-8"></div>
-  <div class="geometric-shape star-4"></div>
-  <div class="geometric-shape hexagon"></div>
-  <div class="geometric-shape circle-pattern"></div>
-
+<div *ngIf="show" class="login-container">
   <div class="container-fluid">
     <div class="row justify-content-center align-items-center min-vh-100">
       <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
@@ -28,49 +12,28 @@
               <label for="username" class="form-label">
                 <i class="bi bi-envelope-heart me-2"></i>Email ou nom d'utilisateur
               </label>
-              <input 
-                type="text" 
-                id="username"
-                [(ngModel)]="username"
-                name="username" 
-                placeholder="Saisissez votre email ou nom d'utilisateur"
-                maxlength="20"
-                required
+              <input type="text" id="username" [(ngModel)]="username" name="username"
+                placeholder="Saisissez votre email ou nom d'utilisateur" maxlength="20" required
                 class="form-control form-input">
             </div>
-            
+
             <div class="mb-3 form-group">
               <label for="password" class="form-label">
                 <i class="bi bi-shield-lock me-2"></i>Mot de passe
               </label>
-              <input
-                type="password" 
-                id="password"
-                [(ngModel)]="password" 
-                name="password"
-                maxlength="12"
-                placeholder="Saisissez votre mot de passe" 
-                required
-                class="form-control form-input">
+              <input type="password" id="password" [(ngModel)]="password" name="password" maxlength="12"
+                placeholder="Saisissez votre mot de passe" required class="form-control form-input">
             </div>
-            
+
             <div class="d-grid gap-2">
-              <button 
-                type="submit" 
-                [disabled]="!isFormLoginValid()" 
-                class="btn login-button"
+              <button type="submit" [disabled]="!isFormLoginValid()" class="btn login-button"
                 [class.disabled]="!isFormLoginValid()">
                 <i class="bi bi-door-open me-2"></i>Se connecter
               </button>
             </div>
           </form>
-          
-          <div class="alert alert-danger error-message" *ngIf="message" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ message }}
-          </div>
-          
           <div class="register-link">
-            <p class="text-muted">Vous n'avez pas de compte ? 
+            <p class="text-muted">Vous n'avez pas de compte ?
               <a routerLink="/register" class="register-link-text text-decoration-none">
                 <i class="bi bi-person-plus-fill me-1"></i>Créer un compte
               </a>

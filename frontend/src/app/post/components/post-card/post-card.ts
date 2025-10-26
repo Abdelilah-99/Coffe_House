@@ -214,10 +214,12 @@ export class PostCard implements OnInit {
   onDelete(uuid: String) {
     this.postService.deletePost(uuid).subscribe({
       next: (res) => {
+        this.toast.show("post has deleted", 'success');
         this.navigate.navigate(['']);
       },
       error: (err) => {
         console.log("error deleting post ", err);
+        this.toast.show("error deleting post", 'error');
       }
     })
   }
@@ -296,10 +298,8 @@ export class PostCard implements OnInit {
     this.postService.deleteComment(commentUuid).subscribe({
       next: (res) => {
         this.toast.show(String(res.message), 'success');
-        if (this.post) {
+        if (this.post && this.comment) {
           this.post.commentCount = Math.max(0, this.post.commentCount - 1);
-        }
-        if (this.comment) {
           this.comment.comments = this.comment.comments.filter(c => c.uuid !== commentUuid);
         }
       },

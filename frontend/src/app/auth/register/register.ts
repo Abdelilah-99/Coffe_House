@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { AuthService } from '../service/auth';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ToastService } from '../../toast/service/toast';
 
 @Component({
@@ -18,16 +18,21 @@ export class Register implements OnInit {
   email: string = '';
   password: string = '';
   currentStep: number = 1;
+  show: boolean = false;
 
   constructor(private authService: AuthService,
     private router: Router,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    @Inject(PLATFORM_ID) private platforId: Object) { }
   ngOnInit() {
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (isPlatformBrowser(this.platforId)) {
       const token = localStorage.getItem('access_token');
       if (token) {
         this.toast.show("Already logged in", 'warning');
         this.router.navigate(['/me']);
+        this.show = false;
+      } else {
+        this.show = true;
       }
     }
   }

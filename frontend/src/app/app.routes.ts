@@ -10,11 +10,12 @@ import { Notification } from './notification/components/notification';
 import { AdminPanel } from './admin-panel/components/admin-panel';
 import { adminGuard } from './admin-panel/admin-panel-guard';
 import { ErrorPage } from './error/components/error-page';
+import { authGuard } from './auth/auth-gard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
+    { path: 'login', component: Login, canActivate: [authGuard] },
+    { path: 'register', component: Register, canActivate: [authGuard] },
     { path: 'me', component: Me },
     { path: 'postCard/:id', component: PostCard },
     { path: 'edit/:id', component: Edit },

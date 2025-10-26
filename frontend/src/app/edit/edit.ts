@@ -151,11 +151,9 @@ export class Edit implements OnInit {
       next: (data) => {
         this.updatedPost = data;
         this.toast.show("Post updated successfully", 'success');
-        setTimeout(() => {
-          this.navigate.navigate(['']);
-          this.selectedFiles = [];
-          this.previewUrls = [];
-        }, 500)
+        this.navigate.navigate(['']);
+        this.selectedFiles = [];
+        this.previewUrls = [];
       },
       error: (err) => {
         console.log("error updating post: ", err);

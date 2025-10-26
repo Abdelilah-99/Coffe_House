@@ -3,6 +3,7 @@ import { MeService, UserProfile } from '../../me/services/me.service';
 import { NotificationRes, NotifServices } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { Token } from '@angular/compiler';
 
 @Component({
   selector: 'app-notification',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 export class Notification implements OnInit {
   userProfile?: UserProfile;
   notification?: NotificationRes[];
+  show: boolean = false;
   constructor(private meServices: MeService,
     private notifService: NotifServices,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -20,7 +22,15 @@ export class Notification implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.loadProfile();
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        this.loadProfile();
+        this.show = false;
+        this.navigate.navigate(['/']);
+      } else {
+        this.show = true;
+        this.navigate.navigate(['/login']);
+      }
     }
   }
 
