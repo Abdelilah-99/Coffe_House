@@ -1,18 +1,4 @@
 <div class="register-container">
-  <!-- Error Message Toast -->
-  <div *ngIf="errorMessage" class="error-toast">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-      <path
-        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
-    </svg>
-    <span>{{ errorMessage }}</span>
-    <button class="close-error-btn" (click)="errorMessage = null">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path
-          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-      </svg>
-    </button>
-  </div>
   <div class="container-fluid">
     <div class="row justify-content-center align-items-center min-vh-100">
       <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">

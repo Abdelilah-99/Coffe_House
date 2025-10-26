@@ -4,6 +4,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MeService, UserProfile } from '../me/services/me.service';
+import { ToastService } from '../toast/service/toast';
 
 @Component({
   selector: 'app-edit',
@@ -17,7 +18,8 @@ export class Edit implements OnInit {
     private route: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object,
     public navigate: Router,
-    private meService: MeService
+    private meService: MeService,
+    private toast: ToastService
   ) { }
   post: Post | null = null;
   postUuid: String | null = null;
@@ -43,7 +45,7 @@ export class Edit implements OnInit {
         },
         error: (err) => {
           console.log("Error loading user profile: ", err);
-          this.showToast('You must be logged in to edit posts', 'error');
+          this.toast.show('You must be logged in to edit posts', 'error');
           this.navigate.navigate(['/login']);
         }
       });
@@ -63,7 +65,7 @@ export class Edit implements OnInit {
           this.isAuthorized = true;
         },
         error: () => {
-          this.showToast('Post not found', 'error');
+          this.toast.show('Post not found', 'error');
           this.navigate.navigate(['']);
         }
       })
@@ -92,17 +94,17 @@ export class Edit implements OnInit {
     }
     if (!files || files.length === 0) return;
     if (files.length + this.oldFileLen > 5 || this.selectedFiles.length + this.oldFileLen > 4) {
-      this.showToast("5 file maximum", "error");
+      this.toast.show("5 file maximum", "error");
       return;
     }
     for (let i = 0; i < files.length; i++) {
       if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
-        this.showToast("format image and video are only allowed", "error");
+        this.toast.show("format image and video are only allowed", "error");
         console.log(files[i].type.split('/')[0]);
         return;
       }
       if (files[i].size > 100 * 1024 * 1024) {
-        this.showToast("Max upload size exceeded", "error");
+        this.toast.show("Max upload size exceeded", "error");
         return;
       }
       const file = files[i];
@@ -120,20 +122,20 @@ export class Edit implements OnInit {
 
   onSave(updatedPost: any) {
     if (!updatedPost.title || updatedPost.title.trim().length === 0) {
-      this.showToast("Title is required", 'error');
+      this.toast.show("Title is required", 'error');
       return;
     }
     if (updatedPost.title.length > 200) {
-      this.showToast("Title must not exceed 200 characters", 'error');
+      this.toast.show("Title must not exceed 200 characters", 'error');
       return;
     }
 
     if (!updatedPost.content || updatedPost.content.trim().length === 0) {
-      this.showToast("Content is required", 'error');
+      this.toast.show("Content is required", 'error');
       return;
     }
     if (updatedPost.content.length > 10000) {
-      this.showToast("Content must not exceed 10000 characters", 'error');
+      this.toast.show("Content must not exceed 10000 characters", 'error');
       return;
     }
 
@@ -148,7 +150,7 @@ export class Edit implements OnInit {
     this.postService.editPost(updatedPost.postUuid, formData).subscribe({
       next: (data) => {
         this.updatedPost = data;
-        this.showToast("Post updated successfully", 'success');
+        this.toast.show("Post updated successfully", 'success');
         setTimeout(() => {
           this.navigate.navigate(['']);
           this.selectedFiles = [];
@@ -158,7 +160,7 @@ export class Edit implements OnInit {
       error: (err) => {
         console.log("error updating post: ", err);
         const message = err.error?.message || 'Error updating post. Please try again.';
-        this.showToast(message, this.getMessageType(message));
+        this.toast.show(message, this.getMessageType(message));
       }
     });
   }

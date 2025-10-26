@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MeService, UserProfile } from '../../../me/services/me.service';
 import { AdminPannelSefvices } from '../../../admin-panel/services/admin-pannel-sefvices';
+import { ToastService } from '../../../toast/service/toast';
 
 @Component({
   selector: 'app-post-card',
@@ -17,7 +18,8 @@ export class PostCard implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     private navigate: Router,
     private profileService: MeService,
-    private adminService: AdminPannelSefvices) { }
+    private adminService: AdminPannelSefvices,
+    private toast: ToastService) { }
   postUuid: String | null = null;
   post?: Post;
   like?: Like;
@@ -84,13 +86,13 @@ export class PostCard implements OnInit {
 
     if (!uuid || comment.trim() === "") {
       const message = 'Comment cannot be empty';
-      this.showToast(message, this.getMessageType(message));
+      this.toast.show(message, this.toast.getMessageType(message));
       return;
     }
 
     if (comment.length > 1000) {
       const message = 'Comment must not exceed 1000 characters';
-      this.showToast(message, this.getMessageType(message));
+      this.toast.show(message, this.toast.getMessageType(message));
       return;
     }
 
@@ -114,7 +116,7 @@ export class PostCard implements OnInit {
       error: (err) => {
         console.log(err.error.message);
         const message = err.error?.message || 'Failed to submit comment. Please try again.';
-        this.showToast(message, this.getMessageType(message));
+        this.toast.show(message, this.toast.getMessageType(message));
       }
     })
   }
@@ -139,7 +141,7 @@ export class PostCard implements OnInit {
       error: (err) => {
         console.log("error loading like data ", err.error?.message);
         const message = err.error?.message || 'Failed to like post. Please try again.';
-        this.showToast(message, this.getMessageType(message));
+        this.toast.show(message, this.toast.getMessageType(message));
       }
     });
   }
@@ -157,7 +159,7 @@ export class PostCard implements OnInit {
         error: (err) => {
           console.log("error loading comments ", err.error.message);
           const message = err.error?.message || 'Failed to load comments. Please try again.';
-          this.showToast(message, this.getMessageType(message));
+          this.toast.show(message, this.toast.getMessageType(message));
         }
       })
     }
@@ -173,7 +175,7 @@ export class PostCard implements OnInit {
 
   onPrepareSubmitReport(reason: String) {
     if (!reason || reason.trim() === '') {
-      this.showToast('Please describe the issue before submitting your report.', 'error');
+      this.toast.show('Please describe the issue before submitting your report.', 'error');
       return;
     }
     this.pendingReportReason = reason;
@@ -198,12 +200,12 @@ export class PostCard implements OnInit {
       next: (res) => {
         this.message = res;
         this.reportAction = false;
-        this.showToast(String(res.message), 'success');
+        this.toast.show(String(res.message), 'success');
       },
       error: (err) => {
         console.log(err);
         const message = err.error?.message || 'Failed to submit report. Please try again.';
-        this.showToast(message, this.getMessageType(message));
+        this.toast.show(message, this.toast.getMessageType(message));
         this.reportAction = false;
       }
     });
@@ -290,34 +292,10 @@ export class PostCard implements OnInit {
     this.navigate.navigate(['profile', uuid]);
   }
 
-  hideErrorAfterDelay() {
-    setTimeout(() => {
-      this.errorMessage = null;
-    }, 5000);
-  }
-
-  showToast(text: string, type: 'success' | 'error' | 'warning') {
-    this.toastMessage = { text, type };
-    setTimeout(() => {
-      this.toastMessage = null;
-    }, 5000);
-  }
-
-  getMessageType(message: string): 'success' | 'error' | 'warning' {
-    const lowerMessage = message.toLowerCase();
-    if (lowerMessage.includes('banned') || lowerMessage.includes('deleted')) {
-      return 'warning';
-    }
-    if (lowerMessage.includes('success') || lowerMessage.includes('successfully')) {
-      return 'success';
-    }
-    return 'error';
-  }
-
   onDeleteComment(commentUuid: String) {
     this.postService.deleteComment(commentUuid).subscribe({
       next: (res) => {
-        this.showToast(String(res.message), 'success');
+        this.toast.show(String(res.message), 'success');
         if (this.post) {
           this.post.commentCount = Math.max(0, this.post.commentCount - 1);
         }
@@ -328,7 +306,7 @@ export class PostCard implements OnInit {
       error: (err) => {
         console.log('Error deleting comment:', err);
         const message = err.error?.message || 'Failed to delete comment. Please try again.';
-        this.showToast(message, this.getMessageType(message));
+        this.toast.show(message, this.toast.getMessageType(message));
       }
     });
   }

@@ -3,6 +3,7 @@ import { AuthService } from '../auth';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../toast/service/toast';
 
 @Component({
   selector: 'app-register',
@@ -16,14 +17,16 @@ export class Register implements OnInit {
   username: string = '';
   email: string = '';
   password: string = '';
-  errorMessage: string | null = null;
   currentStep: number = 1;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService,
+    private router: Router,
+    private toast: ToastService) { }
   ngOnInit() {
     if (typeof window !== 'undefined' && window.localStorage) {
       const token = localStorage.getItem('access_token');
       if (token) {
+        this.toast.show("Already logged in", 'warning');
         this.router.navigate(['/me']);
       }
     }
@@ -42,12 +45,13 @@ export class Register implements OnInit {
     }
     this.selectedFile = files[0];
     if (!files[0].type.includes("image")) {
-      this.errorMessage = "format image are only allowed";
-      console.log(files[0].type.split('/')[0]);
+      // this.errorMessage = "format image are only allowed";
+      this.toast.show("format image are only allowed!!", 'error');
       return;
     }
     if (files[0].size > 10 * 1024 * 1024) {
-      this.errorMessage = "Max upload size exceeded";
+      // this.errorMessage = "Max upload size exceeded";
+      this.toast.show("Max upload size exceeded!!", 'error');
       return;
     }
     this.profileImagePreview = URL.createObjectURL(files[0]);
@@ -85,19 +89,16 @@ export class Register implements OnInit {
 
     this.authService.register(formData).subscribe({
       next: () => {
-        this.errorMessage = "register successful!!";
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 500);
+        this.toast.show("register successful!!", 'success');
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         console.log('err: ', err.error.message);
-        this.errorMessage = err.error.message;
-
+        // this.errorMessage = err.error.message;
+        this.toast.show(err.error.message, 'error');
         if (!err.error.message.includes('Password')) {
           this.currentStep = 1;
         }
-        this.hideErrorAfterDelay();
       }
     })
   }
@@ -133,11 +134,5 @@ export class Register implements OnInit {
     if (this.currentStep === 2) {
       this.currentStep = 1;
     }
-  }
-
-  hideErrorAfterDelay() {
-    setTimeout(() => {
-      this.errorMessage = null;
-    }, 3000);
   }
 }

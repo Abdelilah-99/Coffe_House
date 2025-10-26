@@ -28,7 +28,7 @@ export class Notification implements OnInit {
     this.meServices.getProfile().subscribe({
       next: (res) => {
         this.userProfile = res;
-        this.loadNotif(this.userProfile.uuid as string);
+        this.loadNotif();
       },
       error: (err) => {
         console.log("error to load profile ", err);
@@ -36,7 +36,7 @@ export class Notification implements OnInit {
     })
   }
 
-  loadNotif(uuid: string) {
+  loadNotif() {
     this.notifService.getAllNotif().subscribe({
       next: (res) => {
         this.notification = res;

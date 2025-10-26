@@ -42,12 +42,8 @@ public class JwtUtils {
     }
 
     public String extractUsername(String token) {
-        try {
-            String username = extractClaims(token).getSubject();
-            return username;
-        } catch (Exception e) {
-            throw e;
-        }
+        String username = extractClaims(token).getSubject();
+        return username;
     }
 
     private Claims extractClaims(String token) {
