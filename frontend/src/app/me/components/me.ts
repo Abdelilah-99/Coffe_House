@@ -72,6 +72,8 @@ export class Me implements OnInit {
 
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
+    console.log(this.selectedFiles.length);
+    
     if (files.length > 5 || this.selectedFiles.length > 4) {
       this.toast.show("5 file maximum", "error");
       return;
