@@ -2,6 +2,7 @@ package com.blog.repository;
 
 import com.blog.entity.Comment;
 import com.blog.entity.User;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import jakarta.transaction.Transactional;
 

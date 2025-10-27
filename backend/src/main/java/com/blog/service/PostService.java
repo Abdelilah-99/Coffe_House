@@ -223,7 +223,7 @@ public class PostService {
                     .orElseThrow(() -> new PostNotFoundException("post not found for id"));
             lastId = post.getId();
         }
-        List<Post> posts = postRepository.findByPagination(lastTime, lastId, user.getId(), pageable);
+        List<Post> posts = postRepository.findMyPostByPagination(lastTime, lastId, user.getId(), pageable);
 
         List<PostRes> listPostRes = new ArrayList<>();
         for (Post post : posts) {

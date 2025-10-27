@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MeService, UserProfile } from '../services/me.service';
 import { Post, PostService } from '../../post/services/post-service';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,12 @@ import { ToastService } from '../../toast/service/toast';
   templateUrl: './me.html',
   styleUrl: './me.css'
 })
-export class Me implements OnInit {
+export class Me implements OnInit, OnDestroy {
+  @ViewChild('anchor', { static: true }) anchor!: ElementRef<HTMLElement>;
+  observer!: IntersectionObserver;
+  lastUuid: string | null = null;
+  lastTime: number | null = null;
+  isLoding = false;
   userProfile: UserProfile | null = null;
   userPosts: Post[] = [];
   isLoading = false;
@@ -28,9 +33,47 @@ export class Me implements OnInit {
     private postService: PostService,
     private toast: ToastService) { }
 
+  private initObserver() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastUuid) {
+        console.log("hii");
+        this.loadPostByPage(this.lastTime, this.lastUuid);
+      }
+    });
+    console.log(this.anchor.nativeElement);
+    this.observer.observe(this.anchor.nativeElement);
+  }
+
+  loadPostByPage(lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
+    this.isLoding = true;
+    this.postService.loadMore(lastTime, lastUuid).subscribe({
+      next: (res) => {
+        this.lastTime = res.lastTime;
+        if (res.lastUuid) {
+          this.lastUuid = res.lastUuid.toString();
+        }
+        this.userPosts.push(...res.posts);
+
+        this.isLoding = false;
+        console.log(res.posts);
+        if (onFinish) onFinish();
+      },
+      error: (err) => {
+        console.log("failed loading pages: ", err);
+        this.isLoding = false;
+        if (onFinish) onFinish();
+      }
+    });
+  }
+
   ngOnInit() {
     this.loadProfile();
+    this.loadPostByPage(null, null, () => {
+      this.initObserver();
+    });
   }
+
   loadProfile() {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('access_token');
@@ -43,7 +86,6 @@ export class Me implements OnInit {
         next: (profile) => {
           this.userProfile = profile;
           this.isLoading = !this.isLoading;
-          this.loadUserPosts(profile.uuid);
         },
         error: (err) => {
           console.log("Err loading profile: ", err);
@@ -73,7 +115,7 @@ export class Me implements OnInit {
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
     console.log(this.selectedFiles.length);
-    
+
     if (files.length > 5 || this.selectedFiles.length > 4) {
       this.toast.show("5 file maximum", "error");
       return;
@@ -89,6 +131,7 @@ export class Me implements OnInit {
         this.toast.show("Max upload size exceeded", "error");
         return;
       }
+
       const file = files[i];
       this.selectedFiles.push(file);
       const url = URL.createObjectURL(file);
@@ -134,7 +177,7 @@ export class Me implements OnInit {
     this.profileService.createPost(formData).subscribe({
       next: () => {
         this.toast.show("Post has successfully created", 'success');
-        this.loadUserPosts(this.userProfile!.uuid);
+        // this.loadUserPosts(this.userProfile!.uuid);
       },
       error: (err) => {
         this.toast.show(err.error.message, 'error');
@@ -165,5 +208,8 @@ export class Me implements OnInit {
         console.log("Error liking post: ", err);
       }
     });
+  }
+  ngOnDestroy(): void {
+    if (this.observer) this.observer.disconnect();
   }
 }

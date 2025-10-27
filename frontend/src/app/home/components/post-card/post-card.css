@@ -250,3 +250,10 @@
   display: flex;
   flex-direction: column;
 }
+
+.post-preview {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+}

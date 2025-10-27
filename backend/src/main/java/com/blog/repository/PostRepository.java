@@ -44,4 +44,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
       @Param("lastId") Long lastId,
       @Param("userId") Long userId,
       Pageable pageable);
+
+  @Query("""
+          SELECT p FROM Post p
+          where p.status != 'HIDE'
+          and (:lastTime IS NULL OR p.createdAt < :lastTime)
+          and (p.user.id = :userId)
+          order by p.createdAt DESC
+      """)
+  List<Post> findMyPostByPagination(
+      @Param("lastTime") Long lastTime,
+      @Param("lastId") Long lastId,
+      @Param("userId") Long userId,
+      Pageable pageable);
 }

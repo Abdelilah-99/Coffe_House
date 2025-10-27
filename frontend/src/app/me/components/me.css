@@ -108,6 +108,10 @@
   -webkit-box-orient: vertical;
 }
 
+.loading-trigger {
+  height: 10px;
+  width: 100%;
+}
 
 .profile-info {
   display: flex;
