@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { AdminPannelSefvices, AdminStatisticsResponse, User, Report, TopUserResponse, TopPostResponse } from '../services/admin-pannel-sefvices';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserProfile } from '../../post/services/post-service';
 import { UserService } from '../../searchbar/services/services';
@@ -13,7 +13,11 @@ import { Router } from '@angular/router';
   templateUrl: './admin-panel.html',
   styleUrl: './admin-panel.css'
 })
-export class AdminPanel implements OnInit {
+export class AdminPanel implements OnInit, OnDestroy {
+  @ViewChild('userReportsAnchor', { static: true }) userReportsAnchor!: ElementRef<HTMLElement>;
+  @ViewChild('postReportsAnchor', { static: true }) postReportsAnchor!: ElementRef<HTMLElement>;
+  userReportsObserver!: IntersectionObserver;
+  postReportsObserver!: IntersectionObserver;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private adminePanelServices: AdminPannelSefvices, private router: Router) { }
 
@@ -29,6 +33,13 @@ export class AdminPanel implements OnInit {
   mostLikedPosts: TopPostResponse[] = [];
   mostReportedPosts: TopPostResponse[] = [];
 
+  userReportsLastTime: number | null = null;
+  userReportsLastUuid: string | null = null;
+  postReportsLastTime: number | null = null;
+  postReportsLastUuid: string | null = null;
+  isLoadingUserReports = false;
+  isLoadingPostReports = false;
+
   showDeleteUserConfirmation = false;
   showBanUserConfirmation = false;
   showDeletePostConfirmation = false;
@@ -40,8 +51,42 @@ export class AdminPanel implements OnInit {
     this.laodStatistique();
     this.loadUsers();
     this.loadPosts();
-    this.loadReports();
+    this.loadUserReportsByPage(null, null, () => {
+      this.initUserReportsObserver();
+    });
+    this.loadPostReportsByPage(null, null, () => {
+      this.initPostReportsObserver();
+    });
     this.loadAnalytics();
+  }
+
+  ngOnDestroy(): void {
+    if (this.userReportsObserver) {
+      this.userReportsObserver.disconnect();
+    }
+    if (this.postReportsObserver) {
+      this.postReportsObserver.disconnect();
+    }
+  }
+
+  private initUserReportsObserver() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.userReportsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !this.isLoadingUserReports && this.userReportsLastTime && this.userReportsLastUuid) {
+        this.loadUserReportsByPage(this.userReportsLastTime, this.userReportsLastUuid);
+      }
+    });
+    this.userReportsObserver.observe(this.userReportsAnchor.nativeElement);
+  }
+
+  private initPostReportsObserver() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.postReportsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !this.isLoadingPostReports && this.postReportsLastTime && this.postReportsLastUuid) {
+        this.loadPostReportsByPage(this.postReportsLastTime, this.postReportsLastUuid);
+      }
+    });
+    this.postReportsObserver.observe(this.postReportsAnchor.nativeElement);
   }
 
   laodStatistique() {
@@ -77,22 +122,42 @@ export class AdminPanel implements OnInit {
     });
   }
 
-  loadReports() {
-    this.adminePanelServices.loadReports('users').subscribe({
+  loadUserReportsByPage(lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
+    this.isLoadingUserReports = true;
+    this.adminePanelServices.loadUsersReportsPaginated(lastTime, lastUuid).subscribe({
       next: (res) => {
-        this.userReports = res;
+        this.userReports.push(...res.reports);
+        this.userReportsLastTime = res.lastTime;
+        if (res.lastUuid) {
+          this.userReportsLastUuid = res.lastUuid.toString();
+        }
+        this.isLoadingUserReports = false;
+        if (onFinish) onFinish();
       },
       error: (err) => {
         console.log("Error loading user reports: ", err);
+        this.isLoadingUserReports = false;
+        if (onFinish) onFinish();
       }
     });
+  }
 
-    this.adminePanelServices.loadReports('posts').subscribe({
+  loadPostReportsByPage(lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
+    this.isLoadingPostReports = true;
+    this.adminePanelServices.loadPostsReportsPaginated(lastTime, lastUuid).subscribe({
       next: (res) => {
-        this.postReports = res;
+        this.postReports.push(...res.reports);
+        this.postReportsLastTime = res.lastTime;
+        if (res.lastUuid) {
+          this.postReportsLastUuid = res.lastUuid.toString();
+        }
+        this.isLoadingPostReports = false;
+        if (onFinish) onFinish();
       },
       error: (err) => {
         console.log("Error loading post reports: ", err);
+        this.isLoadingPostReports = false;
+        if (onFinish) onFinish();
       }
     });
   }

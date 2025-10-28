@@ -120,4 +120,13 @@ public class PostController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/user/{userUuid}/pages")
+    public ResponseEntity<PostPage> getUserPostsByPage(
+            @PathVariable String userUuid,
+            @RequestParam(value = "lastTime", required = false) Long lastTime,
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+        PostPage data = postService.getPostsByUserPaginated(userUuid, lastTime, lastUuid);
+        return ResponseEntity.ok(data);
+    }
+
 }

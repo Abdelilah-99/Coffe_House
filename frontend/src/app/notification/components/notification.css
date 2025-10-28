@@ -98,6 +98,18 @@
   margin: 0;
 }
 
+.loading-trigger {
+  height: 1px;
+  margin: 20px 0;
+}
+
+.loading-more {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}
+
 @media (max-width: 576px) {
   .notification-container {
     padding: 1.25rem;

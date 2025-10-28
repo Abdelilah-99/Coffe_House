@@ -2,6 +2,7 @@ package com.blog.controller;
 
 import com.blog.dto.NotificationResponse;
 import com.blog.service.NotifService;
+import com.blog.service.NotifService.NotificationPage;
 import com.blog.dto.NotificationRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +31,13 @@ public class NotificationsController {
     @GetMapping("/count")
     public ResponseEntity<Long> notifCount() {
         return ResponseEntity.ok(notifService.countUnreadNotif());
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<NotificationPage> getNotificationsByPage(
+            @RequestParam(value = "lastTime", required = false) Long lastTime,
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+        NotificationPage data = notifService.getNotificationsPaginated(lastTime, lastUuid);
+        return ResponseEntity.ok(data);
     }
 }

@@ -23,6 +23,8 @@ import com.blog.repository.CommentRepository;
 import com.blog.repository.FollowRepository;
 import com.blog.repository.LikesRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.*;
 
 @Service
@@ -404,5 +406,109 @@ public class AdminService {
         }
         topPosts.sort((a, b) -> Long.compare(b.getLikeCount(), a.getLikeCount()));
         return topPosts.subList(0, Math.min(10, topPosts.size()));
+    }
+
+    public record UserPage(List<UsersAdmineResponse> users, String lastUuid) {
+    }
+
+    public record PostPage(List<PostRes> posts, Long lastTime, String lastUuid) {
+    }
+
+    public record ReportPage(List<ReportsAdmineResponse> reports, Long lastTime, String lastUuid) {
+    }
+
+    public UserPage getUsersPaginated(String lastUuid) {
+        UsersRespons usersRespons;
+        try {
+            usersRespons = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("admin not logged in");
+        }
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Long lastId = null;
+        if (lastUuid != null) {
+            User user = userRepository.findByUuid(lastUuid).orElse(null);
+            if (user != null) {
+                lastId = user.getId();
+            }
+        }
+
+        List<User> users = userRepository.findAllPaginated(lastId, pageable);
+        List<UsersAdmineResponse> usersDto = cnvToDto(users, usersRespons);
+
+        String newLastUuid = users.isEmpty() ? null : users.get(users.size() - 1).getUuid();
+        return new UserPage(usersDto, newLastUuid);
+    }
+
+    public PostPage getAllPostsPaginated(Long lastTime, String lastUuid) {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis() + 1000;
+        }
+
+        Long lastId = null;
+        if (lastUuid != null) {
+            Post post = postRepository.findByUuid(lastUuid).orElse(null);
+            if (post != null) {
+                lastId = post.getId();
+            }
+        }
+
+        List<Post> posts = postRepository.findAllPaginated(lastTime, lastId, pageable);
+        List<PostRes> postsDto = cnvPostsToDto(posts);
+
+        String newLastUuid = posts.isEmpty() ? null : posts.get(posts.size() - 1).getUuid();
+        Long newLastTime = posts.isEmpty() ? null : posts.get(posts.size() - 1).getCreatedAt();
+        return new PostPage(postsDto, newLastTime, newLastUuid);
+    }
+
+    public ReportPage getPostsReportsPaginated(Long lastTime, String lastUuid) {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis() + 1000;
+        }
+
+        Long lastId = null;
+        if (lastUuid != null) {
+            try {
+                lastId = Long.parseLong(lastUuid);
+            } catch (NumberFormatException e) {
+                lastId = null;
+            }
+        }
+
+        List<Report> reports = reportRepository.findByPostIsNotNullPaginated(lastTime, lastId, pageable);
+        List<ReportsAdmineResponse> reportsDto = cnvReportToDto(reports, "Post");
+
+        String newLastUuid = reports.isEmpty() ? null : String.valueOf(reports.get(reports.size() - 1).getId());
+        Long newLastTime = reports.isEmpty() ? null : reports.get(reports.size() - 1).getCreatedAt();
+        return new ReportPage(reportsDto, newLastTime, newLastUuid);
+    }
+
+    public ReportPage getUsersReportsPaginated(Long lastTime, String lastUuid) {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis() + 1000;
+        }
+
+        Long lastId = null;
+        if (lastUuid != null) {
+            try {
+                lastId = Long.parseLong(lastUuid);
+            } catch (NumberFormatException e) {
+                lastId = null;
+            }
+        }
+
+        List<Report> reports = reportRepository.findByUserIsNotNullPaginated(lastTime, lastId, pageable);
+        List<ReportsAdmineResponse> reportsDto = cnvReportToDto(reports, "User");
+
+        String newLastUuid = reports.isEmpty() ? null : String.valueOf(reports.get(reports.size() - 1).getId());
+        Long newLastTime = reports.isEmpty() ? null : reports.get(reports.size() - 1).getCreatedAt();
+        return new ReportPage(reportsDto, newLastTime, newLastUuid);
     }
 }

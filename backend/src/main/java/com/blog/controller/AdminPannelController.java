@@ -2,6 +2,9 @@ package com.blog.controller;
 
 import com.blog.dto.*;
 import com.blog.service.AdminService;
+import com.blog.service.AdminService.UserPage;
+import com.blog.service.AdminService.PostPage;
+import com.blog.service.AdminService.ReportPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -111,5 +114,36 @@ public class AdminPannelController {
     public ResponseEntity<List<TopPostResponse>> getMostReportedPosts() {
         List<TopPostResponse> topPosts = adminService.getMostReportedPosts();
         return ResponseEntity.ok(topPosts);
+    }
+
+    @GetMapping("/users/pages")
+    public ResponseEntity<UserPage> getUsersByPage(
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+        UserPage data = adminService.getUsersPaginated(lastUuid);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/posts/pages")
+    public ResponseEntity<PostPage> getPostsByPage(
+            @RequestParam(value = "lastTime", required = false) Long lastTime,
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+        PostPage data = adminService.getAllPostsPaginated(lastTime, lastUuid);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/reports/posts/pages")
+    public ResponseEntity<ReportPage> getPostsReportsByPage(
+            @RequestParam(value = "lastTime", required = false) Long lastTime,
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+        ReportPage data = adminService.getPostsReportsPaginated(lastTime, lastUuid);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/reports/users/pages")
+    public ResponseEntity<ReportPage> getUsersReportsByPage(
+            @RequestParam(value = "lastTime", required = false) Long lastTime,
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+        ReportPage data = adminService.getUsersReportsPaginated(lastTime, lastUuid);
+        return ResponseEntity.ok(data);
     }
 }

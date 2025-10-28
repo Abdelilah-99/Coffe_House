@@ -177,7 +177,10 @@ export class Me implements OnInit, OnDestroy {
     this.profileService.createPost(formData).subscribe({
       next: () => {
         this.toast.show("Post has successfully created", 'success');
-        // this.loadUserPosts(this.userProfile!.uuid);
+        this.userPosts = [];
+        this.loadPostByPage(null, null, () => {
+          this.initObserver();
+        });
       },
       error: (err) => {
         this.toast.show(err.error.message, 'error');

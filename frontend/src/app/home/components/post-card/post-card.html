@@ -12,7 +12,7 @@
 
             <div class="post-overlay">
                 <div class="post-title-overlay">
-                    <h3 class="post-title text-break">{{ post.title }}</h3>
+                    <h3 class="post-title">{{ post.title }}</h3>
                 </div>
             </div>
         </div>
@@ -50,10 +50,10 @@
                     <span class="post-date">{{ post.createdAt | date: 'short' }}</span>
                 </div>
             </div>
-            <h3 class="post-title text-break">{{ post.title }}</h3>
+            <h3 class="post-title">{{ post.title }}</h3>
         </div>
 
-        <div class="post-preview post-content text-break">
+        <div class="post-content">
             <p>{{ post.content }}</p>
         </div>
 

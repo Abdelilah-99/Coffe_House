@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 export interface User {
@@ -43,6 +43,23 @@ export interface TopPostResponse {
   content: string;
   authorUsername: string;
   count: number;
+}
+
+export interface UserPage {
+  users: User[];
+  lastUuid: string | null;
+}
+
+export interface PostPage {
+  posts: any[];
+  lastTime: number | null;
+  lastUuid: string | null;
+}
+
+export interface ReportPage {
+  reports: Report[];
+  lastTime: number | null;
+  lastUuid: string | null;
 }
 
 @Injectable({
@@ -111,5 +128,43 @@ export class AdminPannelSefvices {
 
   getOverallStatistics() {
     return this.http.get<AdminStatisticsResponse>(`${this.URL}/statistics`);
+  }
+
+  loadUsersPaginated(lastUuid: string | null) {
+    if (!lastUuid) {
+      return this.http.get<UserPage>(`${this.URL}/users/pages`);
+    }
+    const params = new HttpParams().set('lastUuid', lastUuid);
+    return this.http.get<UserPage>(`${this.URL}/users/pages`, { params });
+  }
+
+  loadPostsPaginated(lastTime: number | null, lastUuid: string | null) {
+    if (!lastTime || !lastUuid) {
+      return this.http.get<PostPage>(`${this.URL}/posts/pages`);
+    }
+    const params = new HttpParams()
+      .set('lastTime', lastTime.toString())
+      .set('lastUuid', lastUuid);
+    return this.http.get<PostPage>(`${this.URL}/posts/pages`, { params });
+  }
+
+  loadPostsReportsPaginated(lastTime: number | null, lastUuid: string | null) {
+    if (!lastTime || !lastUuid) {
+      return this.http.get<ReportPage>(`${this.URL}/reports/posts/pages`);
+    }
+    const params = new HttpParams()
+      .set('lastTime', lastTime.toString())
+      .set('lastUuid', lastUuid);
+    return this.http.get<ReportPage>(`${this.URL}/reports/posts/pages`, { params });
+  }
+
+  loadUsersReportsPaginated(lastTime: number | null, lastUuid: string | null) {
+    if (!lastTime || !lastUuid) {
+      return this.http.get<ReportPage>(`${this.URL}/reports/users/pages`);
+    }
+    const params = new HttpParams()
+      .set('lastTime', lastTime.toString())
+      .set('lastUuid', lastUuid);
+    return this.http.get<ReportPage>(`${this.URL}/reports/users/pages`, { params });
   }
 }

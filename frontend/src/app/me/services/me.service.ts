@@ -1,13 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Post } from '../../post/services/post-service';
-
-export interface PostPage {
-  posts: Post[];
-  lastTime: number;
-  lastUuid: String;
-}
 
 export interface UserProfile {
   firstName: string;
@@ -37,15 +31,5 @@ export class MeService {
 
   getUserPosts(userUuid: String): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.URLPOST}/user/${userUuid}`);
-  }
-
-  loadMore(lastTime: number | null, lastUuid: string | null) {
-    if (!lastTime || !lastUuid) {
-      return this.http.get<PostPage>(`http://localhost:8080/api/posts/mypost-page`);
-    }
-    const params = new HttpParams()
-      .set('lastTime', lastTime)
-      .set('lastUuid', lastUuid);
-    return this.http.get<PostPage>(`http://localhost:8080/api/posts/mypost-page`, { params });
   }
 }

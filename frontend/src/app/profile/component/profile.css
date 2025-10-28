@@ -452,6 +452,18 @@
   border-bottom: 2px solid var(--color-border);
 }
 
+.loading-trigger {
+  height: 1px;
+  margin: 20px 0;
+}
+
+.loading-more {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}
+
 .no-posts {
   text-align: center;
   padding: 3rem 1rem;

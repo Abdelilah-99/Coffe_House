@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { MeService, UserProfile } from '../../me/services/me.service';
 import { NotificationRes, NotifServices } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -11,10 +11,18 @@ import { Token } from '@angular/compiler';
   templateUrl: './notification.html',
   styleUrl: './notification.css'
 })
-export class Notification implements OnInit {
+export class Notification implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
+  observer!: IntersectionObserver;
+
   userProfile?: UserProfile;
-  notification?: NotificationRes[];
+  notification: NotificationRes[] = [];
   show: boolean = false;
+  isLoading: boolean = false;
+
+  lastTime: number | null = null;
+  lastUuid: string | null = null;
+
   constructor(private meServices: MeService,
     private notifService: NotifServices,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -33,6 +41,28 @@ export class Notification implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.initObserver();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  private initObserver() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !this.isLoading && this.lastTime && this.lastUuid) {
+        this.loadNotifByPage(this.lastTime, this.lastUuid);
+      }
+    });
+    this.observer.observe(this.anchor.nativeElement);
+  }
+
   loadProfile() {
     this.meServices.getProfile().subscribe({
       next: (res) => {
@@ -46,12 +76,21 @@ export class Notification implements OnInit {
   }
 
   loadNotif() {
-    this.notifService.getAllNotif().subscribe({
+    this.loadNotifByPage(null, null);
+  }
+
+  loadNotifByPage(lastTime: number | null, lastUuid: string | null) {
+    this.isLoading = true;
+    this.notifService.getNotificationsPaginated(lastTime, lastUuid).subscribe({
       next: (res) => {
-        this.notification = res;
+        this.notification.push(...res.notifications);
+        this.lastTime = res.lastTime;
+        this.lastUuid = res.lastUuid;
+        this.isLoading = false;
       },
       error: (err) => {
         console.log(err);
+        this.isLoading = false;
       }
     })
   }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.blog.entity.*;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface NotifRepository extends JpaRepository<Notification, Long> {
@@ -34,4 +35,19 @@ public interface NotifRepository extends JpaRepository<Notification, Long> {
     @Transactional
     @Modifying
     void deleteByNotificatedUserAndNotificationOwner(String crrUser, String otherUser);
+
+    @Query("""
+            SELECT n FROM Notification n
+            LEFT JOIN Post p ON n.postOrProfileUuid = p.uuid
+            WHERE n.notificatedUser = :userUuid
+            AND (p.status IS NULL OR p.status != 'HIDE')
+            AND (:lastTime IS NULL OR n.createdAt < :lastTime
+            OR (n.createdAt = :lastTime AND n.id < :lastId))
+            ORDER BY n.createdAt DESC
+        """)
+    List<Notification> findByNotificatedUserPaginated(
+        @Param("userUuid") String userUuid,
+        @Param("lastTime") Long lastTime,
+        @Param("lastId") Long lastId,
+        Pageable pageable);
 }

@@ -19,6 +19,10 @@
                 <p>No notifications available</p>
             </div>
         </ng-template>
+                <div #anchor class="loading-trigger"></div>
+                <div *ngIf="isLoading && notification.length > 0" class="loading-more">
+                    Loading more notifications...
+                </div>
             </div>
         </div>
     </div>

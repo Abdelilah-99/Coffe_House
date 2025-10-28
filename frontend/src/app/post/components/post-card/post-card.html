@@ -18,8 +18,8 @@
                 </div>
             </div>
         </div>
-        <h2 class="post-title text-break">{{ post.title }}</h2>
-        <p class="post-content text-break">{{ post.content }}</p>
+        <h2 class="post-title">{{ post.title }}</h2>
+        <p class="post-content">{{ post.content }}</p>
         <div class="post-images" *ngIf="post.mediaPaths && post.mediaPaths.length > 0">
             <div *ngFor="let media of post.mediaPaths">
                 <img *ngIf="isImage(media.type)" [src]="'http://localhost:8080/' + media.path" width="300" />

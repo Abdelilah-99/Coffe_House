@@ -188,6 +188,10 @@
                 </tbody>
             </table>
         </div>
+        <div #userReportsAnchor class="loading-trigger"></div>
+        <div *ngIf="isLoadingUserReports && userReports.length > 0" class="loading-more">
+            Loading more reports...
+        </div>
     </div>
 
     <div class="management-section">
@@ -210,6 +214,10 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div #postReportsAnchor class="loading-trigger"></div>
+        <div *ngIf="isLoadingPostReports && postReports.length > 0" class="loading-more">
+            Loading more reports...
         </div>
     </div>
 

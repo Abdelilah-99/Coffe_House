@@ -327,4 +327,48 @@ public class PostService {
         }
         return listPostRes;
     }
+
+    public PostPage getPostsByUserPaginated(String userUuid, Long lastTime, String lastUuid) {
+        User user = userRepository.findByUuid(userUuid)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis() + 1000;
+        }
+        Long lastId = null;
+        if (lastUuid != null) {
+            Post post = postRepository.findByUuid(lastUuid)
+                    .orElseThrow(() -> new PostNotFoundException("post not found for id"));
+            lastId = post.getId();
+        }
+
+        List<Post> posts = postRepository.findByUserPaginated(user.getId(), lastTime, lastId, pageable);
+
+        List<PostRes> listPostRes = new ArrayList<>();
+        for (Post post : posts) {
+            if ("HIDE".equals(post.getStatus())) {
+                continue;
+            }
+            PostRes postRes = new PostRes();
+            postRes.setPostUuid(post.getUuid());
+            postRes.setUserUuid(post.getUser().getUuid());
+            postRes.setUserName(post.getUser().getUserName());
+            postRes.setContent(post.getContent());
+            postRes.setTitle(post.getTitle());
+            postRes.setMessage("list of user posts");
+            postRes.setCreatedAt(post.getCreatedAt());
+            postRes.setMediaPaths(convertToMediaDTOs(post.getMediaPaths()));
+            postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));
+            postRes.setLikeCount(likesRepository.countByPost_uuid(post.getUuid()));
+            postRes.setProfileImagePath(post.getUser().getProfileImagePath());
+            postRes.setStatus(post.getStatus());
+            listPostRes.add(postRes);
+        }
+
+        String newLastUuid = posts.isEmpty() ? null : posts.get(posts.size() - 1).getUuid();
+        Long newLastTime = posts.isEmpty() ? null : posts.get(posts.size() - 1).getCreatedAt();
+        return new PostPage(listPostRes, newLastTime, newLastUuid);
+    }
 }

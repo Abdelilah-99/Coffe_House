@@ -11,6 +11,8 @@ import com.blog.dto.UsersRespons;
 import com.blog.repository.NotifRepository;
 import com.blog.repository.PostRepository;
 import com.blog.exceptions.UserNotLoginException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class NotifService {
@@ -73,5 +75,41 @@ public class NotifService {
             throw new UserNotLoginException("login for getting notification count");
         }
         return notifRepository.countUnreadNotificationsExcludingHiddenPosts(usersRespons.getUuid());
+    }
+
+    public record NotificationPage(List<NotificationResponse> notifications, Long lastTime, String lastUuid) {
+    }
+
+    public NotificationPage getNotificationsPaginated(Long lastTime, String lastUuid) {
+        UsersRespons usersRespons;
+        try {
+            usersRespons = usersServices.getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("login or register to get notifications");
+        }
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis() + 1000;
+        }
+
+        Long lastId = null;
+        if (lastUuid != null) {
+            Notification notification = notifRepository.findById(Long.parseLong(lastUuid)).orElse(null);
+            if (notification != null) {
+                lastId = notification.getId();
+            }
+        }
+
+        List<Notification> notifications = notifRepository.findByNotificatedUserPaginated(
+            usersRespons.getUuid(), lastTime, lastId, pageable);
+
+        List<NotificationResponse> notifDtos = toNotifDto(notifications);
+
+        String newLastUuid = notifications.isEmpty() ? null : String.valueOf(notifications.get(notifications.size() - 1).getId());
+        Long newLastTime = notifications.isEmpty() ? null : notifications.get(notifications.size() - 1).getCreatedAt();
+
+        return new NotificationPage(notifDtos, newLastTime, newLastUuid);
     }
 }

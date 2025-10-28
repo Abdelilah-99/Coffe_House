@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService, ProfileRes, FollowRes, Message } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -13,7 +13,10 @@ import { ToastService } from '../../toast/service/toast';
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
-export class Profile implements OnInit {
+export class Profile implements OnInit, OnDestroy {
+  @ViewChild('anchor', { static: true }) anchor!: ElementRef<HTMLElement>;
+  observer!: IntersectionObserver;
+
   profileRes?: ProfileRes;
   followRes?: FollowRes;
   reportAction = false;
@@ -27,6 +30,9 @@ export class Profile implements OnInit {
   following?: number;
   followers?: number;
   isAdmin: boolean = false;
+
+  lastTime: number | null = null;
+  lastUuid: string | null = null;
 
   showAdminBanConfirmation = false;
   toastMessage: { text: string, type: 'success' | 'error' | 'warning' } | null = null;
@@ -42,6 +48,12 @@ export class Profile implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.uuid = params.get('id');
       if (this.uuid && isPlatformBrowser(this.platformId)) {
+        this.userPosts = [];
+        this.lastTime = null;
+        this.lastUuid = null;
+        if (this.observer) {
+          this.observer.disconnect();
+        }
         this.loadProfile(this.uuid);
         this.message = undefined;
       }
@@ -49,6 +61,25 @@ export class Profile implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.isAdmin = localStorage.getItem('user_role') === 'ROLE_ADMIN';
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  private initObserver() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+    this.observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !this.isLoadingPosts && this.lastTime && this.lastUuid && this.uuid) {
+        this.loadUserPostsByPage(this.uuid, this.lastTime, this.lastUuid);
+      }
+    });
+    this.observer.observe(this.anchor.nativeElement);
   }
 
   myProfile(uuid: String): void {
@@ -116,7 +147,9 @@ export class Profile implements OnInit {
         this.followers = this.profileRes.follower;
         this.following = this.profileRes.following;
         this.myProfile(this.profileRes.uuid);
-        this.loadUserPosts(uuid);
+        this.loadUserPostsByPage(uuid, null, null, () => {
+          this.initObserver();
+        });
       },
       error: (err) => {
         console.log("error getting profile ", err);
@@ -124,21 +157,25 @@ export class Profile implements OnInit {
     })
   }
 
-  loadUserPosts(userUuid: String) {
+  loadUserPostsByPage(userUuid: String, lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
     this.isLoadingPosts = true;
-    this.profileService.getUserPosts(userUuid).subscribe({
-      next: (posts) => {
-        this.userPosts = posts;
+    this.profileService.getUserPostsPaginated(userUuid, lastTime, lastUuid).subscribe({
+      next: (res) => {
+        this.lastTime = res.lastTime;
+        if (res.lastUuid) {
+          this.lastUuid = res.lastUuid.toString();
+        }
+        this.userPosts.push(...res.posts);
         this.isLoadingPosts = false;
+        if (onFinish) onFinish();
       },
       error: (err) => {
         console.log("Err loading user posts: ", err);
         this.isLoadingPosts = false;
+        if (onFinish) onFinish();
       }
     })
   }
-
-  block: boolean = false;
 
   followLogic(userName: String, connect: boolean) {
     if (connect && this.profileRes?.uuid) {

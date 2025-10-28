@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Post } from '../../post/services/post-service';
@@ -34,6 +34,12 @@ export interface FollowUser {
   firstName: string;
   lastName: string;
   profileImagePath: string;
+}
+
+export interface PostPage {
+  posts: Post[];
+  lastTime: number | null;
+  lastUuid: string | null;
 }
 
 @Injectable({
@@ -77,5 +83,15 @@ export class ProfileService {
 
   getMyFollowing(): Observable<FollowUser[]> {
     return this.http.get<FollowUser[]>(`${this.URL}/me/following`);
+  }
+
+  getUserPostsPaginated(userUuid: String, lastTime: number | null, lastUuid: string | null): Observable<PostPage> {
+    if (!lastTime || !lastUuid) {
+      return this.http.get<PostPage>(`http://localhost:8080/api/posts/user/${userUuid}/pages`);
+    }
+    const params = new HttpParams()
+      .set('lastTime', lastTime.toString())
+      .set('lastUuid', lastUuid);
+    return this.http.get<PostPage>(`http://localhost:8080/api/posts/user/${userUuid}/pages`, { params });
   }
 }
