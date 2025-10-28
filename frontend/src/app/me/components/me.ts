@@ -14,7 +14,7 @@ import { ToastService } from '../../toast/service/toast';
   styleUrl: './me.css'
 })
 export class Me implements OnInit, OnDestroy {
-  @ViewChild('anchor', { static: true }) anchor!: ElementRef<HTMLElement>;
+  @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
   observer!: IntersectionObserver;
   lastUuid: string | null = null;
   lastTime: number | null = null;

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Like, Post, PostService, Comments, Message } from '../../services/post-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -20,6 +20,7 @@ export class PostCard implements OnInit {
     private profileService: MeService,
     private adminService: AdminPannelSefvices,
     private toast: ToastService) { }
+  @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
   postUuid: String | null = null;
   post?: Post;
   like?: Like;

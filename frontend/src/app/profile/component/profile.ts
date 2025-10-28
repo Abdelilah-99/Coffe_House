@@ -14,7 +14,7 @@ import { ToastService } from '../../toast/service/toast';
   styleUrl: './profile.css'
 })
 export class Profile implements OnInit, OnDestroy {
-  @ViewChild('anchor', { static: true }) anchor!: ElementRef<HTMLElement>;
+  @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
   observer!: IntersectionObserver;
 
   profileRes?: ProfileRes;
@@ -55,6 +55,9 @@ export class Profile implements OnInit, OnDestroy {
           this.observer.disconnect();
         }
         this.loadProfile(this.uuid);
+        this.loadUserPostsByPage(this.uuid, null, null, () => {
+          this.initObserver();
+        });
         this.message = undefined;
       }
     });
@@ -147,9 +150,6 @@ export class Profile implements OnInit, OnDestroy {
         this.followers = this.profileRes.follower;
         this.following = this.profileRes.following;
         this.myProfile(this.profileRes.uuid);
-        this.loadUserPostsByPage(uuid, null, null, () => {
-          this.initObserver();
-        });
       },
       error: (err) => {
         console.log("error getting profile ", err);

@@ -49,14 +49,6 @@ public class PostController {
         return ResponseEntity.ok(data);
     }
 
-    @GetMapping("/mypost-page")
-    public ResponseEntity<PostPage> getMyPostByPage(
-            @RequestParam(value = "lastTime", required = false) Long lastTime,
-            @RequestParam(value = "lastId", required = false) String lastUuid) {
-        PostPage data = postService.getPosts(lastTime, lastUuid);
-        return ResponseEntity.ok(data);
-    }
-
     @PostMapping("/create")
     public ResponseEntity<PostRes> createPost(@RequestParam("title") String title,
             @RequestParam("content") String content,

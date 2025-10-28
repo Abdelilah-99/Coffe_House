@@ -23,7 +23,8 @@
         <div class="post-images" *ngIf="post.mediaPaths && post.mediaPaths.length > 0">
             <div *ngFor="let media of post.mediaPaths">
                 <img *ngIf="isImage(media.type)" [src]="'http://localhost:8080/' + media.path" width="300" />
-                <video *ngIf="isVideo(media.type)" [src]="'http://localhost:8080/' + media.path" controls width="300"></video>
+                <video *ngIf="isVideo(media.type)" [src]="'http://localhost:8080/' + media.path" controls
+                    width="300"></video>
             </div>
         </div>
 
@@ -92,24 +93,27 @@
                     </div>
 
                     <!-- Existing Comments -->
-                    <div *ngFor="let c of comment?.comments" class="comment-card">
-                        <div class="comment-avatar" (click)="moveToProfile(c.userUuid)">
-                            <img [src]="'http://localhost:8080/' + c?.imageProfile" class="avatar-placeholder" alt="">
-                        </div>
-                        <div class="comment-content">
-                            <div class="comment-header">
-                                <span class="comment-author">{{ c?.userName }}</span>
-                                <button *ngIf="myComment(c.userUuid)" class="btn-delete-comment"
-                                        (click)="onDeleteComment(c.uuid)"
-                                        title="Delete comment">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
+                    <div>
+                        <div *ngFor="let c of comment?.comments" class="comment-card">
+                            <div class="comment-avatar" (click)="moveToProfile(c.userUuid)">
+                                <img [src]="'http://localhost:8080/' + c?.imageProfile" class="avatar-placeholder"
+                                    alt="">
                             </div>
-                            <p class="comment-text">{{ c?.comment }}</p>
-                            <div class="comment-meta">
-                                <span class="comment-time">{{ c?.createdAt | date:'short' }}</span>
+                            <div class="comment-content">
+                                <div class="comment-header">
+                                    <span class="comment-author">{{ c?.userName }}</span>
+                                    <button *ngIf="myComment(c.userUuid)" class="btn-delete-comment"
+                                        (click)="onDeleteComment(c.uuid)" title="Delete comment">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+                                <p class="comment-text">{{ c?.comment }}</p>
+                                <div class="comment-meta">
+                                    <span class="comment-time">{{ c?.createdAt | date:'short' }}</span>
+                                </div>
                             </div>
                         </div>
+                        <div #anchor class="loading-trigger"></div>
                     </div>
 
                     <div *ngIf="comment?.comments?.length === 0 && instantComments?.length === 0" class="no-comments">
