@@ -37,11 +37,9 @@ export class Me implements OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return;
     this.observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastUuid) {
-        console.log("hii");
         this.loadPostByPage(this.lastTime, this.lastUuid);
       }
     });
-    console.log(this.anchor.nativeElement);
     this.observer.observe(this.anchor.nativeElement);
   }
 

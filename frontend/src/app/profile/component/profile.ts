@@ -96,7 +96,7 @@ export class Profile implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        console.log("error fetching user profile ", err);
+        this.toastService.show("error fetching user profile", 'error');
       }
     })
   }
@@ -170,7 +170,7 @@ export class Profile implements OnInit, OnDestroy {
         if (onFinish) onFinish();
       },
       error: (err) => {
-        console.log("Err loading user posts: ", err);
+        this.toastService.show("error loading posts", 'error');
         this.isLoadingPosts = false;
         if (onFinish) onFinish();
       }

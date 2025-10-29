@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
-// CREATE INDEX idx_post_user_created_id ON post (user_id, created_at DESC, id // trigger
-// DESC);
 @Table(indexes = {
         @Index(name = "idx_post_user_created_id", columnList = "user_id, created_at DESC")
 })
