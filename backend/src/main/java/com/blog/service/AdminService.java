@@ -5,8 +5,6 @@ import com.blog.dto.MediaDTO;
 import com.blog.dto.PostRes;
 import com.blog.dto.ReportsAdmineResponse;
 import com.blog.dto.AdminStatisticsResponse;
-import com.blog.dto.TopUserResponse;
-import com.blog.dto.TopPostResponse;
 import com.blog.entity.Post;
 import com.blog.entity.Report;
 import com.blog.dto.UsersAdmineResponse;
@@ -20,7 +18,6 @@ import com.blog.repository.PostRepository;
 import com.blog.repository.ReportRepository;
 import com.blog.repository.UserRepository;
 import com.blog.repository.CommentRepository;
-import com.blog.repository.FollowRepository;
 import com.blog.repository.LikesRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +31,6 @@ public class AdminService {
     private UsersServices usersServices;
     private ReportRepository reportRepository;
     private CommentRepository commentRepository;
-    private FollowRepository followRepository;
     private LikesRepository likesRepository;
 
     public AdminService(
@@ -43,14 +39,12 @@ public class AdminService {
             PostRepository postRepository,
             UsersServices usersServices,
             CommentRepository commentRepository,
-            FollowRepository followRepository,
             LikesRepository likesRepository) {
         this.userRepository = userRepository;
         this.usersServices = usersServices;
         this.postRepository = postRepository;
         this.reportRepository = reportRepository;
         this.commentRepository = commentRepository;
-        this.followRepository = followRepository;
         this.likesRepository = likesRepository;
     }
 
@@ -88,23 +82,6 @@ public class AdminService {
         return "unknown";
     }
 
-    public List<UsersAdmineResponse> getUsers() {
-        List<User> users = userRepository.findAll();
-        UsersRespons usersRespons;
-        try {
-            usersRespons = usersServices.getCurrentUser();
-        } catch (Exception e) {
-            throw new UserNotLoginException("admin not loggin");
-        }
-        List<UsersAdmineResponse> usersToDto = cnvToDto(users, usersRespons);
-        return usersToDto;
-    }
-
-    public List<PostRes> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        List<PostRes> postsDto = cnvPostsToDto(posts);
-        return postsDto;
-    }
 
     private List<PostRes> cnvPostsToDto(List<Post> posts) {
         List<PostRes> postsDto = new ArrayList<>();
@@ -139,6 +116,7 @@ public class AdminService {
             usersAdmineResponse.setUsername(user.getUserName());
             usersAdmineResponse.setUuid(user.getUuid());
             usersAdmineResponse.setStatus(user.getStatus());
+            usersAdmineResponse.setCreatedAt(user.getCreatedAt());
             usersDto.add(usersAdmineResponse);
         }
         return usersDto;
@@ -229,18 +207,6 @@ public class AdminService {
         return postRes;
     }
 
-    public List<ReportsAdmineResponse> getPostsReports() {
-        List<Report> report = reportRepository.findByPostIsNotNull();
-        List<ReportsAdmineResponse> reportDto = cnvReportToDto(report, "Post");
-        return reportDto;
-    }
-
-    public List<ReportsAdmineResponse> getUsersReports() {
-        List<Report> report = reportRepository.findByUserIsNotNull();
-        List<ReportsAdmineResponse> reportDto = cnvReportToDto(report, "User");
-        return reportDto;
-    }
-
     private List<ReportsAdmineResponse> cnvReportToDto(List<Report> reports, String type) {
         List<ReportsAdmineResponse> reportsDto = new ArrayList<>();
         for (Report report : reports) {
@@ -262,153 +228,18 @@ public class AdminService {
     public AdminStatisticsResponse getOverallStatistics() {
         long totalUsers = userRepository.count();
         long totalPosts = postRepository.count();
-        long totalComments = commentRepository.count();
         long totalReports = reportRepository.count();
-        long totalFollows = followRepository.count();
 
         AdminStatisticsResponse statistics = new AdminStatisticsResponse();
         statistics.setTotalUsers(totalUsers);
         statistics.setTotalPosts(totalPosts);
-        statistics.setTotalComments(totalComments);
         statistics.setTotalReports(totalReports);
-        statistics.setTotalFollows(totalFollows);
         statistics.setMessage("Overall statistics retrieved successfully");
 
         return statistics;
     }
 
-    public List<TopUserResponse> getUsersWithMostComments() {
-        List<User> allUsers = userRepository.findAll();
-        List<TopUserResponse> topUsers = new ArrayList<>();
-
-        for (User user : allUsers) {
-            long commentCount = commentRepository.countByUser(user);
-            TopUserResponse topUser = new TopUserResponse();
-            topUser.setUuid(user.getUuid());
-            topUser.setUsername(user.getUserName());
-            topUser.setFirstName(user.getFirstName());
-            topUser.setLastName(user.getLastName());
-            topUser.setEmail(user.getEmail());
-            topUser.setCount(commentCount);
-            topUser.setType("comments");
-            topUsers.add(topUser);
-        }
-        topUsers.sort((a, b) -> Long.compare(b.getCount(), a.getCount()));
-        return topUsers.subList(0, Math.min(10, topUsers.size()));
-    }
-
-    public List<TopUserResponse> getUsersWithMostFollowers() {
-        List<User> allUsers = userRepository.findAll();
-        List<TopUserResponse> topUsers = new ArrayList<>();
-
-        for (User user : allUsers) {
-            long followerCount = followRepository.countByFollowingId(user.getId());
-            TopUserResponse topUser = new TopUserResponse();
-            topUser.setUuid(user.getUuid());
-            topUser.setUsername(user.getUserName());
-            topUser.setFirstName(user.getFirstName());
-            topUser.setLastName(user.getLastName());
-            topUser.setEmail(user.getEmail());
-            topUser.setCount(followerCount);
-            topUser.setType("followers");
-            topUsers.add(topUser);
-        }
-        topUsers.sort((a, b) -> Long.compare(b.getCount(), a.getCount()));
-        return topUsers.subList(0, Math.min(10, topUsers.size()));
-    }
-
-    public List<TopUserResponse> getMostReportedUsers() {
-        List<User> allUsers = userRepository.findAll();
-        List<TopUserResponse> topUsers = new ArrayList<>();
-
-        for (User user : allUsers) {
-            long reportCount = reportRepository.countByUser(user);
-            if (reportCount > 0) {
-                TopUserResponse topUser = new TopUserResponse();
-                topUser.setUuid(user.getUuid());
-                topUser.setUsername(user.getUserName());
-                topUser.setFirstName(user.getFirstName());
-                topUser.setLastName(user.getLastName());
-                topUser.setEmail(user.getEmail());
-                topUser.setCount(reportCount);
-                topUser.setType("reports");
-                topUsers.add(topUser);
-            }
-        }
-        topUsers.sort((a, b) -> Long.compare(b.getCount(), a.getCount()));
-        return topUsers.subList(0, Math.min(10, topUsers.size()));
-    }
-
-    public List<TopPostResponse> getPostsWithMostComments() {
-        List<Post> allPosts = postRepository.findAll();
-        List<TopPostResponse> topPosts = new ArrayList<>();
-
-        for (Post post : allPosts) {
-            long commentCount = commentRepository.countByPost_uuid(post.getUuid());
-            if (commentCount > 0) {
-                TopPostResponse topPost = new TopPostResponse();
-                topPost.setUuid(post.getUuid());
-                topPost.setTitle(post.getTitle());
-                topPost.setContent(post.getContent().length() > 100 ? post.getContent().substring(0, 100) + "..."
-                        : post.getContent());
-                topPost.setAuthorUsername(post.getUser().getUserName());
-                topPost.setAuthorUuid(post.getUser().getUuid());
-                topPost.setCommentCount(commentCount);
-                topPost.setMessage("Posts with most comments retrieved successfully");
-                topPosts.add(topPost);
-            }
-        }
-        topPosts.sort((a, b) -> Long.compare(b.getCommentCount(), a.getCommentCount()));
-        return topPosts.subList(0, Math.min(10, topPosts.size()));
-    }
-
-    public List<TopPostResponse> getMostReportedPosts() {
-        List<Post> allPosts = postRepository.findAll();
-        List<TopPostResponse> topPosts = new ArrayList<>();
-
-        for (Post post : allPosts) {
-            long reportCount = reportRepository.countByPost(post);
-            if (reportCount > 0) {
-                TopPostResponse topPost = new TopPostResponse();
-                topPost.setUuid(post.getUuid());
-                topPost.setTitle(post.getTitle());
-                topPost.setContent(post.getContent().length() > 100 ? post.getContent().substring(0, 100) + "..."
-                        : post.getContent());
-                topPost.setAuthorUsername(post.getUser().getUserName());
-                topPost.setAuthorUuid(post.getUser().getUuid());
-                topPost.setReportCount(reportCount);
-                topPost.setMessage("Most reported posts retrieved successfully");
-                topPosts.add(topPost);
-            }
-        }
-        topPosts.sort((a, b) -> Long.compare(b.getReportCount(), a.getReportCount()));
-        return topPosts.subList(0, Math.min(10, topPosts.size()));
-    }
-
-    public List<TopPostResponse> getPostsWithMostLikes() {
-        List<Post> allPosts = postRepository.findAll();
-        List<TopPostResponse> topPosts = new ArrayList<>();
-
-        for (Post post : allPosts) {
-            long likeCount = likesRepository.countByPost_uuid(post.getUuid());
-            if (likeCount > 0) {
-                TopPostResponse topPost = new TopPostResponse();
-                topPost.setUuid(post.getUuid());
-                topPost.setTitle(post.getTitle());
-                topPost.setContent(post.getContent().length() > 100 ? post.getContent().substring(0, 100) + "..."
-                        : post.getContent());
-                topPost.setAuthorUsername(post.getUser().getUserName());
-                topPost.setAuthorUuid(post.getUser().getUuid());
-                topPost.setLikeCount(likeCount);
-                topPost.setMessage("Posts with most likes retrieved successfully");
-                topPosts.add(topPost);
-            }
-        }
-        topPosts.sort((a, b) -> Long.compare(b.getLikeCount(), a.getLikeCount()));
-        return topPosts.subList(0, Math.min(10, topPosts.size()));
-    }
-
-    public record UserPage(List<UsersAdmineResponse> users, String lastUuid) {
+    public record UserPage(List<UsersAdmineResponse> users, Long lastCreatedAt, String lastUuid) {
     }
 
     public record PostPage(List<PostRes> posts, Long lastTime, String lastUuid) {
@@ -417,7 +248,7 @@ public class AdminService {
     public record ReportPage(List<ReportsAdmineResponse> reports, Long lastTime, String lastUuid) {
     }
 
-    public UserPage getUsersPaginated(String lastUuid) {
+    public UserPage getUsersPaginated(Long lastCreatedAt, String lastUuid) {
         UsersRespons usersRespons;
         try {
             usersRespons = usersServices.getCurrentUser();
@@ -426,6 +257,11 @@ public class AdminService {
         }
 
         Pageable pageable = PageRequest.of(0, 10);
+
+        if (lastCreatedAt == null) {
+            lastCreatedAt = System.currentTimeMillis() + 1000;
+        }
+
         Long lastId = null;
         if (lastUuid != null) {
             User user = userRepository.findByUuid(lastUuid).orElse(null);
@@ -434,11 +270,12 @@ public class AdminService {
             }
         }
 
-        List<User> users = userRepository.findAllPaginated(lastId, pageable);
+        List<User> users = userRepository.findAllPaginated(lastCreatedAt, lastId, pageable);
         List<UsersAdmineResponse> usersDto = cnvToDto(users, usersRespons);
 
         String newLastUuid = users.isEmpty() ? null : users.get(users.size() - 1).getUuid();
-        return new UserPage(usersDto, newLastUuid);
+        Long newLastCreatedAt = users.isEmpty() ? null : users.get(users.size() - 1).getCreatedAt();
+        return new UserPage(usersDto, newLastCreatedAt, newLastUuid);
     }
 
     public PostPage getAllPostsPaginated(Long lastTime, String lastUuid) {

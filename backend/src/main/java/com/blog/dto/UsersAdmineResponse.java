@@ -13,6 +13,7 @@ public class UsersAdmineResponse {
     private String message;
     private List<Post> posts;
     private String status;
+    private Long createdAt;
 
     public String getStatus() {
         return status;
@@ -96,5 +97,13 @@ public class UsersAdmineResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
     }
 }

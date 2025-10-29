@@ -7,7 +7,6 @@ import com.blog.service.AdminService.PostPage;
 import com.blog.service.AdminService.ReportPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -17,30 +16,6 @@ public class AdminPannelController {
 
     public AdminPannelController(AdminService adminService) {
         this.adminService = adminService;
-    }
-
-    @GetMapping("/users")
-    public ResponseEntity<List<UsersAdmineResponse>> getUsersInfo() {
-        List<UsersAdmineResponse> users = adminService.getUsers();
-        return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/posts")
-    public ResponseEntity<List<PostRes>> getPostsInfo() {
-        List<PostRes> posts = adminService.getAllPosts();
-        return ResponseEntity.ok(posts);
-    }
-
-    @GetMapping("/reports/posts")
-    public ResponseEntity<List<ReportsAdmineResponse>> getPostsReports() {
-        List<ReportsAdmineResponse> users = adminService.getPostsReports();
-        return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/reports/users")
-    public ResponseEntity<List<ReportsAdmineResponse>> getUsersReports() {
-        List<ReportsAdmineResponse> users = adminService.getUsersReports();
-        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/user/{uuid}")
@@ -80,46 +55,11 @@ public class AdminPannelController {
         return ResponseEntity.ok(statistics);
     }
 
-    @GetMapping("/analytics/users/top-commenters")
-    public ResponseEntity<List<TopUserResponse>> getUsersWithMostComments() {
-        List<TopUserResponse> topUsers = adminService.getUsersWithMostComments();
-        return ResponseEntity.ok(topUsers);
-    }
-
-    @GetMapping("/analytics/users/most-followed")
-    public ResponseEntity<List<TopUserResponse>> getUsersWithMostFollowers() {
-        List<TopUserResponse> topUsers = adminService.getUsersWithMostFollowers();
-        return ResponseEntity.ok(topUsers);
-    }
-
-    @GetMapping("/analytics/users/most-reported")
-    public ResponseEntity<List<TopUserResponse>> getMostReportedUsers() {
-        List<TopUserResponse> topUsers = adminService.getMostReportedUsers();
-        return ResponseEntity.ok(topUsers);
-    }
-
-    @GetMapping("/analytics/posts/most-commented")
-    public ResponseEntity<List<TopPostResponse>> getPostsWithMostComments() {
-        List<TopPostResponse> topPosts = adminService.getPostsWithMostComments();
-        return ResponseEntity.ok(topPosts);
-    }
-
-    @GetMapping("/analytics/posts/most-liked")
-    public ResponseEntity<List<TopPostResponse>> getPostsWithMostLikes() {
-        List<TopPostResponse> topPosts = adminService.getPostsWithMostLikes();
-        return ResponseEntity.ok(topPosts);
-    }
-
-    @GetMapping("/analytics/posts/most-reported")
-    public ResponseEntity<List<TopPostResponse>> getMostReportedPosts() {
-        List<TopPostResponse> topPosts = adminService.getMostReportedPosts();
-        return ResponseEntity.ok(topPosts);
-    }
-
     @GetMapping("/users/pages")
     public ResponseEntity<UserPage> getUsersByPage(
+            @RequestParam(value = "lastCreatedAt", required = false) Long lastCreatedAt,
             @RequestParam(value = "lastUuid", required = false) String lastUuid) {
-        UserPage data = adminService.getUsersPaginated(lastUuid);
+        UserPage data = adminService.getUsersPaginated(lastCreatedAt, lastUuid);
         return ResponseEntity.ok(data);
     }
 

@@ -63,6 +63,7 @@ public class RegistrationService {
             newUser.setPassword(hashedPassword);
             newUser.setProfileImagePath(profilePath);
             newUser.setStatus("ACTIVE");
+            newUser.setCreatedAt(System.currentTimeMillis());
             userRepository.save(newUser);
             return new RegisterResponse("User registered successfully", "ROLE_USER  ", sanitizedUsername);
         } catch (IllegalArgumentException e) {

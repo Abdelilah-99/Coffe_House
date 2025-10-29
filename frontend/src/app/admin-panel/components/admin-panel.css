@@ -110,22 +110,10 @@
   box-shadow: 0 4px 16px rgba(155, 89, 182, 0.3);
 }
 
-.stat-comments .stat-icon {
-  background: linear-gradient(135deg, #1abc9c, #16a085);
-  color: white;
-  box-shadow: 0 4px 16px rgba(26, 188, 156, 0.3);
-}
-
 .stat-reports .stat-icon {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
   box-shadow: 0 4px 16px rgba(231, 76, 60, 0.3);
-}
-
-.stat-follows .stat-icon {
-  background: linear-gradient(135deg, #f39c12, #e67e22);
-  color: white;
-  box-shadow: 0 4px 16px rgba(243, 156, 18, 0.3);
 }
 
 /* Stat Content */
@@ -256,6 +244,73 @@
   border: 1px solid var(--color-border);
 }
 
+/* Scrollable wrapper for tables */
+.table-scroll-wrapper {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Custom scrollbar styling */
+.table-scroll-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-track {
+  background: rgba(107, 78, 61, 0.05);
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Scrollable wrapper for mobile cards */
+.cards-scroll-wrapper {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.cards-scroll-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cards-scroll-wrapper::-webkit-scrollbar-track {
+  background: rgba(107, 78, 61, 0.05);
+}
+
+.cards-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+.cards-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Loading trigger - invisible element at the bottom */
+.loading-trigger {
+  height: 20px;
+  width: 100%;
+}
+
+/* Loading indicator */
+.loading-more {
+  text-align: center;
+  padding: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
 .admin-table {
   width: 100%;
   border-collapse: collapse;
@@ -375,93 +430,7 @@
   color: #7f8c8d;
 }
 
-.uuid-cell {
-  font-family: monospace;
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-/* Analytics Section */
-.analytics-section {
-  margin-bottom: 2.5rem;
-}
-
-.analytics-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  border: 1px solid var(--color-border);
-  transition: all 0.3s ease;
-}
-
-.analytics-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: var(--color-primary);
-}
-
-.card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-text);
-  margin: 0 0 1.25rem 0;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid var(--color-border);
-}
-
-.user-list, .post-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.user-item, .post-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem 1rem;
-  background: rgba(107, 78, 61, 0.02);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.user-item:hover, .post-item:hover {
-  background: rgba(107, 78, 61, 0.05);
-  border-color: var(--color-primary);
-}
-
-.user-info-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  flex: 1;
-}
-
-.user-name-compact {
-  font-weight: 600;
-  color: var(--color-text);
-  font-size: 0.95rem;
-}
-
-.user-username-compact {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-.user-count, .post-count {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  font-family: 'Georgia', serif;
-}
-
-.user-count.warning, .post-count.warning {
-  color: #e74c3c;
-}
-
-/* Clickable Row/Item Styles */
+/* Clickable Styles */
 .clickable-row {
   cursor: pointer;
   transition: all 0.2s ease;
@@ -476,38 +445,16 @@
   transform: translateX(2px);
 }
 
-.clickable-item {
+.clickable-card {
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.clickable-item:hover {
-  transform: translateX(4px);
-  background: rgba(107, 78, 61, 0.08);
+.clickable-card:hover {
+  background: rgba(107, 78, 61, 0.02);
 }
 
-.post-info-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  flex: 1;
-}
-
-.post-title-compact {
-  font-weight: 600;
-  color: var(--color-text);
-  font-size: 0.95rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.post-author-compact {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-/* Responsive Tables and Analytics */
+/* Responsive Tables */
 @media (max-width: 576px) {
   .table-container {
     overflow-x: auto;
@@ -529,30 +476,6 @@
     width: 100%;
     padding: 0.5rem;
     font-size: 0.75rem;
-  }
-
-  .analytics-card {
-    padding: 1rem;
-  }
-
-  .card-title {
-    font-size: 1rem;
-  }
-
-  .user-item, .post-item {
-    padding: 0.75rem;
-  }
-
-  .user-name-compact, .post-title-compact {
-    font-size: 0.875rem;
-  }
-
-  .user-username-compact, .post-author-compact {
-    font-size: 0.8rem;
-  }
-
-  .user-count, .post-count {
-    font-size: 1.1rem;
   }
 
   .reason-badge {

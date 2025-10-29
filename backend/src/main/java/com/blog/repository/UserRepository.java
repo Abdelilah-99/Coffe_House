@@ -26,10 +26,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
             SELECT u FROM User u
-            WHERE (:lastId IS NULL OR u.id < :lastId)
-            ORDER BY u.id DESC
+            WHERE (:lastCreatedAt IS NULL OR u.createdAt < :lastCreatedAt)
+            OR (u.createdAt = :lastCreatedAt AND u.id < :lastId)
+            ORDER BY u.createdAt DESC, u.id DESC
         """)
     List<User> findAllPaginated(
+        @Param("lastCreatedAt") Long lastCreatedAt,
         @Param("lastId") Long lastId,
         Pageable pageable);
 }
