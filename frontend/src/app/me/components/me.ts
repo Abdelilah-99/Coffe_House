@@ -25,15 +25,13 @@ export class Me implements OnInit, OnDestroy {
   isLoadingPosts = false;
   post = { title: '', content: '' };
   message?: string;
-  toastMessage: { text: string, type: 'success' | 'error' | 'warning' } | null = null;
-  errorMessage: string | null = null;
   constructor(private profileService: MeService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
     private postService: PostService,
     private toast: ToastService) { }
 
-  private initObserver() {
+  initObserver() {
     if (!isPlatformBrowser(this.platformId)) return;
     this.observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastUuid) {
@@ -67,9 +65,6 @@ export class Me implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadProfile();
-    this.loadPostByPage(null, null, () => {
-      this.initObserver();
-    });
   }
 
   loadProfile() {
@@ -84,6 +79,9 @@ export class Me implements OnInit, OnDestroy {
         next: (profile) => {
           this.userProfile = profile;
           this.isLoading = !this.isLoading;
+          this.loadPostByPage(null, null, () => {
+            this.initObserver();
+          });
         },
         error: (err) => {
           console.log("Err loading profile: ", err);
@@ -109,12 +107,10 @@ export class Me implements OnInit, OnDestroy {
   }
   selectedFiles: File[] = [];
   previewUrls: { url: String, type: string }[] = [];
-
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
     console.log(this.selectedFiles.length);
-
-    if (files.length > 5 || this.selectedFiles.length > 4) {
+    if (files.length + this.selectedFiles.length > 5) {
       this.toast.show("5 file maximum", "error");
       return;
     }

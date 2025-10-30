@@ -38,38 +38,38 @@ export class Register implements OnInit {
   }
 
   selectedFile: File | null = null;
-  profileImagePreview: string | null = null;
+  profileImagePreview: string = '';
 
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
 
     if (!files || files.length === 0) {
       this.selectedFile = null;
-      this.profileImagePreview = null;
+      this.profileImagePreview = '';
       return;
     }
     this.selectedFile = files[0];
     if (!files[0].type.includes("image")) {
-      // this.errorMessage = "format image are only allowed";
       this.toast.show("format image are only allowed!!", 'error');
       return;
     }
     if (files[0].size > 10 * 1024 * 1024) {
-      // this.errorMessage = "Max upload size exceeded";
       this.toast.show("Max upload size exceeded!!", 'error');
       return;
     }
     this.profileImagePreview = URL.createObjectURL(files[0]);
     console.log(this.profileImagePreview);
+    
   }
 
   removeProfileImage() {
     this.selectedFile = null;
-    this.profileImagePreview = null;
+    this.profileImagePreview = '';
     const fileInput = document.getElementById('profileImage') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';
     }
+    URL.revokeObjectURL(this.profileImagePreview);
   }
 
   onRegister() {
@@ -95,11 +95,11 @@ export class Register implements OnInit {
     this.authService.register(formData).subscribe({
       next: () => {
         this.toast.show("register successful!!", 'success');
+        URL.revokeObjectURL(this.profileImagePreview)
         this.router.navigate(['/login']);
       },
       error: (err) => {
         console.log('err: ', err.error.message);
-        // this.errorMessage = err.error.message;
         this.toast.show(err.error.message, 'error');
         if (!err.error.message.includes('Password')) {
           this.currentStep = 1;

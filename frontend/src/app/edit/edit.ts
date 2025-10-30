@@ -93,14 +93,13 @@ export class Edit implements OnInit {
       this.oldFileLen = this.post.mediaPaths.length;
     }
     if (!files || files.length === 0) return;
-    if (files.length + this.oldFileLen > 5 || this.selectedFiles.length + this.oldFileLen > 4) {
+    if (files.length + this.oldFileLen + this.selectedFiles.length > 5) {
       this.toast.show("5 file maximum", "error");
       return;
     }
     for (let i = 0; i < files.length; i++) {
       if (!files[i].type.includes("image") && !files[i].type.includes("video")) {
         this.toast.show("format image and video are only allowed", "error");
-        console.log(files[i].type.split('/')[0]);
         return;
       }
       if (files[i].size > 100 * 1024 * 1024) {
