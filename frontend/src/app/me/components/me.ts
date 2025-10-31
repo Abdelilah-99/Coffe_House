@@ -43,7 +43,7 @@ export class Me implements OnInit, OnDestroy {
 
   loadPostByPage(lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
     this.isLoding = true;
-    this.postService.loadMore(lastTime, lastUuid).subscribe({
+    this.postService.loadMore(lastTime, lastUuid, "me").subscribe({
       next: (res) => {
         this.lastTime = res.lastTime;
         if (res.lastUuid) {
@@ -92,19 +92,19 @@ export class Me implements OnInit, OnDestroy {
     }
   }
 
-  loadUserPosts(userUuid: String) {
-    this.isLoadingPosts = true;
-    this.profileService.getUserPosts(userUuid).subscribe({
-      next: (posts) => {
-        this.userPosts = posts;
-        this.isLoadingPosts = false;
-      },
-      error: (err) => {
-        console.log("Err loading user posts: ", err);
-        this.isLoadingPosts = false;
-      }
-    })
-  }
+  // loadUserPosts(userUuid: String) {
+  //   this.isLoadingPosts = true;
+  //   this.profileService.getUserPosts(userUuid).subscribe({
+  //     next: (posts) => {
+  //       this.userPosts = posts;
+  //       this.isLoadingPosts = false;
+  //     },
+  //     error: (err) => {
+  //       console.log("Err loading user posts: ", err);
+  //       this.isLoadingPosts = false;
+  //     }
+  //   })
+  // }
   selectedFiles: File[] = [];
   previewUrls: { url: String, type: string }[] = [];
   onFileSelected(e: any) {

@@ -32,20 +32,27 @@ public class PostController {
         this.deletePostService = deletePostService;
         this.commentService = commentService;
         this.likePostService = likePostService;
-
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PostRes>> displayPost() {
-        List<PostRes> res = postService.displayAllPosts();
-        return ResponseEntity.ok(res);
-    }
+    // @GetMapping("/all")
+    // public ResponseEntity<List<PostRes>> displayPost() {
+    //     List<PostRes> res = postService.displayAllPosts();
+    //     return ResponseEntity.ok(res);
+    // }
 
-    @GetMapping("/pages")
+    @GetMapping("/home/pages")
     public ResponseEntity<PostPage> getPostByPage(
             @RequestParam(value = "lastTime", required = false) Long lastTime,
             @RequestParam(value = "lastId", required = false) String lastUuid) {
         PostPage data = postService.getPosts(lastTime, lastUuid);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/me/pages")
+    public ResponseEntity<PostPage> getMyPostByPage(
+            @RequestParam(value = "lastTime", required = false) Long lastTime,
+            @RequestParam(value = "lastId", required = false) String lastUuid) {
+        PostPage data = postService.getMyPosts(lastTime, lastUuid);
         return ResponseEntity.ok(data);
     }
 
@@ -106,11 +113,11 @@ public class PostController {
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/user/{userUuid}")
-    public ResponseEntity<List<PostRes>> getUserPosts(@PathVariable String userUuid) {
-        List<PostRes> res = postService.getPostsByUser(userUuid);
-        return ResponseEntity.ok(res);
-    }
+    // @GetMapping("/user/{userUuid}")
+    // public ResponseEntity<List<PostRes>> getUserPosts(@PathVariable String userUuid) {
+    //     List<PostRes> res = postService.getPostsByUser(userUuid);
+    //     return ResponseEntity.ok(res);
+    // }
 
     @GetMapping("/user/{userUuid}/pages")
     public ResponseEntity<PostPage> getUserPostsByPage(

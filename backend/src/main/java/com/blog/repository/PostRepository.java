@@ -17,25 +17,21 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByUuid(String uuid);
 
-    @Query("""
-              SELECT p FROM Post p
-              WHERE p.status != 'HIDE' and p.user.id IN (
-                SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId
-              )
-              or p.user.id = :userId
-              ORDER BY p.createdAt DESC
-            """)
-    List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
+//     @Query("""
+//               SELECT p FROM Post p
+//               WHERE p.status != 'HIDE' and p.user.id IN (
+//                 SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId
+//               )
+//               or p.user.id = :userId
+//               ORDER BY p.createdAt DESC
+//             """)
+//     List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
 
     @Transactional
     void deleteByUuid(String uuid);
 
     @Query("""
-                SELECT p FROM Post p
-                where p.status != 'HIDE'
-                and (:lastTime IS NULL OR p.createdAt < :lastTime)
-                and (p.user.id = :userId)
-                order by p.createdAt DESC
+                SELECT p FROM Post p where p.status != 'HIDE' and (:lastTime IS NULL OR p.createdAt < :lastTime) and (p.user.id = :userId) order by p.createdAt DESC
             """)
     List<Post> findMyPostByPagination(
             @Param("lastTime") Long lastTime,

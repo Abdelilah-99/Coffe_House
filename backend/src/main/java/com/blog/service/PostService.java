@@ -249,7 +249,7 @@ public class PostService {
         return new PostPage(listPostRes, newLastTime, newLastUuid);
     }
 
-    public List<PostRes> displayAllPosts() {
+    public PostPage getMyPosts(Long lastTime, String lastUuid) {
         UsersRespons userRes;
         try {
             userRes = usersServices.getCurrentUser();
@@ -259,28 +259,75 @@ public class PostService {
         User user = userRepository.findByUserName(userRes.getUsername()).orElseThrow(() -> {
             throw new UserNotFoundException("error user not found");
         });
-        List<Post> posts = postRepository.findPostsFromFollowedUsers(user.getId());
+        Pageable pageable = PageRequest.of(0, 5);
+
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis() + 1000;
+        }
+        Long lastId = null;
+        if (lastUuid != null) {
+            Post post = postRepository.findByUuid(lastUuid)
+                    .orElseThrow(() -> new PostNotFoundException("post not found for id"));
+            lastId = post.getId();
+        }
+        List<Post> posts = postRepository.findMyPostByPagination(lastTime, lastId, user.getId(), pageable);
+
         List<PostRes> listPostRes = new ArrayList<>();
         for (Post post : posts) {
-            System.err.printf("post id: %s\n", post.getId());
-            System.err.printf("user id: %s\n", post.getUser().getId());
-
-            listPostRes.add(new PostRes(post.getUuid(),
-                    post.getUser().getUuid(),
-                    post.getUser().getUserName(),
-                    post.getContent(),
-                    post.getTitle(),
-                    "list of post",
-                    post.getCreatedAt(),
-                    convertToMediaDTOs(post.getMediaPaths()),
-                    commentRepository.countByPost_uuid(post.getUuid()),
-                    likesRepository.countByPost_uuid(post.getUuid()),
-                    post.getUser().getProfileImagePath(),
-                    post.getStatus()));
-            // System.err.println(listPostRes.get(0).getUserId());
+            PostRes postRes = new PostRes();
+            postRes.setPostUuid(post.getUuid());
+            postRes.setUserUuid(post.getUser().getUuid());
+            postRes.setUserName(post.getUser().getUserName());
+            postRes.setContent(post.getContent());
+            postRes.setTitle(post.getTitle());
+            postRes.setMessage("list of post");
+            postRes.setCreatedAt(post.getCreatedAt());
+            postRes.setMediaPaths(convertToMediaDTOs(post.getMediaPaths()));
+            postRes.setCommentCount(commentRepository.countByPost_uuid(post.getUuid()));
+            postRes.setLikeCount(likesRepository.countByPost_uuid(post.getUuid()));
+            postRes.setProfileImagePath(post.getUser().getProfileImagePath());
+            postRes.setStatus(post.getStatus());
+            listPostRes.add(postRes);
         }
-        return listPostRes;
+        // Long newLastId = posts.isEmpty() ? null : posts.get(posts.size() -
+        // 1).getId();
+        String newLastUuid = posts.isEmpty() ? null : posts.get(posts.size() - 1).getUuid();
+        Long newLastTime = posts.isEmpty() ? null : posts.get(posts.size() - 1).getCreatedAt();
+        return new PostPage(listPostRes, newLastTime, newLastUuid);
     }
+
+    // public List<PostRes> displayAllPosts() {
+    //     UsersRespons userRes;
+    //     try {
+    //         userRes = usersServices.getCurrentUser();
+    //     } catch (Exception e) {
+    //         throw new UserNotLoginException("login please for getting posts");
+    //     }
+    //     User user = userRepository.findByUserName(userRes.getUsername()).orElseThrow(() -> {
+    //         throw new UserNotFoundException("error user not found");
+    //     });
+    //     List<Post> posts = postRepository.findPostsFromFollowedUsers(user.getId());
+    //     List<PostRes> listPostRes = new ArrayList<>();
+    //     for (Post post : posts) {
+    //         System.err.printf("post id: %s\n", post.getId());
+    //         System.err.printf("user id: %s\n", post.getUser().getId());
+
+    //         listPostRes.add(new PostRes(post.getUuid(),
+    //                 post.getUser().getUuid(),
+    //                 post.getUser().getUserName(),
+    //                 post.getContent(),
+    //                 post.getTitle(),
+    //                 "list of post",
+    //                 post.getCreatedAt(),
+    //                 convertToMediaDTOs(post.getMediaPaths()),
+    //                 commentRepository.countByPost_uuid(post.getUuid()),
+    //                 likesRepository.countByPost_uuid(post.getUuid()),
+    //                 post.getUser().getProfileImagePath(),
+    //                 post.getStatus()));
+    //         // System.err.println(listPostRes.get(0).getUserId());
+    //     }
+    //     return listPostRes;
+    // }
 
     public PostRes getPost(String uuid) {
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("post not found"));
@@ -303,30 +350,30 @@ public class PostService {
                 post.getStatus());
     }
 
-    public List<PostRes> getPostsByUser(String userUuid) {
-        User user = userRepository.findByUuid(userUuid)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-        List<Post> posts = postRepository.findByUser(user);
-        List<PostRes> listPostRes = new ArrayList<>();
-        for (Post post : posts) {
-            if ("HIDE".equals(post.getStatus())) {
-                continue;
-            }
-            listPostRes.add(new PostRes(post.getUuid(),
-                    post.getUser().getUuid(),
-                    post.getUser().getUserName(),
-                    post.getContent(),
-                    post.getTitle(),
-                    "list of user posts",
-                    post.getCreatedAt(),
-                    convertToMediaDTOs(post.getMediaPaths()),
-                    commentRepository.countByPost_uuid(post.getUuid()),
-                    likesRepository.countByPost_uuid(post.getUuid()),
-                    post.getUser().getProfileImagePath(),
-                    post.getStatus()));
-        }
-        return listPostRes;
-    }
+    // public List<PostRes> getPostsByUser(String userUuid) {
+    //     User user = userRepository.findByUuid(userUuid)
+    //             .orElseThrow(() -> new UserNotFoundException("User not found"));
+    //     List<Post> posts = postRepository.findByUser(user);
+    //     List<PostRes> listPostRes = new ArrayList<>();
+    //     for (Post post : posts) {
+    //         if ("HIDE".equals(post.getStatus())) {
+    //             continue;
+    //         }
+    //         listPostRes.add(new PostRes(post.getUuid(),
+    //                 post.getUser().getUuid(),
+    //                 post.getUser().getUserName(),
+    //                 post.getContent(),
+    //                 post.getTitle(),
+    //                 "list of user posts",
+    //                 post.getCreatedAt(),
+    //                 convertToMediaDTOs(post.getMediaPaths()),
+    //                 commentRepository.countByPost_uuid(post.getUuid()),
+    //                 likesRepository.countByPost_uuid(post.getUuid()),
+    //                 post.getUser().getProfileImagePath(),
+    //                 post.getStatus()));
+    //     }
+    //     return listPostRes;
+    // }
 
     public PostPage getPostsByUserPaginated(String userUuid, Long lastTime, String lastUuid) {
         User user = userRepository.findByUuid(userUuid)

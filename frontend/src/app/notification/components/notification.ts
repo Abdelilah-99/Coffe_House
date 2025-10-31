@@ -114,7 +114,6 @@ export class Notification implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       }
-
       this.navigate.navigate(['/postCard', notif?.postOrProfileUuid]);
     }
   }

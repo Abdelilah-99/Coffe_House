@@ -29,7 +29,7 @@ export class MeService {
     return this.http.post(`${this.URLPOST}/create`, formData);
   }
 
-  getUserPosts(userUuid: String): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.URLPOST}/user/${userUuid}`);
-  }
+  // getUserPosts(userUuid: String): Observable<Post[]> {
+  //   return this.http.get<Post[]>(`${this.URLPOST}/user/${userUuid}`);
+  // }
 }

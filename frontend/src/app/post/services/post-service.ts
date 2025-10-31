@@ -62,9 +62,9 @@ export class PostService {
   private URL = `http://localhost:8080/api/posts`;
   constructor(private http: HttpClient) { }
 
-  getAllPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.URL + '/all');
-  }
+  // getAllPosts(): Observable<Post[]> {
+  //   return this.http.get<Post[]>(this.URL + '/all');
+  // }
 
   deletePost(uuid: String): Observable<any> {
     return this.http.post(this.URL + '/delete/' + uuid, null);
@@ -102,13 +102,13 @@ export class PostService {
     return this.http.post<Message>(`http://localhost:8080/api/report/post/${uuid}`, { reason: reason });
   }
 
-  loadMore(lastTime: number | null, lastUuid: string | null) {
+  loadMore(lastTime: number | null, lastUuid: string | null, route: string) {
     if (!lastTime || !lastUuid) {
-      return this.http.get<PostPage>(`http://localhost:8080/api/posts/pages`);
+      return this.http.get<PostPage>(`http://localhost:8080/api/posts/${route}/pages`);
     }
     const params = new HttpParams()
       .set('lastTime', lastTime)
       .set('lastUuid', lastUuid);
-    return this.http.get<PostPage>(`http://localhost:8080/api/posts/pages`, { params });
+    return this.http.get<PostPage>(`http://localhost:8080/api/posts/${route}/pages`, { params });
   }
 }

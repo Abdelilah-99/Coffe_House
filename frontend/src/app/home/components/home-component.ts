@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadPostByPage(lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
     this.isLoding = true;
-    this.postService.loadMore(lastTime, lastUuid).subscribe({
+    this.postService.loadMore(lastTime, lastUuid, "home").subscribe({
       next: (res) => {
         this.postsPage = res;
         this.lastTime = res.lastTime;
@@ -77,18 +77,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.observer) this.observer.disconnect();
   }
 
-  loadPosts() {
-    this.postService.getAllPosts().subscribe({
-      next: (posts) => {
-        this.posts = posts;
-        this.isLoding = false;
-      },
-      error: (err) => {
-        console.log("err loading posts: ", err);
-        this.isLoding = false;
-      }
-    });
-  }
+  // loadPosts() {
+  //   this.postService.getAllPosts().subscribe({
+  //     next: (posts) => {
+  //       this.posts = posts;
+  //       this.isLoding = false;
+  //     },
+  //     error: (err) => {
+  //       console.log("err loading posts: ", err);
+  //       this.isLoding = false;
+  //     }
+  //   });
+  // }
 
   onPostCardSection(postUuid: String) {
     this.router.navigate(['/postCard', postUuid]);
