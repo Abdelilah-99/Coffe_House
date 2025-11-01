@@ -5,6 +5,10 @@ import java.util.UUID;
 import jakarta.persistence.*;
 
 @Entity
+@Table(indexes = {
+    @Index(name = "idx_report_post_created_id", columnList = "reported_post_id, created_at, id"),
+    @Index(name = "idx_report_user_created_id", columnList = "reported_user_id, created_at, id")
+})
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

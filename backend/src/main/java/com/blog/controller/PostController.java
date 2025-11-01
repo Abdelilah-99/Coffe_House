@@ -43,7 +43,7 @@ public class PostController {
     @GetMapping("/home/pages")
     public ResponseEntity<PostPage> getPostByPage(
             @RequestParam(value = "lastTime", required = false) Long lastTime,
-            @RequestParam(value = "lastId", required = false) String lastUuid) {
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
         PostPage data = postService.getPosts(lastTime, lastUuid);
         return ResponseEntity.ok(data);
     }
@@ -51,7 +51,7 @@ public class PostController {
     @GetMapping("/me/pages")
     public ResponseEntity<PostPage> getMyPostByPage(
             @RequestParam(value = "lastTime", required = false) Long lastTime,
-            @RequestParam(value = "lastId", required = false) String lastUuid) {
+            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
         PostPage data = postService.getMyPosts(lastTime, lastUuid);
         return ResponseEntity.ok(data);
     }

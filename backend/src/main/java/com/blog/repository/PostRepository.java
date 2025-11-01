@@ -31,7 +31,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     void deleteByUuid(String uuid);
 
     @Query("""
-                SELECT p FROM Post p where p.status != 'HIDE' and (:lastTime IS NULL OR p.createdAt < :lastTime) and (p.user.id = :userId) order by p.createdAt DESC
+                SELECT p FROM Post p where p.status != 'HIDE' 
+                        and (p.createdAt < :lastTime or (p.createdAt = :lastTime and p.id < :lastId)) 
+                        and (p.user.id = :userId) 
+                        order by p.createdAt DESC, p.id DESC
             """)
     List<Post> findMyPostByPagination(
             @Param("lastTime") Long lastTime,

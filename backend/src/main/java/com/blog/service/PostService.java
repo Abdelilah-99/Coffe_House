@@ -109,7 +109,7 @@ public class PostService {
             newPost.setCreatedAt(time);
             newPost.setMediaPaths(mediaPaths);
             newPost.setStatus("EPOSED");
-            postRepository.save(newPost);
+            postRepository.save(newPost);   
             List<Notification> notifications = new ArrayList<>();
             for (Follow follow : followers) {
                 Notification newNotif = new Notification();
@@ -270,6 +270,7 @@ public class PostService {
                     .orElseThrow(() -> new PostNotFoundException("post not found for id"));
             lastId = post.getId();
         }
+        System.out.println("lastTime: " + lastTime + " lastId: " + lastId + " lastUuid: " + lastUuid);
         List<Post> posts = postRepository.findMyPostByPagination(lastTime, lastId, user.getId(), pageable);
 
         List<PostRes> listPostRes = new ArrayList<>();
@@ -379,7 +380,7 @@ public class PostService {
         User user = userRepository.findByUuid(userUuid)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 5);
 
         if (lastTime == null) {
             lastTime = System.currentTimeMillis() + 1000;

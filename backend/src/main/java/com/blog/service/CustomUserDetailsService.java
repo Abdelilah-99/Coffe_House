@@ -42,6 +42,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 authorities);
-
     }
 }

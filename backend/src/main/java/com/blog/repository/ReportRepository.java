@@ -25,9 +25,9 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     @Query("""
             SELECT r FROM Report r
             WHERE r.post IS NOT NULL
-            AND (:lastTime IS NULL OR r.createdAt < :lastTime
+            AND (r.createdAt < :lastTime
             OR (r.createdAt = :lastTime AND r.id < :lastId))
-            ORDER BY r.createdAt DESC
+            ORDER BY r.createdAt DESC, r.id DESC
         """)
     List<Report> findByPostIsNotNullPaginated(
         @Param("lastTime") Long lastTime,
@@ -37,9 +37,9 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     @Query("""
             SELECT r FROM Report r
             WHERE r.user IS NOT NULL
-            AND (:lastTime IS NULL OR r.createdAt < :lastTime
+            AND (r.createdAt < :lastTime
             OR (r.createdAt = :lastTime AND r.id < :lastId))
-            ORDER BY r.createdAt DESC
+            ORDER BY r.createdAt DESC, r.id DESC
         """)
     List<Report> findByUserIsNotNullPaginated(
         @Param("lastTime") Long lastTime,

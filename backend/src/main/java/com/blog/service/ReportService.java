@@ -40,6 +40,11 @@ public class ReportService {
         } catch (Exception e) {
             throw new UserNotFoundException("user not found for reporting");
         }
+
+        if (usersRespons.getRole().equals("ROLE_ADMIN")) {
+            throw new SecurityException("Admin can directly manage profils by banning or deleting");
+        }
+
         User user = userRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new UserNotFoundException("User not available");
         });
@@ -74,6 +79,12 @@ public class ReportService {
         } catch (Exception e) {
             throw new UserNotFoundException("user not found for reporting");
         }
+
+        System.out.println("usersRespons.getRole(): " + usersRespons.getRole() );
+        if (usersRespons.getRole().equals("ROLE_ADMIN")) {
+            throw new SecurityException("Admin can directly manage posts by hiding or deleting");
+        }
+
         Post post = postRepository.findByUuid(uuid).orElseThrow(() -> {
             throw new PostNotFoundException("post not found for reporting");
         });

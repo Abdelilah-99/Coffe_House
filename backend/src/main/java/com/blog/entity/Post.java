@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(indexes = {
-        @Index(name = "idx_post_user_created_id", columnList = "user_id, created_at DESC")
+        @Index(name = "idx_post_user_created_id", columnList = "user_id, created_at DESC, id DESC")
 })
 public class Post {
     @Id
