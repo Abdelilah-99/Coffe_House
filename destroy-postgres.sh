@@ -27,19 +27,19 @@ else
     echo -e "${YELLOW}Image not found or already removed${NC}"
 fi
 
-echo -e "\n${BLUE}[3/4] Removing PostgreSQL volume...${NC}"
-docker volume rm 01-blog_postgres_data
-if [ $? -eq 0 ]; then
-    echo -e "${GREEN}Volume removed${NC}"
-else
-    echo -e "${YELLOW}Volume not found or already removed${NC}"
-fi
+# echo -e "\n${BLUE}[3/4] Removing PostgreSQL volume...${NC}"
+# docker volume rm 01-blog_postgres_data
+# if [ $? -eq 0 ]; then
+#     echo -e "${GREEN}Volume removed${NC}"
+# else
+#     echo -e "${YELLOW}Volume not found or already removed${NC}"
+# fi
 
-echo -e "\n${BLUE}[4/4] Cleaning up orphaned volumes...${NC}"
-docker volume prune -f
-if [ $? -eq 0 ]; then
-    echo -e "${GREEN}Orphaned volumes cleaned${NC}"
-fi
+# echo -e "\n${BLUE}[4/4] Cleaning up orphaned volumes...${NC}"
+# docker volume prune -f
+# if [ $? -eq 0 ]; then
+#     echo -e "${GREEN}Orphaned volumes cleaned${NC}"
+# fi
 
 echo -e "\n${GREEN}========================================${NC}"
 echo -e "${GREEN}  PostgreSQL Destruction Complete!${NC}"

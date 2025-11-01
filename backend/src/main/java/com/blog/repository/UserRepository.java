@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
             SELECT u FROM User u
-            WHERE (:lastCreatedAt IS NULL OR u.createdAt < :lastCreatedAt)
+            WHERE (OR u.createdAt < :lastCreatedAt)
             OR (u.createdAt = :lastCreatedAt AND u.id < :lastId)
             ORDER BY u.createdAt DESC, u.id DESC
         """)

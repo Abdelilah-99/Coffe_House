@@ -60,7 +60,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("""
                 SELECT p FROM Post p
                 WHERE p.user.id = :userId
-                AND (:lastTime IS NULL OR p.createdAt < :lastTime
+                AND (p.createdAt < :lastTime
                 OR (p.createdAt = :lastTime AND p.id < :lastId))
                 ORDER BY p.createdAt DESC
             """)
@@ -72,7 +72,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
                 SELECT p FROM Post p
-                WHERE (:lastTime IS NULL OR p.createdAt < :lastTime
+                WHERE (p.createdAt < :lastTime
                 OR (p.createdAt = :lastTime AND p.id < :lastId))
                 ORDER BY p.createdAt DESC
             """)
