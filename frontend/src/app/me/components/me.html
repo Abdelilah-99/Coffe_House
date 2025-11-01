@@ -118,7 +118,7 @@
         </div>
         <div *ngIf="!isLoadingPosts && userPosts.length > 0">
             <div class="row g-4">
-                <div *ngFor="let post of userPosts" class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div *ngFor="let post of userPosts" class="col-12 col-sm-6 col-md-4">
                     <div class="post-card" (click)="navigateToPost(post.postUuid)">
                         <!-- Post with image(s) - Image as background with overlay -->
                         <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
@@ -138,9 +138,6 @@
                                         <img *ngIf="userProfile?.profileImagePath"
                                             [src]="'http://localhost:8080/' + userProfile?.profileImagePath"
                                             alt="Profile">
-                                        <div *ngIf="!userProfile?.profileImagePath" class="avatar-placeholder-small">
-                                            {{userProfile?.firstName?.charAt(0) || ''}}
-                                        </div>
                                     </div>
                                     <span class="author-name">{{post.userName}}</span>
                                     <span class="post-time">{{post.createdAt | date: 'short'}}</span>
@@ -181,7 +178,7 @@
                             </div>
 
                             <div class="post-content text-break">
-                                <h3>{{post.title}}</h3>
+                                <h3 class="post-preview">{{post.title}}</h3>
                                 <p class="post-preview text-break">{{post.content}}...</p>
                             </div>
 

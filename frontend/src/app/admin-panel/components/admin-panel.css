@@ -13,6 +13,15 @@
   box-shadow: 0 8px 24px rgba(107, 78, 61, 0.2);
 }
 
+.short-text {
+  display: inline-block;
+  width: 20ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 .header-content h1 {
   font-size: 2.5rem;
   font-weight: 700;
