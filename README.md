@@ -5,7 +5,7 @@ A full-stack blog platform with user authentication, posts management, comments,
 ## Technologies Used
 
 ### Backend
-- **Java 21** - Programming language
+- **Java 17** - Programming language
 - **Spring Boot 3.5.5** - Application framework
 - **Spring Security** - Authentication and authorization
 - **Spring Data JPA** - Database ORM
@@ -45,7 +45,7 @@ A full-stack blog platform with user authentication, posts management, comments,
 
 Before running this application, ensure you have the following installed:
 
-- **Java 21** or higher
+- **Java 17** or higher
 - **Node.js** (v18 or higher) and **npm**
 - **Docker** and **Docker Compose**
 - **Git** (optional, for cloning)
@@ -75,8 +75,8 @@ Before running this application, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd 01-Blog
+git clone https://learn.zone01oujda.ma/git/babdelil/01blog.git
+cd 01blog
 ```
 
 ### 2. Configure Database (Optional)
@@ -253,18 +253,6 @@ cd backend
 ./gradlew clean build --refresh-dependencies
 ```
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
 ## License
 
 This project is licensed under the MIT License.
-
-## Support
-
-For issues and questions, please open an issue in the GitHub repository.
