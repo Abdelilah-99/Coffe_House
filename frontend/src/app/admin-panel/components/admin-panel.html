@@ -367,7 +367,7 @@
             </div>
             <h3 class="confirmation-title">Delete Post?</h3>
             <p class="confirmation-message" *ngIf="pendingActionData">
-                Are you sure you want to permanently delete the post "<strong>{{pendingActionData.title}}</strong>" by @{{pendingActionData.userName}}? This action cannot be undone.
+                Are you sure you want to permanently delete the post "<strong>{{pendingActionData.title | slice:0:10}}</strong>" by @{{pendingActionData.userName}}? This action cannot be undone.
             </p>
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelDeletePost()">
@@ -409,10 +409,10 @@
             <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'EPOSED'">Hide Post?</h3>
             <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'HIDE'">Unhide Post?</h3>
             <p class="confirmation-message" *ngIf="pendingActionData?.status === 'EPOSED'">
-                Are you sure you want to hide the post "<strong>{{pendingActionData.title}}</strong>" by @{{pendingActionData.userName}}? This will remove it from public view.
+                Are you sure you want to hide the post "<strong>{{pendingActionData.title | slice:0:10}}</strong>" by @{{pendingActionData.userName}}? This will remove it from public view.
             </p>
             <p class="confirmation-message" *ngIf="pendingActionData?.status === 'HIDE'">
-                Are you sure you want to unhide the post "<strong>{{pendingActionData.title}}</strong>" by @{{pendingActionData.userName}}? This will make it visible to users again.
+                Are you sure you want to unhide the post "<strong>{{pendingActionData.title | slice:0:10}}</strong>" by @{{pendingActionData.userName}}? This will make it visible to users again.
             </p>
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelHidePost()">

@@ -239,11 +239,11 @@
                 <h3 class="confirmation-title" *ngIf="post?.status === 'EPOSED'">Hide Post?</h3>
                 <h3 class="confirmation-title" *ngIf="post?.status === 'HIDE'">Unhide Post?</h3>
                 <p class="confirmation-message" *ngIf="post?.status === 'EPOSED'">
-                    Are you sure you want to hide "<strong>{{post.title}}</strong>"? This will remove it from public
+                    Are you sure you want to hide "<strong>{{post.title | slice:0:10}}...</strong>" by @{{post.userName}}? This will hide it from public
                     view.
                 </p>
                 <p class="confirmation-message" *ngIf="post?.status === 'HIDE'">
-                    Are you sure you want to unhide "<strong>{{post.title}}</strong>"? This will make it visible to
+                    Are you sure you want to unhide "<strong>{{post.title | slice:0:10}}...</strong>" by @{{post.userName}}? This will make it visible to
                     users again.
                 </p>
                 <div class="confirmation-actions">
@@ -287,7 +287,7 @@
                 </div>
                 <h3 class="confirmation-title">Delete Post?</h3>
                 <p class="confirmation-message" *ngIf="post">
-                    Are you sure you want to permanently delete "<strong>{{post.title}}</strong>" by @{{post.userName}}?
+                    Are you sure you want to permanently delete "<strong>{{post.title | slice:0:10}}...</strong>" by @{{post.userName}}?
                     This action cannot be undone.
                 </p>
                 <div class="confirmation-actions">
