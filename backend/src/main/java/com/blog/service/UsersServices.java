@@ -14,6 +14,9 @@ import com.blog.entity.*;
 import com.blog.repository.FollowRepository;
 import com.blog.repository.NotifRepository;
 import com.blog.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+
 import com.blog.exceptions.*;
 
 @Service
@@ -60,6 +63,7 @@ public class UsersServices {
         // );
     }
 
+    @Transactional
     public UsersRespons getCurrentUser() throws Exception {
         System.err.println("here");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -116,10 +120,11 @@ public class UsersServices {
                     otherUser.getUuid(),
                     "already following"));
         }
-        Follow follow = new Follow();
-        follow.setFollower(crrUser);
-        follow.setFollowing(otherUser);
-        followRepository.save(follow);
+        // Follow follow = new Follow();
+        // follow.setFollower(crrUser);
+        // follow.setFollowing(otherUser);
+        // followRepository.save(follow);
+        followRepository.insertFollow(crrUser.getId(), otherUser.getId());
         follower = followRepository.countByFollowerId(otherUser.getId());
         following = followRepository.countByFollowingId(otherUser.getId());
         return Optional.of(new UserFollowRes(following, follower, crrUser.getUuid(),

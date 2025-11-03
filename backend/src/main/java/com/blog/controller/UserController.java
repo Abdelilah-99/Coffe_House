@@ -72,5 +72,5 @@ public class UserController {
     public ResponseEntity<List<FollowUserResponse>> getMyFollowing() {
         List<FollowUserResponse> following = userService.getMyFollowing();
         return ResponseEntity.ok(following);
-    }
+    }   
 }
