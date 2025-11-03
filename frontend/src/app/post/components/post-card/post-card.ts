@@ -179,6 +179,10 @@ export class PostCard implements OnInit {
       this.toast.show('Please describe the issue before submitting your report.', 'error');
       return;
     }
+    if (reason.length > 200) {
+      this.toast.show('report must be under 200 charchter', 'error');
+      return;
+    }
     this.pendingReportReason = reason;
     this.showReportConfirmation = true;
   }

@@ -110,6 +110,10 @@ export class Profile implements OnInit, OnDestroy {
       this.toastService.show("Please provide additional details for your report", "error");
       return;
     }
+    if (reason.length > 200) {
+      this.toastService.show("reason must be under 200 charachter", "error");
+      return;
+    }
     this.pendingReportReason = reason;
     this.showReportConfirmation = true;
   }

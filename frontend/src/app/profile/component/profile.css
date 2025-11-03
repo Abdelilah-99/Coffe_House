@@ -38,6 +38,7 @@
     opacity: 0;
     transform: translateX(100%);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -502,17 +503,33 @@
   flex-direction: column;
 }
 
+.short-text {
+  display: inline-block;
+  width: 20ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-title-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 39px;
+}
+
 .post-image-wrapper {
   position: relative;
   width: 100%;
-  height: 350px;
+  height: 150px;
   overflow: hidden;
 }
 
 .post-preview {
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 1;
   /* Number of lines */
   -webkit-box-orient: vertical;
 }

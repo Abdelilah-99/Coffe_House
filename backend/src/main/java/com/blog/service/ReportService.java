@@ -8,6 +8,8 @@ import com.blog.entity.Post;
 import com.blog.repository.PostRepository;
 import com.blog.repository.ReportRepository;
 import com.blog.repository.UserRepository;
+
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import com.blog.dto.ReportResponse;
 import com.blog.exceptions.UserNotLoginException;
@@ -44,6 +46,9 @@ public class ReportService {
             return Optional.empty();
         }
         User user = userOpt.get();
+        if (reason.getReason().length() > 200) {
+            throw new ReportException("reason must be under 200 char");
+        }
 
         if (user.getStatus() != null && user.getStatus().equalsIgnoreCase("BAN")) {
             throw new ReportException("This user is already banned");
@@ -80,7 +85,9 @@ public class ReportService {
             return Optional.empty();
         }
         Post post = postOpt.get();
-
+        if (reason.getReason().length() > 200) {
+            throw new ReportException("reason must be under 200 char");
+        }
         User postOwner = post.getUser();
         if (postOwner.getStatus() != null && postOwner.getStatus().equalsIgnoreCase("BAN")) {
             throw new ReportException("This user is already banned");

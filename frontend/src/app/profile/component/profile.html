@@ -5,8 +5,7 @@
         <div class="profile-info row">
             <div class="profile-avatar col-12 col-md-auto d-flex justify-content-center justify-content-md-start">
                 @if(profileRes.profileImagePath) {
-                <img [src]="'http://localhost:8080/' + profileRes.profileImagePath"
-                    alt="Profile Picture">
+                <img [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile Picture">
                 }
                 @if(!profileRes.profileImagePath) {
                 <div class="avatar-placeholder">
@@ -35,14 +34,12 @@
         @if(!ifCrrProfile) {
         <div class="profile-actions d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
             @if(!profileRes.connect) {
-            <button class="btn btn-follow"
-                (click)="followLogic(profileRes.username, profileRes.connect)">
+            <button class="btn btn-follow" (click)="followLogic(profileRes.username, profileRes.connect)">
                 Follow
             </button>
             }
             @if(profileRes.connect) {
-            <button class="btn btn-unfollow"
-                (click)="followLogic(profileRes.username, profileRes.connect)">
+            <button class="btn btn-unfollow" (click)="followLogic(profileRes.username, profileRes.connect)">
                 Unfollow
             </button>
             }
@@ -81,7 +78,7 @@
                 <h3>Report User</h3>
                 <button class="close-btn" (click)="onReport()">✕</button>
             </div>
-            <textarea name="reportProfile" placeholder="Describe why you're reporting this user..."
+            <textarea maxlength="200" name="reportProfile" placeholder="Describe why you're reporting this user..."
                 #reportData></textarea>
             <div class="report-actions">
                 <button class="btn btn-cancel" (click)="onReport()">Cancel</button>
@@ -212,10 +209,16 @@
                     @if(post.mediaPaths && post.mediaPaths.length > 0) {
                     <div class="post-with-image">
                         <div class="post-image-wrapper">
+                            @if (post.mediaPaths[0].type.startsWith('image')) {
                             <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                                 class="post-bg-image">
+                            }
+                            @if (post.mediaPaths[0].type.startsWith('video')) {
+                            <video [src]="'http://localhost:8080/' + post.mediaPaths[0].path" class="post-bg-image" >
+                            </video>
+                            }
                             <div class="post-image-overlay">
-                                <h3 class="post-title-overlay text-break">{{post.title}}</h3>
+                                <h3 class="post-title-overlay text-break post-preview">{{post.title}}</h3>
                             </div>
                         </div>
                         <div class="post-footer-info">
@@ -270,9 +273,9 @@
                             </div>
                         </div>
 
-                        <div class="post-content text-break">
-                            <h3>{{post.title}}</h3>
-                            <p class="post-preview">{{post.content}}</p>
+                        <div class="post-title-content">
+                            <h3 class="post-title text-break post-preview">{{post.title}}</h3>
+                            <p class="text-break post-preview">{{post.content}}</p>
                         </div>
 
                         <div class="post-actions" (click)="$event.stopPropagation()">
