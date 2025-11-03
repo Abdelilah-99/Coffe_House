@@ -8,7 +8,8 @@
     </div>
 
     <!-- Statistics Overview -->
-    <div class="statistics-section" *ngIf="AdminStatisticsResponse">
+    @if (AdminStatisticsResponse) {
+    <div class="statistics-section">
         <h2 class="section-title">Overview Statistics</h2>
 
         <div class="stats-grid row g-4">
@@ -62,6 +63,7 @@
             </div>
         </div>
     </div>
+    }
 
     <!-- User Management Section -->
     <div class="management-section">
@@ -81,55 +83,69 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let user of users" class="clickable-row">
+                        @for(user of users; track user.uuid) {
+                        <tr class="clickable-row">
                             <td (click)="goTo('profile', user.uuid)">{{user.firstName}} {{user.lastName}}</td>
                             <td (click)="goTo('profile', user.uuid)">@{{user.username}}</td>
                             <td (click)="goTo('profile', user.uuid)">{{user.email}}</td>
                             <td (click)="goTo('profile', user.uuid)">{{user.createdAt | date:'short'}}</td>
-                            <td class="action-cell" *ngIf="user.status === 'ACTIVE'">
-                                <button class="btn-action btn-ban" (click)="onPrepareBanUser(user.uuid.toString(), user)">Ban</button>
+                            @if(user.status === 'ACTIVE') {
+                            <td class="action-cell">
+                                <button class="btn-action btn-ban"
+                                    (click)="onPrepareBanUser(user.uuid.toString(), user)">Ban</button>
                                 <button class="btn-action btn-delete"
                                     (click)="onPrepareDeleteUser(user.uuid.toString(), user)">Delete</button>
                             </td>
-                            <td class="action-cell" *ngIf="user.status === 'BAN'">
-                                <button class="btn-action btn-ban" (click)="onPrepareBanUser(user.uuid.toString(), user)">Unban</button>
+                            } @else if (user.status === 'BAN') {
+                            <td class="action-cell">
+                                <button class="btn-action btn-ban"
+                                    (click)="onPrepareBanUser(user.uuid.toString(), user)">Unban</button>
                                 <button class="btn-action btn-delete"
                                     (click)="onPrepareDeleteUser(user.uuid.toString(), user)">Delete</button>
                             </td>
+                            }
                         </tr>
+                        }
                     </tbody>
                 </table>
                 <div #usersAnchor class="loading-trigger"></div>
-                <div *ngIf="isLoadingUsers && users.length > 0" class="loading-more">
+                @if(isLoadingUsers && users.length > 0) {
+                <div class="loading-more">
                     Loading more users...
                 </div>
+                }
             </div>
         </div>
 
         <!-- Mobile Card View -->
         <div class="d-lg-none">
             <div class="cards-scroll-wrapper" #usersMobileScrollContainer>
-                <div class="card mb-3" *ngFor="let user of users">
+                @for(user of users; track user.uuid) {
+                <div class="card mb-3">
                     <div class="card-body clickable-card" (click)="goTo('profile', user.uuid)">
                         <h5 class="card-title">{{user.firstName}} {{user.lastName}}</h5>
                         <p class="card-text mb-1"><strong>Username:</strong> @{{user.username}}</p>
                         <p class="card-text mb-3"><strong>Email:</strong> {{user.email}}</p>
                         <div class="d-flex gap-2" (click)="$event.stopPropagation()">
+                            @if(user.status === 'ACTIVE') {
                             <button class="btn btn-sm btn-action btn-ban flex-grow-1"
-                                    *ngIf="user.status === 'ACTIVE'"
-                                    (click)="onPrepareBanUser(user.uuid.toString(), user)">Ban</button>
+                                (click)="onPrepareBanUser(user.uuid.toString(), user)">Ban</button>
+                            } @else if(user.status === 'BAN') {
                             <button class="btn btn-sm btn-action btn-ban flex-grow-1"
-                                    *ngIf="user.status === 'BAN'"
-                                    (click)="onPrepareBanUser(user.uuid.toString(), user)">Unban</button>
+                                (click)="onPrepareBanUser(user.uuid.toString(), user)">Unban</button>
+                            }
                             <button class="btn btn-sm btn-action btn-delete flex-grow-1"
-                                    (click)="onPrepareDeleteUser(user.uuid.toString(), user)">Delete</button>
+                                (click)="onPrepareDeleteUser(user.uuid.toString(), user)">Delete</button>
                         </div>
                     </div>
                 </div>
+                }
                 <div #usersAnchorMobile class="loading-trigger"></div>
-                <div *ngIf="isLoadingUsers && users.length > 0" class="loading-more">
+                @if(isLoadingUsers && users.length > 0) {
+                <div class="loading-more">
                     Loading more users...
                 </div>
+                }
             </div>
         </div>
     </div>
@@ -153,11 +169,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let post of posts" class="clickable-row">
+                        @for (post of posts; track post.postUuid) {
+                        <tr class="clickable-row">
                             <td (click)="goTo('post', post.postUuid)" class="short-text">{{post.title}}</td>
                             <td (click)="goTo('post', post.postUuid)">@{{post.userName}}</td>
                             <td (click)="goTo('post', post.postUuid)">
-                                <span class="status-badge" [class.status-hide]="post.status === 'HIDE'" [class.status-exposed]="post.status === 'EPOSED'">
+                                <span class="status-badge" [class.status-hide]="post.status === 'HIDE'"
+                                    [class.status-exposed]="post.status === 'EPOSED'">
                                     {{post.status}}
                                 </span>
                             </td>
@@ -165,31 +183,40 @@
                             <td (click)="goTo('post', post.postUuid)">{{post.commentCount}}</td>
                             <td class="action-cell">
                                 <button class="btn-action btn-hide" (click)="onPrepareHidePost(post.postUuid, post)">
-                                    <span *ngIf="post.status === 'EPOSED'">Hide</span>
-                                    <span *ngIf="post.status === 'HIDE'">Unhide</span>
+                                    @if(post.status === 'EPOSED') {
+                                    <span>Hide</span>
+                                    } @else if(post.status === 'HIDE') {
+                                    <span>Unhide</span>
+                                    }
                                 </button>
-                                <button class="btn-action btn-delete" (click)="onPrepareDeletePost(post.postUuid.toString(), post)">Delete</button>
+                                <button class="btn-action btn-delete"
+                                    (click)="onPrepareDeletePost(post.postUuid.toString(), post)">Delete</button>
                             </td>
                         </tr>
+                        }
                     </tbody>
                 </table>
                 <div #postsAnchor class="loading-trigger"></div>
-                <div *ngIf="isLoadingPosts && posts.length > 0" class="loading-more">
+                @if(isLoadingPosts && posts.length > 0) {
+                <div class="loading-more">
                     Loading more posts...
                 </div>
+                }
             </div>
         </div>
 
         <!-- Mobile Card View -->
         <div class="d-lg-none">
             <div class="cards-scroll-wrapper" #postsMobileScrollContainer>
-                <div class="card mb-3" *ngFor="let post of posts">
+                @for(post of posts; track post.postUuid) {
+                <div class="card mb-3">
                     <div class="card-body clickable-card" (click)="goTo('post', post.postUuid)">
                         <h5 class="card-title">{{post.title}}</h5>
                         <p class="card-text mb-1"><strong>Author:</strong> @{{post.userName}}</p>
                         <p class="card-text mb-1">
                             <strong>Status:</strong>
-                            <span class="status-badge ms-2" [class.status-hide]="post.status === 'HIDE'" [class.status-exposed]="post.status === 'EPOSED'">
+                            <span class="status-badge ms-2" [class.status-hide]="post.status === 'HIDE'"
+                                [class.status-exposed]="post.status === 'EPOSED'">
                                 {{post.status}}
                             </span>
                         </p>
@@ -199,19 +226,25 @@
                         </div>
                         <div class="d-flex gap-2" (click)="$event.stopPropagation()">
                             <button class="btn btn-sm btn-action btn-hide flex-grow-1"
-                                    (click)="onPrepareHidePost(post.postUuid, post)">
-                                <span *ngIf="post.status === 'EPOSED'">Hide</span>
-                                <span *ngIf="post.status === 'HIDE'">Unhide</span>
+                                (click)="onPrepareHidePost(post.postUuid, post)">
+                                @if(post.status === 'EPOSED') {
+                                <span>Hide</span>
+                                } @else if(post.status === 'HIDE') {
+                                <span>Unhide</span>
+                                }
                             </button>
                             <button class="btn btn-sm btn-action btn-delete flex-grow-1"
-                                    (click)="onPrepareDeletePost(post.postUuid.toString(), post)">Delete</button>
+                                (click)="onPrepareDeletePost(post.postUuid.toString(), post)">Delete</button>
                         </div>
                     </div>
                 </div>
+                }
                 <div #postsAnchorMobile class="loading-trigger"></div>
-                <div *ngIf="isLoadingPosts && posts.length > 0" class="loading-more">
+                @if(isLoadingPosts && posts.length > 0) {
+                <div class="loading-more">
                     Loading more posts...
                 </div>
+                }
             </div>
         </div>
     </div>
@@ -230,18 +263,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let report of userReports" class="clickable-row"
+                        @for(report of userReports; track report) {
+                        <tr class="clickable-row"
                             (click)="goTo('profile', report.postOrUserUuid)">
                             <td>@{{report.reporterUsername}}</td>
-                            <td><span class="reason-badge ">{{report.reason}}</span></td>
+                            <td><span class="reason-badge">{{report.reason}}</span></td>
                             <td>{{report.time | date:'short'}}</td>
                         </tr>
+                        }
                     </tbody>
                 </table>
                 <div #userReportsAnchor class="loading-trigger"></div>
-                <div *ngIf="isLoadingUserReports && userReports.length > 0" class="loading-more">
+                @if (isLoadingUserReports && userReports.length > 0) {
+                <div class="loading-more">
                     Loading more reports...
                 </div>
+                }
             </div>
         </div>
     </div>
@@ -259,24 +296,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let report of postReports" class="clickable-row"
+                        @for(report of postReports; track report) {
+                        <tr class="clickable-row"
                             (click)="goTo('post', report.postOrUserUuid)">
                             <td>@{{report.reporterUsername}}</td>
                             <td><span class="reason-badge">{{report.reason}}</span></td>
                             <td>{{report.time | date:'short'}}</td>
                         </tr>
+                        }
                     </tbody>
                 </table>
                 <div #postReportsAnchor class="loading-trigger"></div>
-                <div *ngIf="isLoadingPostReports && postReports.length > 0" class="loading-more">
+                @if (isLoadingPostReports && postReports.length > 0) {
+                <div class="loading-more">
                     Loading more reports...
                 </div>
+                }
             </div>
         </div>
     </div>
 
     <!-- Delete User Confirmation Dialog -->
-    <div *ngIf="showDeleteUserConfirmation" class="confirmation-overlay" (click)="onCancelDeleteUser()">
+    @if (showDeleteUserConfirmation) {
+    <div class="confirmation-overlay" (click)="onCancelDeleteUser()">
         <div class="confirmation-dialog" (click)="$event.stopPropagation()">
             <div class="confirmation-icon delete-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
@@ -287,9 +329,13 @@
                 </svg>
             </div>
             <h3 class="confirmation-title">Delete User?</h3>
-            <p class="confirmation-message" *ngIf="pendingActionData">
-                Are you sure you want to permanently delete the user <strong>{{pendingActionData.firstName}} {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This action cannot be undone and will remove all their data from the system.
+            @if(pendingActionData) {
+            <p class="confirmation-message">
+                Are you sure you want to permanently delete the user <strong>{{pendingActionData.firstName}}
+                    {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This action cannot be
+                undone and will remove all their data from the system.
             </p>
+            }
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelDeleteUser()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -313,9 +359,11 @@
             </div>
         </div>
     </div>
+    }
 
     <!-- Ban/Unban User Confirmation Dialog -->
-    <div *ngIf="showBanUserConfirmation" class="confirmation-overlay" (click)="onCancelBanUser()">
+    @if(showBanUserConfirmation) {
+    <div class="confirmation-overlay" (click)="onCancelBanUser()">
         <div class="confirmation-dialog" (click)="$event.stopPropagation()">
             <div class="confirmation-icon ban-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
@@ -323,14 +371,25 @@
                     <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
                 </svg>
             </div>
-            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'ACTIVE'">Ban User?</h3>
-            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'BAN'">Unban User?</h3>
-            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'ACTIVE'">
-                Are you sure you want to ban <strong>{{pendingActionData.firstName}} {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This will prevent them from accessing the platform.
+            @if (pendingActionData?.status === 'ACTIVE') {
+            <h3 class="confirmation-title">Ban User?</h3>
+            } @else if(pendingActionData?.status === 'BAN') {
+            <h3 class="confirmation-title">Unban User?</h3>
+            }
+            @if (pendingActionData?.status === 'ACTIVE') {
+            <p class="confirmation-message">
+                Are you sure you want to ban <strong>{{pendingActionData.firstName}}
+                    {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This will prevent them
+                from accessing the platform.
             </p>
-            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'BAN'">
-                Are you sure you want to unban <strong>{{pendingActionData.firstName}} {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This will restore their access to the platform.
+            }
+            @if(pendingActionData?.status === 'BAN') {
+            <p class="confirmation-message">
+                Are you sure you want to unban <strong>{{pendingActionData.firstName}}
+                    {{pendingActionData.lastName}}</strong> (@{{pendingActionData.username}})? This will restore their
+                access to the platform.
             </p>
+            }
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelBanUser()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -347,15 +406,20 @@
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                         <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
                     </svg>
-                    <span *ngIf="pendingActionData?.status === 'ACTIVE'">Yes, Ban User</span>
-                    <span *ngIf="pendingActionData?.status === 'BAN'">Yes, Unban User</span>
+                    @if(pendingActionData?.status === 'ACTIVE') {
+                    <span>Yes, Ban User</span>
+                    }@else if(pendingActionData?.status === 'BAN') {
+                    <span>Yes, Unban User</span>
+                    }
                 </button>
             </div>
         </div>
     </div>
+    }
 
     <!-- Delete Post Confirmation Dialog -->
-    <div *ngIf="showDeletePostConfirmation" class="confirmation-overlay" (click)="onCancelDeletePost()">
+    @if(showDeletePostConfirmation) {
+    <div class="confirmation-overlay" (click)="onCancelDeletePost()">
         <div class="confirmation-dialog" (click)="$event.stopPropagation()">
             <div class="confirmation-icon delete-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
@@ -366,9 +430,12 @@
                 </svg>
             </div>
             <h3 class="confirmation-title">Delete Post?</h3>
-            <p class="confirmation-message" *ngIf="pendingActionData">
-                Are you sure you want to permanently delete the post "<strong>{{pendingActionData.title | slice:0:10}}</strong>" by @{{pendingActionData.userName}}? This action cannot be undone.
+            @if(pendingActionData) {
+            <p class="confirmation-message">
+                Are you sure you want to permanently delete the post "<strong>{{pendingActionData.title}}</strong>" by
+                @{{pendingActionData.userName}}? This action cannot be undone.
             </p>
+            }
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelDeletePost()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -392,9 +459,11 @@
             </div>
         </div>
     </div>
+    }
 
     <!-- Hide/Unhide Post Confirmation Dialog -->
-    <div *ngIf="showHidePostConfirmation" class="confirmation-overlay" (click)="onCancelHidePost()">
+    @if(showHidePostConfirmation) {
+    <div class="confirmation-overlay" (click)="onCancelHidePost()">
         <div class="confirmation-dialog" (click)="$event.stopPropagation()">
             <div class="confirmation-icon hide-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
@@ -406,14 +475,25 @@
                         d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
                 </svg>
             </div>
-            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'EPOSED'">Hide Post?</h3>
-            <h3 class="confirmation-title" *ngIf="pendingActionData?.status === 'HIDE'">Unhide Post?</h3>
-            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'EPOSED'">
-                Are you sure you want to hide the post "<strong>{{pendingActionData.title | slice:0:10}}</strong>" by @{{pendingActionData.userName}}? This will remove it from public view.
+            @if(pendingActionData?.status === 'EPOSED') {
+            <h3 class="confirmation-title">Hide Post?</h3>
+            }
+            @if(pendingActionData?.status === 'HIDE') {
+            <h3 class="confirmation-title">Unhide Post?</h3>
+            }
+            @if(pendingActionData?.status === 'EPOSED') {
+            <p class="confirmation-message">
+                Are you sure you want to hide the post "<strong>{{pendingActionData.title}}</strong>" by
+                @{{pendingActionData.userName}}? This will remove it from public view.
             </p>
-            <p class="confirmation-message" *ngIf="pendingActionData?.status === 'HIDE'">
-                Are you sure you want to unhide the post "<strong>{{pendingActionData.title | slice:0:10}}</strong>" by @{{pendingActionData.userName}}? This will make it visible to users again.
+
+            }
+            @if(pendingActionData?.status === 'HIDE') {
+            <p class="confirmation-message">
+                Are you sure you want to unhide the post "<strong>{{pendingActionData.title}}</strong>" by
+                @{{pendingActionData.userName}}? This will make it visible to users again.
             </p>
+            }
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelHidePost()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -434,10 +514,15 @@
                         <path
                             d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
                     </svg>
-                    <span *ngIf="pendingActionData?.status === 'EPOSED'">Yes, Hide Post</span>
-                    <span *ngIf="pendingActionData?.status === 'HIDE'">Yes, Unhide Post</span>
+                    @if(pendingActionData?.status === 'EPOSED') {
+                    <span>Yes, Hide Post</span>
+                    }
+                    @if(pendingActionData?.status === 'HIDE') {
+                    <span>Yes, Unhide Post</span>
+                    }
                 </button>
             </div>
         </div>
     </div>
+    }
 </div>

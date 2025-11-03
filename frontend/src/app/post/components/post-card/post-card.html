@@ -1,14 +1,19 @@
-<div *ngIf="post && profileData" class="col-12 col-lg-8 mx-auto mb-4">
+@if(post && profileData) {
+<div class="col-12 col-lg-8 mx-auto mb-4">
 
     <div class="post-card">
         <div class="post-header">
             <div class="post-author-info">
                 <div class="author-avatar" (click)="moveToProfile(post.userUuid)">
-                    <img *ngIf="post.profileImagePath" [src]="'http://localhost:8080/' + post.profileImagePath"
+                    @if(post.profileImagePath) {
+                    <img [src]="'http://localhost:8080/' + post.profileImagePath"
                         alt="{{ post.userName }}" class="author-avatar-img">
-                    <div *ngIf="!post.profileImagePath" class="author-avatar-placeholder">
+                    }
+                    @if(!post.profileImagePath) {
+                    <div class="author-avatar-placeholder">
                         {{ post.userName.charAt(0).toUpperCase() || '?' }}
                     </div>
+                    }
                 </div>
                 <div class="author-details">
                     <div class="username-row">
@@ -20,13 +25,21 @@
         </div>
         <h2 class="post-title text-break">{{ post.title }}</h2>
         <p class="post-content text-break">{{ post.content }}</p>
-        <div class="post-images" *ngIf="post.mediaPaths && post.mediaPaths.length > 0">
-            <div *ngFor="let media of post.mediaPaths">
-                <img *ngIf="isImage(media.type)" [src]="'http://localhost:8080/' + media.path" width="300" />
-                <video *ngIf="isVideo(media.type)" [src]="'http://localhost:8080/' + media.path" controls
+        @if(post.mediaPaths && post.mediaPaths.length > 0) {
+        <div class="post-images">
+            @for(media of post.mediaPaths; track media) {
+            <div>
+                @if(isImage(media.type)) {
+                <img [src]="'http://localhost:8080/' + media.path" width="300" />
+                }
+                @if(isVideo(media.type)) {
+                <video [src]="'http://localhost:8080/' + media.path" controls
                     width="300"></video>
+                }
             </div>
+            }
         </div>
+        }
 
         <div class="post-footer">
             <div class="post-actions-bar">
@@ -43,7 +56,8 @@
             </div>
 
             <!-- Comments Section -->
-            <div *ngIf="isCommenting" class="comments-section">
+            @if(isCommenting) {
+            <div class="comments-section">
                 <div class="comments-header">
                     <h3>Comments</h3>
                     <span class="comments-count">{{ post.commentCount }} comments</span>
@@ -53,11 +67,14 @@
                 <div class="add-comment-form">
                     <div class="comment-input-wrapper">
                         <div class="user-avatar">
-                            <img *ngIf="profileData?.profileImagePath"
-                                [src]="'http://localhost:8080/' + profileData.profileImagePath" alt="Your avatar">
-                            <div *ngIf="!profileData?.profileImagePath" class="avatar-placeholder">
+                            @if(profileData.profileImagePath) {
+                            <img [src]="'http://localhost:8080/' + profileData.profileImagePath" alt="Your avatar">
+                            }
+                            @if(!profileData.profileImagePath) {
+                            <div class="avatar-placeholder">
                                 {{ profileData.firstName.charAt(0) || '?' }}
                             </div>
+                            }
                         </div>
                         <textarea name="comment" placeholder="Write a comment..." #commentData rows="3" maxlength="1000"
                             required></textarea>
@@ -75,7 +92,8 @@
                 <!-- Comments List -->
                 <div class="comments-list">
                     <!-- Instant Comments (Just Posted) -->
-                    <div *ngFor="let instantComment of instantComments" class="comment-card new-comment">
+                    @for(instantComment of instantComments; track instantComment) {
+                    <div class="comment-card new-comment">
                         <div class="comment-avatar" (click)="moveToProfile(instantComment.userUuid)">
                             <img [src]="'http://localhost:8080/' + instantComment.image" class="avatar-placeholder"
                                 alt="">
@@ -91,10 +109,12 @@
                             </div>
                         </div>
                     </div>
+                    }
 
                     <!-- Existing Comments -->
                     <div>
-                        <div *ngFor="let c of comment?.comments" class="comment-card">
+                        @for(c of comment?.comments; track c.uuid) {
+                        <div class="comment-card">
                             <div class="comment-avatar" (click)="moveToProfile(c.userUuid)">
                                 <img [src]="'http://localhost:8080/' + c?.imageProfile" class="avatar-placeholder"
                                     alt="">
@@ -102,10 +122,12 @@
                             <div class="comment-content">
                                 <div class="comment-header">
                                     <span class="comment-author">{{ c?.userName }}</span>
-                                    <button *ngIf="myComment(c.userUuid)" class="btn-delete-comment"
+                                    @if(myComment(c.userUuid)) {
+                                    <button class="btn-delete-comment"
                                         (click)="onDeleteComment(c.uuid)" title="Delete comment">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
+                                    }
                                 </div>
                                 <p class="comment-text">{{ c?.comment }}</p>
                                 <div class="comment-meta">
@@ -113,17 +135,22 @@
                                 </div>
                             </div>
                         </div>
+                        }
                         <div #anchor class="loading-trigger"></div>
                     </div>
 
-                    <div *ngIf="comment?.comments?.length === 0 && instantComments?.length === 0" class="no-comments">
+                    @if(comment?.comments?.length === 0 && instantComments?.length === 0) {
+                    <div class="no-comments">
                         <span class="no-comments-icon">💭</span>
                         <p>No comments yet. Be the first to comment!</p>
                     </div>
+                    }
                 </div>
             </div>
+            }
         </div>
-        <div *ngIf="myPost(post.userUuid); else reportBlock" class="post-handler">
+        @if(myPost(post.userUuid)) {
+        <div class="post-handler">
             <button class="btn-edit" (click)="onEdit(post.postUuid)">
                 <i class="bi bi-pencil-fill"></i>
                 Edit Post
@@ -135,34 +162,43 @@
             </button>
 
         </div>
+        } @else {
+        <div class="post-handler">
+            <!-- Report Post Button (for non-admin users) -->
+            @if(!isAdmin) {
+            <button class="btn btn-warning btn-sm" (click)="onReport()">
+                <i class="bi bi-flag-fill me-1"></i>
+                Report Post
+            </button>
+            }
 
-        <ng-template #reportBlock>
-            <div class="post-handler">
-                <!-- Report Post Button (for non-admin users) -->
-                <button class="btn btn-warning btn-sm" *ngIf="!isAdmin" (click)="onReport()">
-                    <i class="bi bi-flag-fill me-1"></i>
-                    Report Post
-                </button>
-
-                <!-- Admin Hide/Unhide Post Button -->
-                <button class="btn btn-secondary btn-sm" *ngIf="isAdmin" (click)="onPrepareAdminHidePost()">
-                    <i class="bi me-1" [ngClass]="{
+            <!-- Admin Hide/Unhide Post Button -->
+            @if(isAdmin) {
+            <button class="btn btn-secondary btn-sm" (click)="onPrepareAdminHidePost()">
+                <i class="bi me-1" [ngClass]="{
                'bi-eye-fill': post.status === 'HIDE',
                'bi-eye-slash-fill': post.status === 'EPOSED'}"></i>
-                    <span *ngIf="post.status === 'HIDE'">Unhide Post</span>
-                    <span *ngIf="post.status === 'EPOSED'">Hide Post</span>
-                </button>
+                @if(post.status === 'HIDE') {
+                <span>Unhide Post</span>
+                }
+                @if(post.status === 'EPOSED') {
+                <span>Hide Post</span>
+                }
+            </button>
+            }
 
-                <!-- Admin Delete Post Button -->
-                <button class="btn btn-danger btn-sm" *ngIf="isAdmin" (click)="onPrepareAdminDeletePost()">
-                    <i class="bi bi-trash-fill me-1"></i>
-                    Delete Post
-                </button>
-            </div>
+            <!-- Admin Delete Post Button -->
+            @if(isAdmin) {
+            <button class="btn btn-danger btn-sm" (click)="onPrepareAdminDeletePost()">
+                <i class="bi bi-trash-fill me-1"></i>
+                Delete Post
+            </button>
+            }
+        </div>
+        }
 
-        </ng-template>
-
-        <div *ngIf="reportAction" class="report-window">
+        @if(reportAction) {
+        <div class="report-window">
             <div class="report-window-header">
                 <h4>
                     <i class="bi bi-flag-fill me-1"></i>
@@ -181,9 +217,11 @@
                 </button>
             </div>
         </div>
+        }
 
         <!-- Confirmation Popup -->
-        <div *ngIf="showReportConfirmation" class="confirmation-overlay" (click)="onCancelReport()">
+        @if(showReportConfirmation) {
+        <div class="confirmation-overlay" (click)="onCancelReport()">
             <div class="confirmation-dialog" (click)="$event.stopPropagation()">
                 <div class="confirmation-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
@@ -221,9 +259,11 @@
                 </div>
             </div>
         </div>
+        }
 
         <!-- Admin Hide Post Confirmation Dialog -->
-        <div *ngIf="showAdminHideConfirmation" class="confirmation-overlay" (click)="onCancelAdminHidePost()">
+        @if(showAdminHideConfirmation) {
+        <div class="confirmation-overlay" (click)="onCancelAdminHidePost()">
             <div class="confirmation-dialog" (click)="$event.stopPropagation()">
                 <div class="confirmation-icon hide-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
@@ -236,16 +276,24 @@
                             d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
                     </svg>
                 </div>
-                <h3 class="confirmation-title" *ngIf="post?.status === 'EPOSED'">Hide Post?</h3>
-                <h3 class="confirmation-title" *ngIf="post?.status === 'HIDE'">Unhide Post?</h3>
-                <p class="confirmation-message" *ngIf="post?.status === 'EPOSED'">
-                    Are you sure you want to hide "<strong>{{post.title | slice:0:10}}...</strong>" by @{{post.userName}}? This will hide it from public
+                @if(post.status === 'EPOSED') {
+                <h3 class="confirmation-title">Hide Post?</h3>
+                }
+                @if(post.status === 'HIDE') {
+                <h3 class="confirmation-title">Unhide Post?</h3>
+                }
+                @if(post.status === 'EPOSED') {
+                <p class="confirmation-message">
+                    Are you sure you want to hide "<strong>{{post.title}}</strong>"? This will remove it from public
                     view.
                 </p>
-                <p class="confirmation-message" *ngIf="post?.status === 'HIDE'">
-                    Are you sure you want to unhide "<strong>{{post.title | slice:0:10}}...</strong>" by @{{post.userName}}? This will make it visible to
+                }
+                @if(post.status === 'HIDE') {
+                <p class="confirmation-message">
+                    Are you sure you want to unhide "<strong>{{post.title}}</strong>"? This will make it visible to
                     users again.
                 </p>
+                }
                 <div class="confirmation-actions">
                     <button class="btn-confirmation-cancel" (click)="onCancelAdminHidePost()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -266,15 +314,21 @@
                             <path
                                 d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
                         </svg>
-                        <span *ngIf="post?.status === 'EPOSED'">Yes, Hide Post</span>
-                        <span *ngIf="post?.status === 'HIDE'">Yes, Unhide Post</span>
+                        @if(post.status === 'EPOSED') {
+                        <span>Yes, Hide Post</span>
+                        }
+                        @if(post.status === 'HIDE') {
+                        <span>Yes, Unhide Post</span>
+                        }
                     </button>
                 </div>
             </div>
         </div>
+        }
 
         <!-- Admin Delete Post Confirmation Dialog -->
-        <div *ngIf="showAdminDeleteConfirmation" class="confirmation-overlay" (click)="onCancelAdminDeletePost()">
+        @if(showAdminDeleteConfirmation) {
+        <div class="confirmation-overlay" (click)="onCancelAdminDeletePost()">
             <div class="confirmation-dialog" (click)="$event.stopPropagation()">
                 <div class="confirmation-icon delete-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
@@ -286,10 +340,12 @@
                     </svg>
                 </div>
                 <h3 class="confirmation-title">Delete Post?</h3>
-                <p class="confirmation-message" *ngIf="post">
-                    Are you sure you want to permanently delete "<strong>{{post.title | slice:0:10}}...</strong>" by @{{post.userName}}?
+                @if(post) {
+                <p class="confirmation-message">
+                    Are you sure you want to permanently delete "<strong>{{post.title}}</strong>" by @{{post.userName}}?
                     This action cannot be undone.
                 </p>
+                }
                 <div class="confirmation-actions">
                     <button class="btn-confirmation-cancel" (click)="onCancelAdminDeletePost()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -313,5 +369,7 @@
                 </div>
             </div>
         </div>
+        }
     </div>
 </div>
+}

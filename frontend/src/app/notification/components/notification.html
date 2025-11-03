@@ -1,29 +1,37 @@
-<div *ngIf="show" class="notification-container container-fluid">
+@if(show) {
+<div class="notification-container container-fluid">
     <div class="row">
         <div class="col-12 col-lg-8 mx-auto">
             <h2>Notifications</h2>
             <div class="notifications-list">
-        <div *ngIf="notification && notification.length > 0; else noNotifications">
-            <div class="notification-item" *ngFor="let notif of notification; let i = index" (click)="goTo(i)"
+        @if(notification && notification.length > 0) {
+        <div>
+            @for(notif of notification; track $index) {
+            <div class="notification-item" (click)="goTo($index)"
                 [class.isRead]="notif.isRead" [class.unread]="!notif.isRead">
-                <div class="notification-indicator" *ngIf="!notif.isRead"></div>
+                @if(!notif.isRead) {
+                <div class="notification-indicator"></div>
+                }
                 <div class="notification-content">
                     <p>{{ notif.content }}</p>
                     <small>{{ notif.time | date:'short' }}</small>
                 </div>
             </div>
+            }
         </div>
-
-        <ng-template #noNotifications>
-            <div class="no-notifications">
-                <p>No notifications available</p>
-            </div>
-        </ng-template>
+        } @else {
+        <div class="no-notifications">
+            <p>No notifications available</p>
+        </div>
+        }
                 <div #anchor class="loading-trigger"></div>
-                <div *ngIf="isLoading && notification.length > 0" class="loading-more">
+                @if(isLoading && notification.length > 0) {
+                <div class="loading-more">
                     Loading more notifications...
                 </div>
+                }
             </div>
         </div>
     </div>
 </div>
+}

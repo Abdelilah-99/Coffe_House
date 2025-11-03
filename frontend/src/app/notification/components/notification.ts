@@ -42,7 +42,7 @@ export class Notification implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId) && this.show === true) {
       this.initObserver();
     }
   }

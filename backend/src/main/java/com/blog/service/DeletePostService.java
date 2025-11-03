@@ -1,12 +1,12 @@
 package com.blog.service;
 
 import java.io.File;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.blog.dto.PostRes;
 import com.blog.dto.UsersRespons;
-import com.blog.exceptions.UserNotFoundException;
+import com.blog.exceptions.UserNotLoginException;
 import com.blog.entity.Post;
-import com.blog.exceptions.PostNotFoundException;
 import com.blog.repository.PostRepository;
 
 @Service
@@ -21,15 +21,18 @@ public class DeletePostService {
         this.usersServices = usersServices;
     }
 
-    public PostRes deletePost(String uuid) {
+    public Optional<PostRes> deletePost(String uuid) {
         UsersRespons user;
         try {
             user = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("User not authenticated");
+            throw new UserNotLoginException("User not authenticated");
         }
-        Post post = postRepository.findByUuid(uuid)
-                .orElseThrow(() -> new PostNotFoundException("post not found for deleting"));
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Post post = postOpt.get();
 
         if (!post.getUser().getUuid().equals(user.getUuid())) {
             throw new SecurityException("You are not authorized to delete this post");
@@ -40,7 +43,7 @@ public class DeletePostService {
         }
 
         postRepository.deleteById(post.getId());
-        return new PostRes(
+        return Optional.of(new PostRes(
                 post.getUuid(),
                 post.getUser().getUuid(),
                 null,
@@ -52,6 +55,6 @@ public class DeletePostService {
                 0,
                 0,
                 null,
-                null);
+                null));
     }
 }

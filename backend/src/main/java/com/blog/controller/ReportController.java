@@ -23,15 +23,17 @@ public class ReportController {
     public ResponseEntity<ReportResponse> reportProfile(
             @PathVariable String uuid,
             @RequestBody ReportRequest reason) {
-        ReportResponse res = reportService.reportProfile(uuid, reason);
-        return ResponseEntity.ok(res);
+        return reportService.reportProfile(uuid, reason)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("post/{uuid}")
     public ResponseEntity<ReportResponse> reportPost(
             @PathVariable String uuid,
             @RequestBody ReportRequest reason) {
-        ReportResponse res = reportService.reportPost(uuid, reason);
-        return ResponseEntity.ok(res);
+        return reportService.reportPost(uuid, reason)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

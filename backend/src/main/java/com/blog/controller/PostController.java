@@ -43,7 +43,7 @@ public class PostController {
     @GetMapping("/home/pages")
     public ResponseEntity<PostPage> getPostByPage(
             @RequestParam(value = "lastTime", required = false) Long lastTime,
-            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+            @RequestParam(value = "lastId", required = false) String lastUuid) {
         PostPage data = postService.getPosts(lastTime, lastUuid);
         return ResponseEntity.ok(data);
     }
@@ -51,7 +51,7 @@ public class PostController {
     @GetMapping("/me/pages")
     public ResponseEntity<PostPage> getMyPostByPage(
             @RequestParam(value = "lastTime", required = false) Long lastTime,
-            @RequestParam(value = "lastUuid", required = false) String lastUuid) {
+            @RequestParam(value = "lastId", required = false) String lastUuid) {
         PostPage data = postService.getMyPosts(lastTime, lastUuid);
         return ResponseEntity.ok(data);
     }
@@ -67,8 +67,9 @@ public class PostController {
 
     @GetMapping("/postCard/{uuid}")
     public ResponseEntity<PostRes> showPost(@PathVariable String uuid) {
-        PostRes res = postService.getPost(uuid);
-        return ResponseEntity.ok(res);
+        return postService.getPost(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/edit/{uuid}")
@@ -79,20 +80,23 @@ public class PostController {
             @RequestParam(value = "pathFiles", required = false) List<String> pathFiles) {
         System.err.printf("post_id: %s\n", uuid);
         EditPostReq req = new EditPostReq(content, title, mediaFiles, pathFiles);
-        PostRes res = editPostService.editPost(uuid, req);
-        return ResponseEntity.ok(res);
+        return editPostService.editPost(uuid, req)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/delete/{uuid}")
     public ResponseEntity<PostRes> deletePost(@PathVariable String uuid) {
-        PostRes res = deletePostService.deletePost(uuid);
-        return ResponseEntity.ok(res);
+        return deletePostService.deletePost(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/comment/{uuid}")
     public ResponseEntity<CommentRes> getComment(@PathVariable String uuid) {
-        CommentRes res = commentService.getComment(uuid);
-        return ResponseEntity.ok(res);
+        return commentService.getComment(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/comment/create/{uuid}")
@@ -103,14 +107,16 @@ public class PostController {
 
     @PostMapping("/comment/delete/{uuid}")
     public ResponseEntity<CommentPostRes> deletecommentPost(@PathVariable String uuid) {
-        CommentPostRes res = commentService.deleteComment(uuid);
-        return ResponseEntity.ok(res);
+        return commentService.deleteComment(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/like/{uuid}")
     public ResponseEntity<LikePostRes> likePost(@PathVariable String uuid) {
-        LikePostRes res = likePostService.likeLogic(uuid);
-        return ResponseEntity.ok(res);
+        return likePostService.likeLogic(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // @GetMapping("/user/{userUuid}")

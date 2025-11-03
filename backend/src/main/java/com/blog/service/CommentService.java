@@ -1,15 +1,15 @@
 package com.blog.service;
 
+import java.util.Optional;
 import com.blog.repository.*;
 import com.blog.entity.*;
 import com.blog.exceptions.UserNotFoundException;
+import com.blog.exceptions.UserNotLoginException;
 import com.blog.exceptions.CreateCommentException;
 import com.blog.exceptions.PostNotFoundException;
 import com.blog.exceptions.UserBannedException;
 import com.blog.dto.*;
 import com.blog.security.InputSanitizationService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 
@@ -67,28 +67,33 @@ public class CommentService {
         }
     }
 
-    public CommentRes getComment(String uuid) {
-        Post post = postRepository.findByUuid(uuid)
-                .orElseThrow(() -> new PostNotFoundException("Post not found for comment"));
+    public Optional<CommentRes> getComment(String uuid) {
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Post post = postOpt.get();
         UsersRespons userDetail;
         try {
             userDetail = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("user not found for comment retriving");
+            throw new UserNotLoginException("user not found for comment retriving");
         }
-        return new CommentRes(userDetail.getUsername(), post.getUuid(), post.getUser().getUuid(), post.getComments());
+        return Optional.of(new CommentRes(userDetail.getUsername(), post.getUuid(), post.getUser().getUuid(), post.getComments()));
     }
 
-    public CommentPostRes deleteComment(String uuid) {
+    public Optional<CommentPostRes> deleteComment(String uuid) {
         UsersRespons crrUser;
         try {
             crrUser = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("user not found for comment deleting");
+            throw new UserNotLoginException("user not found for comment deleting");
         }
-        Comment comment = commentRepository.findByUuid(uuid).orElseThrow(()->{
-            throw new EntityNotFoundException("comment not found");
-        });
+        Optional<Comment> commentOpt = commentRepository.findByUuid(uuid);
+        if (commentOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Comment comment = commentOpt.get();
         if (!comment.getUserUuid().equals(crrUser.getUuid())) {
             throw new SecurityException("not your comment");
         }
@@ -96,6 +101,6 @@ public class CommentService {
         String postUuid = comment.getPost().getUuid();
         commentRepository.deleteByUuid(uuid);
 
-        return new CommentPostRes(postUuid, crrUser.getUuid(), "", "Comment deleted successfully");
+        return Optional.of(new CommentPostRes(postUuid, crrUser.getUuid(), "", "Comment deleted successfully"));
     }
 }

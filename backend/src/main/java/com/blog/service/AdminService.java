@@ -9,8 +9,6 @@ import com.blog.entity.Post;
 import com.blog.entity.Report;
 import com.blog.dto.UsersAdmineResponse;
 import com.blog.dto.UsersRespons;
-import com.blog.exceptions.PostNotFoundException;
-import com.blog.exceptions.UserNotFoundException;
 import com.blog.exceptions.UserNotLoginException;
 import com.blog.exceptions.BanException;
 import com.blog.exceptions.DeleteException;
@@ -122,10 +120,12 @@ public class AdminService {
         return usersDto;
     }
 
-    public UsersAdmineResponse getUser(String uuid) {
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new UserNotFoundException("user not found for admin pannel");
-        });
+    public Optional<UsersAdmineResponse> getUser(String uuid) {
+        Optional<User> userOpt = userRepository.findByUuid(uuid);
+        if (userOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        User user = userOpt.get();
         UsersAdmineResponse usersAdmineResponse = new UsersAdmineResponse();
         usersAdmineResponse.setEmail(user.getEmail());
         usersAdmineResponse.setFirstName(user.getFirstName());
@@ -134,11 +134,10 @@ public class AdminService {
         usersAdmineResponse.setUuid(user.getUuid());
         usersAdmineResponse.setPost(user.getPosts());
         usersAdmineResponse.setMessage("user has fetched successfully");
-        return usersAdmineResponse;
+        return Optional.of(usersAdmineResponse);
     }
 
-    public UsersAdmineResponse deleteUser(String uuid) {
-        userRepository.deleteByUuid(uuid);
+    public Optional<UsersAdmineResponse> deleteUser(String uuid) {
         UsersRespons usersRespons;
         try {
             usersRespons = usersServices.getCurrentUser();
@@ -148,15 +147,17 @@ public class AdminService {
         if (uuid.equals(usersRespons.getUuid())) {
             throw new DeleteException("u can't delete youre own account");
         }
+        Optional<User> userOpt = userRepository.findByUuid(uuid);
+        if (userOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        userRepository.deleteByUuid(uuid);
         UsersAdmineResponse usersAdmineResponse = new UsersAdmineResponse();
         usersAdmineResponse.setMessage("user has deleted successfully");
-        return usersAdmineResponse;
+        return Optional.of(usersAdmineResponse);
     }
 
-    public UsersAdmineResponse banUser(String uuid) {
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new UserNotFoundException("user not found for admin pannel");
-        });
+    public Optional<UsersAdmineResponse> banUser(String uuid) {
         UsersRespons usersRespons;
         try {
             usersRespons = usersServices.getCurrentUser();
@@ -166,6 +167,11 @@ public class AdminService {
         if (uuid.equals(usersRespons.getUuid())) {
             throw new BanException("u can't ban youre own account");
         }
+        Optional<User> userOpt = userRepository.findByUuid(uuid);
+        if (userOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        User user = userOpt.get();
         String status = user.getStatus();
         String msg = new String();
         if (status.equals("BAN")) {
@@ -178,20 +184,26 @@ public class AdminService {
         userRepository.save(user);
         UsersAdmineResponse usersAdmineResponse = new UsersAdmineResponse();
         usersAdmineResponse.setMessage(String.format("user has %s successfully", msg));
-        return usersAdmineResponse;
+        return Optional.of(usersAdmineResponse);
     }
 
-    public PostRes deletePost(String uuid) {
+    public Optional<PostRes> deletePost(String uuid) {
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
         postRepository.deleteByUuid(uuid);
         PostRes postRes = new PostRes();
         postRes.setMessage("post has deleted successfully");
-        return postRes;
+        return Optional.of(postRes);
     }
 
-    public PostRes hidePost(String uuid) {
-        Post post = postRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new PostNotFoundException("post not found for admin pannel");
-        });
+    public Optional<PostRes> hidePost(String uuid) {
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Post post = postOpt.get();
         String status = post.getStatus();
         String msg = new String();
         if (status.equals("EPOSED")) {
@@ -204,7 +216,7 @@ public class AdminService {
         postRepository.save(post);
         PostRes postRes = new PostRes();
         postRes.setMessage(String.format("post has %s successfully", msg));
-        return postRes;
+        return Optional.of(postRes);
     }
 
     private List<ReportsAdmineResponse> cnvReportToDto(List<Report> reports, String type) {

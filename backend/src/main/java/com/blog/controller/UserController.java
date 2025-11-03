@@ -29,21 +29,24 @@ public class UserController {
     }
 
     @PostMapping("/follow/{uuid}")
-    public ResponseEntity<UserFollowRes> followUser(@PathVariable String uuid) {
-        UserFollowRes result = userService.follow(uuid);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> followUser(@PathVariable String uuid) {
+        return userService.follow(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/unfollow/{uuid}")
-    public ResponseEntity<UserFollowRes> unfollowUser(@PathVariable String uuid) {
-        UserFollowRes result = userService.unfollow(uuid);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> unfollowUser(@PathVariable String uuid) {
+        return userService.unfollow(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/isfollowing/{uuid}")
-    public ResponseEntity<UserFollowRes> isFollowing(@PathVariable String uuid) {
-        UserFollowRes result = userService.isFollowing(uuid);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> isFollowing(@PathVariable String uuid) {
+        return userService.isFollowing(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/search")
@@ -53,9 +56,10 @@ public class UserController {
     }
 
     @GetMapping("/profile/{uuid}")
-    public ResponseEntity<UsersRespons> profile(@PathVariable String uuid) {
-        UsersRespons result = userService.getProfile(uuid);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> profile(@PathVariable String uuid) {
+        return userService.getProfile(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/me/followers")

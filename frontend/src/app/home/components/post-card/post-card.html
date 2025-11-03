@@ -1,14 +1,17 @@
 <div class="post-card" (click)="postCard.emit(post.postUuid)">
     <!-- Post with image(s) - Image as background with overlay -->
-    <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-card-with-image">
+    @if(post.mediaPaths && post.mediaPaths.length > 0) {
+    <div class="post-card-with-image">
         <div class="post-image-container">
-            <img *ngIf="post.mediaPaths[0].type.startsWith('image/')"
-                [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+            @if(post.mediaPaths[0].type.startsWith('image/')) {
+            <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                 class="post-background-image">
-            <video *ngIf="post.mediaPaths?.length && post.mediaPaths[0].type.startsWith('video/')"
-                [src]="'http://localhost:8080/' + post.mediaPaths[0].path"
+            }
+            @if(post.mediaPaths.length && post.mediaPaths[0].type.startsWith('video/')) {
+            <video [src]="'http://localhost:8080/' + post.mediaPaths[0].path"
                 class="post-background-image">
             </video>
+            }
 
             <div class="post-overlay">
                 <div class="post-title-overlay">
@@ -18,11 +21,15 @@
         </div>
         <div class="post-footer-compact">
             <div class="post-user-info-compact">
-                <img *ngIf="post.profileImagePath" [src]="'http://localhost:8080/' + post.profileImagePath"
+                @if(post.profileImagePath) {
+                <img [src]="'http://localhost:8080/' + post.profileImagePath"
                     alt="{{ post.userName }}" class="post-user-avatar-small">
-                <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder-small">
+                }
+                @if(!post.profileImagePath) {
+                <div class="post-user-avatar-placeholder-small">
                     {{ post.userName.charAt(0).toUpperCase() || '?' }}
                 </div>
+                }
                 <div class="author-date">
                     <span class="post-author-small">{{ post.userName }}</span>
                     <span class="post-date-small">{{ post.createdAt | date:'short' }}</span>
@@ -35,16 +42,22 @@
             </div>
         </div>
     </div>
+    }
 
     <!-- Post without image - Traditional layout -->
-    <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-card-traditional">
+    @if(!post.mediaPaths || post.mediaPaths.length === 0) {
+    <div class="post-card-traditional">
         <div class="post-header">
             <div class="post-user-info">
-                <img *ngIf="post.profileImagePath" [src]="'http://localhost:8080/' + post.profileImagePath"
+                @if(post.profileImagePath) {
+                <img [src]="'http://localhost:8080/' + post.profileImagePath"
                     alt="{{ post.userName }}" class="post-user-avatar">
-                <div *ngIf="!post.profileImagePath" class="post-user-avatar-placeholder">
+                }
+                @if(!post.profileImagePath) {
+                <div class="post-user-avatar-placeholder">
                     {{ post.userName.charAt(0).toUpperCase() || '?' }}
                 </div>
+                }
                 <div class="post-user-details">
                     <span class="post-author">{{ post.userName }}</span>
                     <span class="post-date">{{ post.createdAt | date: 'short' }}</span>
@@ -62,4 +75,5 @@
             <app-post-comments [post]="post" (navigate)="postCard.emit(post.postUuid)"></app-post-comments>
         </div>
     </div>
+    }
 </div>

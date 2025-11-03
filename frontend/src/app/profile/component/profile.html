@@ -1,13 +1,18 @@
-<div class="profile-container container-fluid" *ngIf="profileRes">
+@if(profileRes) {
+<div class="profile-container container-fluid">
     <!-- Profile Header -->
     <div class="profile-header">
         <div class="profile-info row">
             <div class="profile-avatar col-12 col-md-auto d-flex justify-content-center justify-content-md-start">
-                <img *ngIf="profileRes.profileImagePath" [src]="'http://localhost:8080/' + profileRes.profileImagePath"
+                @if(profileRes.profileImagePath) {
+                <img [src]="'http://localhost:8080/' + profileRes.profileImagePath"
                     alt="Profile Picture">
-                <div *ngIf="!profileRes.profileImagePath" class="avatar-placeholder">
+                }
+                @if(!profileRes.profileImagePath) {
+                <div class="avatar-placeholder">
                     {{profileRes.firstName.charAt(0)}}{{profileRes.lastName.charAt(0)}}
                 </div>
+                }
             </div>
             <div class="profile-details col-12 col-md text-center text-md-start">
                 <h1>{{profileRes.firstName}} {{profileRes.lastName}}</h1>
@@ -27,17 +32,22 @@
         </div>
 
         <!-- Action Buttons for Other Users -->
-        <div *ngIf="!ifCrrProfile"
-            class="profile-actions d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
-            <button class="btn btn-follow" *ngIf="!profileRes.connect"
+        @if(!ifCrrProfile) {
+        <div class="profile-actions d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+            @if(!profileRes.connect) {
+            <button class="btn btn-follow"
                 (click)="followLogic(profileRes.username, profileRes.connect)">
                 Follow
             </button>
-            <button class="btn btn-unfollow" *ngIf="profileRes.connect"
+            }
+            @if(profileRes.connect) {
+            <button class="btn btn-unfollow"
                 (click)="followLogic(profileRes.username, profileRes.connect)">
                 Unfollow
             </button>
-            <button class="btn btn-report" *ngIf="!isAdmin" (click)="onReport()">
+            }
+            @if(!isAdmin) {
+            <button class="btn btn-report" (click)="onReport()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path
                         d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
@@ -46,18 +56,27 @@
                 </svg>
                 Report User
             </button>
-            <button class="btn btn-admin-action" *ngIf="isAdmin" (click)="onPrepareAdminBanUser()">
+            }
+            @if(isAdmin) {
+            <button class="btn btn-admin-action" (click)="onPrepareAdminBanUser()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                     <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
                 </svg>
-                <span *ngIf="profileRes.status === 'ACTIVE'">Ban User</span>
-                <span *ngIf="profileRes.status === 'BAN'">Unban User</span>
+                @if(profileRes.status === 'ACTIVE') {
+                <span>Ban User</span>
+                }
+                @if(profileRes.status === 'BAN') {
+                <span>Unban User</span>
+                }
             </button>
+            }
         </div>
+        }
 
         <!-- Report Section -->
-        <div *ngIf="reportAction" class="report-section">
+        @if(reportAction) {
+        <div class="report-section">
             <div class="report-header">
                 <h3>Report User</h3>
                 <button class="close-btn" (click)="onReport()">✕</button>
@@ -72,10 +91,12 @@
                 </button>
             </div>
         </div>
+        }
     </div>
 
     <!-- Confirmation Popup -->
-    <div *ngIf="showReportConfirmation" class="confirmation-overlay" (click)="onCancelReport()">
+    @if(showReportConfirmation) {
+    <div class="confirmation-overlay" (click)="onCancelReport()">
         <div class="confirmation-dialog" (click)="$event.stopPropagation()">
             <div class="confirmation-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
@@ -111,9 +132,11 @@
             </div>
         </div>
     </div>
+    }
 
     <!-- Admin Ban User Confirmation Dialog -->
-    <div *ngIf="showAdminBanConfirmation" class="confirmation-overlay" (click)="onCancelAdminBanUser()">
+    @if(showAdminBanConfirmation) {
+    <div class="confirmation-overlay" (click)="onCancelAdminBanUser()">
         <div class="confirmation-dialog" (click)="$event.stopPropagation()">
             <div class="confirmation-icon ban-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
@@ -121,16 +144,24 @@
                     <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
                 </svg>
             </div>
-            <h3 class="confirmation-title" *ngIf="profileRes?.status === 'ACTIVE'">Ban User?</h3>
-            <h3 class="confirmation-title" *ngIf="profileRes?.status === 'BAN'">Unban User?</h3>
-            <p class="confirmation-message" *ngIf="profileRes?.status === 'ACTIVE'">
+            @if(profileRes.status === 'ACTIVE') {
+            <h3 class="confirmation-title">Ban User?</h3>
+            }
+            @if(profileRes.status === 'BAN') {
+            <h3 class="confirmation-title">Unban User?</h3>
+            }
+            @if(profileRes.status === 'ACTIVE') {
+            <p class="confirmation-message">
                 Are you sure you want to ban <strong>{{profileRes.firstName}} {{profileRes.lastName}}</strong>
                 (@{{profileRes.username}})? This will prevent them from accessing the platform.
             </p>
-            <p class="confirmation-message" *ngIf="profileRes?.status === 'BAN'">
+            }
+            @if(profileRes.status === 'BAN') {
+            <p class="confirmation-message">
                 Are you sure you want to unban <strong>{{profileRes.firstName}} {{profileRes.lastName}}</strong>
                 (@{{profileRes.username}})? This will restore their access to the platform.
             </p>
+            }
             <div class="confirmation-actions">
                 <button class="btn-confirmation-cancel" (click)="onCancelAdminBanUser()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -147,27 +178,39 @@
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                         <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708" />
                     </svg>
-                    <span *ngIf="profileRes?.status === 'ACTIVE'">Yes, Ban User</span>
-                    <span *ngIf="profileRes?.status === 'BAN'">Yes, Unban User</span>
+                    @if(profileRes.status === 'ACTIVE') {
+                    <span>Yes, Ban User</span>
+                    }
+                    @if(profileRes.status === 'BAN') {
+                    <span>Yes, Unban User</span>
+                    }
                 </button>
             </div>
         </div>
     </div>
+    }
 
     <!-- User Posts Section -->
     <div class="user-posts-section">
         <h2>Posts</h2>
-        <div *ngIf="isLoadingPosts" class="loading">
+        @if(isLoadingPosts) {
+        <div class="loading">
             Loading posts...
         </div>
-        <div *ngIf="!isLoadingPosts && userPosts.length === 0" class="no-posts">
+        }
+        @if(!isLoadingPosts && userPosts.length === 0) {
+        <div class="no-posts">
             <p>No posts yet</p>
         </div>
-        <div *ngIf="!isLoadingPosts && userPosts.length > 0" class="posts-grid row">
-            <div *ngFor="let post of userPosts" class="col-12 col-md-6 col-lg-4 mb-4">
+        }
+        @if(!isLoadingPosts && userPosts.length > 0) {
+        <div class="posts-grid row">
+            @for(post of userPosts; track post.postUuid) {
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
                 <div class="post-card" (click)="navigateToPost(post.postUuid)">
                     <!-- Post with image(s) - Image as background with overlay -->
-                    <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
+                    @if(post.mediaPaths && post.mediaPaths.length > 0) {
+                    <div class="post-with-image">
                         <div class="post-image-wrapper">
                             <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                                 class="post-bg-image">
@@ -178,11 +221,14 @@
                         <div class="post-footer-info">
                             <div class="post-author-compact">
                                 <div class="author-avatar-small">
-                                    <img *ngIf="profileRes?.profileImagePath"
-                                        [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
-                                    <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
+                                    @if(profileRes.profileImagePath) {
+                                    <img [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
+                                    }
+                                    @if(!profileRes.profileImagePath) {
+                                    <div class="avatar-placeholder-small">
                                         {{profileRes.firstName.charAt(0) || ''}}
                                     </div>
+                                    }
                                 </div>
                                 <span class="author-name">{{post.userName}}</span>
                                 <span class="post-time">{{post.createdAt | date: 'short'}}</span>
@@ -200,17 +246,22 @@
                             </div>
                         </div>
                     </div>
+                    }
 
                     <!-- Post without image - Traditional layout -->
-                    <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-no-image">
+                    @if(!post.mediaPaths || post.mediaPaths.length === 0) {
+                    <div class="post-no-image">
                         <div class="post-header">
                             <div class="post-author">
                                 <div class="author-avatar-small">
-                                    <img *ngIf="profileRes?.profileImagePath"
-                                        [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
-                                    <div *ngIf="!profileRes?.profileImagePath" class="avatar-placeholder-small">
+                                    @if(profileRes.profileImagePath) {
+                                    <img [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
+                                    }
+                                    @if(!profileRes.profileImagePath) {
+                                    <div class="avatar-placeholder-small">
                                         {{profileRes.firstName.charAt(0) || ''}}
                                     </div>
+                                    }
                                 </div>
                                 <div class="author-info">
                                     <span class="author-name">{{post.userName}}</span>
@@ -236,12 +287,18 @@
                             </button>
                         </div>
                     </div>
+                    }
                 </div>
             </div>
+            }
         </div>
-        <div *ngIf="isLoadingPosts && userPosts.length > 0" class="loading-more">
+        }
+        @if(isLoadingPosts && userPosts.length > 0) {
+        <div class="loading-more">
             Loading more posts...
         </div>
+        }
     </div>
 </div>
+}
 <div #anchor class="loading-trigger"></div>

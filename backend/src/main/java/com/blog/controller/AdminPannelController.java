@@ -20,33 +20,38 @@ public class AdminPannelController {
 
     @GetMapping("/user/{uuid}")
     public ResponseEntity<UsersAdmineResponse> getUser(@PathVariable String uuid) {
-        UsersAdmineResponse user = adminService.getUser(uuid);
-        return ResponseEntity.ok(user);
+        return adminService.getUser(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/user/delete/{uuid}")
     public ResponseEntity<UsersAdmineResponse> daleteUser(@PathVariable String uuid) {
-        UsersAdmineResponse user = adminService.deleteUser(uuid);
-        return ResponseEntity.ok(user);
+        return adminService.deleteUser(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/user/ban/{uuid}")
     public ResponseEntity<UsersAdmineResponse> banUser(@PathVariable String uuid) {
-        UsersAdmineResponse user = adminService.banUser(uuid);
-        return ResponseEntity.ok(user);
+        return adminService.banUser(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
     @PostMapping("/post/delete/{uuid}")
     public ResponseEntity<PostRes> daletePost(@PathVariable String uuid) {
-        PostRes post = adminService.deletePost(uuid);
-        return ResponseEntity.ok(post);
+        return adminService.deletePost(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/post/hide/{uuid}")
     public ResponseEntity<PostRes> hidePost(@PathVariable String uuid) {
-        PostRes post = adminService.hidePost(uuid);
-        return ResponseEntity.ok(post);
+        return adminService.hidePost(uuid)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/statistics")

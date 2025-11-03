@@ -1,5 +1,6 @@
 package com.blog.service;
 
+import java.util.Optional;
 import com.blog.dto.UsersRespons;
 import com.blog.entity.Report;
 import com.blog.entity.User;
@@ -9,10 +10,8 @@ import com.blog.repository.ReportRepository;
 import com.blog.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import com.blog.dto.ReportResponse;
-import com.blog.exceptions.UserNotFoundException;
 import com.blog.exceptions.UserNotLoginException;
 import com.blog.dto.ReportRequest;
-import com.blog.exceptions.PostNotFoundException;
 import com.blog.exceptions.ReportException;
 
 @Service
@@ -33,21 +32,18 @@ public class ReportService {
         this.postRepository = postRepository;
     }
 
-    public ReportResponse reportProfile(String uuid, ReportRequest reason) {
+    public Optional<ReportResponse> reportProfile(String uuid, ReportRequest reason) {
         UsersRespons usersRespons;
         try {
             usersRespons = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("user not found for reporting");
+            throw new UserNotLoginException("user not found for reporting");
         }
-
-        if (usersRespons.getRole().equals("ROLE_ADMIN")) {
-            throw new SecurityException("Admin can directly manage profils by banning or deleting");
+        Optional<User> userOpt = userRepository.findByUuid(uuid);
+        if (userOpt.isEmpty()) {
+            return Optional.empty();
         }
-
-        User user = userRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new UserNotFoundException("User not available");
-        });
+        User user = userOpt.get();
 
         if (user.getStatus() != null && user.getStatus().equalsIgnoreCase("BAN")) {
             throw new ReportException("This user is already banned");
@@ -69,25 +65,21 @@ public class ReportService {
         newReport.setCreatedAt(System.currentTimeMillis());
         // newReport.setTypeReport("Profile");
         reportRepository.save(newReport);
-        return new ReportResponse("the report has created successfully");
+        return Optional.of(new ReportResponse("the report has created successfully"));
     }
 
-    public ReportResponse reportPost(String uuid, ReportRequest reason) {
+    public Optional<ReportResponse> reportPost(String uuid, ReportRequest reason) {
         UsersRespons usersRespons;
         try {
             usersRespons = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("user not found for reporting");
+            throw new UserNotLoginException("user not found for reporting");
         }
-
-        System.out.println("usersRespons.getRole(): " + usersRespons.getRole() );
-        if (usersRespons.getRole().equals("ROLE_ADMIN")) {
-            throw new SecurityException("Admin can directly manage posts by hiding or deleting");
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
         }
-
-        Post post = postRepository.findByUuid(uuid).orElseThrow(() -> {
-            throw new PostNotFoundException("post not found for reporting");
-        });
+        Post post = postOpt.get();
 
         User postOwner = post.getUser();
         if (postOwner.getStatus() != null && postOwner.getStatus().equalsIgnoreCase("BAN")) {
@@ -110,6 +102,6 @@ public class ReportService {
         newReport.setCreatedAt(System.currentTimeMillis());
         // newReport.setTypeReport("Post");
         reportRepository.save(newReport);
-        return new ReportResponse("the report has created successfully");
+        return Optional.of(new ReportResponse("the report has created successfully"));
     }
 }

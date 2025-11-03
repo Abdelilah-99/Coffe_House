@@ -1,8 +1,11 @@
 <div class="components">
     <app-toast></app-toast>
-    <div class="sidebar-overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+    @if(sidebarOpen) {
+    <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+    }
 
-    <aside class="sidebar" [class.open]="sidebarOpen" *ngIf="showNavbar">
+    @if(showNavbar) {
+    <aside class="sidebar" [class.open]="sidebarOpen">
         <div class="sidebar-header">
             <h2>Menu</h2>
             <button class="sidebar-close" (click)="toggleSidebar()">×</button>
@@ -17,21 +20,30 @@
             </a>
             <a routerLink="/notification" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">
                 <span>Notifications</span>
-                <span class="sidebar-badge" *ngIf="count">{{ count }}</span>
+                @if(count) {
+                <span class="sidebar-badge">{{ count }}</span>
+                }
             </a>
-            <a *ngIf="isAdmin()" routerLink="/admin" routerLinkActive="active" class="sidebar-link"
+            @if(isAdmin()) {
+            <a routerLink="/admin" routerLinkActive="active" class="sidebar-link"
                 (click)="closeSidebar()">
                 <span>Admin Panel</span>
             </a>
+            }
             <div class="sidebar-divider"></div>
 
             <div class="sidebar-section">
                 <h3 class="sidebar-section-title">Following</h3>
                 <div class="following-list">
-                    <p *ngIf="loadingFollowing" class="following-loading">Loading...</p>
-                    <p *ngIf="!loadingFollowing && followingList.length === 0" class="following-empty">Not following
+                    @if(loadingFollowing) {
+                    <p class="following-loading">Loading...</p>
+                    }
+                    @if(!loadingFollowing && followingList.length === 0) {
+                    <p class="following-empty">Not following
                         anyone yet</p>
-                    <div *ngFor="let user of followingList" class="following-item"
+                    }
+                    @for(user of followingList; track user.uuid) {
+                    <div class="following-item"
                         (click)="navigateToProfile(user.uuid)">
                         <img [src]="'http://localhost:8080/' +  user.profileImagePath" [alt]="user.username"
                             class="following-avatar">
@@ -40,6 +52,7 @@
                             <p class="following-username">@{{ user.username }}</p>
                         </div>
                     </div>
+                    }
                 </div>
             </div>
 
@@ -49,8 +62,10 @@
             </button>
         </nav>
     </aside>
+    }
 
-    <nav class="navbar" *ngIf="showNavbar">
+    @if(showNavbar) {
+    <nav class="navbar">
         <div class="navbar-container">
             <div class="navbar-left">
                 <button class="hamburger-btn" (click)="toggleSidebar()">
@@ -72,13 +87,15 @@
             </div>
 
             <div class="navbar-actions">
-                <div class="profile-menu" *ngIf="userProfile">
+                @if(userProfile) {
+                <div class="profile-menu">
                     <button class="profile-btn" (click)="toggleProfileDropdown()">
                         <img [src]="'http://localhost:8080/' +  userProfile.profileImagePath" alt="Profile"
                             class="profile-avatar">
                     </button>
                     <div class="profile-dropdown" [class.show]="profileDropdownOpen">
-                        <div class="profile-dropdown-header" *ngIf="userProfile">
+                        @if(userProfile) {
+                        <div class="profile-dropdown-header">
                             <img [src]="'http://localhost:8080/' +  userProfile.profileImagePath" alt="Profile"
                                 class="profile-dropdown-avatar">
                             <div class="profile-dropdown-info">
@@ -87,26 +104,33 @@
                                 <p class="profile-dropdown-username">@{{ userProfile.username }}</p>
                             </div>
                         </div>
+                        }
                         <div class="profile-dropdown-divider"></div>
                         <a routerLink="/me" class="profile-dropdown-link" (click)="toggleProfileDropdown()">
                             My Profile
                         </a>
                         <a routerLink="/notification" class="profile-dropdown-link" (click)="toggleProfileDropdown()">
                             Notifications
-                            <span class="dropdown-badge" *ngIf="count && count.count > 0">{{ count.count }}</span>
+                            @if(count && count.count > 0) {
+                            <span class="dropdown-badge">{{ count.count }}</span>
+                            }
                         </a>
-                        <a *ngIf="isAdmin()" routerLink="/admin" class="profile-dropdown-link"
+                        @if(isAdmin()) {
+                        <a routerLink="/admin" class="profile-dropdown-link"
                             (click)="toggleProfileDropdown()">
                             Admin Panel
                         </a>
+                        }
                         <div class="profile-dropdown-divider"></div>
                         <button class="profile-dropdown-link logout-link" (click)="logout()">
                             Logout
                         </button>
                     </div>
                 </div>
+                }
             </div>
         </div>
     </nav>
+    }
     <router-outlet />
 </div>

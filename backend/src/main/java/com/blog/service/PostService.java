@@ -109,7 +109,7 @@ public class PostService {
             newPost.setCreatedAt(time);
             newPost.setMediaPaths(mediaPaths);
             newPost.setStatus("EPOSED");
-            postRepository.save(newPost);   
+            postRepository.save(newPost);
             List<Notification> notifications = new ArrayList<>();
             for (Follow follow : followers) {
                 Notification newNotif = new Notification();
@@ -270,7 +270,6 @@ public class PostService {
                     .orElseThrow(() -> new PostNotFoundException("post not found for id"));
             lastId = post.getId();
         }
-        System.out.println("lastTime: " + lastTime + " lastId: " + lastId + " lastUuid: " + lastUuid);
         List<Post> posts = postRepository.findMyPostByPagination(lastTime, lastId, user.getId(), pageable);
 
         List<PostRes> listPostRes = new ArrayList<>();
@@ -330,14 +329,18 @@ public class PostService {
     //     return listPostRes;
     // }
 
-    public PostRes getPost(String uuid) {
-        Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("post not found"));
+    public Optional<PostRes> getPost(String uuid) {
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Post post = postOpt.get();
         String status = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
         if ("HIDE".equals(post.getStatus()) && !status.contains("ROLE_ADMIN")) {
-            throw new PostNotFoundException("This post is not available");
+            return Optional.empty();
         }
 
-        return new PostRes(post.getUuid(),
+        return Optional.of(new PostRes(post.getUuid(),
                 post.getUser().getUuid(),
                 post.getUser().getUserName(),
                 post.getContent(),
@@ -348,7 +351,7 @@ public class PostService {
                 commentRepository.countByPost_uuid(post.getUuid()),
                 likesRepository.countByPost_uuid(post.getUuid()),
                 post.getUser().getProfileImagePath(),
-                post.getStatus());
+                post.getStatus()));
     }
 
     // public List<PostRes> getPostsByUser(String userUuid) {
@@ -380,7 +383,7 @@ public class PostService {
         User user = userRepository.findByUuid(userUuid)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
 
         if (lastTime == null) {
             lastTime = System.currentTimeMillis() + 1000;

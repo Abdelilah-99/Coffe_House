@@ -1,16 +1,22 @@
 <div class="profle-container container-fluid">
     <!-- Profile Header -->
     <div class="profile-header">
-        <div *ngIf="isLoading" class="loading">
+        @if(isLoading) {
+        <div class="loading">
             loading...
         </div>
-        <div *ngIf="userProfile" class="profile-info row">
+        }
+        @if(userProfile) {
+        <div class="profile-info row">
             <div class="profile-avatar col-12 col-md-auto d-flex justify-content-center justify-content-md-start">
-                <img *ngIf="userProfile.profileImagePath"
-                    [src]="'http://localhost:8080/' + userProfile.profileImagePath" alt="Profile Picture">
-                <div *ngIf="!userProfile.profileImagePath" class="avatar-placeholder">
+                @if(userProfile.profileImagePath) {
+                <img [src]="'http://localhost:8080/' + userProfile.profileImagePath" alt="Profile Picture">
+                }
+                @if(!userProfile.profileImagePath) {
+                <div class="avatar-placeholder">
                     {{userProfile.firstName.charAt(0)}}{{userProfile.lastName.charAt(0)}}
                 </div>
+                }
             </div>
             <div class="profile-details col-12 col-md text-center text-md-start">
                 <h1>{{userProfile.firstName}} {{userProfile.lastName}}</h1>
@@ -18,9 +24,12 @@
                 <p class="email">{{userProfile.email}}</p>
             </div>
         </div>
-        <div *ngIf="!isLoading && !userProfile" class="no-data">
+        }
+        @if(!isLoading && !userProfile) {
+        <div class="no-data">
             <p>No profile data available</p>
         </div>
+        }
     </div>
 
     <!-- Post Creation Form -->
@@ -67,11 +76,17 @@
                     <span class="char-count">{{ (post.content.length || 0) }}/10000</span>
                 </div>
             </div>
-            <div *ngIf="selectedFiles.length > 0" class="image-preview-container">
-                <div *ngFor="let file of previewUrls; let   i = index" class="image-preview-item">
-                    <img *ngIf="file.type.startsWith('image/')" [src]="file.url" alt="Preview">
-                    <video *ngIf="file.type.startsWith('video/')" [src]="file.url" alt="Preview" controls></video>
-                    <button type="button" class="remove-image-btn" (click)="deleteFileSelected(i)">
+            @if(selectedFiles.length > 0) {
+            <div class="image-preview-container">
+                @for(file of previewUrls; track $index) {
+                <div class="image-preview-item">
+                    @if(file.type.startsWith('image/')) {
+                    <img [src]="file.url" alt="Preview">
+                    }
+                    @if(file.type.startsWith('video/')) {
+                    <video [src]="file.url" alt="Preview" controls></video>
+                    }
+                    <button type="button" class="remove-image-btn" (click)="deleteFileSelected($index)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             viewBox="0 0 16 16">
                             <path
@@ -79,7 +94,9 @@
                         </svg>
                     </button>
                 </div>
+                }
             </div>
+            }
             <div class="form-actions">
                 <div class="file-input-wrapper">
                     <label for="file-input" class="file-input-label">
@@ -92,8 +109,10 @@
                         <span>Add Photos</span>
                     </label>
                     <input id="file-input" type="file" (change)="onFileSelected($event)" multiple>
-                    <span *ngIf="selectedFiles.length > 0" class="file-count">{{selectedFiles.length}}
+                    @if(selectedFiles.length > 0) {
+                    <span class="file-count">{{selectedFiles.length}}
                         photo(s)/video(s)</span>
+                    }
                 </div>
                 <button type="submit" class="submit-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
@@ -110,24 +129,33 @@
     <!-- User Posts Section -->
     <div class="user-posts-section">
         <h2>My Posts</h2>
-        <div *ngIf="isLoadingPosts" class="loading">
+        @if(isLoadingPosts) {
+        <div class="loading">
             Loading posts...
         </div>
-        <div *ngIf="!isLoadingPosts && userPosts.length === 0" class="no-posts">
+        }
+        @if(!isLoadingPosts && userPosts.length === 0) {
+        <div class="no-posts">
             <p>No posts yet. Create your first post!</p>
         </div>
-        <div *ngIf="!isLoadingPosts && userPosts.length > 0">
+        }
+        @if(!isLoadingPosts && userPosts.length > 0) {
+        <div>
             <div class="row g-4">
-                <div *ngFor="let post of userPosts" class="col-12 col-sm-6 col-md-4">
+                @for(post of userPosts; track post.postUuid) {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="post-card" (click)="navigateToPost(post.postUuid)">
                         <!-- Post with image(s) - Image as background with overlay -->
-                        <div *ngIf="post.mediaPaths && post.mediaPaths.length > 0" class="post-with-image">
+                        @if(post.mediaPaths && post.mediaPaths.length > 0) {
+                        <div class="post-with-image">
                             <div class="post-image-wrapper">
-                                <img *ngIf="post.mediaPaths[0].type.startsWith('image')"
-                                    [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+                                @if(post.mediaPaths[0].type.startsWith('image')) {
+                                <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                                     class="post-bg-image">
-                                <video *ngIf="post.mediaPaths[0].type.startsWith('video')"
-                                    [src]="'http://localhost:8080/' + post.mediaPaths[0].path"></video>
+                                }
+                                @if(post.mediaPaths[0].type.startsWith('video')) {
+                                <video [src]="'http://localhost:8080/' + post.mediaPaths[0].path"></video>
+                                }
                                 <div class="post-image-overlay">
                                     <h3 class="post-title-overlay text-break">{{post.title}}</h3>
                                 </div>
@@ -135,9 +163,15 @@
                             <div class="py-3 px-4 bg-body">
                                 <div class="post-author-compact">
                                     <div class="author-avatar-small">
-                                        <img *ngIf="userProfile?.profileImagePath"
-                                            [src]="'http://localhost:8080/' + userProfile?.profileImagePath"
+                                        @if(userProfile?.profileImagePath) {
+                                        <img [src]="'http://localhost:8080/' + userProfile?.profileImagePath"
                                             alt="Profile">
+                                        }
+                                        @if(!userProfile?.profileImagePath) {
+                                        <div class="avatar-placeholder-small">
+                                            {{userProfile?.firstName?.charAt(0) || ''}}
+                                        </div>
+                                        }
                                     </div>
                                     <span class="author-name">{{post.userName}}</span>
                                     <span class="post-time">{{post.createdAt | date: 'short'}}</span>
@@ -157,18 +191,23 @@
                                 </div>
                             </div>
                         </div>
+                        }
 
                         <!-- Post without image - Traditional layout -->
-                        <div *ngIf="!post.mediaPaths || post.mediaPaths.length === 0" class="post-no-image">
+                        @if(!post.mediaPaths || post.mediaPaths.length === 0) {
+                        <div class="post-no-image">
                             <div class="post-header">
                                 <div class="post-author">
                                     <div class="author-avatar-small">
-                                        <img *ngIf="userProfile?.profileImagePath"
-                                            [src]="'http://localhost:8080/' + userProfile?.profileImagePath"
+                                        @if(userProfile?.profileImagePath) {
+                                        <img [src]="'http://localhost:8080/' + userProfile?.profileImagePath"
                                             alt="Profile">
-                                        <div *ngIf="!userProfile?.profileImagePath" class="avatar-placeholder-small">
+                                        }
+                                        @if(!userProfile?.profileImagePath) {
+                                        <div class="avatar-placeholder-small">
                                             {{userProfile?.firstName?.charAt(0) || ''}}
                                         </div>
+                                        }
                                     </div>
                                     <div class="author-info">
                                         <span class="author-name">{{post.userName}}</span>
@@ -178,7 +217,7 @@
                             </div>
 
                             <div class="post-content text-break">
-                                <h3 class="post-preview">{{post.title}}</h3>
+                                <h3>{{post.title}}</h3>
                                 <p class="post-preview text-break">{{post.content}}...</p>
                             </div>
 
@@ -198,10 +237,13 @@
                                 </button>
                             </div>
                         </div>
+                        }
                     </div>
                 </div>
+                }
             </div>
         </div>
+        }
     </div>
     <div #anchor class="loading-trigger"></div>
 </div>

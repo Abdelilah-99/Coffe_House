@@ -1,5 +1,6 @@
 package com.blog.service;
 
+import java.util.Optional;
 import com.blog.dto.*;
 import com.blog.entity.*;
 import com.blog.repository.*;
@@ -26,9 +27,12 @@ public class LikePostService {
     }
 
     @Transactional
-    public LikePostRes likeLogic(String uuid) {
-        Post post = postRepository.findByUuid(uuid)
-                .orElseThrow(() -> new PostNotFoundException("post not found for like"));
+    public Optional<LikePostRes> likeLogic(String uuid) {
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Post post = postOpt.get();
         try {
             UsersRespons userRes = usersServices.getCurrentUser();
             User user = userRepository.findByUuid(userRes.getUuid())
@@ -44,7 +48,7 @@ public class LikePostService {
                 likes.setPost(post);
                 likesRepository.save(likes);
             }
-            return new LikePostRes(user.getUuid(), post.getUuid(), likesRepository.countByPost_uuid(post.getUuid()));
+            return Optional.of(new LikePostRes(user.getUuid(), post.getUuid(), likesRepository.countByPost_uuid(post.getUuid())));
         } catch (Exception e) {
             throw new LikeException("err like: " + e.getMessage());
         }

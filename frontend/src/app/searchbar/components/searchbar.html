@@ -10,18 +10,22 @@
                     required>
                 <div class="search-underline"></div>
             </div>
-            <div class="search-results" *ngIf="searchData.length > 0">
+            @if(searchData.length > 0) {
+            <div class="search-results">
                 <div class="results-header">
                     <span class="results-count">{{ searchData.length }} {{ searchData.length === 1 ? 'person' : 'people' }} found</span>
                 </div>
-                <div class="user-result" *ngFor="let user of searchData" (click)="goToProfile(user.uuid)">
+                @for(user of searchData; track user.uuid) {
+                <div class="user-result" (click)="goToProfile(user.uuid)">
                     <img [src]="'http://localhost:8080/' + user.profileImagePath" [alt]="user.username" class="user-avatar">
                     <div class="user-info">
                         <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p>
                         <p class="user-username">@{{ user.username }}</p>
                     </div>
                 </div>
+                }
             </div>
+            }
         </div>
     </div>
 </div>

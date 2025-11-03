@@ -15,11 +15,10 @@ import com.blog.repository.*;
 
 import java.io.IOException;
 
+import java.util.Optional;
 import com.blog.entity.*;
 import com.blog.exceptions.ErrSavingException;
 import com.blog.exceptions.InvalidFormatException;
-import com.blog.exceptions.PostNotFoundException;
-import com.blog.exceptions.UserNotFoundException;
 import com.blog.exceptions.UserNotLoginException;
 import com.blog.security.FileValidationService;
 import com.blog.security.InputSanitizationService;
@@ -84,18 +83,22 @@ public class EditPostService {
         return "unknown";
     }
 
-    public PostRes editPost(String uuid, EditPostReq req) {
+    public Optional<PostRes> editPost(String uuid, EditPostReq req) {
         UsersRespons crrUser;
         try {
             crrUser = usersServices.getCurrentUser();
         } catch (Exception e) {
-            throw new UserNotFoundException("user error");
+            throw new UserNotLoginException("user error");
         }
         String username = crrUser.getUsername();
         User currentUser = userRepository.findByUserName(username)
                 .orElseThrow(() -> new UserNotLoginException("User not found"));
 
-        Post post = postRepository.findByUuid(uuid).orElseThrow(() -> new PostNotFoundException("Post not found"));
+        Optional<Post> postOpt = postRepository.findByUuid(uuid);
+        if (postOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Post post = postOpt.get();
 
         System.out.println("----------------------" + currentUser.getUserName());
         if (post.getUser().getId() != currentUser.getId()) {
@@ -168,7 +171,7 @@ public class EditPostService {
         }
         post.setMediaPaths(updatedPaths);
         postRepository.save(post);
-        return new PostRes(post.getUuid(),
+        return Optional.of(new PostRes(post.getUuid(),
                 post.getUser().getUuid(),
                 post.getUser().getUserName(),
                 post.getContent(),
@@ -179,6 +182,6 @@ public class EditPostService {
                 commentRepository.countByPost_uuid(post.getUuid()),
                 likesRepository.countByPost_uuid(post.getUuid()),
                 post.getUser().getProfileImagePath(),
-                post.getStatus());
+                post.getStatus()));
     }
 }
