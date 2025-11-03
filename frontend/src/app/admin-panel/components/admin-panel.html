@@ -267,7 +267,7 @@
                         <tr class="clickable-row"
                             (click)="goTo('profile', report.postOrUserUuid)">
                             <td>@{{report.reporterUsername}}</td>
-                            <td><span class="reason-badge">{{report.reason}}</span></td>
+                            <td><span class="reason-badge text-break">{{report.reason}}</span></td>
                             <td>{{report.time | date:'short'}}</td>
                         </tr>
                         }
