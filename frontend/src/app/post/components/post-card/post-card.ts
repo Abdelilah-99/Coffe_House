@@ -70,9 +70,9 @@ export class PostCard implements OnInit {
           this.post = post;
         },
         error: (err) => {
-          console.log("errorl loading post ", err);
+          // console.log("errorl loading post ", err);
           if (err.status === 404 || err.error?.message?.includes('not available')) {
-            alert('This post is not available');
+            this.toast.show("post unavailable", 'error')
             this.navigate.navigate(['']);
           }
         }

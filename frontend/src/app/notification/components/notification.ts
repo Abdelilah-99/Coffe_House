@@ -4,6 +4,8 @@ import { NotificationRes, NotifServices } from '../services/services';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Token } from '@angular/compiler';
+import { routes } from '../../app.routes';
+import { ToastService } from '../../toast/service/toast';
 
 @Component({
   selector: 'app-notification',
@@ -26,7 +28,8 @@ export class Notification implements OnInit, AfterViewInit, OnDestroy {
   constructor(private meServices: MeService,
     private notifService: NotifServices,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private navigate: Router) { }
+    private navigate: Router,
+    private toast: ToastService) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -106,8 +109,9 @@ export class Notification implements OnInit, AfterViewInit, OnDestroy {
           next: () => {
             console.info("user has read the notification");
           },
-          error: (err) => {
-            console.log("notification error: ", err);
+          error: () => {
+            // console.log("notification error: ", err);
+            this.toast.show('notification error', 'error');
             if (notif) {
               notif.isRead = false;
             }
