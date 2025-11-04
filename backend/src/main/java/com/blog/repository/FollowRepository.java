@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
-    @Transactional
     @Modifying
     @Query(value = "delete from follow where follower_id = :followerId and following_id = :followingId", nativeQuery = true)
     void deleteByFollowerIdAndFollowingId(@Param("followerId") Long followerId,
@@ -19,7 +18,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     boolean existsByFollowerIdAndFollowingId(long follwer, long following);
 
-    @Transactional
     @Modifying
     @Query(value = "INSERT INTO follow (follower_id, following_id) VALUES (:followerId, :followingId)", nativeQuery = true)
     void insertFollow(@Param("followerId") Long followerId,

@@ -41,14 +41,16 @@ public class LikePostService {
 
             boolean isThereLike = likesRepository.existsByUser_uuidAndPost_uuid(user.getUuid(), post.getUuid());
             if (isThereLike == true) {
-                likesRepository.deleteByUser_uuidAndPost_uuid(user.getUuid(), post.getUuid());
+                likesRepository.deleteByUserIdAndPostId(user.getId(), post.getId());
             } else {
-                Like likes = new Like();
-                likes.setUser(user);
-                likes.setPost(post);
-                likesRepository.save(likes);
+                // Like likes = new Like();
+                // likes.setUser(user);
+                // likes.setPost(post);
+                // likesRepository.save(likes);
+                likesRepository.insertLike(user.getId(), post.getId());
             }
-            return Optional.of(new LikePostRes(user.getUuid(), post.getUuid(), likesRepository.countByPost_uuid(post.getUuid())));
+            return Optional.of(
+                    new LikePostRes(user.getUuid(), post.getUuid(), likesRepository.countByPost_uuid(post.getUuid())));
         } catch (Exception e) {
             throw new LikeException("err like: " + e.getMessage());
         }

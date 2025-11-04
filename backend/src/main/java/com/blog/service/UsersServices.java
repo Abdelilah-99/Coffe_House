@@ -88,6 +88,7 @@ public class UsersServices {
         throw new Exception("User not authenticated");
     }
 
+    @Transactional
     public Optional<UserFollowRes> follow(String uuid) {
         UsersRespons user;
         try {
@@ -132,6 +133,7 @@ public class UsersServices {
                 "user has succseffully followed"));
     }
 
+    @Transactional
     public Optional<UserFollowRes> unfollow(String uuid) {
         UsersRespons user;
         try {
