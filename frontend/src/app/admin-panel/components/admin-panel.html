@@ -432,7 +432,7 @@
             <h3 class="confirmation-title">Delete Post?</h3>
             @if(pendingActionData) {
             <p class="confirmation-message">
-                Are you sure you want to permanently delete the post "<strong>{{pendingActionData.title}}</strong>" by
+                Are you sure you want to permanently delete the post "<strong class="text-break">{{pendingActionData.title}}</strong>" by
                 @{{pendingActionData.userName}}? This action cannot be undone.
             </p>
             }
@@ -483,14 +483,14 @@
             }
             @if(pendingActionData?.status === 'EPOSED') {
             <p class="confirmation-message">
-                Are you sure you want to hide the post "<strong>{{pendingActionData.title}}</strong>" by
+                Are you sure you want to hide the post "<strong class="text-break">{{pendingActionData.title}}</strong>" by
                 @{{pendingActionData.userName}}? This will remove it from public view.
             </p>
 
             }
             @if(pendingActionData?.status === 'HIDE') {
             <p class="confirmation-message">
-                Are you sure you want to unhide the post "<strong>{{pendingActionData.title}}</strong>" by
+                Are you sure you want to unhide the post "<strong class="text-break">{{pendingActionData.title}}</strong>" by
                 @{{pendingActionData.userName}}? This will make it visible to users again.
             </p>
             }

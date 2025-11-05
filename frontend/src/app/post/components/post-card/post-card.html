@@ -284,13 +284,13 @@
                 }
                 @if(post.status === 'EPOSED') {
                 <p class="confirmation-message">
-                    Are you sure you want to hide "<strong>{{post.title}}</strong>"? This will remove it from public
+                    Are you sure you want to hide "<strong class="text-break">{{post.title}}</strong>"? This will remove it from public
                     view.
                 </p>
                 }
                 @if(post.status === 'HIDE') {
                 <p class="confirmation-message">
-                    Are you sure you want to unhide "<strong>{{post.title}}</strong>"? This will make it visible to
+                    Are you sure you want to unhide "<strong class="text-break">{{post.title}}</strong>"? This will make it visible to
                     users again.
                 </p>
                 }
@@ -342,7 +342,7 @@
                 <h3 class="confirmation-title">Delete Post?</h3>
                 @if(post) {
                 <p class="confirmation-message">
-                    Are you sure you want to permanently delete "<strong>{{post.title}}</strong>" by @{{post.userName}}?
+                    Are you sure you want to permanently delete "<strong class="text-break">{{post.title}}</strong>" by @{{post.userName}}?
                     This action cannot be undone.
                 </p>
                 }
