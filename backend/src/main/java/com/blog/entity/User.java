@@ -26,12 +26,16 @@ public class User {
     private List<Follow> following = new ArrayList<>();
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
     private List<Follow> followers = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid = UUID.randomUUID().toString();
     private String status;
     private Long createdAt;
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reporterId", cascade = CascadeType.ALL)
     private List<Report> reports;
 
     public User() {
