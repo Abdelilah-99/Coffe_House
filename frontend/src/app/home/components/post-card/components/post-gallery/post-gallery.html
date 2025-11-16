@@ -1,10 +1,10 @@
 @for(media of post.mediaPaths; track media) {
 <div class="post-images">
     @if(isImage(media.type)) {
-    <img [src]="'http://localhost:8080/' + media.path" width="300" />
+    <img [src]="apiUrl + '/' + media.path" width="300" />
     }
     @if(isVideo(media.type)) {
-    <video [src]="'http://localhost:8080/' + media.path" controls width="300"></video>
+    <video [src]="apiUrl + '/' + media.path" controls width="300"></video>
     }
 </div>
 }

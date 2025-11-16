@@ -5,6 +5,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MeService, UserProfile } from '../me/services/me.service';
 import { ToastService } from '../toast/service/toast';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-edit',
@@ -13,6 +14,7 @@ import { ToastService } from '../toast/service/toast';
   styleUrls: ['./edit.css']
 })
 export class Edit implements OnInit {
+  apiUrl = environment.apiUrl;
   constructor(
     private postService: PostService,
     private route: ActivatedRoute,

@@ -45,7 +45,7 @@
                     @for(user of followingList; track user.uuid) {
                     <div class="following-item"
                         (click)="navigateToProfile(user.uuid)">
-                        <img [src]="'http://localhost:8080/' +  user.profileImagePath" [alt]="user.username"
+                        <img [src]="apiUrl + '/' +  user.profileImagePath" [alt]="user.username"
                             class="following-avatar">
                         <div class="following-info">
                             <p class="following-name">{{ user.firstName }} {{ user.lastName }}</p>
@@ -90,13 +90,13 @@
                 @if(userProfile) {
                 <div class="profile-menu">
                     <button class="profile-btn" (click)="toggleProfileDropdown()">
-                        <img [src]="'http://localhost:8080/' +  userProfile.profileImagePath" alt="Profile"
+                        <img [src]="apiUrl + '/' +  userProfile.profileImagePath" alt="Profile"
                             class="profile-avatar">
                     </button>
                     <div class="profile-dropdown" [class.show]="profileDropdownOpen">
                         @if(userProfile) {
                         <div class="profile-dropdown-header">
-                            <img [src]="'http://localhost:8080/' +  userProfile.profileImagePath" alt="Profile"
+                            <img [src]="apiUrl + '/' +  userProfile.profileImagePath" alt="Profile"
                                 class="profile-dropdown-avatar">
                             <div class="profile-dropdown-info">
                                 <p class="profile-dropdown-name">{{ userProfile.firstName }} {{ userProfile.lastName }}

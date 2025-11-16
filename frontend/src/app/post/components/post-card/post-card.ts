@@ -5,6 +5,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MeService, UserProfile } from '../../../me/services/me.service';
 import { AdminPannelSefvices } from '../../../admin-panel/services/admin-pannel-sefvices';
 import { ToastService } from '../../../toast/service/toast';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-post-card',
@@ -13,6 +14,7 @@ import { ToastService } from '../../../toast/service/toast';
   styleUrl: './post-card.css'
 })
 export class PostCard implements OnInit {
+  apiUrl = environment.apiUrl;
   constructor(private postService: PostService,
     private route: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object,

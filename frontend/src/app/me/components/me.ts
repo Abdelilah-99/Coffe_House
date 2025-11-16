@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { ToastService } from '../../toast/service/toast';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-profile',
   imports: [CommonModule, FormsModule],

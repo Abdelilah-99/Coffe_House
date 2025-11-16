@@ -4,11 +4,11 @@
     <div class="post-card-with-image">
         <div class="post-image-container">
             @if(post.mediaPaths[0].type.startsWith('image/')) {
-            <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+            <img [src]="apiUrl + '/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                 class="post-background-image">
             }
             @if(post.mediaPaths.length && post.mediaPaths[0].type.startsWith('video/')) {
-            <video [src]="'http://localhost:8080/' + post.mediaPaths[0].path"
+            <video [src]="apiUrl + '/' + post.mediaPaths[0].path"
                 class="post-background-image">
             </video>
             }
@@ -22,7 +22,7 @@
         <div class="post-footer-compact">
             <div class="post-user-info-compact">
                 @if(post.profileImagePath) {
-                <img [src]="'http://localhost:8080/' + post.profileImagePath"
+                <img [src]="apiUrl + '/' + post.profileImagePath"
                     alt="{{ post.userName }}" class="post-user-avatar-small">
                 }
                 @if(!post.profileImagePath) {
@@ -50,7 +50,7 @@
         <div class="post-header">
             <div class="post-user-info">
                 @if(post.profileImagePath) {
-                <img [src]="'http://localhost:8080/' + post.profileImagePath"
+                <img [src]="apiUrl + '/' + post.profileImagePath"
                     alt="{{ post.userName }}" class="post-user-avatar">
                 }
                 @if(!post.profileImagePath) {

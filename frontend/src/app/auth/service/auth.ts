@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface LoginResponse {
   message: String;
@@ -13,7 +14,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private URL = 'http://localhost:8080/api/auth';
+  private URL = `${environment.apiUrl}/api/auth`;
 
   constructor(private protocolHttp: HttpClient) { }
 

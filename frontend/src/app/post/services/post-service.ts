@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 export interface MediaDTO {
   path: string;
@@ -59,7 +60,7 @@ export interface Message {
   providedIn: 'root'
 })
 export class PostService {
-  private URL = `http://localhost:8080/api/posts`;
+  private URL = `${environment.apiUrl}/api/posts`;
   constructor(private http: HttpClient) { }
 
   // getAllPosts(): Observable<Post[]> {
@@ -99,16 +100,16 @@ export class PostService {
   }
 
   doReport(uuid: String, reason: String) {
-    return this.http.post<Message>(`http://localhost:8080/api/report/post/${uuid}`, { reason: reason });
+    return this.http.post<Message>(`${environment.apiUrl}/api/report/post/${uuid}`, { reason: reason });
   }
 
   loadMore(lastTime: number | null, lastUuid: string | null, route: string) {
     if (!lastTime || !lastUuid) {
-      return this.http.get<PostPage>(`http://localhost:8080/api/posts/${route}/pages`);
+      return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/${route}/pages`);
     }
     const params = new HttpParams()
       .set('lastTime', lastTime)
       .set('lastUuid', lastUuid);
-    return this.http.get<PostPage>(`http://localhost:8080/api/posts/${route}/pages`, { params });
+    return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/${route}/pages`, { params });
   }
 }

@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Post } from '../../post/services/post-service';
+import { environment } from '../../../environments/environment';
 
 export interface ProfileRes {
   email: String;
@@ -46,7 +47,7 @@ export interface PostPage {
   providedIn: 'root'
 })
 export class ProfileService {
-  private URL = 'http://localhost:8080/api/users';
+  private URL = `${environment.apiUrl}/api/users`;
   constructor(private http: HttpClient) { }
 
   getProfile(uuid: String): Observable<ProfileRes> {
@@ -62,11 +63,11 @@ export class ProfileService {
   }
 
   doReport(uuid: String, reason: String) {
-    return this.http.post<Message>(`http://localhost:8080/api/report/profile/${uuid}`, { reason: reason });
+    return this.http.post<Message>(`${environment.apiUrl}/api/report/profile/${uuid}`, { reason: reason });
   }
 
   // getUserPosts(userUuid: String): Observable<Post[]> {
-  //   return this.http.get<Post[]>(`http://localhost:8080/api/posts/user/${userUuid}`);
+  //   return this.http.get<Post[]>(`http://apiUrl + '/'/api/posts/user/${userUuid}`);
   // }
 
   getFollowers(userUuid: String): Observable<FollowUser[]> {
@@ -87,11 +88,11 @@ export class ProfileService {
 
   getUserPostsPaginated(userUuid: String, lastTime: number | null, lastUuid: string | null): Observable<PostPage> {
     if (!lastTime || !lastUuid) {
-      return this.http.get<PostPage>(`http://localhost:8080/api/posts/user/${userUuid}/pages`);
+      return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/user/${userUuid}/pages`);
     }
     const params = new HttpParams()
       .set('lastTime', lastTime.toString())
       .set('lastUuid', lastUuid);
-    return this.http.get<PostPage>(`http://localhost:8080/api/posts/user/${userUuid}/pages`, { params });
+    return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/user/${userUuid}/pages`, { params });
   }
 }

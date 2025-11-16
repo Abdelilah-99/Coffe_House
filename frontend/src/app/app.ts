@@ -7,6 +7,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Searchbar } from './searchbar/components/searchbar';
 import { ProfileService, FollowUser } from './profile/services/services';
 import { ToastComponent } from './toast/component/toastComponent';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class App implements OnInit {
   profileDropdownOpen = false;
   followingList: FollowUser[] = [];
   loadingFollowing = false;
+  apiUrl = environment.apiUrl; // Expose API URL to template
 
   constructor(
     private notifService: NotifServices,

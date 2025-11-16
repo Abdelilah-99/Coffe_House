@@ -6,6 +6,7 @@ import { MeService, UserProfile } from '../../me/services/me.service';
 import { Post, PostService } from '../../post/services/post-service';
 import { AdminPannelSefvices } from '../../admin-panel/services/admin-pannel-sefvices';
 import { ToastService } from '../../toast/service/toast';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +17,7 @@ import { ToastService } from '../../toast/service/toast';
 export class Profile implements OnInit, OnDestroy {
   @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
   observer!: IntersectionObserver;
+  apiUrl = environment.apiUrl;
 
   profileRes?: ProfileRes;
   followRes?: FollowRes;

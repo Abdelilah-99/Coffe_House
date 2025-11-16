@@ -5,7 +5,7 @@
         <div class="profile-info row">
             <div class="profile-avatar col-12 col-md-auto d-flex justify-content-center justify-content-md-start">
                 @if(profileRes.profileImagePath) {
-                <img [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile Picture">
+                <img [src]="apiUrl + '/' + profileRes.profileImagePath" alt="Profile Picture">
                 }
                 @if(!profileRes.profileImagePath) {
                 <div class="avatar-placeholder">
@@ -210,11 +210,11 @@
                     <div class="post-with-image">
                         <div class="post-image-wrapper">
                             @if (post.mediaPaths[0].type.startsWith('image')) {
-                            <img [src]="'http://localhost:8080/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+                            <img [src]="apiUrl + '/' + post.mediaPaths[0].path" alt="{{ post.title }}"
                                 class="post-bg-image">
                             }
                             @if (post.mediaPaths[0].type.startsWith('video')) {
-                            <video [src]="'http://localhost:8080/' + post.mediaPaths[0].path" class="post-bg-image" >
+                            <video [src]="apiUrl + '/' + post.mediaPaths[0].path" class="post-bg-image" >
                             </video>
                             }
                             <div class="post-image-overlay">
@@ -225,7 +225,7 @@
                             <div class="post-author-compact">
                                 <div class="author-avatar-small">
                                     @if(profileRes.profileImagePath) {
-                                    <img [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
+                                    <img [src]="apiUrl + '/' + profileRes.profileImagePath" alt="Profile">
                                     }
                                     @if(!profileRes.profileImagePath) {
                                     <div class="avatar-placeholder-small">
@@ -258,7 +258,7 @@
                             <div class="post-author">
                                 <div class="author-avatar-small">
                                     @if(profileRes.profileImagePath) {
-                                    <img [src]="'http://localhost:8080/' + profileRes.profileImagePath" alt="Profile">
+                                    <img [src]="apiUrl + '/' + profileRes.profileImagePath" alt="Profile">
                                     }
                                     @if(!profileRes.profileImagePath) {
                                     <div class="avatar-placeholder-small">

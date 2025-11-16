@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 export interface NotificationRes {
   postOrProfileUuid: string;
@@ -24,9 +25,9 @@ export interface NotificationPage {
   providedIn: 'root'
 })
 export class NotifServices {
-  constructor(private http: HttpClient) { }
+  private URL = `${environment.apiUrl}/api/notif`;
 
-  private URL = 'http://localhost:8080/api/notif';
+  constructor(private http: HttpClient) { }
   // getAllNotif() {
   //   return this.http.get<NotificationRes[]>(`${this.URL}/all`);
   // }

@@ -42,10 +42,10 @@
                     @for(media of post.mediaPaths; track media) {
                     <div class="media-item">
                         @if(isImage(media.type)) {
-                        <img [src]="'http://localhost:8080/' + media.path" alt="Post media" />
+                        <img [src]="apiUrl + '/' + media.path" alt="Post media" />
                         }
                         @if(isVideo(media.type)) {
-                        <video [src]="'http://localhost:8080/' + media.path" controls></video>
+                        <video [src]="apiUrl + '/' + media.path" controls></video>
                         }
                         <button type="button" class="remove-media-btn" (click)="deleteMedia(media.path)">
                             <i class="bi bi-trash"></i>

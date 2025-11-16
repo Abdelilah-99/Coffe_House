@@ -17,7 +17,7 @@
                 </div>
                 @for(user of searchData; track user.uuid) {
                 <div class="user-result" (click)="goToProfile(user.uuid)">
-                    <img [src]="'http://localhost:8080/' + user.profileImagePath" [alt]="user.username" class="user-avatar">
+                    <img [src]="'${apiUrl}' + '/' + user.profileImagePath" [alt]="user.username" class="user-avatar">
                     <div class="user-info">
                         <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p>
                         <p class="user-username">@{{ user.username }}</p>

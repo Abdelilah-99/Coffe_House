@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Post } from '../../post/services/post-service';
+import { environment } from '../../../environments/environment';
 
 export interface UserProfile {
   firstName: string;
@@ -16,8 +17,8 @@ export interface UserProfile {
   providedIn: 'root'
 })
 export class MeService {
-  private URL = 'http://localhost:8080/api/auth/me';
-  private URLPOST = 'http://localhost:8080/api/posts';
+  private URL = `${environment.apiUrl}/api/auth/me`;
+  private URLPOST = `${environment.apiUrl}/api/posts`;
 
   constructor(private http: HttpClient) { }
 

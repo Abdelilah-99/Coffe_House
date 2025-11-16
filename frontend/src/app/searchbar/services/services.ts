@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface UserSearch {
   uuid: string;
@@ -14,7 +15,7 @@ export interface UserSearch {
   providedIn: 'root'
 })
 export class UserService {
-  private URL = 'http://localhost:8080/api/users';
+  private URL = `${environment.apiUrl}/api/users`;
 
   constructor(private http: HttpClient) { }
 

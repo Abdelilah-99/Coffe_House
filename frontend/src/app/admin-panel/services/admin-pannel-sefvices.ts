@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 export interface User {
   uuid: String;
@@ -51,7 +52,7 @@ export interface ReportPage {
 export class AdminPannelSefvices {
   constructor(private http: HttpClient) { }
 
-  URL: string = `http://localhost:8080/api/admin`;
+  URL: string = `${environment.apiUrl}/api/admin`;
 
   loadUser(uuid: String) {
     return this.http.get<User>(`${this.URL}/user/${uuid}`);
