@@ -6,7 +6,7 @@
             <div class="post-author-info">
                 <div class="author-avatar" (click)="moveToProfile(post.userUuid)">
                     @if(post.profileImagePath) {
-                    <img [src]="'http://apiUrl + '/' + post.profileImagePath"
+                    <img [src]="'${apiUrl}' + '/' + post.profileImagePath"
                         alt="{{ post.userName }}" class="author-avatar-img">
                     }
                     @if(!post.profileImagePath) {
