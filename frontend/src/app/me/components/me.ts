@@ -67,7 +67,6 @@ export class Me implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.error(this.apiUrl);
     this.loadProfile();
   }
 
@@ -81,6 +80,7 @@ export class Me implements OnInit, OnDestroy {
       this.isLoading = !this.isLoading;
       this.profileService.getProfile().subscribe({
         next: (profile) => {
+          console.error("===>", this.apiUrl);
           this.userProfile = profile;
           this.isLoading = !this.isLoading;
           this.loadPostByPage(null, null, () => {
