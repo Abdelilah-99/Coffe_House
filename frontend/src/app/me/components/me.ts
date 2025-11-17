@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
   styleUrl: './me.css'
 })  
 export class Me implements OnInit, OnDestroy {
-  apiUrl = environment.apiUrl;
+  
   @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
   observer!: IntersectionObserver;
   lastUuid: string | null = null;
@@ -27,21 +27,22 @@ export class Me implements OnInit, OnDestroy {
   isLoadingPosts = false;
   post = { title: '', content: '' };
   message?: string;
+  apiUrl = environment.apiUrl;
   constructor(private profileService: MeService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
     private postService: PostService,
     private toast: ToastService) { }
-
-  initObserver() {
-    if (!isPlatformBrowser(this.platformId)) return;
-    this.observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastUuid) {
-        this.loadPostByPage(this.lastTime, this.lastUuid);
-      }
-    });
-    this.observer.observe(this.anchor.nativeElement);
-  }
+    
+    initObserver() {
+      if (!isPlatformBrowser(this.platformId)) return;
+      this.observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !this.isLoding && this.lastTime && this.lastUuid) {
+          this.loadPostByPage(this.lastTime, this.lastUuid);
+        }
+      });
+      this.observer.observe(this.anchor.nativeElement);
+    }
 
   loadPostByPage(lastTime: number | null, lastUuid: string | null, onFinish?: () => void) {
     this.isLoding = true;
@@ -66,6 +67,7 @@ export class Me implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.error(this.apiUrl);
     this.loadProfile();
   }
 
