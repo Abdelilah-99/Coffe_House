@@ -4,6 +4,7 @@ import { UserService } from '../services/services';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-searchbar',
   imports: [ReactiveFormsModule, CommonModule],
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './searchbar.css'
 })
 export class Searchbar implements OnInit {
+  apiUrl = environment.apiUrl;
   searchControl = new FormControl('');
   searchData: any[] = [];
 

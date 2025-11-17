@@ -1,7 +1,7 @@
 // Development environment
 export const environment = {
   production: false,
-  apiUrl: `http://apiUrl + '/'`
+  apiUrl: `84.46.244.105 + '/'`
 };
 
 

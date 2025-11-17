@@ -13,8 +13,9 @@ import { environment } from '../../../environments/environment';
   imports: [CommonModule, FormsModule],
   templateUrl: './me.html',
   styleUrl: './me.css'
-})
+})  
 export class Me implements OnInit, OnDestroy {
+  apiUrl = environment.apiUrl;
   @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
   observer!: IntersectionObserver;
   lastUuid: string | null = null;
