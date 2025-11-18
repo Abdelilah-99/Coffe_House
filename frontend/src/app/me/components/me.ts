@@ -96,19 +96,6 @@ export class Me implements OnInit, OnDestroy {
     }
   }
 
-  // loadUserPosts(userUuid: String) {
-  //   this.isLoadingPosts = true;
-  //   this.profileService.getUserPosts(userUuid).subscribe({
-  //     next: (posts) => {
-  //       this.userPosts = posts;
-  //       this.isLoadingPosts = false;
-  //     },
-  //     error: (err) => {
-  //       console.log("Err loading user posts: ", err);
-  //       this.isLoadingPosts = false;
-  //     }
-  //   })
-  // }
   selectedFiles: File[] = [];
   previewUrls: { url: String, type: string }[] = [];
   onFileSelected(e: any) {

@@ -235,7 +235,6 @@ export class Profile implements OnInit, OnDestroy {
       },
       error: () => {
         this.toastService.show("Error liking post: ", 'error');
-        // console.log("Error liking post: ", err);
       }
     });
   }

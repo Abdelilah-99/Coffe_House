@@ -66,10 +66,6 @@ export class ProfileService {
     return this.http.post<Message>(`${environment.apiUrl}/api/report/profile/${uuid}`, { reason: reason });
   }
 
-  // getUserPosts(userUuid: String): Observable<Post[]> {
-  //   return this.http.get<Post[]>(`http://apiUrl + '/'/api/posts/user/${userUuid}`);
-  // }
-
   getFollowers(userUuid: String): Observable<FollowUser[]> {
     return this.http.get<FollowUser[]>(`${this.URL}/followers/${userUuid}`);
   }

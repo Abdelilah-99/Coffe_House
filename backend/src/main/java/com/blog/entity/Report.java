@@ -15,7 +15,6 @@ public class Report {
     private Long id;
     private String reason;
     private Long createdAt;
-    // private String typeReport;
     @ManyToOne
     @JoinColumn(name = "reporter_id")
     private User reporterId;
@@ -34,7 +33,6 @@ public class Report {
     public Report(String reason, long createdAt, User reporterId, String uuid) {
         this.reason = reason;
         this.createdAt = createdAt;
-        // this.typeReport = typeReport;
         this.reporterId = reporterId;
         this.uuid = uuid;
     }
@@ -62,14 +60,6 @@ public class Report {
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
-
-    // public String getTypeReport() {
-    //     return typeReport;
-    // }
-
-    // public void setTypeReport(String typeReport) {
-    //     this.typeReport = typeReport;
-    // }
 
     public User getReporterId() {
         return reporterId;

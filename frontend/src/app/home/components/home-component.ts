@@ -77,19 +77,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.observer) this.observer.disconnect();
   }
 
-  // loadPosts() {
-  //   this.postService.getAllPosts().subscribe({
-  //     next: (posts) => {
-  //       this.posts = posts;
-  //       this.isLoding = false;
-  //     },
-  //     error: (err) => {
-  //       console.log("err loading posts: ", err);
-  //       this.isLoding = false;
-  //     }
-  //   });
-  // }
-
   onPostCardSection(postUuid: String) {
     this.router.navigate(['/postCard', postUuid]);
   }

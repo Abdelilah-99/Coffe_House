@@ -44,7 +44,6 @@ public class RegistrationService {
             }
             String profilePath = "uploads/posts/profile.png";
             if (profileImage != null && !profileImage.isEmpty()) {
-                // String originalName = profileImage.getOriginalFilename();
                 String mimeType = profileImage.getContentType();
                 if (mimeType == null ||
                         !(mimeType.startsWith("image/"))) {

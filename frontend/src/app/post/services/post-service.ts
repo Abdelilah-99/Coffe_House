@@ -63,10 +63,6 @@ export class PostService {
   private URL = `${environment.apiUrl}/api/posts`;
   constructor(private http: HttpClient) { }
 
-  // getAllPosts(): Observable<Post[]> {
-  //   return this.http.get<Post[]>(this.URL + '/all');
-  // }
-
   deletePost(uuid: String): Observable<any> {
     return this.http.post(this.URL + '/delete/' + uuid, null);
   }

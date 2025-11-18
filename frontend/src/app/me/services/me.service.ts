@@ -33,8 +33,4 @@ export class MeService {
   createPost(formData: FormData): Observable<any> {
     return this.http.post(`${this.URLPOST}/create`, formData);
   }
-
-  // getUserPosts(userUuid: String): Observable<Post[]> {
-  //   return this.http.get<Post[]>(`${this.URLPOST}/user/${userUuid}`);
-  // }
 }

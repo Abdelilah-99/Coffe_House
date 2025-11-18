@@ -110,7 +110,6 @@ export class Notification implements OnInit, AfterViewInit, OnDestroy {
             console.info("user has read the notification");
           },
           error: () => {
-            // console.log("notification error: ", err);
             this.toast.show('notification error', 'error');
             if (notif) {
               notif.isRead = false;

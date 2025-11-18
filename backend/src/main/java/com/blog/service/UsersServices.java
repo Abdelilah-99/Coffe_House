@@ -3,6 +3,7 @@ package com.blog.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class UsersServices {
             UserRepository userRepository,
             FollowRepository followRepository,
             NotifRepository notifRepository,
-            PostService postService,
+            @Lazy PostService postService,
             com.blog.security.InputSanitizationService inputSanitizationService) {
         this.userRepository = userRepository;
         this.followRepository = followRepository;
@@ -334,12 +335,10 @@ public class UsersServices {
             throw new UserNotFoundException("User not found");
         });
 
-        // Sanitize inputs
         String sanitizedFirstName = inputSanitizationService.sanitizeFirstName(request.getFirstName());
         String sanitizedLastName = inputSanitizationService.sanitizeLastName(request.getLastName());
         String sanitizedEmail = inputSanitizationService.sanitizeEmail(request.getEmail());
 
-        // Check if email is being changed and if new email already exists
         if (!user.getEmail().equals(sanitizedEmail)) {
             Optional<User> existingUser = userRepository.findByEmail(sanitizedEmail);
             if (existingUser.isPresent() && !existingUser.get().getUuid().equals(user.getUuid())) {
@@ -347,12 +346,10 @@ public class UsersServices {
             }
         }
 
-        // Update user fields
         user.setFirstName(sanitizedFirstName);
         user.setLastName(sanitizedLastName);
         user.setEmail(sanitizedEmail);
 
-        // Handle profile image upload if provided
         if (profileImage != null && !profileImage.isEmpty()) {
             String mimeType = profileImage.getContentType();
             if (mimeType == null || !mimeType.startsWith("image/")) {
@@ -368,7 +365,6 @@ public class UsersServices {
 
         userRepository.save(user);
 
-        // Convert to response DTO
         long follower = followRepository.countByFollowerId(user.getId());
         long following = followRepository.countByFollowingId(user.getId());
         UsersRespons updatedUserDto = convertToDto(user, follower, following);

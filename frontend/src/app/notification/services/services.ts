@@ -28,9 +28,6 @@ export class NotifServices {
   private URL = `${environment.apiUrl}/api/notif`;
 
   constructor(private http: HttpClient) { }
-  // getAllNotif() {
-  //   return this.http.get<NotificationRes[]>(`${this.URL}/all`);
-  // }
 
   getCountNotif() {
     return this.http.get<Count>(`${this.URL}/count`);

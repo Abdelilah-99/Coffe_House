@@ -9,7 +9,6 @@ import com.blog.repository.PostRepository;
 import com.blog.repository.ReportRepository;
 import com.blog.repository.UserRepository;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import com.blog.dto.ReportResponse;
 import com.blog.exceptions.UserNotLoginException;
@@ -68,7 +67,6 @@ public class ReportService {
         newReport.setUser(user);
         newReport.setReporterId(crrUser);
         newReport.setCreatedAt(System.currentTimeMillis());
-        // newReport.setTypeReport("Profile");
         reportRepository.save(newReport);
         return Optional.of(new ReportResponse("the report has created successfully"));
     }
@@ -107,7 +105,6 @@ public class ReportService {
         newReport.setPost(post);
         newReport.setReporterId(crrUser);
         newReport.setCreatedAt(System.currentTimeMillis());
-        // newReport.setTypeReport("Post");
         reportRepository.save(newReport);
         return Optional.of(new ReportResponse("the report has created successfully"));
     }

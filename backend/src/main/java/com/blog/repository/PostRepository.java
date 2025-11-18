@@ -17,16 +17,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByUuid(String uuid);
 
-//     @Query("""
-//               SELECT p FROM Post p
-//               WHERE p.status != 'HIDE' and p.user.id IN (
-//                 SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId
-//               )
-//               or p.user.id = :userId
-//               ORDER BY p.createdAt DESC
-//             """)
-//     List<Post> findPostsFromFollowedUsers(@Param("userId") long userId);
-
     @Transactional
     void deleteByUuid(String uuid);
 
