@@ -8,6 +8,8 @@ import com.blog.dto.AuthResponse;
 import com.blog.dto.RegisterRequest;
 import com.blog.dto.RegisterResponse;
 import com.blog.dto.UsersRespons;
+import com.blog.dto.UpdateProfileRequest;
+import com.blog.dto.UpdateProfileResponse;
 import com.blog.service.AuthService;
 import com.blog.service.RegistrationService;
 import com.blog.service.UsersServices;
@@ -51,6 +53,19 @@ public class AuthController {
         } catch (Exception e) {
             System.err.println("User not found12");
             return ResponseEntity.status(401).body(null);
+        }
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<UpdateProfileResponse> updateProfile(
+            @RequestPart("user") @Valid UpdateProfileRequest request,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+        try {
+            UpdateProfileResponse response = userService.updateProfile(request, profileImage);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.err.println("Error updating profile: " + e.getMessage());
+            return ResponseEntity.status(400).body(null);
         }
     }
 }

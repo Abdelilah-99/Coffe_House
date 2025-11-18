@@ -195,6 +195,10 @@ export class Me implements OnInit, OnDestroy {
     this.router.navigate(['/postCard', postUuid]);
   }
 
+  navigateToEditProfile() {
+    this.router.navigate(['/me/edit']);
+  }
+
   handleLike(event: Event, postUuid: String) {
     event.stopPropagation();
     this.postService.doReaction(postUuid).subscribe({

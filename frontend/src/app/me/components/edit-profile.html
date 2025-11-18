@@ -1,0 +1,155 @@
+<div class="edit-profile-container container-fluid">
+    @if(isLoading) {
+    <div class="loading">
+        Loading profile...
+    </div>
+    }
+
+    @if(!isLoading && userProfile) {
+    <div class="edit-profile-content">
+        <!-- Header -->
+        <div class="edit-header">
+            <div class="header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>Edit Profile</h1>
+                <p>Update your personal information</p>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <form (ngSubmit)="onSubmit()" class="edit-form">
+            <!-- Profile Picture Section -->
+            <div class="profile-picture-section">
+                <div class="current-picture">
+                    @if(previewUrl) {
+                    <img [src]="previewUrl" alt="Profile Preview">
+                    }
+                    @else if(userProfile.profileImagePath) {
+                    <img [src]="apiUrl + '/' + userProfile.profileImagePath" alt="Current Profile">
+                    }
+                    @else {
+                    <div class="avatar-placeholder-large">
+                        {{userProfile.firstName.charAt(0)}}{{userProfile.lastName.charAt(0)}}
+                    </div>
+                    }
+                </div>
+                <div class="picture-actions">
+                    <label for="profile-image-input" class="upload-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                        </svg>
+                        Change Photo
+                    </label>
+                    <input id="profile-image-input" type="file" accept="image/*" (change)="onFileSelected($event)">
+                    @if(previewUrl) {
+                    <button type="button" class="remove-btn" (click)="removeImage()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                        Remove
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="form-fields">
+                <div class="form-group">
+                    <label for="firstName">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                        First Name
+                    </label>
+                    <input 
+                        id="firstName" 
+                        type="text" 
+                        [(ngModel)]="profileForm.firstName" 
+                        name="firstName" 
+                        placeholder="Enter your first name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                        Last Name
+                    </label>
+                    <input 
+                        id="lastName" 
+                        type="text" 
+                        [(ngModel)]="profileForm.lastName" 
+                        name="lastName" 
+                        placeholder="Enter your last name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
+                        </svg>
+                        Email
+                    </label>
+                    <input 
+                        id="email" 
+                        type="email" 
+                        [(ngModel)]="profileForm.email" 
+                        name="email" 
+                        placeholder="Enter your email"
+                        required>
+                </div>
+
+                <div class="form-group readonly-field">
+                    <label for="username">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                        Username
+                    </label>
+                    <input 
+                        id="username" 
+                        type="text" 
+                        [value]="userProfile.username" 
+                        readonly
+                        disabled>
+                    <span class="readonly-hint">Username cannot be changed</span>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="cancel()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                    </svg>
+                    Cancel
+                </button>
+                <button type="submit" class="save-btn" [disabled]="isSaving">
+                    @if(isSaving) {
+                    <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                    </svg>
+                    Saving...
+                    }
+                    @if(!isSaving) {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                    </svg>
+                    Save Changes
+                    }
+                </button>
+            </div>
+        </form>
+    </div>
+    }
+</div>
+

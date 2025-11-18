@@ -24,7 +24,7 @@ export class App implements OnInit {
   profileDropdownOpen = false;
   followingList: FollowUser[] = [];
   loadingFollowing = false;
-  apiUrl = environment.apiUrl; // Expose API URL to template
+  apiUrl = environment.apiUrl;
 
   constructor(
     private notifService: NotifServices,

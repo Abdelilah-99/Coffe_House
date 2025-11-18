@@ -26,6 +26,10 @@ export class MeService {
     return this.http.get<UserProfile>(`${this.URL}`);
   }
 
+  updateProfile(formData: FormData): Observable<any> {
+    return this.http.put(`${this.URL}`, formData);
+  }
+
   createPost(formData: FormData): Observable<any> {
     return this.http.post(`${this.URLPOST}/create`, formData);
   }

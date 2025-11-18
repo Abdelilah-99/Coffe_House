@@ -7,9 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 import com.blog.dto.UserFollowRes;
 import com.blog.dto.UsersRespons;
 import com.blog.dto.FollowUserResponse;
+import com.blog.dto.UpdateProfileRequest;
+import com.blog.dto.UpdateProfileResponse;
 import com.blog.entity.*;
 import com.blog.repository.FollowRepository;
 import com.blog.repository.NotifRepository;
@@ -24,14 +27,20 @@ public class UsersServices {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final NotifRepository notifRepository;
+    private final PostService postService;
+    private final com.blog.security.InputSanitizationService inputSanitizationService;
 
     UsersServices(
             UserRepository userRepository,
             FollowRepository followRepository,
-            NotifRepository notifRepository) {
+            NotifRepository notifRepository,
+            PostService postService,
+            com.blog.security.InputSanitizationService inputSanitizationService) {
         this.userRepository = userRepository;
         this.followRepository = followRepository;
         this.notifRepository = notifRepository;
+        this.postService = postService;
+        this.inputSanitizationService = inputSanitizationService;
     }
 
     public List<UsersRespons> findAll() {
@@ -310,5 +319,60 @@ public class UsersServices {
             followUserDTOs.add(dto);
         }
         return followUserDTOs;
+    }
+
+    @Transactional
+    public UpdateProfileResponse updateProfile(UpdateProfileRequest request, MultipartFile profileImage) {
+        UsersRespons currentUser;
+        try {
+            currentUser = getCurrentUser();
+        } catch (Exception e) {
+            throw new UserNotLoginException("You are not logged in");
+        }
+
+        User user = userRepository.findByUuid(currentUser.getUuid()).orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        });
+
+        // Sanitize inputs
+        String sanitizedFirstName = inputSanitizationService.sanitizeFirstName(request.getFirstName());
+        String sanitizedLastName = inputSanitizationService.sanitizeLastName(request.getLastName());
+        String sanitizedEmail = inputSanitizationService.sanitizeEmail(request.getEmail());
+
+        // Check if email is being changed and if new email already exists
+        if (!user.getEmail().equals(sanitizedEmail)) {
+            Optional<User> existingUser = userRepository.findByEmail(sanitizedEmail);
+            if (existingUser.isPresent() && !existingUser.get().getUuid().equals(user.getUuid())) {
+                throw new UserAlreadyExistException("Email already exists: " + sanitizedEmail);
+            }
+        }
+
+        // Update user fields
+        user.setFirstName(sanitizedFirstName);
+        user.setLastName(sanitizedLastName);
+        user.setEmail(sanitizedEmail);
+
+        // Handle profile image upload if provided
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String mimeType = profileImage.getContentType();
+            if (mimeType == null || !mimeType.startsWith("image/")) {
+                throw new IllegalArgumentException("Invalid file format. Only images are allowed.");
+            }
+            try {
+                String profilePath = postService.saveMedia(profileImage);
+                user.setProfileImagePath(profilePath);
+            } catch (Exception e) {
+                throw new ErrSavingException("Failed to save profile image: " + e.getMessage());
+            }
+        }
+
+        userRepository.save(user);
+
+        // Convert to response DTO
+        long follower = followRepository.countByFollowerId(user.getId());
+        long following = followRepository.countByFollowingId(user.getId());
+        UsersRespons updatedUserDto = convertToDto(user, follower, following);
+
+        return new UpdateProfileResponse("Profile updated successfully", updatedUserDto);
     }
 }
