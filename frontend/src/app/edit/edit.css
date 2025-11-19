@@ -230,12 +230,42 @@
   gap: 0.75rem;
   padding: 0.875rem 2rem;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-sm);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn i,
+.btn svg,
+.btn span {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
 }
 
 .btn i {
@@ -243,26 +273,29 @@
 }
 
 .btn-cancel {
-  background: var(--color-bg);
+  background: white;
   color: var(--color-text);
   border: 2px solid var(--color-border);
 }
 
 .btn-cancel:hover {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: var(--color-text);
+  background: var(--color-bg-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(107, 78, 61, 0.15);
 }
 
 .btn-save {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(107, 78, 61, 0.25);
 }
 
 .btn-save:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(107, 78, 61, 0.4);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--coffee-dark) 100%);
 }
 
 .btn-save:active,

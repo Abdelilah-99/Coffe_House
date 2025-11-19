@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
+@font-face {
+  font-family: 'Brillant';
+  src: url('/fonts/brillant.regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 .auth-container {
   min-height: 100vh;
@@ -99,7 +105,7 @@
 }
 
 .welcome-text {
-  font-family: 'Crimson Text', serif;
+  font-family: 'Brillant', serif;
   font-size: 1.75rem;
   font-weight: 400;
   color: #4A2C2A;
@@ -125,7 +131,7 @@
 }
 
 .brand-title {
-  font-family: 'Crimson Text', serif;
+  font-family: 'Brillant', serif;
   font-size: 2.75rem;
   font-weight: 700;
   color: #4A2C2A;
@@ -134,7 +140,7 @@
 }
 
 .brand-tagline {
-  font-family: 'Crimson Text', serif;
+  font-family: 'Brillant', serif;
   font-size: 0.95rem;
   line-height: 1.7;
   color: #6B4423;
@@ -171,7 +177,7 @@
 }
 
 .form-title {
-  font-family: 'Crimson Text', serif;
+  font-family: 'Brillant', serif;
   font-size: 2.25rem;
   font-weight: 700;
   color: #4A2C2A;
@@ -190,7 +196,7 @@
 
 .form-field label {
   display: block;
-  font-family: 'Crimson Text', serif;
+  font-family: 'Brillant', serif;
   font-size: 0.95rem;
   font-weight: 600;
   color: #4A2C2A;
@@ -229,7 +235,7 @@
   color: white;
   border: none;
   border-radius: 8px;
-  font-family: 'Crimson Text', serif;
+  font-family: 'Brillant', serif;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
