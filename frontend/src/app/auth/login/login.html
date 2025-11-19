@@ -1,45 +1,58 @@
 @if(show) {
-<div class="login-container">
-  <div class="container-fluid">
-    <div class="row justify-content-center align-items-center min-vh-100">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
-        <div class="login-card">
-          <div class="login-header">
-            <h2>Bienvenue</h2>
-            <p>Connectez-vous à votre compte</p>
-          </div>
-          <form (ngSubmit)="onSubmit()" class="login-form" novalidate>
-            <div class="mb-3 form-group">
-              <label for="username" class="form-label">
-                <i class="bi bi-envelope-heart me-2"></i>Email ou nom d'utilisateur
-              </label>
-              <input type="text" id="username" [(ngModel)]="username" name="username"
-                placeholder="Saisissez votre email ou nom d'utilisateur" maxlength="20" required
-                class="form-control form-input">
-            </div>
+<div class="auth-container">
+  <div class="auth-wrapper">
+    <!-- Left Side - Branding -->
+    <div class="auth-left">
+      <div class="branding-content">
+        <h3 class="welcome-text">welcome to</h3>
+        <div class="coffee-logo">
+          <img src="/reg_log.png" alt="Coffee House Logo">
+        </div>
+        <h1 class="brand-title">Coffee House</h1>
+        <p class="brand-tagline">Coffee is one of the world's most popular beverages. Thanks to its high levels of antioxidants and beneficial nutrients.</p>
+      </div>
+    </div>
 
-            <div class="mb-3 form-group">
-              <label for="password" class="form-label">
-                <i class="bi bi-shield-lock me-2"></i>Mot de passe
-              </label>
-              <input type="password" id="password" [(ngModel)]="password" name="password" maxlength="20"
-                placeholder="Saisissez votre mot de passe" required class="form-control form-input">
-            </div>
-
-            <div class="d-grid gap-2">
-              <button type="submit" [disabled]="!isFormLoginValid()" class="btn login-button"
-                [class.disabled]="!isFormLoginValid()">
-                <i class="bi bi-door-open me-2"></i>Se connecter
-              </button>
-            </div>
-          </form>
-          <div class="register-link">
-            <p class="text-muted">Vous n'avez pas de compte ?
-              <a routerLink="/register" class="register-link-text text-decoration-none">
-                <i class="bi bi-person-plus-fill me-1"></i>Créer un compte
-              </a>
-            </p>
+    <!-- Right Side - Form -->
+    <div class="auth-right">
+      <div class="form-container">
+        <h2 class="form-title">Sign In</h2>
+        
+        <form (ngSubmit)="onSubmit()" class="auth-form" novalidate>
+          <div class="form-field">
+            <label for="username">Email or Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              [(ngModel)]="username" 
+              name="username"
+              maxlength="50"
+              placeholder="Enter your email or username"
+              required>
           </div>
+
+          <div class="form-field">
+            <label for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              [(ngModel)]="password" 
+              name="password"
+              maxlength="20"
+              placeholder="Enter your password"
+              required>
+          </div>
+
+          <button 
+            type="submit" 
+            [disabled]="!isFormLoginValid()" 
+            class="submit-btn">
+            Submit
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Don't have an account? <a routerLink="/register">Sign Up</a></p>
         </div>
       </div>
     </div>

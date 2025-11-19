@@ -1,132 +1,150 @@
 @if(show) {
-<div class="register-container">
-  <div class="container-fluid">
-    <div class="row justify-content-center align-items-center min-vh-100">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
-        <div class="register-card">
-          <div class="register-header">
-            <h2><i class="bi bi-stars me-2"></i>Rejoignez-nous</h2>
-            <p>Créez votre compte pour commencer</p>
-            <div class="step-indicator">
-              <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
-                <div class="step-number">1</div>
-                <span class="step-label">Informations</span>
+<div class="auth-container">
+  <div class="auth-wrapper">
+    <!-- Left Side - Branding -->
+    <div class="auth-left">
+      <div class="branding-content">
+        <h3 class="welcome-text">welcome to</h3>
+        <div class="coffee-logo">
+          <img src="/reg_log.png" alt="Coffee House Logo">
+        </div>
+        <h1 class="brand-title">Coffee House</h1>
+        <p class="brand-tagline">Coffee is one of the world's most popular beverages. Thanks to its high levels of antioxidants and beneficial nutrients.</p>
+      </div>
+    </div>
+
+    <!-- Right Side - Form -->
+    <div class="auth-right">
+      <div class="form-container">
+        <h2 class="form-title">Registration</h2>
+        
+        <form (ngSubmit)="onRegister()" class="auth-form" novalidate>
+          @if(currentStep === 1) {
+          <div class="form-step">
+            <div class="form-row">
+              <div class="form-field">
+                <label for="firstname">First Name</label>
+                <input 
+                  type="text" 
+                  id="firstname" 
+                  [(ngModel)]="firstname" 
+                  name="firstname"
+                  maxlength="15"
+                  placeholder="John"
+                  required>
               </div>
-              <div class="step-divider"></div>
-              <div class="step" [class.active]="currentStep === 2">
-                <div class="step-number">2</div>
-                <span class="step-label">Sécurité</span>
+              
+              <div class="form-field">
+                <label for="lastname">Last Name</label>
+                <input 
+                  type="text" 
+                  id="lastname" 
+                  [(ngModel)]="lastname" 
+                  name="lastname"
+                  maxlength="15"
+                  placeholder="Doe"
+                  required>
               </div>
             </div>
+
+            <div class="form-field">
+              <label for="username">Username</label>
+              <input 
+                type="text" 
+                id="username" 
+                [(ngModel)]="username" 
+                name="username"
+                maxlength="50"
+                placeholder="johndoe"
+                required>
+            </div>
+
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                [(ngModel)]="email" 
+                name="email"
+                maxlength="100"
+                placeholder="john@example.com"
+                required>
+            </div>
+
+            <button 
+              type="button" 
+              (click)="nextStep()" 
+              [disabled]="!isStep1Valid()" 
+              class="submit-btn">
+              Next Step
+            </button>
           </div>
-          <form (ngSubmit)="onRegister()" class="register-form" novalidate>
-            @if(currentStep === 1) {
-            <div class="form-step">
-              <div class="row">
-                <div class="col-md-6 mb-3 form-group">
-                  <label for="firstname" class="form-label">
-                    <i class="bi bi-person me-2"></i>Prénom
-                  </label>
-                  <input type="text" maxlength="15" id="firstname" [(ngModel)]="firstname" name="firstname"
-                    placeholder="Saisissez votre prénom" required class="form-control form-input">
-                  <div class="char-count-hint">
-                  </div>
-                </div>
+          }
 
-                <div class="col-md-6 mb-3 form-group">
-                  <label for="lastname" class="form-label">
-                    <i class="bi bi-person-check me-2"></i>Nom de famille
-                  </label>
-                  <input type="text" maxlength="15" id="lastname" [(ngModel)]="lastname" name="lastname"
-                    placeholder="Saisissez votre nom de famille" required class="form-control form-input">
-                  <div class="char-count-hint">
-                  </div>
-                </div>
-              </div>
-
-              <div class="mb-3 form-group">
-                <label for="username" class="form-label">
-                  <i class="bi bi-at me-2"></i>Nom d'utilisateur
-                </label>
-                <input type="text" maxlength="50" id="username" [(ngModel)]="username" name="username"
-                  placeholder="Choisissez un nom d'utilisateur" required class="form-control form-input">
-                <div class="char-count-hint">
-                </div>
-              </div>
-
-              <div class="mb-3 form-group">
-                <label for="email" class="form-label">
-                  <i class="bi bi-envelope-heart me-2"></i>Adresse email
-                </label>
-                <input type="email" maxlength="100" id="email" [(ngModel)]="email" name="email"
-                  placeholder="Saisissez votre adresse email" required class="form-control form-input">
-              </div>
-
-              <div class="d-grid gap-2">
-                <button type="button" (click)="nextStep()" [disabled]="!isStep1Valid()" class="btn register-button"
-                  [class.disabled]="!isStep1Valid()">
-                  <span>Suivant</span>
-                  <i class="bi bi-arrow-right ms-2"></i>
-                </button>
-              </div>
+          @if(currentStep === 2) {
+          <div class="form-step">
+            <div class="form-field">
+              <label for="password">Password</label>
+              <input 
+                type="password" 
+                id="password" 
+                [(ngModel)]="password" 
+                name="password"
+                maxlength="20"
+                placeholder="Enter secure password"
+                required>
             </div>
-            }
 
-            @if(currentStep === 2) {
-            <div class="form-step">
-              <div class="mb-3 form-group">
-                <label for="password" class="form-label">
-                  <i class="bi bi-shield-lock me-2"></i>Mot de passe
+            <div class="form-field">
+              <label for="profileImage">Profile Picture (Optional)</label>
+              <div class="file-upload-wrapper">
+                <input 
+                  type="file" 
+                  id="profileImage" 
+                  (change)="onFileSelected($event)" 
+                  accept="image/*"
+                  class="file-input">
+                @if(!profileImagePreview) {
+                <label for="profileImage" class="file-upload-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                  </svg>
+                  Choose Photo
                 </label>
-                <input type="password" maxlength="20" id="password" [(ngModel)]="password" name="password"
-                  placeholder="Créez un mot de passe sécurisé" required class="form-control form-input">
-              </div>
-
-              <div class="mb-4 form-group">
-                <label for="profileImage" class="form-label">
-                  <i class="bi bi-camera me-2"></i>Photo de profil (Optionnel)
-                </label>
-                <div class="file-input-wrapper">
-                  <input type="file" id="profileImage" (change)="onFileSelected($event)" accept="image/*"
-                    class="form-control file-input">
-                  @if(!profileImagePreview) {
-                  <label for="profileImage" class="file-input-label btn btn-outline-secondary">
-                    <i class="bi bi-cloud-upload me-2"></i>
-                    <span class="file-input-text">Choisir une photo</span>
-                  </label>
-                  }
-                  <!-- <div *ngIf="message">{{message}}</div> -->
-                </div>
-                @if(profileImagePreview) {
-                <div class="profile-image-preview">
-                  <img [src]="profileImagePreview" alt="Profile Preview">
-                  <button type="button" class="remove-profile-btn" (click)="removeProfileImage()">
-                    <i class="bi bi-trash"></i> Supprimer
-                  </button>
-                </div>
                 }
               </div>
-
-              <div class="d-grid gap-2">
-                <button type="submit" [disabled]="!isStep2Valid()" class="btn register-button"
-                  [class.disabled]="!isStep2Valid()">
-                  <i class="bi bi-person-plus-fill me-2"></i>Créer mon compte
-                </button>
-                <button type="button" (click)="previousStep()" class="btn btn-secondary back-button">
-                  <i class="bi bi-arrow-left me-2"></i>Retour
+              @if(profileImagePreview) {
+              <div class="image-preview">
+                <img [src]="profileImagePreview" alt="Profile Preview">
+                <button type="button" class="remove-image" (click)="removeProfileImage()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                  </svg>
                 </button>
               </div>
+              }
             </div>
-            }
-          </form>
 
-          <div class="login-link">
-            <p class="text-muted">Vous avez déjà un compte ?
-              <a routerLink="/login" class="login-link-text text-decoration-none">
-                <i class="bi bi-door-open me-1"></i>Se connecter
-              </a>
-            </p>
+            <button 
+              type="submit" 
+              [disabled]="!isStep2Valid()" 
+              class="submit-btn">
+              Submit
+            </button>
+            
+            <button 
+              type="button" 
+              (click)="previousStep()" 
+              class="back-btn">
+              Back
+            </button>
           </div>
+          }
+        </form>
+
+        <div class="auth-footer">
+          <p>Already have an account? <a routerLink="/login">Sign In</a></p>
         </div>
       </div>
     </div>

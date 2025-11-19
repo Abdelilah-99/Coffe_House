@@ -160,12 +160,16 @@ export class Me implements OnInit, OnDestroy {
       formData.append("mediaFiles", element);
     });
     this.profileService.createPost(formData).subscribe({
-      next: () => {
+      next: (newPost) => {
         this.toast.show("Post has successfully created", 'success');
-        this.userPosts = [];
-        this.loadPostByPage(null, null, () => {
-          this.initObserver();
-        });
+        if (newPost && newPost.postUuid) {
+          this.userPosts.unshift(newPost);
+        } else {
+          this.userPosts = [];
+          this.loadPostByPage(null, null, () => {
+            this.initObserver();
+          });
+        }
       },
       error: (err) => {
         this.toast.show(err.error.message, 'error');
