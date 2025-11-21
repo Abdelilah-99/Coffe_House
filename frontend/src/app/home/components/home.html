@@ -1,9 +1,11 @@
 <div class="main-content container-fluid custom-width">
   <div class="posts-container row g-4">
     @for(post of posts; track post.postUuid) {
-    <app-post-card [post]="post" (reaction)="onReact($event)"
-      (postCard)="onPostCardSection($event)">
-    </app-post-card>
+    <div class="col-12 col-md-6 col-xl-12">
+      <app-post-card [post]="post" (reaction)="onReact($event)"
+        (postCard)="onPostCardSection($event)">
+      </app-post-card>
+    </div>
     }
     <div #anchor class="loading-trigger"></div>
   </div>

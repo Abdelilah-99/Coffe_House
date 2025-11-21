@@ -37,9 +37,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 where p.status != 'HIDE' and (p.user.id IN (
                 SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId)
                 or p.user.id = :userId)
-                and (:lastTime IS NULL OR p.createdAt < :lastTime
+                and (p.createdAt > :lastTime
                 OR (p.createdAt = :lastTime AND p.id < :lastId))
-                order by p.createdAt DESC
+                order by p.createdAt DESC, p.id DESC
             """)
     List<Post> findByPagination(
             @Param("lastTime") Long lastTime,
