@@ -1,79 +1,58 @@
 <div class="post-card" (click)="postCard.emit(post.postUuid)">
-    <!-- Post with image(s) - Image as background with overlay -->
-    @if(post.mediaPaths && post.mediaPaths.length > 0) {
-    <div class="post-card-with-image">
-        <div class="post-image-container">
-            @if(post.mediaPaths[0].type.startsWith('image/')) {
-            <img [src]="apiUrl + '/' + post.mediaPaths[0].path" alt="{{ post.title }}"
-                class="post-background-image">
-            }
-            @if(post.mediaPaths.length && post.mediaPaths[0].type.startsWith('video/')) {
-            <video [src]="apiUrl + '/' + post.mediaPaths[0].path"
-                class="post-background-image">
-            </video>
-            }
+    <div class="reddit-post-container">
+        <!-- Left side: User info, title, actions -->
+        <div class="post-content-section">
+            <div class="post-header">
+                <div class="post-user-info">
+                    @if(post.profileImagePath) {
+                    <img [src]="apiUrl + '/' + post.profileImagePath"
+                        alt="{{ post.userName }}" class="post-user-avatar">
+                    }
+                    @if(!post.profileImagePath) {
+                    <div class="post-user-avatar-placeholder">
+                        {{ post.userName.charAt(0).toUpperCase() || '?' }}
+                    </div>
+                    }
+                    <div class="post-user-details">
+                        <span class="post-author">{{ post.userName }}</span>
+                        <span class="post-date">{{ post.createdAt | date: 'short' }}</span>
+                    </div>
+                </div>
+            </div>
 
-            <div class="post-overlay">
-                <div class="post-title-overlay">
-                    <h3 class="post-title text-break">{{ post.title }}</h3>
-                </div>
+            <h3 class="post-title text-break">{{ post.title }}</h3>
+
+            <div class="post-content-text text-break">
+                <p>{{ post.content }}</p>
             </div>
-        </div>
-        <div class="post-footer-compact">
-            <div class="post-user-info-compact">
-                @if(post.profileImagePath) {
-                <img [src]="apiUrl + '/' + post.profileImagePath"
-                    alt="{{ post.userName }}" class="post-user-avatar-small">
-                }
-                @if(!post.profileImagePath) {
-                <div class="post-user-avatar-placeholder-small">
-                    {{ post.userName.charAt(0).toUpperCase() || '?' }}
-                </div>
-                }
-                <div class="author-date">
-                    <span class="post-author-small">{{ post.userName }}</span>
-                    <span class="post-date-small">{{ post.createdAt | date:'short' }}</span>
-                </div>
-            </div>
-            <!-- | date:'short' -->
+
             <div class="post-actions" (click)="$event.stopPropagation()">
                 <app-post-likes [post]="post" (reaction)="reaction.emit($event)"></app-post-likes>
                 <app-post-comments [post]="post" (navigate)="postCard.emit(post.postUuid)"></app-post-comments>
             </div>
         </div>
-    </div>
-    }
 
-    <!-- Post without image - Traditional layout -->
-    @if(!post.mediaPaths || post.mediaPaths.length === 0) {
-    <div class="post-card-traditional">
-        <div class="post-header">
-            <div class="post-user-info">
-                @if(post.profileImagePath) {
-                <img [src]="apiUrl + '/' + post.profileImagePath"
-                    alt="{{ post.userName }}" class="post-user-avatar">
+        <!-- Right side: Fixed size image with blur background -->
+        @if(post.mediaPaths && post.mediaPaths.length > 0) {
+        <div class="post-image-section">
+            <!-- Blurred background -->
+            <div class="image-blur-background">
+                @if(post.mediaPaths[0].type.startsWith('image/')) {
+                <img [src]="apiUrl + '/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+                    class="blur-background-img">
                 }
-                @if(!post.profileImagePath) {
-                <div class="post-user-avatar-placeholder">
-                    {{ post.userName.charAt(0).toUpperCase() || '?' }}
-                </div>
-                }
-                <div class="post-user-details">
-                    <span class="post-author">{{ post.userName }}</span>
-                    <span class="post-date">{{ post.createdAt | date: 'short' }}</span>
-                </div>
             </div>
-            <h3 class="post-title text-break">{{ post.title }}</h3>
+            <!-- Actual image -->
+            <div class="image-container">
+                @if(post.mediaPaths[0].type.startsWith('image/')) {
+                <img [src]="apiUrl + '/' + post.mediaPaths[0].path" alt="{{ post.title }}"
+                    class="post-image">
+                }
+                @if(post.mediaPaths[0].type.startsWith('video/')) {
+                <video [src]="apiUrl + '/' + post.mediaPaths[0].path" class="post-image"></video>
+                }
+            </div>
         </div>
-
-        <div class="post-content text-break post-preview">
-            <p>{{ post.content }}</p>
-        </div>
-
-        <div class="post-actions" (click)="$event.stopPropagation()">
-            <app-post-likes [post]="post" (reaction)="reaction.emit($event)"></app-post-likes>
-            <app-post-comments [post]="post" (navigate)="postCard.emit(post.postUuid)"></app-post-comments>
-        </div>
+        }
     </div>
-    }
 </div>

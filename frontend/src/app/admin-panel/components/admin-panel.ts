@@ -43,6 +43,7 @@ export class AdminPanel implements OnInit, OnDestroy {
   posts: any[] = [];
   userReports: Report[] = [];
   postReports: Report[] = [];
+  activeTab: 'users' | 'posts' | 'user-reports' | 'post-reports' = 'users';
 
   userReportsLastTime: number | null = null;
   userReportsLastUuid: string | null = null;
@@ -404,5 +405,9 @@ export class AdminPanel implements OnInit, OnDestroy {
     } else if (destination === "post") {
       this.router.navigate(['postCard', uuid]);
     }
+  }
+
+  setActiveTab(tab: 'users' | 'posts' | 'user-reports' | 'post-reports') {
+    this.activeTab = tab;
   }
 }

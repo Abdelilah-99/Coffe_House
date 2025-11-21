@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   lastUuid: string | null = null;
   lastTime: number | null = null;
   isLoding = false;
-  post = { title: '', content: '' }
+  
   constructor(private postService: PostService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object) { }

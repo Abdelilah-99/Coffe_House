@@ -27,6 +27,7 @@ export class Me implements OnInit, OnDestroy {
   isLoadingPosts = false;
   post = { title: '', content: '' };
   message?: string;
+  showCreatePost = false;
   apiUrl = environment.apiUrl;
   constructor(private profileService: MeService,
     private router: Router,
@@ -205,6 +206,10 @@ export class Me implements OnInit, OnDestroy {
       }
     });
   }
+  toggleCreatePost() {
+    this.showCreatePost = !this.showCreatePost;
+  }
+
   ngOnDestroy(): void {
     if (this.observer) this.observer.disconnect();
   }

@@ -108,4 +108,8 @@ export class PostService {
       .set('lastUuid', lastUuid);
     return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/${route}/pages`, { params });
   }
+
+  createPost(formData: FormData): Observable<Post> {
+    return this.http.post<Post>(`${this.URL}/create`, formData);
+  }
 }
