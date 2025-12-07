@@ -1,0 +1,36 @@
+# Ignore build artifacts
+build/
+target/
+.gradle/
+bin/
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# Ignore test files
+src/test/
+
+# Ignore local uploads (will be in volumes)
+uploads/
+
+# Ignore gradle wrapper jar (will be copied from image)
+!gradle/wrapper/gradle-wrapper.jar
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore temporary files
+*.tmp
+*.swp
+*~
+

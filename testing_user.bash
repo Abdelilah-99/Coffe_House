@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Base URL of your API
-BASE_URL="http://localhost:8080/api/auth/register"
+BASE_URL="http://apiUrl + '/'/api/auth/register"
 
 # Optional: path to a test image file
 PROFILE_IMAGE="test_profile.jpg"

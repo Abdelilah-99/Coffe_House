@@ -103,7 +103,6 @@ export class EditProfile implements OnInit {
       type: 'application/json'
     });
     formData.append('user', userBlob);
-
     if (this.selectedFile) {
       formData.append('profileImage', this.selectedFile);
     }

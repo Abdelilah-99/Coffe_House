@@ -1,0 +1,29 @@
+# Ignore node modules
+node_modules/
+npm-debug.log
+
+# Ignore build artifacts
+dist/
+.angular/
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore test files
+*.spec.ts
+karma.conf.js
+coverage/
+
+# Ignore temporary files
+*.tmp
+*.swp
+*~
+.cache/
+

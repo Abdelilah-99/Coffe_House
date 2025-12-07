@@ -6,6 +6,7 @@ import { MeService, UserProfile } from '../../../me/services/me.service';
 import { AdminPannelSefvices } from '../../../admin-panel/services/admin-pannel-sefvices';
 import { ToastService } from '../../../toast/service/toast';
 import { environment } from '../../../../environments/environment';
+import { ProfileService } from '../../../profile/services/services';
 
 @Component({
   selector: 'app-post-card',
@@ -21,7 +22,8 @@ export class PostCard implements OnInit {
     private navigate: Router,
     private profileService: MeService,
     private adminService: AdminPannelSefvices,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    private follow: ProfileService) { }
   @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
   postUuid: String | null = null;
   post?: Post;
@@ -50,6 +52,10 @@ export class PostCard implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.isAdmin = localStorage.getItem('user_role') === 'ROLE_ADMIN';
     }
+  }
+
+  followUser(uuid: string) {
+    this.follow.follow(uuid);
   }
 
   loadProfile() {
