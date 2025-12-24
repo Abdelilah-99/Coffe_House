@@ -25,8 +25,7 @@
                 }
             </a>
             @if(isAdmin()) {
-            <a routerLink="/admin" routerLinkActive="active" class="sidebar-link"
-                (click)="closeSidebar()">
+            <a routerLink="/admin" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">
                 <span>Admin Panel</span>
             </a>
             }
@@ -43,8 +42,7 @@
                         anyone yet</p>
                     }
                     @for(user of followingList; track user.uuid) {
-                    <div class="following-item"
-                        (click)="navigateToProfile(user.uuid)">
+                    <div class="following-item" (click)="navigateToProfile(user.uuid)">
                         <img [src]="apiUrl + '/' +  user.profileImagePath" [alt]="user.username"
                             class="following-avatar">
                         <div class="following-info">
@@ -75,10 +73,8 @@
                 </button>
 
                 <div class="navbar-brand">
-                    <a href="/" class="brand-link">
-                        <img class="coffe-house-icon" src="/coffe-house.png" alt="Coffee House">
-                        <span class="brand-name">Coffee House</span>
-                    </a>
+                    <img class="coffe-house-icon" src="/coffe-house.png" alt="Coffee House">
+                    <span class="brand-name">Coffee House</span>
                 </div>
 
                 <div class="navbar-search-inline">
@@ -90,8 +86,7 @@
                 @if(userProfile) {
                 <div class="profile-menu">
                     <button class="profile-btn" (click)="toggleProfileDropdown()">
-                        <img [src]="apiUrl + '/' +  userProfile.profileImagePath" alt="Profile"
-                            class="profile-avatar">
+                        <img [src]="apiUrl + '/' +  userProfile.profileImagePath" alt="Profile" class="profile-avatar">
                     </button>
                     <div class="profile-dropdown" [class.show]="profileDropdownOpen">
                         @if(userProfile) {
@@ -116,8 +111,7 @@
                             }
                         </a>
                         @if(isAdmin()) {
-                        <a routerLink="/admin" class="profile-dropdown-link"
-                            (click)="toggleProfileDropdown()">
+                        <a routerLink="/admin" class="profile-dropdown-link" (click)="toggleProfileDropdown()">
                             Admin Panel
                         </a>
                         }
