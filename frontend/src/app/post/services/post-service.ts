@@ -60,7 +60,7 @@ export interface Message {
   providedIn: 'root'
 })
 export class PostService {
-  private URL = `${environment.apiUrl}/api/posts`;
+  private URL = `/api/posts`;
   constructor(private http: HttpClient) { }
 
   deletePost(uuid: String): Observable<any> {
@@ -96,17 +96,17 @@ export class PostService {
   }
 
   doReport(uuid: String, reason: String) {
-    return this.http.post<Message>(`${environment.apiUrl}/api/report/post/${uuid}`, { reason: reason });
+    return this.http.post<Message>(`/api/report/post/${uuid}`, { reason: reason });
   }
 
   loadMore(lastTime: number | null, lastUuid: string | null, route: string) {
     if (!lastTime || !lastUuid) {
-      return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/${route}/pages`);
+      return this.http.get<PostPage>(`/api/posts/${route}/pages`);
     }
     const params = new HttpParams()
       .set('lastTime', lastTime)
       .set('lastUuid', lastUuid);
-    return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/${route}/pages`, { params });
+    return this.http.get<PostPage>(`/api/posts/${route}/pages`, { params });
   }
 
   createPost(formData: FormData): Observable<Post> {

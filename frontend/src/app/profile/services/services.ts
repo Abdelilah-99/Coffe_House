@@ -47,7 +47,7 @@ export interface PostPage {
   providedIn: 'root'
 })
 export class ProfileService {
-  private URL = `${environment.apiUrl}/api/users`;
+  private URL = `/api/users`;
   constructor(private http: HttpClient) { }
 
   getProfile(uuid: String): Observable<ProfileRes> {
@@ -63,7 +63,7 @@ export class ProfileService {
   }
 
   doReport(uuid: String, reason: String) {
-    return this.http.post<Message>(`${environment.apiUrl}/api/report/profile/${uuid}`, { reason: reason });
+    return this.http.post<Message>(`/api/report/profile/${uuid}`, { reason: reason });
   }
 
   getFollowers(userUuid: String): Observable<FollowUser[]> {
@@ -84,11 +84,11 @@ export class ProfileService {
 
   getUserPostsPaginated(userUuid: String, lastTime: number | null, lastUuid: string | null): Observable<PostPage> {
     if (!lastTime || !lastUuid) {
-      return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/user/${userUuid}/pages`);
+      return this.http.get<PostPage>(`/api/posts/user/${userUuid}/pages`);
     }
     const params = new HttpParams()
       .set('lastTime', lastTime.toString())
       .set('lastUuid', lastUuid);
-    return this.http.get<PostPage>(`${environment.apiUrl}/api/posts/user/${userUuid}/pages`, { params });
+    return this.http.get<PostPage>(`/api/posts/user/${userUuid}/pages`, { params });
   }
 }

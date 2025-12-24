@@ -52,7 +52,7 @@ export interface ReportPage {
 export class AdminPannelSefvices {
   constructor(private http: HttpClient) { }
 
-  URL: string = `${environment.apiUrl}/api/admin`;
+  URL: string = `/api/admin`;
 
   loadUser(uuid: String) {
     return this.http.get<User>(`${this.URL}/user/${uuid}`);

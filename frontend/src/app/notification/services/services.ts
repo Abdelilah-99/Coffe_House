@@ -25,7 +25,7 @@ export interface NotificationPage {
   providedIn: 'root'
 })
 export class NotifServices {
-  private URL = `${environment.apiUrl}/api/notif`;
+  private URL = `/api/notif`;
 
   constructor(private http: HttpClient) { }
 

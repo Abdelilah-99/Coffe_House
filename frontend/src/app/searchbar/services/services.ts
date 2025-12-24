@@ -15,7 +15,7 @@ export interface UserSearch {
   providedIn: 'root'
 })
 export class UserService {
-  private URL = `${environment.apiUrl}/api/users`;
+  private URL = `/api/users`;
 
   constructor(private http: HttpClient) { }
 

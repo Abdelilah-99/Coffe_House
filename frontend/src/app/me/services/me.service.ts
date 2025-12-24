@@ -17,8 +17,8 @@ export interface UserProfile {
   providedIn: 'root'
 })
 export class MeService {
-  private URL = `${environment.apiUrl}/api/auth/me`;
-  private URLPOST = `${environment.apiUrl}/api/posts`;
+  private URL = `/api/auth/me`;
+  private URLPOST = `/api/posts`;
 
   constructor(private http: HttpClient) { }
 

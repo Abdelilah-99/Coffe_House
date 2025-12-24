@@ -14,7 +14,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private URL = `${environment.apiUrl}/api/auth`;
+  private URL = `/api/auth`;
 
   constructor(private protocolHttp: HttpClient) { }
 
