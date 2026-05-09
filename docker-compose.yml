@@ -31,8 +31,8 @@ services:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SECURITY_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY}
       MEDIA_UPLOAD_DIR: /app/uploads/
-      SECURITY_JWT_SECRET_KEY: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e11we
       SECURITY_JWT_EXPIRATION_TIME: 3600000
     volumes:
       - backend_uploads:/app/uploads
@@ -80,4 +80,3 @@ volumes:
     driver: local
   backend_uploads:
     driver: local
-

@@ -221,6 +221,61 @@
   transform: scale(1.05);
 }
 
+.avatar-container {
+  position: relative;
+  width: fit-content;
+  display: inline-block;
+}
+
+.avatar-container img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    0 0 0 8px rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.avatar-container img:hover {
+  transform: scale(1.05);
+}
+
+.delete-avatar-btn {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e74c3c;
+  border: 3px solid white;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.delete-avatar-btn:hover {
+  background: #c0392b;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(231, 76, 60, 0.6);
+}
+
+.delete-avatar-btn svg {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
 .avatar-placeholder {
   width: 130px;
   height: 130px;

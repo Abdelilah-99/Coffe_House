@@ -1,6 +1,7 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MeService, UserProfile } from '../services/me.service';
 import { Post, PostService } from '../../post/services/post-service';
+import { FileService } from '../../services/file.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +34,8 @@ export class Me implements OnInit, OnDestroy {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
     private postService: PostService,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    private fileService: FileService) { }
     
     initObserver() {
       if (!isPlatformBrowser(this.platformId)) return;
@@ -208,6 +210,32 @@ export class Me implements OnInit, OnDestroy {
   }
   toggleCreatePost() {
     this.showCreatePost = !this.showCreatePost;
+  }
+
+  deleteProfileImage() {
+    if (!this.userProfile?.profileImagePath) {
+      this.toast.show('No profile image to delete', 'warning');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete your profile image?')) {
+      return;
+    }
+
+    this.toast.show('Deleting profile image...', 'warning');
+    
+    this.fileService.deleteFile(this.userProfile.profileImagePath).subscribe({
+      next: (response) => {
+        if (this.userProfile) {
+          this.userProfile.profileImagePath = '';
+        }
+        this.toast.show('Profile image deleted successfully', 'success');
+      },
+      error: (err) => {
+        console.error('Error deleting profile image:', err);
+        this.toast.show('Failed to delete profile image', 'error');
+      }
+    });
   }
 
   ngOnDestroy(): void {

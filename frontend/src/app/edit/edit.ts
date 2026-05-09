@@ -5,6 +5,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MeService, UserProfile } from '../me/services/me.service';
 import { ToastService } from '../toast/service/toast';
+import { FileService } from '../services/file.service';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -21,7 +22,8 @@ export class Edit implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     public navigate: Router,
     private meService: MeService,
-    private toast: ToastService
+    private toast: ToastService,
+    private fileService: FileService
   ) { }
   post: Post | null = null;
   postUuid: String | null = null;
@@ -75,14 +77,30 @@ export class Edit implements OnInit {
   }
 
   deleteMedia(mediaPath: String) {
-    let mediaPaths = this.post?.mediaPaths;
-    if (mediaPaths === undefined) return;
-    for (let index = 0; index < mediaPaths.length; index++) {
-      const element = mediaPaths[index];
-      if (mediaPath === element.path) {
-        this.post?.mediaPaths.splice(index, 1);
+    if (!mediaPath) return;
+    
+    // Show loading toast
+    this.toast.show('Deleting image...', 'warning');
+    
+    this.fileService.deleteFile(mediaPath as string).subscribe({
+      next: (response) => {
+        // Remove from UI after successful deletion
+        let mediaPaths = this.post?.mediaPaths;
+        if (mediaPaths === undefined) return;
+        for (let index = 0; index < mediaPaths.length; index++) {
+          const element = mediaPaths[index];
+          if (mediaPath === element.path) {
+            this.post?.mediaPaths.splice(index, 1);
+            break;
+          }
+        }
+        this.toast.show('Image deleted successfully', 'success');
+      },
+      error: (err) => {
+        console.error('Error deleting image:', err);
+        this.toast.show('Failed to delete image', 'error');
       }
-    }
+    });
   }
 
   selectedFiles: File[] = [];

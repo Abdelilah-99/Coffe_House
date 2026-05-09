@@ -196,12 +196,13 @@
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s ease;
-  opacity: 0;
+  opacity: 1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .media-item:hover .remove-media-btn {
   opacity: 1;
+  transform: scale(1.1);
 }
 
 .remove-media-btn:hover {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MeService, UserProfile } from '../services/me.service';
+import { FileService } from '../../services/file.service';
 import { ToastService } from '../../toast/service/toast';
 import { environment } from '../../../environments/environment';
 
@@ -30,7 +31,8 @@ export class EditProfile implements OnInit {
   constructor(
     private meService: MeService,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private fileService: FileService
   ) { }
 
   ngOnInit() {
@@ -82,6 +84,32 @@ export class EditProfile implements OnInit {
   removeImage() {
     this.selectedFile = null;
     this.previewUrl = null;
+  }
+
+  deleteProfileImage() {
+    if (!this.userProfile?.profileImagePath) {
+      this.toast.show('No profile image to delete', 'warning');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete your profile image?')) {
+      return;
+    }
+
+    this.toast.show('Deleting profile image...', 'warning');
+    
+    this.fileService.deleteFile(this.userProfile.profileImagePath).subscribe({
+      next: (response) => {
+        if (this.userProfile) {
+          this.userProfile.profileImagePath = '';
+        }
+        this.toast.show('Profile image deleted successfully', 'success');
+      },
+      error: (err) => {
+        console.error('Error deleting profile image:', err);
+        this.toast.show('Failed to delete profile image', 'error');
+      }
+    });
   }
 
   onSubmit() {
