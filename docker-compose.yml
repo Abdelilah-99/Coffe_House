@@ -1,16 +1,13 @@
-version: '3.8'
-
 services:
-  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: coffee-house-postgres
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: blogdb
-      POSTGRES_USER: abdelilah
-      POSTGRES_PASSWORD: abdelilah
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -22,26 +19,26 @@ services:
       timeout: 5s
       retries: 5
 
-  # Spring Boot Backend
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: coffee-house-backend
+    env_file:
+      - .env
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/blogdb
-      SPRING_DATASOURCE_USERNAME: abdelilah
-      SPRING_DATASOURCE_PASSWORD: abdelilah
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       MEDIA_UPLOAD_DIR: /app/uploads/
-      SECURITY_JWT_SECRET_KEY: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+      SECURITY_JWT_SECRET_KEY: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e11we
       SECURITY_JWT_EXPIRATION_TIME: 3600000
-    ports:
-      - "8080:8080"
     volumes:
       - backend_uploads:/app/uploads
     networks:
       - coffee-network
+      - shared-proxy
     depends_on:
       postgres:
         condition: service_healthy
@@ -53,18 +50,16 @@ services:
       retries: 5
       start_period: 60s
 
-  # Angular Frontend
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: coffee-house-frontend
     environment:
-      API_URL: http://localhost:8080
-    ports:
-      - "4200:80"
+      API_URL: /api
     networks:
       - coffee-network
+      - shared-proxy
     depends_on:
       - backend
     restart: unless-stopped
@@ -77,9 +72,12 @@ services:
 networks:
   coffee-network:
     driver: bridge
+  shared-proxy:
+    external: true
 
 volumes:
   postgres_data:
     driver: local
   backend_uploads:
     driver: local
+
