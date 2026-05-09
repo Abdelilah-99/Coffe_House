@@ -32,9 +32,9 @@ public class SecurityConfig {
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                                .requestMatchers("/api/auth/login", "/api/auth/register", "/uploads/**", "/actuator/**")
+                                                .requestMatchers("/api/auth/login", "/api/auth/register", "/uploads/**","/api/uploads/**", "/actuator/**")
                                                 .permitAll()
-                                                .requestMatchers("/api/files/**").authenticated()
+                                                .requestMatchers("/api/files/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
