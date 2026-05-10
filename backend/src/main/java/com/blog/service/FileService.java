@@ -28,7 +28,7 @@ public class FileService {
             String sanitizedPath = filePath.replace("..", "").replace("//", "/");
             
             Path fullPath = Paths.get(uploadDir, sanitizedPath);
-            
+            System.out.println(fullPath.toString() + ": " + uploadDir + " =============================================");
             // Ensure the path is within the upload directory
             if (!fullPath.normalize().startsWith(Paths.get(uploadDir).normalize())) {
                 return false;
