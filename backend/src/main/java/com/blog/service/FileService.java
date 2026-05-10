@@ -26,6 +26,11 @@ public class FileService {
 
             // Sanitize path to prevent directory traversal attacks
             String sanitizedPath = filePath.replace("..", "").replace("//", "/");
+            // normalize leading slashes and optional "uploads/" prefix
+            while (sanitizedPath.startsWith("/")) sanitizedPath = sanitizedPath.substring(1);
+            if (sanitizedPath.startsWith("uploads/")) {
+                sanitizedPath = sanitizedPath.substring("uploads/".length());
+            }
             
             Path fullPath = Paths.get(uploadDir, sanitizedPath);
             System.out.println(fullPath.toString() + ": " + uploadDir + " =============================================");
@@ -57,6 +62,10 @@ public class FileService {
             }
 
             String sanitizedPath = filePath.replace("..", "").replace("//", "/");
+            while (sanitizedPath.startsWith("/")) sanitizedPath = sanitizedPath.substring(1);
+            if (sanitizedPath.startsWith("uploads/")) {
+                sanitizedPath = sanitizedPath.substring("uploads/".length());
+            }
             Path fullPath = Paths.get(uploadDir, sanitizedPath);
             
             if (!fullPath.normalize().startsWith(Paths.get(uploadDir).normalize())) {

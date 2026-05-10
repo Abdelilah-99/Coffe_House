@@ -42,7 +42,7 @@ public class RegistrationService {
             if (userRepository.findByUserName(sanitizedUsername).isPresent()) {
                 throw new UserAlreadyExistException(String.format("Username already exists: %s", sanitizedUsername));
             }
-            String profilePath = "uploads/posts/profile.png";
+            String profilePath = "posts/profile.png";
             if (profileImage != null && !profileImage.isEmpty()) {
                 String mimeType = profileImage.getContentType();
                 if (mimeType == null ||

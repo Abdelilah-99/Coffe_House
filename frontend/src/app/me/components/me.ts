@@ -213,29 +213,9 @@ export class Me implements OnInit, OnDestroy {
   }
 
   deleteProfileImage() {
-    if (!this.userProfile?.profileImagePath) {
-      this.toast.show('No profile image to delete', 'warning');
-      return;
-    }
-
-    if (!confirm('Are you sure you want to delete your profile image?')) {
-      return;
-    }
-
-    this.toast.show('Deleting profile image...', 'warning');
-    
-    this.fileService.deleteFile(this.userProfile.profileImagePath).subscribe({
-      next: (response) => {
-        if (this.userProfile) {
-          this.userProfile.profileImagePath = '';
-        }
-        this.toast.show('Profile image deleted successfully', 'success');
-      },
-      error: (err) => {
-        console.error('Error deleting profile image:', err);
-        this.toast.show('Failed to delete profile image', 'error');
-      }
-    });
+    // Profile image deletion is only allowed from the Edit Profile page.
+    this.toast.show('Use Edit Profile to remove or change your profile image', 'warning');
+    this.router.navigate(['/me/edit']);
   }
 
   ngOnDestroy(): void {
