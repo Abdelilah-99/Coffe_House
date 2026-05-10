@@ -60,6 +60,8 @@ services:
     networks:
       - coffee-network
       - shared-proxy
+    ports:
+      - 4200:80
     depends_on:
       - backend
     restart: unless-stopped
