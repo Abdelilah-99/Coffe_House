@@ -16,6 +16,8 @@ export class Login implements OnInit {
   message: string = '';
   loginRes?: LoginResponse;
   show: boolean = false;
+  isSubmitting: boolean = false;
+  
   constructor(private authService: AuthService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -34,6 +36,9 @@ export class Login implements OnInit {
   }
 
   onSubmit() {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+    
     const loginData = {
       username: this.username,
       email: this.username,
@@ -47,6 +52,7 @@ export class Login implements OnInit {
         localStorage.setItem("user_role", this.loginRes.userRole.toString());
         this.toast.show("Loggin succefful", 'success');
         this.router.navigate(['/me']);
+        this.isSubmitting = false;
       },
       error: (err) => {
         this.message = err.error.message;
@@ -54,6 +60,7 @@ export class Login implements OnInit {
           this.message = 'failed to register';
         }
         this.toast.show(this.message, 'error');
+        this.isSubmitting = false;
       }
     });
   }

@@ -128,9 +128,9 @@
 
             <button 
               type="submit" 
-              [disabled]="!isStep2Valid()" 
+              [disabled]="!isStep2Valid() || isSubmitting" 
               class="submit-btn">
-              Submit
+              @if(isSubmitting) { Registering... } @else { Submit }
             </button>
             
             <button 

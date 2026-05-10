@@ -26,6 +26,7 @@ export class Me implements OnInit, OnDestroy {
   userPosts: Post[] = [];
   isLoading = false;
   isLoadingPosts = false;
+  isSubmittingPost = false;
   post = { title: '', content: '' };
   message?: string;
   showCreatePost = false;
@@ -134,20 +135,26 @@ export class Me implements OnInit, OnDestroy {
   }
 
   onCreatePost() {
+    if (this.isSubmittingPost) return;
+    this.isSubmittingPost = true;
+    
     const formData = new FormData();
     if (this.post.title.trim().length === 0 || this.post.content.trim().length === 0) {
       this.message = "content and title fields are required";
       this.toast.show(this.message, 'error');
+      this.isSubmittingPost = false;
       return;
     }
     if (this.post.title.length > 200) {
       this.message = "Title must not exceed 200 characters";
       this.toast.show(this.message, 'error');
+      this.isSubmittingPost = false;
       return;
     }
     if (this.post.content.length > 10000) {
       this.message = "Content must not exceed 10000 characters";
       this.toast.show(this.message, 'error');
+      this.isSubmittingPost = false;
       return;
     }
     formData.append("title", this.post.title);
@@ -173,16 +180,19 @@ export class Me implements OnInit, OnDestroy {
             this.initObserver();
           });
         }
+        this.isSubmittingPost = false;
+        this.post.title = '';
+        this.post.content = '';
+        this.selectedFiles = [];
+        this.previewUrls = [];
+        this.showCreatePost = false;
       },
       error: (err) => {
         this.toast.show(err.error.message, 'error');
         console.log("failed to create post: ", err);
+        this.isSubmittingPost = false;
       }
     })
-    this.post.title = '';
-    this.post.content = '';
-    this.selectedFiles = [];
-    this.previewUrls = [];
   }
 
   navigateToPost(postUuid: String) {

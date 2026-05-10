@@ -45,9 +45,9 @@
 
           <button 
             type="submit" 
-            [disabled]="!isFormLoginValid()" 
+            [disabled]="!isFormLoginValid() || isSubmitting" 
             class="submit-btn">
-            Submit
+            @if(isSubmitting) { Logging in... } @else { Submit }
           </button>
         </form>
 

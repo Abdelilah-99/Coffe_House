@@ -39,6 +39,7 @@ export class Register implements OnInit {
 
   selectedFile: File | null = null;
   profileImagePreview: string = '';
+  isSubmitting: boolean = false;
 
   onFileSelected(e: any) {
     const files: FileList = e.target.files;
@@ -73,6 +74,9 @@ export class Register implements OnInit {
   }
 
   onRegister() {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+    
     const registerData = {
       firstName: this.firstname,
       lastName: this.lastname,
@@ -97,13 +101,15 @@ export class Register implements OnInit {
         this.toast.show("register successful!!", 'success');
         URL.revokeObjectURL(this.profileImagePreview)
         this.router.navigate(['/login']);
+        this.isSubmitting = false;
       },
       error: (err) => {
-        console.log('err: ', err.error.message);
-        this.toast.show(err.error.message, 'error');
-        if (!err.error.message.includes('Password')) {
+        console.log('err: ', err.error?.message || err);
+        this.toast.show(err.error?.message || 'Registration failed', 'error');
+        if (!err.error?.message?.includes('Password')) {
           this.currentStep = 1;
         }
+        this.isSubmitting = false;
       }
     })
   }
